@@ -58,3 +58,4 @@ MSG91 or LLM accounts needed. Local services:
 - [Integrations](docs/INTEGRATIONS.md) — providers, env vars, mock behaviour
 - [ADRs](docs/adr/)
 - [Client setup TODO](docs/CLIENT_SETUP_TODO.md) — accounts and keys needed for production
+- [Phase 1 completion report](docs/phases/PHASE_1_COMPLETION.md)
