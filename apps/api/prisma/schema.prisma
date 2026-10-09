@@ -1,0 +1,1747 @@
+// Tirth Now data model. See docs/DATA_MODEL.md for conventions and table notes.
+// - UUID PKs, created_at/updated_at, UTC timestamptz, money in integer paise.
+// - Objects that Prisma cannot express (CHECK constraints, HNSW / trigram indexes) are
+//   added as raw SQL in migrations and named with the `rx_` prefix; see ADR-0008.
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [pgcrypto, pg_trgm, unaccent, citext, vector]
+}
+
+// ───────────────────────────── Enums ─────────────────────────────
+
+enum UserStatus {
+  active
+  suspended
+  deleted
+
+  @@map("user_status")
+}
+
+enum RoleKey {
+  user
+  vendor_owner
+  vendor_staff
+  admin
+  super_admin
+
+  @@map("role_key")
+}
+
+enum DevicePlatform {
+  android
+  ios
+  web
+
+  @@map("device_platform")
+}
+
+enum AartiKind {
+  mangla
+  shringar
+  rajbhog
+  utthapan
+  sandhya
+  shayan
+  other
+
+  @@map("aarti_kind")
+}
+
+enum PoiCategory {
+  hospital
+  police
+  pharmacy
+  atm
+  parking
+  toilet
+  water
+  ghat
+  other
+
+  @@map("poi_category")
+}
+
+enum ExploreKind {
+  ghat
+  kund
+  van
+  market
+  museum
+  food_spot
+  story
+
+  @@map("explore_kind")
+}
+
+enum MediaKind {
+  image
+  video
+  document
+  audio
+
+  @@map("media_kind")
+}
+
+enum MediaStatus {
+  pending_upload
+  uploaded
+  processing
+  ready
+  failed
+
+  @@map("media_status")
+}
+
+enum VendorType {
+  hotel
+  cab
+  restaurant
+  experience
+  multi
+
+  @@map("vendor_type")
+}
+
+enum VendorStatus {
+  draft
+  kyc_pending
+  kyc_rejected
+  active
+  suspended
+
+  @@map("vendor_status")
+}
+
+enum KycDocType {
+  pan
+  gst
+  aadhaar
+  fssai
+  trade_license
+  rc
+  permit
+  other
+
+  @@map("kyc_doc_type")
+}
+
+enum KycStatus {
+  pending
+  approved
+  rejected
+
+  @@map("kyc_status")
+}
+
+enum VehicleClass {
+  auto
+  hatchback
+  sedan
+  suv
+  tempo_traveller
+  e_rickshaw
+
+  @@map("vehicle_class")
+}
+
+enum ExperienceKind {
+  guided_tour
+  boat_ride
+  parikrama_guide
+  cooking
+  workshop
+  other
+
+  @@map("experience_kind")
+}
+
+enum OrderType {
+  hotel
+  cab
+  food
+  experience
+  transit
+
+  @@map("order_type")
+}
+
+enum OrderStatus {
+  pending
+  confirmed
+  in_progress
+  completed
+  cancelled
+  refunded
+
+  @@map("order_status")
+}
+
+enum ActorType {
+  user
+  vendor
+  admin
+  system
+  provider
+
+  @@map("actor_type")
+}
+
+enum PaymentStatus {
+  created
+  authorized
+  captured
+  failed
+  refunded
+  partially_refunded
+
+  @@map("payment_status")
+}
+
+enum RefundStatus {
+  pending
+  processed
+  failed
+
+  @@map("refund_status")
+}
+
+enum LedgerAccount {
+  platform_clearing
+  vendor_payable
+  platform_revenue
+  gst_payable
+  refunds_payable
+
+  @@map("ledger_account")
+}
+
+enum PayoutStatus {
+  pending_approval
+  approved
+  processing
+  paid
+  failed
+  on_hold
+
+  @@map("payout_status")
+}
+
+enum ReviewTarget {
+  hotel
+  restaurant
+  experience
+  vendor
+  temple
+
+  @@map("review_target")
+}
+
+enum ModerationStatus {
+  pending
+  approved
+  flagged
+  removed
+
+  @@map("moderation_status")
+}
+
+enum ReelStatus {
+  processing
+  published
+  hidden
+  removed
+
+  @@map("reel_status")
+}
+
+enum ReportTarget {
+  reel
+  comment
+  review
+  user
+  vendor
+
+  @@map("report_target")
+}
+
+enum ReportStatus {
+  open
+  actioned
+  dismissed
+
+  @@map("report_status")
+}
+
+enum ModAction {
+  approve
+  hide
+  remove
+  warn_user
+  suspend_user
+  restore
+
+  @@map("mod_action")
+}
+
+enum KnowledgeSource {
+  upload
+  url
+  text
+  cms
+
+  @@map("knowledge_source")
+}
+
+enum KdocStatus {
+  draft
+  pending_approval
+  approved
+  indexing
+  indexed
+  failed
+  archived
+
+  @@map("kdoc_status")
+}
+
+enum ChatRole {
+  user
+  assistant
+  tool
+  system
+
+  @@map("chat_role")
+}
+
+enum ItineraryStatus {
+  draft
+  saved
+  archived
+
+  @@map("itinerary_status")
+}
+
+enum ItinItemKind {
+  temple
+  aarti
+  meal
+  travel
+  stay
+  explore
+  rest
+  custom
+
+  @@map("itin_item_kind")
+}
+
+enum NotifChannel {
+  push
+  sms
+  whatsapp
+  email
+  in_app
+
+  @@map("notif_channel")
+}
+
+enum NotifStatus {
+  queued
+  sent
+  delivered
+  failed
+  read
+
+  @@map("notif_status")
+}
+
+enum SosStatus {
+  triggered
+  dispatched
+  resolved
+  cancelled
+  false_alarm
+
+  @@map("sos_status")
+}
+
+enum ConfigKind {
+  feature_flag
+  banner
+  setting
+
+  @@map("config_kind")
+}
+
+// ───────────────────────────── Identity ─────────────────────────────
+
+model User {
+  id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  firebaseUid  String?    @unique @map("firebase_uid")
+  email        String?    @unique @db.Citext
+  phoneE164    String?    @unique @map("phone_e164")
+  passwordHash String?    @map("password_hash")
+  mfaEnabled   Boolean    @default(false) @map("mfa_enabled")
+  isGuest      Boolean    @default(false) @map("is_guest")
+  status       UserStatus @default(active)
+  lastLoginAt  DateTime?  @map("last_login_at") @db.Timestamptz(3)
+  createdAt    DateTime   @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt    DateTime   @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt    DateTime?  @map("deleted_at") @db.Timestamptz(3)
+
+  profile           UserProfile?
+  roles             UserRole[]
+  devices           Device[]
+  refreshTokens     RefreshToken[]
+  emergencyContacts EmergencyContact[]
+  mediaAssets       MediaAsset[]
+  ownedVendors      Vendor[]            @relation("VendorOwner")
+  approvedVendors   Vendor[]            @relation("VendorApprover")
+  vendorStaff       VendorStaff[]
+  kycReviews        VendorKycDocument[]
+  drivenVehicles    Vehicle[]
+  orders            Order[]
+  refundsInitiated  Refund[]
+  payoutsApproved   Payout[]
+  reviews           Review[]
+  reels             Reel[]
+  reelLikes         ReelLike[]
+  reelComments      ReelComment[]
+  reelSaves         ReelSave[]
+  following         Follow[]            @relation("Follower")
+  followers         Follow[]            @relation("Followee")
+  reports           Report[]
+  moderationActions ModerationAction[]
+  knowledgeUploaded KnowledgeDocument[] @relation("KdocUploader")
+  knowledgeApproved KnowledgeDocument[] @relation("KdocApprover")
+  chatSessions      ChatSession[]
+  itineraries       Itinerary[]
+  notifications     Notification[]
+  sosEvents         SosEvent[]          @relation("SosUser")
+  sosHandled        SosEvent[]          @relation("SosHandler")
+  auditLogs         AuditLog[]
+  configUpdates     AppConfig[]
+  aiUsage           AiUsage[]
+  idempotencyKeys   IdempotencyKey[]
+
+  @@map("users")
+}
+
+model UserProfile {
+  userId            String   @id @map("user_id") @db.Uuid
+  displayName       String?  @map("display_name")
+  avatarMediaId     String?  @map("avatar_media_id") @db.Uuid
+  preferredLang     String   @default("en") @map("preferred_lang")
+  homeCityId        String?  @map("home_city_id") @db.Uuid
+  accessibility     Json     @default("{}")
+  notificationPrefs Json     @default("{}") @map("notification_prefs")
+  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  user     User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  avatar   MediaAsset? @relation(fields: [avatarMediaId], references: [id])
+  homeCity City?       @relation(fields: [homeCityId], references: [id])
+
+  @@map("user_profiles")
+}
+
+model Role {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  key         RoleKey  @unique
+  permissions Json     @default("[]")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  users UserRole[]
+
+  @@map("roles")
+}
+
+/// vendor_id scopes vendor_owner / vendor_staff grants; NULL for global roles.
+model UserRole {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  roleId    String   @map("role_id") @db.Uuid
+  vendorId  String?  @map("vendor_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role   Role    @relation(fields: [roleId], references: [id])
+  vendor Vendor? @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId, vendorId])
+  @@index([userId])
+  @@map("user_roles")
+}
+
+model Device {
+  id         String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId     String         @map("user_id") @db.Uuid
+  fcmToken   String?        @unique @map("fcm_token")
+  platform   DevicePlatform
+  appVersion String?        @map("app_version")
+  locale     String?
+  lastSeenAt DateTime       @default(now()) @map("last_seen_at") @db.Timestamptz(3)
+  createdAt  DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt  DateTime       @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  refreshTokens RefreshToken[]
+
+  @@index([userId])
+  @@map("devices")
+}
+
+model RefreshToken {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  deviceId  String?   @map("device_id") @db.Uuid
+  tokenHash String    @unique @map("token_hash")
+  familyId  String    @map("family_id") @db.Uuid
+  expiresAt DateTime  @map("expires_at") @db.Timestamptz(3)
+  usedAt    DateTime? @map("used_at") @db.Timestamptz(3)
+  revokedAt DateTime? @map("revoked_at") @db.Timestamptz(3)
+  ip        String?
+  userAgent String?   @map("user_agent")
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  device Device? @relation(fields: [deviceId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([familyId])
+  @@index([expiresAt])
+  @@map("refresh_tokens")
+}
+
+model EmergencyContact {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId         String   @map("user_id") @db.Uuid
+  name           String
+  phoneE164      String   @map("phone_e164")
+  relation       String?
+  notifyWhatsapp Boolean  @default(true) @map("notify_whatsapp")
+  priority       Int      @default(0) @db.SmallInt
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt      DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("emergency_contacts")
+}
+
+// ───────────────────────────── Catalog & media ─────────────────────────────
+
+model City {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  slug      String   @unique
+  nameI18n  Json     @map("name_i18n")
+  lat       Float
+  lng       Float
+  sortOrder Int      @default(0) @map("sort_order") @db.SmallInt
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  temples            Temple[]
+  pois               Poi[]
+  exploreItems       ExploreItem[]
+  festivals          Festival[]
+  profiles           UserProfile[]
+  vendors            Vendor[]
+  hotels             Hotel[]
+  restaurants        Restaurant[]
+  experiences        Experience[]
+  commissionRules    CommissionRule[]
+  reels              Reel[]
+  knowledgeDocuments KnowledgeDocument[]
+  chatSessions       ChatSession[]
+  itineraryDays      ItineraryDay[]
+
+  @@map("cities")
+}
+
+model Temple {
+  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  cityId          String    @map("city_id") @db.Uuid
+  slug            String    @unique
+  nameI18n        Json      @map("name_i18n")
+  descriptionI18n Json?     @map("description_i18n")
+  historyI18n     Json?     @map("history_i18n")
+  lat             Float
+  lng             Float
+  address         String?
+  openingHours    Json      @default("{}") @map("opening_hours")
+  dressCodeI18n   Json?     @map("dress_code_i18n")
+  tags            String[]  @default([])
+  coverMediaId    String?   @map("cover_media_id") @db.Uuid
+  galleryMediaIds String[]  @default([]) @map("gallery_media_ids") @db.Uuid
+  crowdLevel      Int       @default(0) @map("crowd_level") @db.SmallInt
+  isPublished     Boolean   @default(true) @map("is_published")
+  createdAt       DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt       DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt       DateTime? @map("deleted_at") @db.Timestamptz(3)
+
+  city           City                 @relation(fields: [cityId], references: [id])
+  cover          MediaAsset?          @relation(fields: [coverMediaId], references: [id])
+  aartiSchedules AartiSchedule[]
+  festivals      Festival[]
+  routeStops     ParikramaRouteStop[]
+  reels          Reel[]
+  knowledgeDocs  KnowledgeDocument[]
+  itineraryItems ItineraryItem[]
+
+  @@index([cityId])
+  @@index([lat, lng])
+  @@map("temples")
+}
+
+/// local_time is Asia/Kolkata wall-clock; expanded to UTC instants by the catalog service.
+model AartiSchedule {
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  templeId       String    @map("temple_id") @db.Uuid
+  kind           AartiKind
+  nameI18n       Json      @map("name_i18n")
+  localTime      DateTime  @map("local_time") @db.Time(0)
+  durationMin    Int       @default(15) @map("duration_min") @db.SmallInt
+  recurrence     String    @default("FREQ=DAILY")
+  validFrom      DateTime? @map("valid_from") @db.Date
+  validTo        DateTime? @map("valid_to") @db.Date
+  season         String    @default("all")
+  isLiveStreamed Boolean   @default(false) @map("is_live_streamed")
+  streamUrl      String?   @map("stream_url")
+  createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt      DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  temple         Temple          @relation(fields: [templeId], references: [id], onDelete: Cascade)
+  itineraryItems ItineraryItem[]
+
+  @@index([templeId, localTime])
+  @@map("aarti_schedules")
+}
+
+model Festival {
+  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  cityId            String?  @map("city_id") @db.Uuid
+  templeId          String?  @map("temple_id") @db.Uuid
+  nameI18n          Json     @map("name_i18n")
+  descriptionI18n   Json?    @map("description_i18n")
+  startsOn          DateTime @map("starts_on") @db.Date
+  endsOn            DateTime @map("ends_on") @db.Date
+  crowdAdvisoryI18n Json?    @map("crowd_advisory_i18n")
+  coverMediaId      String?  @map("cover_media_id") @db.Uuid
+  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  city   City?       @relation(fields: [cityId], references: [id])
+  temple Temple?     @relation(fields: [templeId], references: [id])
+  cover  MediaAsset? @relation(fields: [coverMediaId], references: [id])
+
+  @@index([startsOn, endsOn])
+  @@map("festivals")
+}
+
+model Poi {
+  id          String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  cityId      String      @map("city_id") @db.Uuid
+  category    PoiCategory
+  nameI18n    Json        @map("name_i18n")
+  lat         Float
+  lng         Float
+  address     String?
+  phoneE164   String?     @map("phone_e164")
+  is24x7      Boolean     @default(false) @map("is_24x7")
+  isEmergency Boolean     @default(false) @map("is_emergency")
+  metadata    Json        @default("{}")
+  createdAt   DateTime    @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime    @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt   DateTime?   @map("deleted_at") @db.Timestamptz(3)
+
+  city           City                 @relation(fields: [cityId], references: [id])
+  routeStops     ParikramaRouteStop[]
+  itineraryItems ItineraryItem[]
+
+  @@index([cityId, category])
+  @@index([lat, lng])
+  @@map("pois")
+}
+
+model ExploreItem {
+  id           String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  cityId       String      @map("city_id") @db.Uuid
+  kind         ExploreKind
+  titleI18n    Json        @map("title_i18n")
+  bodyI18n     Json?       @map("body_i18n")
+  lat          Float?
+  lng          Float?
+  coverMediaId String?     @map("cover_media_id") @db.Uuid
+  sortOrder    Int         @default(0) @map("sort_order")
+  isPublished  Boolean     @default(true) @map("is_published")
+  createdAt    DateTime    @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt    DateTime    @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt    DateTime?   @map("deleted_at") @db.Timestamptz(3)
+
+  city           City            @relation(fields: [cityId], references: [id])
+  cover          MediaAsset?     @relation(fields: [coverMediaId], references: [id])
+  itineraryItems ItineraryItem[]
+
+  @@index([cityId, kind])
+  @@map("explore_items")
+}
+
+model ParikramaRoute {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  slug            String   @unique
+  nameI18n        Json     @map("name_i18n")
+  descriptionI18n Json?    @map("description_i18n")
+  distanceM       Int      @map("distance_m")
+  estDurationMin  Int      @map("est_duration_min")
+  polyline        String?
+  difficulty      String?
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt       DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  stops ParikramaRouteStop[]
+
+  @@map("parikrama_routes")
+}
+
+model ParikramaRouteStop {
+  routeId  String  @map("route_id") @db.Uuid
+  seq      Int     @db.SmallInt
+  templeId String? @map("temple_id") @db.Uuid
+  poiId    String? @map("poi_id") @db.Uuid
+  noteI18n Json?   @map("note_i18n")
+
+  route  ParikramaRoute @relation(fields: [routeId], references: [id], onDelete: Cascade)
+  temple Temple?        @relation(fields: [templeId], references: [id])
+  poi    Poi?           @relation(fields: [poiId], references: [id])
+
+  @@id([routeId, seq])
+  @@map("parikrama_route_stops")
+}
+
+model MediaAsset {
+  id          String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  ownerUserId String?     @map("owner_user_id") @db.Uuid
+  kind        MediaKind
+  storageKey  String      @unique @map("storage_key")
+  mimeType    String      @map("mime_type")
+  sizeBytes   Int?        @map("size_bytes")
+  width       Int?
+  height      Int?
+  durationMs  Int?        @map("duration_ms")
+  status      MediaStatus @default(pending_upload)
+  variants    Json        @default("{}")
+  blurhash    String?
+  createdAt   DateTime    @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime    @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt   DateTime?   @map("deleted_at") @db.Timestamptz(3)
+
+  owner              User?               @relation(fields: [ownerUserId], references: [id])
+  avatarsFor         UserProfile[]
+  templeCovers       Temple[]
+  festivalCovers     Festival[]
+  exploreCovers      ExploreItem[]
+  kycDocuments       VendorKycDocument[]
+  menuItems          MenuItem[]
+  reelVideos         Reel[]              @relation("ReelVideo")
+  reelThumbnails     Reel[]              @relation("ReelThumbnail")
+  knowledgeDocuments KnowledgeDocument[]
+
+  @@index([ownerUserId])
+  @@map("media_assets")
+}
+
+// ───────────────────────────── Vendors ─────────────────────────────
+
+model Vendor {
+  id                      String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  ownerUserId             String       @map("owner_user_id") @db.Uuid
+  type                    VendorType
+  legalName               String       @map("legal_name")
+  displayName             String       @map("display_name")
+  gstin                   String?
+  pan                     String?
+  cityId                  String?      @map("city_id") @db.Uuid
+  status                  VendorStatus @default(draft)
+  razorpayLinkedAccountId String?      @unique @map("razorpay_linked_account_id")
+  commissionRuleId        String?      @map("commission_rule_id") @db.Uuid
+  approvedAt              DateTime?    @map("approved_at") @db.Timestamptz(3)
+  approvedById            String?      @map("approved_by") @db.Uuid
+  createdAt               DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt               DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt               DateTime?    @map("deleted_at") @db.Timestamptz(3)
+
+  owner          User                @relation("VendorOwner", fields: [ownerUserId], references: [id])
+  approvedBy     User?               @relation("VendorApprover", fields: [approvedById], references: [id])
+  city           City?               @relation(fields: [cityId], references: [id])
+  commissionRule CommissionRule?     @relation("VendorCommissionOverride", fields: [commissionRuleId], references: [id])
+  scopedRules    CommissionRule[]    @relation("VendorScopedRules")
+  userRoles      UserRole[]
+  kycDocuments   VendorKycDocument[]
+  staff          VendorStaff[]
+  bankAccounts   VendorBankAccount[]
+  hotels         Hotel[]
+  vehicles       Vehicle[]
+  cabFares       CabFare[]
+  restaurants    Restaurant[]
+  experiences    Experience[]
+  orders         Order[]
+  ledgerEntries  LedgerEntry[]
+  payouts        Payout[]
+
+  @@index([ownerUserId])
+  @@index([status])
+  @@map("vendors")
+}
+
+model VendorKycDocument {
+  id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  vendorId     String     @map("vendor_id") @db.Uuid
+  docType      KycDocType @map("doc_type")
+  mediaId      String     @map("media_id") @db.Uuid
+  status       KycStatus  @default(pending)
+  reviewerNote String?    @map("reviewer_note")
+  reviewedById String?    @map("reviewed_by") @db.Uuid
+  reviewedAt   DateTime?  @map("reviewed_at") @db.Timestamptz(3)
+  createdAt    DateTime   @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt    DateTime   @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  vendor     Vendor     @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  media      MediaAsset @relation(fields: [mediaId], references: [id])
+  reviewedBy User?      @relation(fields: [reviewedById], references: [id])
+
+  @@index([vendorId])
+  @@map("vendor_kyc_documents")
+}
+
+model VendorStaff {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  vendorId    String   @map("vendor_id") @db.Uuid
+  userId      String   @map("user_id") @db.Uuid
+  permissions String[] @default([])
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  vendor Vendor @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@unique([vendorId, userId])
+  @@map("vendor_staff")
+}
+
+/// account_number_enc is AES-256-GCM encrypted at the application layer (DATA_ENCRYPTION_KEY).
+model VendorBankAccount {
+  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  vendorId         String   @map("vendor_id") @db.Uuid
+  accountHolder    String   @map("account_holder")
+  accountNumberEnc String   @map("account_number_enc")
+  accountLast4     String   @map("account_last4")
+  ifsc             String
+  isPrimary        Boolean  @default(false) @map("is_primary")
+  isVerified       Boolean  @default(false) @map("is_verified")
+  createdAt        DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt        DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  vendor Vendor @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+
+  @@index([vendorId])
+  @@map("vendor_bank_accounts")
+}
+
+// ───────────────────────────── Inventory ─────────────────────────────
+
+model Hotel {
+  id                 String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  vendorId           String    @map("vendor_id") @db.Uuid
+  cityId             String    @map("city_id") @db.Uuid
+  nameI18n           Json      @map("name_i18n")
+  descriptionI18n    Json?     @map("description_i18n")
+  lat                Float
+  lng                Float
+  address            String
+  starRating         Int?      @map("star_rating") @db.SmallInt
+  amenities          String[]  @default([])
+  checkinTime        DateTime  @map("checkin_time") @db.Time(0)
+  checkoutTime       DateTime  @map("checkout_time") @db.Time(0)
+  cancellationPolicy Json      @default("{}") @map("cancellation_policy")
+  ratingAvg          Decimal   @default(0) @map("rating_avg") @db.Decimal(3, 2)
+  ratingCount        Int       @default(0) @map("rating_count")
+  isPublished        Boolean   @default(false) @map("is_published")
+  createdAt          DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt          DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt          DateTime? @map("deleted_at") @db.Timestamptz(3)
+
+  vendor    Vendor     @relation(fields: [vendorId], references: [id])
+  city      City       @relation(fields: [cityId], references: [id])
+  roomTypes RoomType[]
+
+  @@index([cityId])
+  @@index([vendorId])
+  @@index([lat, lng])
+  @@map("hotels")
+}
+
+model RoomType {
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  hotelId        String    @map("hotel_id") @db.Uuid
+  nameI18n       Json      @map("name_i18n")
+  maxGuests      Int       @map("max_guests") @db.SmallInt
+  basePricePaise Int       @map("base_price_paise")
+  totalRooms     Int       @map("total_rooms")
+  amenities      String[]  @default([])
+  mediaIds       String[]  @default([]) @map("media_ids") @db.Uuid
+  createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt      DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt      DateTime? @map("deleted_at") @db.Timestamptz(3)
+
+  hotel     Hotel           @relation(fields: [hotelId], references: [id])
+  inventory RoomInventory[]
+
+  @@index([hotelId])
+  @@map("room_types")
+}
+
+/// One row per (room type, night). `available >= 0` CHECK is the last guard against overbooking.
+model RoomInventory {
+  roomTypeId String   @map("room_type_id") @db.Uuid
+  stayDate   DateTime @map("stay_date") @db.Date
+  total      Int
+  available  Int
+  pricePaise Int      @map("price_paise")
+  stopSell   Boolean  @default(false) @map("stop_sell")
+  updatedAt  DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  roomType RoomType @relation(fields: [roomTypeId], references: [id], onDelete: Cascade)
+
+  @@id([roomTypeId, stayDate])
+  @@map("room_inventory")
+}
+
+model Vehicle {
+  id              String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  vendorId        String       @map("vendor_id") @db.Uuid
+  class           VehicleClass
+  registrationNo  String       @unique @map("registration_no")
+  model           String?
+  seats           Int          @db.SmallInt
+  driverName      String?      @map("driver_name")
+  driverPhoneE164 String?      @map("driver_phone_e164")
+  driverUserId    String?      @map("driver_user_id") @db.Uuid
+  isActive        Boolean      @default(true) @map("is_active")
+  createdAt       DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt       DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt       DateTime?    @map("deleted_at") @db.Timestamptz(3)
+
+  vendor     Vendor @relation(fields: [vendorId], references: [id])
+  driverUser User?  @relation(fields: [driverUserId], references: [id])
+
+  @@index([vendorId])
+  @@map("vehicles")
+}
+
+model CabFare {
+  id                String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  vendorId          String       @map("vendor_id") @db.Uuid
+  class             VehicleClass
+  baseFarePaise     Int          @map("base_fare_paise")
+  perKmPaise        Int          @map("per_km_paise")
+  perMinPaise       Int          @map("per_min_paise")
+  minFarePaise      Int          @map("min_fare_paise")
+  nightSurchargePct Int          @default(0) @map("night_surcharge_pct") @db.SmallInt
+  fixedRoutes       Json         @default("[]") @map("fixed_routes")
+  createdAt         DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  vendor Vendor @relation(fields: [vendorId], references: [id])
+
+  @@unique([vendorId, class])
+  @@map("cab_fares")
+}
+
+model Restaurant {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  vendorId      String    @map("vendor_id") @db.Uuid
+  cityId        String    @map("city_id") @db.Uuid
+  nameI18n      Json      @map("name_i18n")
+  lat           Float
+  lng           Float
+  address       String?
+  isPureVeg     Boolean   @default(true) @map("is_pure_veg")
+  isSatvik      Boolean   @default(false) @map("is_satvik")
+  fssaiNo       String?   @map("fssai_no")
+  openingHours  Json      @default("{}") @map("opening_hours")
+  externalLinks Json      @default("{}") @map("external_links")
+  acceptsOrders Boolean   @default(false) @map("accepts_orders")
+  isPublished   Boolean   @default(false) @map("is_published")
+  createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt     DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt     DateTime? @map("deleted_at") @db.Timestamptz(3)
+
+  vendor    Vendor     @relation(fields: [vendorId], references: [id])
+  city      City       @relation(fields: [cityId], references: [id])
+  menuItems MenuItem[]
+
+  @@index([cityId])
+  @@index([vendorId])
+  @@map("restaurants")
+}
+
+model MenuItem {
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  restaurantId String    @map("restaurant_id") @db.Uuid
+  nameI18n     Json      @map("name_i18n")
+  category     String
+  pricePaise   Int       @map("price_paise")
+  isAvailable  Boolean   @default(true) @map("is_available")
+  isJain       Boolean   @default(false) @map("is_jain")
+  mediaId      String?   @map("media_id") @db.Uuid
+  createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt    DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt    DateTime? @map("deleted_at") @db.Timestamptz(3)
+
+  restaurant Restaurant  @relation(fields: [restaurantId], references: [id])
+  media      MediaAsset? @relation(fields: [mediaId], references: [id])
+
+  @@index([restaurantId])
+  @@map("menu_items")
+}
+
+model Experience {
+  id                 String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  vendorId           String         @map("vendor_id") @db.Uuid
+  cityId             String         @map("city_id") @db.Uuid
+  kind               ExperienceKind
+  titleI18n          Json           @map("title_i18n")
+  descriptionI18n    Json?          @map("description_i18n")
+  pricePaise         Int            @map("price_paise")
+  durationMin        Int            @map("duration_min") @db.SmallInt
+  maxGroupSize       Int            @map("max_group_size") @db.SmallInt
+  cancellationPolicy Json           @default("{}") @map("cancellation_policy")
+  isPublished        Boolean        @default(false) @map("is_published")
+  createdAt          DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt          DateTime       @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt          DateTime?      @map("deleted_at") @db.Timestamptz(3)
+
+  vendor Vendor           @relation(fields: [vendorId], references: [id])
+  city   City             @relation(fields: [cityId], references: [id])
+  slots  ExperienceSlot[]
+
+  @@index([cityId])
+  @@index([vendorId])
+  @@map("experiences")
+}
+
+model ExperienceSlot {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  experienceId String   @map("experience_id") @db.Uuid
+  startsAt     DateTime @map("starts_at") @db.Timestamptz(3)
+  capacity     Int
+  booked       Int      @default(0)
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  experience Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+
+  @@unique([experienceId, startsAt])
+  @@map("experience_slots")
+}
+
+// ───────────────────────────── Orders ─────────────────────────────
+
+model Order {
+  id               String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  code             String      @unique
+  userId           String      @map("user_id") @db.Uuid
+  vendorId         String?     @map("vendor_id") @db.Uuid
+  type             OrderType
+  status           OrderStatus @default(pending)
+  subtotalPaise    Int         @map("subtotal_paise")
+  taxPaise         Int         @default(0) @map("tax_paise")
+  discountPaise    Int         @default(0) @map("discount_paise")
+  feePaise         Int         @default(0) @map("fee_paise")
+  totalPaise       Int         @map("total_paise")
+  commissionPaise  Int?        @map("commission_paise")
+  commissionRuleId String?     @map("commission_rule_id") @db.Uuid
+  serviceStartsAt  DateTime?   @map("service_starts_at") @db.Timestamptz(3)
+  serviceEndsAt    DateTime?   @map("service_ends_at") @db.Timestamptz(3)
+  holdExpiresAt    DateTime?   @map("hold_expires_at") @db.Timestamptz(3)
+  details          Json        @default("{}")
+  idempotencyKey   String?     @map("idempotency_key")
+  createdAt        DateTime    @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt        DateTime    @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt        DateTime?   @map("deleted_at") @db.Timestamptz(3)
+
+  user           User                 @relation(fields: [userId], references: [id])
+  vendor         Vendor?              @relation(fields: [vendorId], references: [id])
+  commissionRule CommissionRule?      @relation(fields: [commissionRuleId], references: [id])
+  items          OrderItem[]
+  statusHistory  OrderStatusHistory[]
+  cancellation   Cancellation?
+  payments       Payment[]
+  ledgerEntries  LedgerEntry[]
+  review         Review?
+
+  @@unique([userId, idempotencyKey])
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([vendorId, status, createdAt(sort: Desc)])
+  @@index([status, holdExpiresAt])
+  @@map("orders")
+}
+
+model OrderItem {
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  orderId        String    @map("order_id") @db.Uuid
+  itemType       String    @map("item_type")
+  refId          String?   @map("ref_id") @db.Uuid
+  stayDate       DateTime? @map("stay_date") @db.Date
+  quantity       Int
+  unitPricePaise Int       @map("unit_price_paise")
+  totalPaise     Int       @map("total_paise")
+  snapshot       Json      @default("{}")
+  createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@map("order_items")
+}
+
+model OrderStatusHistory {
+  id         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  orderId    String       @map("order_id") @db.Uuid
+  fromStatus OrderStatus? @map("from_status")
+  toStatus   OrderStatus  @map("to_status")
+  actorType  ActorType    @map("actor_type")
+  actorId    String?      @map("actor_id") @db.Uuid
+  reason     String?
+  metadata   Json         @default("{}")
+  createdAt  DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId, createdAt])
+  @@map("order_status_history")
+}
+
+model Cancellation {
+  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  orderId         String    @unique @map("order_id") @db.Uuid
+  cancelledByType ActorType @map("cancelled_by_type")
+  cancelledBy     String?   @map("cancelled_by") @db.Uuid
+  reasonCode      String    @map("reason_code")
+  reasonText      String?   @map("reason_text")
+  refundablePaise Int       @default(0) @map("refundable_paise")
+  penaltyPaise    Int       @default(0) @map("penalty_paise")
+  createdAt       DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  order   Order    @relation(fields: [orderId], references: [id])
+  refunds Refund[]
+
+  @@map("cancellations")
+}
+
+/// Stored responses for Idempotency-Key replay (payment, booking, refund, payout, SOS).
+model IdempotencyKey {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  scope          String
+  userId         String   @map("user_id") @db.Uuid
+  key            String
+  requestHash    String   @map("request_hash")
+  responseStatus Int?     @map("response_status")
+  responseBody   Json?    @map("response_body")
+  expiresAt      DateTime @map("expires_at") @db.Timestamptz(3)
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([scope, userId, key])
+  @@index([expiresAt])
+  @@map("idempotency_keys")
+}
+
+// ───────────────────────────── Payments ─────────────────────────────
+
+model Payment {
+  id                String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  orderId           String        @map("order_id") @db.Uuid
+  provider          String
+  providerOrderId   String        @unique @map("provider_order_id")
+  providerPaymentId String?       @unique @map("provider_payment_id")
+  status            PaymentStatus @default(created)
+  amountPaise       Int           @map("amount_paise")
+  currency          String        @default("INR") @db.Char(3)
+  method            String?
+  raw               Json          @default("{}")
+  capturedAt        DateTime?     @map("captured_at") @db.Timestamptz(3)
+  createdAt         DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  order   Order          @relation(fields: [orderId], references: [id])
+  events  PaymentEvent[]
+  refunds Refund[]
+
+  @@index([orderId])
+  @@map("payments")
+}
+
+model PaymentEvent {
+  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  provider        String
+  providerEventId String    @map("provider_event_id")
+  eventType       String    @map("event_type")
+  paymentId       String?   @map("payment_id") @db.Uuid
+  payload         Json
+  signatureValid  Boolean   @map("signature_valid")
+  processedAt     DateTime? @map("processed_at") @db.Timestamptz(3)
+  processingError String?   @map("processing_error")
+  createdAt       DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  payment Payment? @relation(fields: [paymentId], references: [id])
+
+  @@unique([provider, providerEventId])
+  @@map("payment_events")
+}
+
+model Refund {
+  id               String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  paymentId        String       @map("payment_id") @db.Uuid
+  cancellationId   String?      @map("cancellation_id") @db.Uuid
+  providerRefundId String?      @unique @map("provider_refund_id")
+  amountPaise      Int          @map("amount_paise")
+  status           RefundStatus @default(pending)
+  reason           String?
+  initiatedById    String?      @map("initiated_by") @db.Uuid
+  idempotencyKey   String       @unique @map("idempotency_key")
+  createdAt        DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt        DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  payment      Payment       @relation(fields: [paymentId], references: [id])
+  cancellation Cancellation? @relation(fields: [cancellationId], references: [id])
+  initiatedBy  User?         @relation(fields: [initiatedById], references: [id])
+
+  @@index([paymentId])
+  @@map("refunds")
+}
+
+model CommissionRule {
+  id            String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name          String
+  orderType     OrderType? @map("order_type")
+  vendorId      String?    @map("vendor_id") @db.Uuid
+  cityId        String?    @map("city_id") @db.Uuid
+  percentBps    Int        @default(0) @map("percent_bps")
+  flatPaise     Int        @default(0) @map("flat_paise")
+  minPaise      Int?       @map("min_paise")
+  maxPaise      Int?       @map("max_paise")
+  effectiveFrom DateTime   @default(now()) @map("effective_from") @db.Timestamptz(3)
+  effectiveTo   DateTime?  @map("effective_to") @db.Timestamptz(3)
+  priority      Int        @default(0) @db.SmallInt
+  isActive      Boolean    @default(true) @map("is_active")
+  createdAt     DateTime   @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt     DateTime   @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  vendor          Vendor?  @relation("VendorScopedRules", fields: [vendorId], references: [id])
+  city            City?    @relation(fields: [cityId], references: [id])
+  overrideVendors Vendor[] @relation("VendorCommissionOverride")
+  orders          Order[]
+
+  @@index([isActive, orderType])
+  @@map("commission_rules")
+}
+
+/// Append-only double-entry ledger. Each txn_id group must balance.
+model LedgerEntry {
+  id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  txnId       String        @map("txn_id") @db.Uuid
+  account     LedgerAccount
+  vendorId    String?       @map("vendor_id") @db.Uuid
+  orderId     String?       @map("order_id") @db.Uuid
+  payoutId    String?       @map("payout_id") @db.Uuid
+  debitPaise  BigInt        @default(0) @map("debit_paise")
+  creditPaise BigInt        @default(0) @map("credit_paise")
+  memo        String?
+  createdAt   DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  vendor Vendor? @relation(fields: [vendorId], references: [id])
+  order  Order?  @relation(fields: [orderId], references: [id])
+  payout Payout? @relation(fields: [payoutId], references: [id])
+
+  @@index([txnId])
+  @@index([vendorId, account, createdAt])
+  @@map("ledger_entries")
+}
+
+model Payout {
+  id                 String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  vendorId           String       @map("vendor_id") @db.Uuid
+  periodStart        DateTime     @map("period_start") @db.Date
+  periodEnd          DateTime     @map("period_end") @db.Date
+  amountPaise        BigInt       @map("amount_paise")
+  status             PayoutStatus @default(pending_approval)
+  providerTransferId String?      @unique @map("provider_transfer_id")
+  approvedById       String?      @map("approved_by") @db.Uuid
+  approvedAt         DateTime?    @map("approved_at") @db.Timestamptz(3)
+  paidAt             DateTime?    @map("paid_at") @db.Timestamptz(3)
+  failureReason      String?      @map("failure_reason")
+  createdAt          DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt          DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  vendor        Vendor        @relation(fields: [vendorId], references: [id])
+  approvedBy    User?         @relation(fields: [approvedById], references: [id])
+  ledgerEntries LedgerEntry[]
+
+  @@index([vendorId, status])
+  @@map("payouts")
+}
+
+// ───────────────────────────── Reviews & reels ─────────────────────────────
+
+model Review {
+  id               String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId           String           @map("user_id") @db.Uuid
+  orderId          String?          @unique @map("order_id") @db.Uuid
+  targetType       ReviewTarget     @map("target_type")
+  targetId         String           @map("target_id") @db.Uuid
+  rating           Int              @db.SmallInt
+  body             String?
+  mediaIds         String[]         @default([]) @map("media_ids") @db.Uuid
+  vendorReply      String?          @map("vendor_reply")
+  vendorRepliedAt  DateTime?        @map("vendor_replied_at") @db.Timestamptz(3)
+  moderationStatus ModerationStatus @default(pending) @map("moderation_status")
+  createdAt        DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt        DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt        DateTime?        @map("deleted_at") @db.Timestamptz(3)
+
+  user  User   @relation(fields: [userId], references: [id])
+  order Order? @relation(fields: [orderId], references: [id])
+
+  @@index([targetType, targetId, createdAt(sort: Desc)])
+  @@map("reviews")
+}
+
+model Reel {
+  id               String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId           String           @map("user_id") @db.Uuid
+  videoMediaId     String           @map("video_media_id") @db.Uuid
+  thumbnailMediaId String?          @map("thumbnail_media_id") @db.Uuid
+  caption          String?
+  hashtags         String[]         @default([])
+  cityId           String?          @map("city_id") @db.Uuid
+  templeId         String?          @map("temple_id") @db.Uuid
+  durationMs       Int?             @map("duration_ms")
+  status           ReelStatus       @default(processing)
+  moderationStatus ModerationStatus @default(pending) @map("moderation_status")
+  likeCount        Int              @default(0) @map("like_count")
+  commentCount     Int              @default(0) @map("comment_count")
+  saveCount        Int              @default(0) @map("save_count")
+  viewCount        Int              @default(0) @map("view_count")
+  score            Float            @default(0)
+  createdAt        DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt        DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt        DateTime?        @map("deleted_at") @db.Timestamptz(3)
+
+  user      User          @relation(fields: [userId], references: [id])
+  video     MediaAsset    @relation("ReelVideo", fields: [videoMediaId], references: [id])
+  thumbnail MediaAsset?   @relation("ReelThumbnail", fields: [thumbnailMediaId], references: [id])
+  city      City?         @relation(fields: [cityId], references: [id])
+  temple    Temple?       @relation(fields: [templeId], references: [id])
+  likes     ReelLike[]
+  comments  ReelComment[]
+  saves     ReelSave[]
+
+  @@index([status, score(sort: Desc)])
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([hashtags], type: Gin)
+  @@map("reels")
+}
+
+model ReelLike {
+  reelId    String   @map("reel_id") @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  reel Reel @relation(fields: [reelId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([reelId, userId])
+  @@map("reel_likes")
+}
+
+model ReelComment {
+  id               String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  reelId           String           @map("reel_id") @db.Uuid
+  userId           String           @map("user_id") @db.Uuid
+  parentId         String?          @map("parent_id") @db.Uuid
+  body             String
+  moderationStatus ModerationStatus @default(pending) @map("moderation_status")
+  createdAt        DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt        DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt        DateTime?        @map("deleted_at") @db.Timestamptz(3)
+
+  reel    Reel          @relation(fields: [reelId], references: [id], onDelete: Cascade)
+  user    User          @relation(fields: [userId], references: [id])
+  parent  ReelComment?  @relation("CommentThread", fields: [parentId], references: [id])
+  replies ReelComment[] @relation("CommentThread")
+
+  @@index([reelId, createdAt])
+  @@map("reel_comments")
+}
+
+model ReelSave {
+  reelId    String   @map("reel_id") @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  reel Reel @relation(fields: [reelId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([reelId, userId])
+  @@map("reel_saves")
+}
+
+model Follow {
+  followerId String   @map("follower_id") @db.Uuid
+  followeeId String   @map("followee_id") @db.Uuid
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  follower User @relation("Follower", fields: [followerId], references: [id], onDelete: Cascade)
+  followee User @relation("Followee", fields: [followeeId], references: [id], onDelete: Cascade)
+
+  @@id([followerId, followeeId])
+  @@index([followeeId])
+  @@map("follows")
+}
+
+/// reporter_id NULL = automatic flag raised by the AI moderation job.
+model Report {
+  id         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  reporterId String?      @map("reporter_id") @db.Uuid
+  targetType ReportTarget @map("target_type")
+  targetId   String       @map("target_id") @db.Uuid
+  reasonCode String       @map("reason_code")
+  details    String?
+  aiScores   Json?        @map("ai_scores")
+  status     ReportStatus @default(open)
+  createdAt  DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt  DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  reporter User?              @relation(fields: [reporterId], references: [id])
+  actions  ModerationAction[]
+
+  @@index([status, createdAt])
+  @@index([targetType, targetId])
+  @@map("reports")
+}
+
+model ModerationAction {
+  id         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  reportId   String?      @map("report_id") @db.Uuid
+  targetType ReportTarget @map("target_type")
+  targetId   String       @map("target_id") @db.Uuid
+  action     ModAction
+  actorId    String?      @map("actor_id") @db.Uuid
+  note       String?
+  createdAt  DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  report Report? @relation(fields: [reportId], references: [id])
+  actor  User?   @relation(fields: [actorId], references: [id])
+
+  @@index([targetType, targetId])
+  @@map("moderation_actions")
+}
+
+// ───────────────────────────── AI ─────────────────────────────
+
+model KnowledgeDocument {
+  id           String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title        String
+  sourceType   KnowledgeSource @map("source_type")
+  sourceRef    String?         @map("source_ref")
+  mediaId      String?         @map("media_id") @db.Uuid
+  lang         String          @default("en")
+  cityId       String?         @map("city_id") @db.Uuid
+  templeId     String?         @map("temple_id") @db.Uuid
+  status       KdocStatus      @default(draft)
+  contentHash  String?         @map("content_hash")
+  uploadedById String?         @map("uploaded_by") @db.Uuid
+  approvedById String?         @map("approved_by") @db.Uuid
+  indexedAt    DateTime?       @map("indexed_at") @db.Timestamptz(3)
+  createdAt    DateTime        @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt    DateTime        @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  media      MediaAsset?      @relation(fields: [mediaId], references: [id])
+  city       City?            @relation(fields: [cityId], references: [id])
+  temple     Temple?          @relation(fields: [templeId], references: [id])
+  uploadedBy User?            @relation("KdocUploader", fields: [uploadedById], references: [id])
+  approvedBy User?            @relation("KdocApprover", fields: [approvedById], references: [id])
+  chunks     KnowledgeChunk[]
+
+  @@index([status])
+  @@map("knowledge_documents")
+}
+
+/// embedding has an HNSW (vector_cosine_ops) index created in raw SQL (rx_knowledge_chunks_embedding_hnsw).
+model KnowledgeChunk {
+  id             String                       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  documentId     String                       @map("document_id") @db.Uuid
+  chunkIndex     Int                          @map("chunk_index")
+  content        String
+  tokenCount     Int                          @map("token_count")
+  embedding      Unsupported("vector(1536)")?
+  embeddingModel String?                      @map("embedding_model")
+  cityId         String?                      @map("city_id") @db.Uuid
+  templeId       String?                      @map("temple_id") @db.Uuid
+  lang           String                       @default("en")
+  metadata       Json                         @default("{}")
+  createdAt      DateTime                     @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  document KnowledgeDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@unique([documentId, chunkIndex])
+  @@index([cityId])
+  @@index([templeId])
+  @@map("knowledge_chunks")
+}
+
+model ChatSession {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId        String    @map("user_id") @db.Uuid
+  title         String?
+  lang          String    @default("en")
+  cityId        String?   @map("city_id") @db.Uuid
+  memorySummary String?   @map("memory_summary")
+  lastMessageAt DateTime? @map("last_message_at") @db.Timestamptz(3)
+  createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt     DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  user     User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  city     City?         @relation(fields: [cityId], references: [id])
+  messages ChatMessage[]
+
+  @@index([userId, lastMessageAt(sort: Desc)])
+  @@map("chat_sessions")
+}
+
+model ChatMessage {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  sessionId    String   @map("session_id") @db.Uuid
+  role         ChatRole
+  content      String
+  citations    Json?
+  toolCalls    Json?    @map("tool_calls")
+  model        String?
+  inputTokens  Int?     @map("input_tokens")
+  outputTokens Int?     @map("output_tokens")
+  latencyMs    Int?     @map("latency_ms")
+  flagged      Boolean  @default(false)
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  session ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId, createdAt])
+  @@map("chat_messages")
+}
+
+model Itinerary {
+  id           String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId       String          @map("user_id") @db.Uuid
+  title        String
+  startDate    DateTime        @map("start_date") @db.Date
+  days         Int             @db.SmallInt
+  budgetPaise  Int?            @map("budget_paise")
+  partySize    Int             @default(1) @map("party_size") @db.SmallInt
+  preferences  Json            @default("{}")
+  shareToken   String?         @unique @map("share_token")
+  status       ItineraryStatus @default(draft)
+  model        String?
+  rawLlmOutput Json?           @map("raw_llm_output")
+  createdAt    DateTime        @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt    DateTime        @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt    DateTime?       @map("deleted_at") @db.Timestamptz(3)
+
+  user    User           @relation(fields: [userId], references: [id])
+  dayList ItineraryDay[]
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@map("itineraries")
+}
+
+model ItineraryDay {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  itineraryId String   @map("itinerary_id") @db.Uuid
+  dayIndex    Int      @map("day_index") @db.SmallInt
+  date        DateTime @db.Date
+  cityId      String?  @map("city_id") @db.Uuid
+  notesI18n   Json?    @map("notes_i18n")
+
+  itinerary Itinerary       @relation(fields: [itineraryId], references: [id], onDelete: Cascade)
+  city      City?           @relation(fields: [cityId], references: [id])
+  items     ItineraryItem[]
+
+  @@unique([itineraryId, dayIndex])
+  @@map("itinerary_days")
+}
+
+model ItineraryItem {
+  id                String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  dayId             String       @map("day_id") @db.Uuid
+  seq               Int          @db.SmallInt
+  kind              ItinItemKind
+  templeId          String?      @map("temple_id") @db.Uuid
+  aartiScheduleId   String?      @map("aarti_schedule_id") @db.Uuid
+  poiId             String?      @map("poi_id") @db.Uuid
+  exploreItemId     String?      @map("explore_item_id") @db.Uuid
+  title             String
+  startsAt          DateTime?    @map("starts_at") @db.Timestamptz(3)
+  endsAt            DateTime?    @map("ends_at") @db.Timestamptz(3)
+  travelDistanceM   Int?         @map("travel_distance_m")
+  travelDurationMin Int?         @map("travel_duration_min")
+  estCostPaise      Int?         @map("est_cost_paise")
+  note              String?
+
+  day           ItineraryDay   @relation(fields: [dayId], references: [id], onDelete: Cascade)
+  temple        Temple?        @relation(fields: [templeId], references: [id])
+  aartiSchedule AartiSchedule? @relation(fields: [aartiScheduleId], references: [id])
+  poi           Poi?           @relation(fields: [poiId], references: [id])
+  exploreItem   ExploreItem?   @relation(fields: [exploreItemId], references: [id])
+
+  @@unique([dayId, seq])
+  @@map("itinerary_items")
+}
+
+model AiUsage {
+  userId       String   @map("user_id") @db.Uuid
+  date         DateTime @db.Date
+  requests     Int      @default(0)
+  inputTokens  Int      @default(0) @map("input_tokens")
+  outputTokens Int      @default(0) @map("output_tokens")
+  costMicros   BigInt   @default(0) @map("cost_micros")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, date])
+  @@map("ai_usage")
+}
+
+// ───────────────────────────── Ops ─────────────────────────────
+
+model NotificationTemplate {
+  id                   String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  key                  String
+  channel              NotifChannel
+  titleI18n            Json?        @map("title_i18n")
+  bodyI18n             Json         @map("body_i18n")
+  dltTemplateId        String?      @map("dlt_template_id")
+  whatsappTemplateName String?      @map("whatsapp_template_name")
+  variables            String[]     @default([])
+  isActive             Boolean      @default(true) @map("is_active")
+  createdAt            DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt            DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  notifications Notification[]
+
+  @@unique([key, channel])
+  @@map("notification_templates")
+}
+
+model Notification {
+  id                String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId            String?      @map("user_id") @db.Uuid
+  templateId        String?      @map("template_id") @db.Uuid
+  channel           NotifChannel
+  recipient         String?
+  title             String?
+  body              String
+  data              Json         @default("{}")
+  status            NotifStatus  @default(queued)
+  providerMessageId String?      @map("provider_message_id")
+  error             String?
+  scheduledFor      DateTime?    @map("scheduled_for") @db.Timestamptz(3)
+  sentAt            DateTime?    @map("sent_at") @db.Timestamptz(3)
+  readAt            DateTime?    @map("read_at") @db.Timestamptz(3)
+  createdAt         DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  user     User?                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  template NotificationTemplate? @relation(fields: [templateId], references: [id])
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([status, scheduledFor])
+  @@map("notifications")
+}
+
+model SosEvent {
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId         String    @map("user_id") @db.Uuid
+  status         SosStatus @default(triggered)
+  lat            Float
+  lng            Float
+  accuracyM      Int?      @map("accuracy_m")
+  locationTrail  Json      @default("[]") @map("location_trail")
+  batteryPct     Int?      @map("battery_pct") @db.SmallInt
+  shareToken     String    @unique @map("share_token")
+  shareExpiresAt DateTime  @map("share_expires_at") @db.Timestamptz(3)
+  dispatchResult Json      @default("{}") @map("dispatch_result")
+  dispatchedAt   DateTime? @map("dispatched_at") @db.Timestamptz(3)
+  resolvedAt     DateTime? @map("resolved_at") @db.Timestamptz(3)
+  handledById    String?   @map("handled_by") @db.Uuid
+  idempotencyKey String    @map("idempotency_key")
+  createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt      DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  user      User  @relation("SosUser", fields: [userId], references: [id])
+  handledBy User? @relation("SosHandler", fields: [handledById], references: [id])
+
+  @@unique([userId, idempotencyKey])
+  @@index([status, createdAt])
+  @@map("sos_events")
+}
+
+/// Append-only. The production app role has no UPDATE/DELETE grant on this table.
+model AuditLog {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  actorId    String?  @map("actor_id") @db.Uuid
+  actorRole  String?  @map("actor_role")
+  action     String
+  entityType String   @map("entity_type")
+  entityId   String?  @map("entity_id") @db.Uuid
+  before     Json?
+  after      Json?
+  ip         String?
+  requestId  String?  @map("request_id")
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  actor User? @relation(fields: [actorId], references: [id])
+
+  @@index([entityType, entityId])
+  @@index([actorId, createdAt(sort: Desc)])
+  @@index([createdAt(sort: Desc)])
+  @@map("audit_logs")
+}
+
+model AppConfig {
+  id          String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  key         String     @unique
+  value       Json
+  kind        ConfigKind
+  targeting   Json       @default("{}")
+  isActive    Boolean    @default(true) @map("is_active")
+  startsAt    DateTime?  @map("starts_at") @db.Timestamptz(3)
+  endsAt      DateTime?  @map("ends_at") @db.Timestamptz(3)
+  updatedById String?    @map("updated_by") @db.Uuid
+  createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime   @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  updatedBy User? @relation(fields: [updatedById], references: [id])
+
+  @@map("app_config")
+}
