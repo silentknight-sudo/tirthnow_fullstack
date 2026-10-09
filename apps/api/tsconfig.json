@@ -1,0 +1,10 @@
+{
+  "extends": "@tirth-now/config/tsconfig/nest.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "dist",
+    "baseUrl": ".",
+    "types": ["node", "jest"]
+  },
+  "include": ["src", "test", "prisma", "scripts", "prisma.config.ts", "jest.config.ts"]
+}
