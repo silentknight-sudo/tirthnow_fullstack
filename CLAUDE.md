@@ -7,8 +7,8 @@ structural changes. Keep this file updated as phases land.
 
 | Phase | Scope | Status |
 |---|---|---|
-| 0 | Architecture docs, ERD, ADRs, repo tree | Done — awaiting approval |
-| 1 | Foundation: monorepo wiring, docker-compose, NestJS skeleton, Prisma schema + seed, auth, CI | Not started |
+| 0 | Architecture docs, ERD, ADRs, repo tree | Done |
+| 1 | Foundation: monorepo wiring, docker-compose, NestJS skeleton, Prisma schema + seed, auth, CI | Done |
 | 2 | Backend modules | Not started |
 | 3 | Mobile app (Flutter) | Not started |
 | 4 | Vendor portal | Not started |
@@ -38,17 +38,27 @@ reels · ai · safety · notifications · weather · transit · realtime · admi
 plus `core/` (config, prisma, logging, http, auth, idempotency, queue, cache,
 providers). Ownership table: `docs/ARCHITECTURE.md` §2.
 
-## Commands (available from Phase 1)
+## Commands
 
 ```
-pnpm install
-pnpm dev:infra          # docker compose up -d (Postgres, Redis, MinIO, Mailpit)
-pnpm db:migrate         # prisma migrate dev
-pnpm db:seed
-pnpm dev                # turbo: api + portals
+cp .env.example .env
+pnpm install                 # also runs prisma generate
+pnpm setup                   # infra up + migrate + seed (first time)
+pnpm dev                     # turbo: api (+ portals later)
 pnpm lint | pnpm typecheck | pnpm test | pnpm build
-cd apps/mobile && flutter run
+pnpm test:e2e                # API e2e against DATABASE_URL_TEST + Redis db 15
+pnpm format                  # prettier
+
+pnpm db:migrate:new <name>   # create + apply a migration (strips rx_ drops, ADR-0008)
+pnpm --filter @tirth-now/api db:check   # CI: migrations in sync with schema.prisma
+pnpm --filter @tirth-now/api db:deploy  # apply migrations
+pnpm db:seed                 # idempotent local seed
+pnpm --filter @tirth-now/api start:worker   # worker process (after build)
+cd apps/mobile && flutter run               # Phase 3
 ```
+
+Do not use plain `prisma migrate dev` to create migrations (it will offer to drop `rx_` indexes).
+`prisma migrate reset` is guarded against AI agents; reset a scratch DB with `dropdb`/`createdb` + `db:deploy`.
 
 ## Hard rules
 
@@ -64,6 +74,17 @@ cd apps/mobile && flutter run
 - **AI never invents aarti times** — they come from the DB via tool calls.
 - New decision not covered by docs → simplest robust option + new ADR in `docs/adr/` (copy `0000-template.md`).
 
+## How the API is put together (Phase 1)
+
+- Entry points: `src/main.ts` (HTTP) and `src/worker.ts` (worker). Both call `loadDotEnv()` (root `.env`) then `loadConfig()` (Zod, `src/core/config/env.schema.ts`). New env var → schema + `AppConfig` + `.env.example`.
+- `configureApp()` in `src/app.setup.ts` applies helmet, CORS, `/v1` prefix (except `/healthz`, `/readyz`), validation pipe, error filter and Swagger — reuse it in e2e tests via `test/helpers.ts#createTestApp`.
+- Global guard order: `ThrottlerGuard` → `JwtAuthGuard` → `RolesGuard`. Every route needs a token unless marked `@Public()`. Use `@Roles(...)`, `@NoGuests()`, `@CurrentUser()` from `src/core/auth`. `super_admin` implies `admin`; `vendor_owner` implies `vendor_staff`.
+- Auth routes use `@AuthThrottle()` (stricter `THROTTLE_AUTH_PER_MIN` bucket).
+- Throw `AppException` (codes from `@tirth-now/shared-types`) for client-facing errors; anything else becomes a 500 `INTERNAL`.
+- Providers: interface + DI token + `mock.adapter.ts` + real adapter + module choosing by config, wrapped in `callWithPolicy()` (timeout/retry). Register in `src/core/providers/providers.module.ts`. Lint blocks vendor SDK imports outside `src/core/providers`.
+- Lint rule `tn/module-boundaries` blocks deep imports across `src/modules/*` and any `core → modules` import.
+- Seed data uses deterministic UUIDs (`sid('kind:key')`) so re-running updates in place.
+
 ## Naming
 
 - DB: snake_case plural tables, snake_case columns; Prisma models PascalCase singular with `@@map`.
@@ -75,7 +96,7 @@ cd apps/mobile && flutter run
 
 ## Testing
 
-- API: Jest unit tests next to code (`__tests__`), e2e with Supertest against `DATABASE_URL_TEST` (migrated + truncated per suite). All providers mocked.
+- API: Jest unit tests in `__tests__/*.spec.ts` next to code; e2e (`test/*.e2e-spec.ts`) with Supertest against `DATABASE_URL_TEST`, migrated once in global setup and truncated (except `roles`) via `resetState()`. Redis uses DB 15. All providers mocked; read sent emails from `MockEmailAdapter.outbox`.
 - Portals: Playwright against API with mocks.
 - Mobile: flutter_test + integration_test.
 

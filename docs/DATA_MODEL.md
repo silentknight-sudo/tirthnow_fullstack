@@ -12,7 +12,7 @@ check constraints).
 |---|---|
 | Primary keys | `id uuid DEFAULT gen_random_uuid()` |
 | Timestamps | `created_at timestamptz NOT NULL DEFAULT now()`, `updated_at timestamptz NOT NULL` (Prisma `@updatedAt`). All UTC. Display in `Asia/Kolkata`. |
-| Soft delete | `deleted_at timestamptz NULL` on user-facing/catalog/vendor tables (marked **SD** below). Prisma client extension filters `deleted_at IS NULL` by default. Unique indexes are partial (`WHERE deleted_at IS NULL`). |
+| Soft delete | `deleted_at timestamptz NULL` on user-facing/catalog/vendor tables (marked **SD** below). Queries filter `deleted_at IS NULL` (a Prisma client extension arrives with the first module that soft-deletes). Slugs and other natural keys stay unique across soft-deleted rows (a deleted temple's slug stays reserved); partial unique indexes are added only where reuse is required (ADR-0008). |
 | Money | `integer` paise, column suffix `_paise` (max ≈ ₹2.1 crore per row). Ledger and aggregates use `bigint`. Currency is always INR; a `currency char(3) DEFAULT 'INR'` column exists on payments for future-proofing. |
 | Enums | Postgres enums via Prisma for closed sets (status, type). Open sets (POI category, amenity) are text + check or lookup table. |
 | i18n | Translatable CMS text in `*_i18n jsonb` shaped `{"en": "...", "hi": "..."}`; `en` required. |
@@ -20,6 +20,7 @@ check constraints).
 | Naming | snake_case tables (plural) and columns; Prisma models PascalCase singular with `@@map`. |
 | FKs | `ON DELETE RESTRICT` by default; `CASCADE` only for pure child rows (e.g. `order_items`, `reel_likes`). |
 | Audit | Every admin/vendor write produces an `audit_logs` row (via interceptor). |
+| Raw SQL | CHECK constraints, triggers, and `rx_`-prefixed indexes Prisma cannot model live at the end of the migration that introduces them (ADR-0008). |
 
 ---
 
@@ -822,6 +823,18 @@ request_hash, response_status, response_body, expires_at — unique on
 output_tokens, cost_micros — PK `(user_id, date)`).
 
 ---
+
+## Implementation notes (Phase 1 schema)
+
+Differences from the diagrams above, which stay at the conceptual level:
+
+- `users.mfa_enabled` turns on the portal OTP step.
+- `user_roles` has its own `id` primary key with a unique `(user_id, role_id, vendor_id)` index plus `rx_user_roles_global_unique` on `(user_id, role_id) WHERE vendor_id IS NULL`. The five `roles` rows are inserted by the init migration.
+- Extra columns: `pois.address`, `vehicles.model`, `hotels`/`restaurants`/`experiences.is_published`, `notifications.recipient`, `notifications.user_id` nullable (contacts who are not app users), `sos_events.idempotency_key` unique per user.
+- `aarti_schedules.local_time` and hotel check-in/out are Postgres `time(0)` wall-clock values.
+- CHECK constraints: room inventory `0 <= available <= total`, experience slots `0 <= booked <= capacity`, non-negative money everywhere, positive payment/refund amounts, `percent_bps` 0–10000, review rating 1–5, temple `crowd_level` 0–4, ledger rows have exactly one non-zero side.
+- Triggers: `ledger_entries_balanced` (deferred constraint trigger: each `txn_id` nets to zero at commit) and `*_append_only` on `ledger_entries`, `audit_logs`, `order_status_history` (UPDATE/DELETE rejected).
+- Raw indexes: HNSW cosine on `knowledge_chunks.embedding`, trigram GIN on temple names (en/hi), partial `orders(hold_expires_at) WHERE status='pending'`.
 
 ## Table notes
 

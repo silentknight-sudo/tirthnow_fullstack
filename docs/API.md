@@ -8,23 +8,28 @@ guest), `user` (non-guest), `vendor` (`vendor_owner|vendor_staff` scoped to the
 vendor), `owner` (`vendor_owner` only), `admin` (`admin|super_admin`), `super`
 (`super_admin`). **Idem** = requires `Idempotency-Key` header.
 
+Auth endpoints share a stricter rate-limit bucket (`THROTTLE_AUTH_PER_MIN`,
+default 10/min per IP) on top of the default bucket (`THROTTLE_DEFAULT_PER_MIN`).
+
 Pagination: cursor-based, `?cursor=&limit=` (max 50) → `{ data, nextCursor }`.
 Errors: `{ error: { code, message, details?, requestId } }`.
 
 ---
 
+Implemented so far (Phase 1) are marked ✅.
+
 ## identity
 
 | Method | Path | Auth | Notes |
 |---|---|---|---|
-| POST | `/auth/firebase` | public | Exchange Firebase ID token → access + refresh. Body includes device info. |
-| POST | `/auth/portal/login` | public | Email + password. Returns tokens or `{ otpRequired, challengeId }`. |
-| POST | `/auth/portal/otp/verify` | public | Second factor for portals. |
-| POST | `/auth/portal/password/forgot` | public | Sends reset email (Mailpit locally). |
-| POST | `/auth/portal/password/reset` | public | |
-| POST | `/auth/refresh` | public | Rotating refresh; reuse → family revoked. |
-| POST | `/auth/logout` | any | Revokes current refresh token (or all with `?all=true`). |
-| GET | `/me` | any | User + profile + roles. |
+| POST | `/auth/firebase` ✅ | public | Exchange Firebase ID token → access + refresh + `deviceId`. Optional `device { deviceId?, platform, fcmToken?, appVersion?, locale? }`. Links an existing account by verified phone/email; upgrades guests in place. |
+| POST | `/auth/portal/login` ✅ | public | Email + password. Returns tokens, or `{ otpRequired, challengeId, channel, expiresAt }` when the user has MFA on. |
+| POST | `/auth/portal/otp/verify` ✅ | public | 6-digit code (email in Phase 1, SMS from Phase 2). Single use, locks after 5 wrong codes, expires in 5 min. |
+| POST | `/auth/portal/password/forgot` ✅ | public | Always 202. Emails a 30-minute link to the vendor or admin portal. |
+| POST | `/auth/portal/password/reset` ✅ | public | Single-use token; revokes every session. 204. |
+| POST | `/auth/refresh` ✅ | public | Rotating refresh; reuse of an old token revokes the whole session family (`AUTH_REFRESH_REUSED`). Clients must serialise refresh calls. |
+| POST | `/auth/logout` ✅ | any | Revokes the current session; body `{ allSessions: true }` revokes all. 204. |
+| GET | `/me` ✅ | any | User + roles + vendor ids. |
 | PATCH | `/me/profile` | any | Name, language, accessibility, home city. |
 | DELETE | `/me` | user | Account deletion request (store compliance). |
 | POST | `/me/devices` | any | Register/refresh FCM token. |
@@ -240,5 +245,11 @@ Errors: `{ error: { code, message, details?, requestId } }`.
 
 | Method | Path | Auth |
 |---|---|---|
-| GET | `/healthz` | public — liveness |
-| GET | `/readyz` | public — Postgres + Redis checks |
+| GET | `/healthz` ✅ | public — liveness |
+| GET | `/readyz` ✅ | public — Postgres + Redis checks (503 `SERVICE_UNAVAILABLE` with per-dependency status) |
+
+## dev (non-production only)
+
+| Method | Path | Auth | Notes |
+|---|---|---|---|
+| GET | `/dev/outbox` ✅ | public | Messages captured by mock providers. Not registered when `NODE_ENV=production`. |

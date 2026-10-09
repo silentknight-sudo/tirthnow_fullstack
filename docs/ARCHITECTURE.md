@@ -154,7 +154,7 @@ flowchart TB
 
 ### Boundary rules
 
-1. A module exposes a **public service facade** (`<module>.facade.ts` exporting a `@Injectable` class) and its DTO/event types from `index.ts`. Other modules import **only** from that `index.ts`. Enforced by an ESLint `no-restricted-imports` rule (`@/modules/*/!(index)`).
+1. A module exposes a **public service facade** (`<module>.facade.ts` exporting a `@Injectable` class) and its DTO/event types from `index.ts`. Other modules import **only** from that `index.ts`. Enforced by the custom ESLint rule `tn/module-boundaries` (`packages/config/eslint/module-boundaries.mjs`), which also forbids `core/` importing `modules/`.
 2. A module owns its tables. Only that module's repository code queries them. Cross-module reads go through the facade; cross-module writes go through the facade or a domain event.
 3. **Domain events** (in-process, `@nestjs/event-emitter`) for fire-and-forget reactions — e.g. `order.confirmed` → notifications, realtime, ledger. Anything that must survive a crash is pushed onto a BullMQ queue by the listener.
 4. `payments` ↔ `orders` is the one intentional bidirectional relationship: orders calls `PaymentsFacade.createIntent()`; payments emits `payment.captured` / `refund.processed` events that orders consumes. No direct circular imports.

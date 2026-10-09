@@ -15,18 +15,26 @@ breaker per provider, and structured logging with the request id. Retries are
 idempotency key (Razorpay does; we always send one).
 
 `NODE_ENV=production` refuses to boot with any `*_PROVIDER=mock` except those
-explicitly allowed by `ALLOW_MOCK_PROVIDERS` (e.g. `whatsapp,transit` until
-approved).
+explicitly allowed by `ALLOW_MOCK_PROVIDERS`, a comma list of capability names
+(`firebase_auth`, `email`, later `whatsapp`, `transit`, …). The check lives in
+`apps/api/src/core/config/env.schema.ts`.
+
+The shared call policy is `callWithPolicy()` in
+`apps/api/src/core/providers/call-policy.ts` (timeout, exponential backoff with
+full jitter, retry only on network errors / 429 / 5xx). A circuit breaker is
+added with the first high-volume adapters in Phase 2.
+
+✅ = implemented (Phase 1). Others are implemented with their modules in Phase 2.
 
 ---
 
 | Interface | Selector env | Real adapter(s) | Env vars (real) | Mock behaviour |
 |---|---|---|---|---|
-| `FirebaseAuthProvider` | `FIREBASE_AUTH_PROVIDER=mock\|firebase` | firebase-admin `verifyIdToken` | `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY` | Accepts tokens shaped `mock:<uid>[:<phone>][:<email>]`; `mock:guest:<uid>` = anonymous. |
+| `FirebaseAuthProvider` ✅ | `FIREBASE_AUTH_PROVIDER=mock\|firebase` | firebase-admin `verifyIdToken(token, checkRevoked)` | `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY` | Accepts `mock:<uid>`, `mock:<uid>:<+E164>`, `mock:<uid>:<email>` (email treated as verified), `mock:<uid>:<+E164>:<email>`; `mock:guest:<uid>` = anonymous. Anything else → `AUTH_INVALID_FIREBASE_TOKEN`. |
 | `PushProvider` | `PUSH_PROVIDER=mock\|fcm` | FCM HTTP v1 via firebase-admin | (same Firebase vars) | Logs payload, stores in an in-memory outbox exposed at `GET /dev/outbox` (non-prod only). |
 | `SmsProvider` | `SMS_PROVIDER=mock\|msg91` | MSG91 Flow API (DLT templates) | `MSG91_AUTH_KEY`, `MSG91_SENDER_ID`, `MSG91_DLT_ENTITY_ID` | Logs + dev outbox; phone `+910000000000` simulates failure. |
 | `WhatsAppProvider` | `WHATSAPP_PROVIDER=mock\|meta` | WhatsApp Business Cloud API (template messages) | `WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_ACCESS_TOKEN`, `WHATSAPP_BUSINESS_ACCOUNT_ID` | Dev outbox. Stays the default until Meta approval. |
-| `EmailProvider` | `EMAIL_PROVIDER=smtp` | SMTP (Mailpit locally, SES/Postmark later) | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `EMAIL_FROM` | Mailpit UI at http://localhost:8025. |
+| `EmailProvider` ✅ | `EMAIL_PROVIDER=mock\|smtp` | SMTP via nodemailer (Mailpit locally, SES/Postmark later) | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `EMAIL_FROM` | `mock` keeps the last 200 messages in memory, visible at `GET /v1/dev/outbox` (non-production). With `smtp` locally, read mail in Mailpit at http://localhost:8025. |
 | `PaymentProvider` | `PAYMENT_PROVIDER=mock\|razorpay` | Razorpay Orders, Payments, Refunds, Route (linked accounts, transfers), webhook signature | `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`, `RAZORPAY_WEBHOOK_SECRET`, `RAZORPAY_ACCOUNT_ID` | Creates `order_mock_*` ids; signatures are HMAC with `MOCK_PAYMENT_SECRET`; `POST /v1/payments/webhooks/mock` simulates `payment.captured`, `payment.failed`, `refund.processed`, `transfer.processed`. Amount ending in `13` paise fails. |
 | `StorageProvider` | `STORAGE_PROVIDER=s3` | S3-compatible (Cloudflare R2 in prod, MinIO locally) | `S3_ENDPOINT`, `S3_REGION`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, `S3_BUCKET_PUBLIC`, `S3_BUCKET_PRIVATE`, `MEDIA_PUBLIC_BASE_URL` | MinIO in docker-compose — same adapter, no mock needed. |
 | `VideoProvider` | `VIDEO_PROVIDER=mock\|cloudflare_stream\|mux` | Cloudflare Stream / Mux (HLS) | `CF_STREAM_ACCOUNT_ID`, `CF_STREAM_API_TOKEN`, `CF_STREAM_WEBHOOK_SECRET` / `MUX_TOKEN_ID`, `MUX_TOKEN_SECRET`, `MUX_WEBHOOK_SECRET` | Marks video ready after 2 s; HLS URL points at a sample `.m3u8` in MinIO (or progressive MP4 fallback). |

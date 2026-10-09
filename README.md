@@ -10,19 +10,34 @@ Vrindavan, Goverdhan, Barsana, Gokul and Nandgaon.
 | Vendor portal | `apps/vendor-portal` | Next.js 14 |
 | Admin portal | `apps/admin-portal` | Next.js 14 |
 
-> **Status: Phase 0 (architecture).** Code lands from Phase 1. The setup steps
-> below describe the target workflow.
+> **Status: Phase 1 (foundation) complete** — monorepo, local infra, API
+> skeleton, full database schema + seed, authentication and CI. Feature modules
+> arrive in Phase 2.
 
-## Local setup (target, from Phase 1)
+## Local setup
 
-Prerequisites: Node 20, pnpm 9+, Docker, Flutter 3 (for mobile).
+Prerequisites: Node 20+ (22 LTS recommended), pnpm 10 (`corepack enable`), Docker, Flutter 3 (Phase 3).
 
 ```bash
 cp .env.example .env
 pnpm install
-pnpm setup        # docker compose up + prisma migrate + seed
-pnpm dev          # API :4000 (Swagger /docs), vendor portal :3001, admin portal :3002
+pnpm setup        # docker compose up + migrations + seed
+pnpm dev          # API on :4000 — Swagger at http://localhost:4000/docs
 ```
+
+Seeded logins (local only):
+
+| Who | How |
+|---|---|
+| Admin | `admin@tirthnow.local` / `TirthNow@Admin123` → `POST /v1/auth/portal/login` |
+| Hotel vendor | `hotel.owner@tirthnow.local` / `TirthNow@Vendor123` |
+| Cab + food vendor | `cabs.owner@tirthnow.local` / `TirthNow@Vendor123` |
+| Mobile demo user | `POST /v1/auth/firebase` with `{"idToken":"mock:demo-user:+919999900001"}` |
+| Any new mobile user | `mock:<uid>:<+91…>` (phone), `mock:<uid>:<email>`, or `mock:guest:<uid>` |
+
+Common commands: `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm test:e2e`,
+`pnpm build`, `pnpm db:migrate:new <name>`. See [CLAUDE.md](CLAUDE.md) for the
+full list and conventions.
 
 Everything runs locally with **mock providers** — no Razorpay, Firebase, Google,
 MSG91 or LLM accounts needed. Local services:

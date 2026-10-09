@@ -22,3 +22,5 @@ Lead times matter: start the slow ones (★) early.
 | 15 | Production hosting target (API, worker, Postgres 16 with pgvector, Redis) | Deploy | Deploy workflow secrets | Choose in Phase 6. |
 | 16 | Transactional email provider (SES / Postmark) + domain DNS (SPF, DKIM) | Portal emails | `SMTP_*` | |
 | 17 | Legal: privacy policy, terms, refund/cancellation policy, Data Protection (DPDP Act 2023) notices | Store listings, payments | URLs in `app_config` | |
+| 18 | **Verify seeded content**: temple list, coordinates and every aarti time (`apps/api/prisma/seed/catalog-data.ts`) with each temple or a local content team | Catalog, AI guide (quotes aarti times from the DB) | — | Seed times are realistic samples, not verified timings. |
+| 19 | **Decide Node.js runtime**: spec says Node 20, which reached end-of-life in April 2026. Recommend Node 22 LTS for CI and production images | Security patches | `.nvmrc`, Dockerfiles | See ADR-0007. |
