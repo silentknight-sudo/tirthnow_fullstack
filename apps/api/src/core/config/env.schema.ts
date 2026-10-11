@@ -91,7 +91,27 @@ export const envSchema = z
     MUX_TOKEN_ID: optionalString,
     MUX_TOKEN_SECRET: optionalString,
     MUX_WEBHOOK_SECRET: optionalString,
-    MODERATION_PROVIDER: z.enum(['mock']).default('mock'),
+    MODERATION_PROVIDER: z.enum(['mock', 'llm']).default('mock'),
+
+    LLM_PROVIDER: z.enum(['mock', 'anthropic']).default('mock'),
+    ANTHROPIC_API_KEY: optionalString,
+    LLM_MODEL_DEFAULT: z.string().default('claude-opus-5-5'),
+    LLM_MODEL_CHEAP: z.string().default('claude-haiku-5-5'),
+    EMBEDDING_PROVIDER: z.enum(['mock', 'openai']).default('mock'),
+    OPENAI_API_KEY: optionalString,
+    EMBEDDING_MODEL: z.string().default('text-embedding-3-small'),
+    EMBEDDING_DIMENSIONS: z.coerce
+      .number()
+      .int()
+      .refine((n) => n === 1536, 'knowledge_chunks.embedding is vector(1536)')
+      .default(1536),
+    STT_PROVIDER: z.enum(['mock', 'google']).default('mock'),
+    TTS_PROVIDER: z.enum(['mock', 'google']).default('mock'),
+    VISION_PROVIDER: z.enum(['mock', 'google']).default('mock'),
+    GOOGLE_CLOUD_API_KEY: optionalString,
+    AI_DAILY_QUOTA_GUEST: z.coerce.number().int().min(0).default(10),
+    AI_DAILY_QUOTA_USER: z.coerce.number().int().min(0).default(50),
+    AI_RESPONSE_CACHE_SECONDS: z.coerce.number().int().min(0).default(86_400),
 
     WEATHER_PROVIDER: z.enum(['mock', 'openweather']).default('mock'),
     OPENWEATHER_API_KEY: optionalString,
@@ -145,6 +165,11 @@ export const envSchema = z
       weather: env.WEATHER_PROVIDER,
       video: env.VIDEO_PROVIDER,
       moderation: env.MODERATION_PROVIDER,
+      llm: env.LLM_PROVIDER,
+      embedding: env.EMBEDDING_PROVIDER,
+      stt: env.STT_PROVIDER,
+      tts: env.TTS_PROVIDER,
+      vision: env.VISION_PROVIDER,
     } as const;
     for (const [capability, provider] of Object.entries(selectors)) {
       if (provider === 'mock' && !env.ALLOW_MOCK_PROVIDERS.includes(capability)) {
@@ -177,6 +202,11 @@ export const envSchema = z
       }
     }
     const requires: [boolean, string, (keyof typeof env)[]][] = [
+      [env.LLM_PROVIDER === 'anthropic', 'LLM_PROVIDER=anthropic', ['ANTHROPIC_API_KEY']],
+      [env.EMBEDDING_PROVIDER === 'openai', 'EMBEDDING_PROVIDER=openai', ['OPENAI_API_KEY']],
+      [env.STT_PROVIDER === 'google', 'STT_PROVIDER=google', ['GOOGLE_CLOUD_API_KEY']],
+      [env.TTS_PROVIDER === 'google', 'TTS_PROVIDER=google', ['GOOGLE_CLOUD_API_KEY']],
+      [env.VISION_PROVIDER === 'google', 'VISION_PROVIDER=google', ['GOOGLE_CLOUD_API_KEY']],
       [env.SMS_PROVIDER === 'msg91', 'SMS_PROVIDER=msg91', ['MSG91_AUTH_KEY', 'MSG91_SENDER_ID']],
       [
         env.WHATSAPP_PROVIDER === 'meta',

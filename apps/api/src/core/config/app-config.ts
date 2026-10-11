@@ -78,6 +78,23 @@ export interface AppConfig {
     muxWebhookSecret: string | undefined;
   };
   moderation: { provider: Env['MODERATION_PROVIDER'] };
+  ai: {
+    llmProvider: Env['LLM_PROVIDER'];
+    anthropicApiKey: string | undefined;
+    modelDefault: string;
+    modelCheap: string;
+    embeddingProvider: Env['EMBEDDING_PROVIDER'];
+    openaiApiKey: string | undefined;
+    embeddingModel: string;
+    embeddingDimensions: number;
+    sttProvider: Env['STT_PROVIDER'];
+    ttsProvider: Env['TTS_PROVIDER'];
+    visionProvider: Env['VISION_PROVIDER'];
+    googleApiKey: string | undefined;
+    quotaGuest: number;
+    quotaUser: number;
+    responseCacheSeconds: number;
+  };
   sos: { maxPer10Min: number; shareHours: number };
   storage: {
     provider: Env['STORAGE_PROVIDER'];
@@ -184,6 +201,23 @@ export function loadConfig(source: NodeJS.ProcessEnv): AppConfig {
       muxWebhookSecret: e.MUX_WEBHOOK_SECRET,
     },
     moderation: { provider: e.MODERATION_PROVIDER },
+    ai: {
+      llmProvider: e.LLM_PROVIDER,
+      anthropicApiKey: e.ANTHROPIC_API_KEY,
+      modelDefault: e.LLM_MODEL_DEFAULT,
+      modelCheap: e.LLM_MODEL_CHEAP,
+      embeddingProvider: e.EMBEDDING_PROVIDER,
+      openaiApiKey: e.OPENAI_API_KEY,
+      embeddingModel: e.EMBEDDING_MODEL,
+      embeddingDimensions: e.EMBEDDING_DIMENSIONS,
+      sttProvider: e.STT_PROVIDER,
+      ttsProvider: e.TTS_PROVIDER,
+      visionProvider: e.VISION_PROVIDER,
+      googleApiKey: e.GOOGLE_CLOUD_API_KEY,
+      quotaGuest: e.AI_DAILY_QUOTA_GUEST,
+      quotaUser: e.AI_DAILY_QUOTA_USER,
+      responseCacheSeconds: e.AI_RESPONSE_CACHE_SECONDS,
+    },
     sos: { maxPer10Min: e.SOS_MAX_PER_10_MIN, shareHours: e.SOS_SHARE_HOURS },
     storage: {
       provider: e.STORAGE_PROVIDER,

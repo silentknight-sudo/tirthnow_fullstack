@@ -20,3 +20,8 @@ export * from './transit/transit.provider';
 export * from './moderation/moderation.provider';
 export * from './video/video.provider';
 export * from './video/mock.adapter';
+export * from './llm/llm.provider';
+export * from './llm/mock.adapter';
+export * from './embedding/embedding.provider';
+export * from './speech/speech.provider';
+export * from './vision/vision.provider';

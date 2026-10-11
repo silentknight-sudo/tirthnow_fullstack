@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { type Lang } from '@tirth-now/shared-types';
 import { type LatLng } from '../../core/geo';
+import { t, tOrNull } from '../../core/i18n';
 import { PrismaService } from '../../core/prisma';
 import {
   type AartiInstanceResponse,
@@ -96,6 +97,33 @@ export class CatalogFacade {
 
   nearestEmergencyPois(center: LatLng, lang: Lang): Promise<PoiResponse[]> {
     return this.catalog.nearestEmergencyPois(center, lang);
+  }
+
+  /** Published temples' long-form text (English) for the AI knowledge base. */
+  async templeTexts(): Promise<
+    {
+      id: string;
+      cityId: string;
+      name: string;
+      description: string | null;
+      history: string | null;
+      dressCode: string | null;
+      address: string | null;
+    }[]
+  > {
+    const rows = await this.prisma.temple.findMany({
+      where: { deletedAt: null, isPublished: true },
+      orderBy: { slug: 'asc' },
+    });
+    return rows.map((r) => ({
+      id: r.id,
+      cityId: r.cityId,
+      name: t(r.nameI18n, 'en'),
+      description: tOrNull(r.descriptionI18n, 'en'),
+      history: tOrNull(r.historyI18n, 'en'),
+      dressCode: tOrNull(r.dressCodeI18n, 'en'),
+      address: r.address,
+    }));
   }
 
   registerSearchSource(source: SearchSource): void {
