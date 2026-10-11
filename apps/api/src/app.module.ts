@@ -9,6 +9,7 @@ import { ThrottleModule } from './core/throttle';
 import { CatalogModule } from './modules/catalog';
 import { FilesModule } from './modules/files';
 import { IdentityModule } from './modules/identity';
+import { InventoryModule } from './modules/inventory';
 import { VendorsModule } from './modules/vendors';
 
 @Module({})
@@ -27,6 +28,7 @@ export class AppModule {
         FilesModule,
         CatalogModule,
         VendorsModule,
+        InventoryModule,
         ...(config.isProduction ? [] : [DevModule]),
       ],
     };
