@@ -15,10 +15,10 @@ export class SafetyFacade {
   }
 
   /** SOS events created since a date, by status (admin KPIs). */
-  async counts(since: Date): Promise<Record<string, number>> {
+  async counts(since: Date, until: Date = new Date()): Promise<Record<string, number>> {
     const rows = await this.prisma.sosEvent.groupBy({
       by: ['status'],
-      where: { createdAt: { gte: since } },
+      where: { createdAt: { gte: since, lt: until } },
       _count: { _all: true },
     });
     return Object.fromEntries(rows.map((r) => [r.status, r._count._all]));

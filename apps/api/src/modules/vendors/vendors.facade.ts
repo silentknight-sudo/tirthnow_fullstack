@@ -76,4 +76,14 @@ export class VendorsFacade {
       data: { razorpayLinkedAccountId: linkedAccountId },
     });
   }
+
+  /** Vendors by status (admin KPIs: approvals waiting). */
+  async statusCounts(): Promise<Record<string, number>> {
+    const rows = await this.prisma.vendor.groupBy({
+      by: ['status'],
+      where: { deletedAt: null },
+      _count: { _all: true },
+    });
+    return Object.fromEntries(rows.map((r) => [r.status, r._count._all]));
+  }
 }

@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../../core/prisma';
 import { type OrderType, type Payment, type Prisma, type Refund } from '@prisma/client';
 import { type OrderRef } from './services/ledger.service';
 import { type PaymentIntent, PaymentsService } from './services/payments.service';
@@ -9,7 +10,10 @@ type Tx = Prisma.TransactionClient;
 /** Public surface of the payments module (used by orders). */
 @Injectable()
 export class PaymentsFacade {
-  constructor(private readonly payments: PaymentsService) {}
+  constructor(
+    private readonly payments: PaymentsService,
+    private readonly prisma: PrismaService,
+  ) {}
 
   createIntent(order: {
     orderId: string;
@@ -71,6 +75,32 @@ export class PaymentsFacade {
       include: { refunds: true },
       orderBy: { createdAt: 'asc' },
     });
+  }
+  /** Net platform revenue, GST collected and refunds paid in a period (from the ledger). */
+  async financeSummary(
+    from: Date,
+    to: Date,
+  ): Promise<{ revenuePaise: number; gstPaise: number; refundsPaise: number }> {
+    const rows = await this.prisma.ledgerEntry.groupBy({
+      by: ['account'],
+      where: {
+        createdAt: { gte: from, lt: to },
+        account: { in: ['platform_revenue', 'gst_payable', 'refunds_payable'] },
+      },
+      _sum: { creditPaise: true, debitPaise: true },
+    });
+    const sums = (account: string) => {
+      const r = rows.find((x) => x.account === account);
+      return { credit: Number(r?._sum.creditPaise ?? 0n), debit: Number(r?._sum.debitPaise ?? 0n) };
+    };
+    const revenue = sums('platform_revenue');
+    const gst = sums('gst_payable');
+    // refunds_payable is debited when the gateway confirms a refund.
+    return {
+      revenuePaise: revenue.credit - revenue.debit,
+      gstPaise: gst.credit - gst.debit,
+      refundsPaise: sums('refunds_payable').debit,
+    };
   }
 }
 

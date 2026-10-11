@@ -6,6 +6,7 @@ import { DevModule } from './core/dev/dev.module';
 import { HealthModule } from './core/health';
 import { IdempotencyModule } from './core/idempotency';
 import { ThrottleModule } from './core/throttle';
+import { AdminModule } from './modules/admin';
 import { AiModule } from './modules/ai';
 import { CatalogModule } from './modules/catalog';
 import { FilesModule } from './modules/files';
@@ -46,6 +47,7 @@ export class AppModule {
         ReviewsModule,
         ReelsModule,
         AiModule,
+        AdminModule,
         RealtimeModule.forRoot(config),
         WeatherModule,
         TransitModule,

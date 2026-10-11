@@ -26,10 +26,11 @@ export class OrdersFacade {
 
   async counts(
     since: Date,
+    until: Date = new Date(),
   ): Promise<{ type: OrderType; status: string; count: number; gmvPaise: number }[]> {
     const rows = await this.prisma.order.groupBy({
       by: ['type', 'status'],
-      where: { createdAt: { gte: since } },
+      where: { createdAt: { gte: since, lt: until } },
       _count: { _all: true },
       _sum: { totalPaise: true },
     });

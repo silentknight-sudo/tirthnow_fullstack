@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { type AuthUser } from '@tirth-now/shared-types';
+import { type AuthUser, type Role } from '@tirth-now/shared-types';
+import { afterCursor, NEWEST_FIRST, type Page, pageSize, toPage } from '../../core/http';
 import { PrismaService } from '../../core/prisma';
 import { FilesFacade } from '../files';
 import { type EmergencyContactResponse } from './dto/me.dto';
@@ -8,6 +9,18 @@ import { DevicesService } from './services/devices.service';
 import { EmergencyContactsService } from './services/emergency-contacts.service';
 import { ProfileService } from './services/profile.service';
 import { UsersService } from './services/users.service';
+
+export interface AdminUserSummary {
+  id: string;
+  displayName: string | null;
+  email: string | null;
+  phoneE164: string | null;
+  status: string;
+  isGuest: boolean;
+  roles: string[];
+  createdAt: string;
+  lastLoginAt: string | null;
+}
 
 export interface PublicProfile {
   id: string;
@@ -187,6 +200,94 @@ export class IdentityFacade {
       });
     }
     return null;
+  }
+
+  /** Admin user search: phone/email/name fragment, role and status filters, newest first. */
+  async searchUsers(q: {
+    q?: string;
+    role?: Role;
+    status?: 'active' | 'suspended' | 'deleted';
+    cursor?: string;
+    limit?: number;
+  }): Promise<Page<AdminUserSummary>> {
+    const limit = pageSize(q.limit);
+    const text = q.q?.trim();
+    const rows = await this.prisma.user.findMany({
+      where: {
+        ...(q.status ? { status: q.status } : {}),
+        ...(q.role ? { roles: { some: { role: { key: q.role } } } } : {}),
+        ...(text
+          ? {
+              OR: [
+                { email: { contains: text.toLowerCase() } },
+                { phoneE164: { contains: text.replace(/[^\d+]/g, '') || text } },
+                { profile: { displayName: { contains: text, mode: 'insensitive' as const } } },
+              ],
+            }
+          : {}),
+        ...afterCursor(q.cursor),
+      },
+      include: {
+        profile: { select: { displayName: true } },
+        roles: { select: { vendorId: true, role: { select: { key: true } } } },
+      },
+      orderBy: NEWEST_FIRST,
+      take: limit + 1,
+    });
+    return toPage(rows, limit, (u) => ({
+      id: u.id,
+      displayName: u.profile?.displayName ?? null,
+      email: u.email,
+      phoneE164: u.phoneE164,
+      status: u.status,
+      isGuest: u.isGuest,
+      roles: u.roles.map((r) => (r.vendorId ? `${r.role.key}:${r.vendorId}` : r.role.key)),
+      createdAt: u.createdAt.toISOString(),
+      lastLoginAt: u.lastLoginAt?.toISOString() ?? null,
+    }));
+  }
+
+  async userExists(userId: string): Promise<boolean> {
+    return (await this.prisma.user.count({ where: { id: userId } })) === 1;
+  }
+
+  /** Platform roles (admin, super_admin); vendor roles are managed by the vendors module. */
+  async grantPlatformRole(userId: string, role: 'admin' | 'super_admin'): Promise<void> {
+    await this.users.grantRole(this.prisma, userId, role, null);
+  }
+
+  async revokePlatformRole(userId: string, role: 'admin' | 'super_admin'): Promise<void> {
+    await this.prisma.userRole.deleteMany({
+      where: { userId, vendorId: null, role: { key: role } },
+    });
+    await this.prisma.refreshToken.updateMany({
+      where: { userId, revokedAt: null },
+      data: { revokedAt: new Date() },
+    });
+  }
+
+  async countPlatformRole(role: 'admin' | 'super_admin'): Promise<number> {
+    return this.prisma.userRole.count({
+      where: { vendorId: null, role: { key: role }, user: { status: 'active' } },
+    });
+  }
+
+  /** KPI counts for a period. Active = signed in or refreshed a session in the period. */
+  async userCounts(
+    from: Date,
+    to: Date,
+  ): Promise<{ total: number; newUsers: number; activeUsers: number; guests: number }> {
+    const [total, newUsers, active, guests] = await Promise.all([
+      this.prisma.user.count({ where: { status: { not: 'deleted' } } }),
+      this.prisma.user.count({ where: { createdAt: { gte: from, lt: to } } }),
+      this.prisma.refreshToken.findMany({
+        where: { createdAt: { gte: from, lt: to } },
+        distinct: ['userId'],
+        select: { userId: true },
+      }),
+      this.prisma.user.count({ where: { isGuest: true, createdAt: { gte: from, lt: to } } }),
+    ]);
+    return { total, newUsers, activeUsers: active.length, guests };
   }
 
   /** Admin: change account status; suspension revokes every session immediately. */

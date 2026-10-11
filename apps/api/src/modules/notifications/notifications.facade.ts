@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { type BroadcastJob, BroadcastService } from './services/broadcast.service';
 import { NotificationSender, type SendOutcome } from './services/notification-sender.service';
 import {
   type NotifyPhonesInput,
@@ -12,7 +13,13 @@ export class NotificationsFacade {
   constructor(
     private readonly notifications: NotificationsService,
     private readonly sender: NotificationSender,
+    private readonly broadcasts: BroadcastService,
   ) {}
+
+  /** Queue a push + in-app broadcast to every active user (optionally one home city). */
+  broadcast(job: Omit<BroadcastJob, 'afterId'>): Promise<void> {
+    return this.broadcasts.start(job);
+  }
 
   notifyUsers(input: NotifyUsersInput): Promise<string[]> {
     return this.notifications.notifyUsers(input);
