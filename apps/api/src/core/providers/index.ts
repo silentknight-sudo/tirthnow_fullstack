@@ -6,3 +6,5 @@ export * from './providers.module';
 export * from './storage/mock.adapter';
 export * from './storage/storage.provider';
 export * from './maps/maps.provider';
+export * from './payment/mock.adapter';
+export * from './payment/payment.provider';

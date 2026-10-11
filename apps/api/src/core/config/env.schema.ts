@@ -56,6 +56,16 @@ export const envSchema = z
         'must be 32 bytes, base64-encoded (openssl rand -base64 32)',
       ),
 
+    PAYMENT_PROVIDER: z.enum(['mock', 'razorpay']).default('mock'),
+    MOCK_PAYMENT_SECRET: z.string().min(8).default('local-mock-payment-secret'),
+    RAZORPAY_KEY_ID: optionalString,
+    RAZORPAY_KEY_SECRET: optionalString,
+    RAZORPAY_WEBHOOK_SECRET: optionalString,
+    ORDER_HOLD_MINUTES: z.coerce.number().int().min(5).max(60).default(15),
+    PAYOUT_SETTLEMENT_HOLD_DAYS: z.coerce.number().int().min(0).max(30).default(3),
+    PAYOUT_MIN_PAISE: z.coerce.number().int().min(0).default(10_000),
+    PLATFORM_GST_BPS: z.coerce.number().int().min(0).max(5000).default(1800),
+
     MAPS_PROVIDER: z.enum(['mock', 'google']).default('mock'),
     GOOGLE_MAPS_API_KEY: optionalString,
 
@@ -102,6 +112,7 @@ export const envSchema = z
       email: env.EMAIL_PROVIDER,
       storage: env.STORAGE_PROVIDER,
       maps: env.MAPS_PROVIDER,
+      payment: env.PAYMENT_PROVIDER,
     } as const;
     for (const [capability, provider] of Object.entries(selectors)) {
       if (provider === 'mock' && !env.ALLOW_MOCK_PROVIDERS.includes(capability)) {
@@ -118,6 +129,20 @@ export const envSchema = z
         path: ['DATA_ENCRYPTION_KEY'],
         message: 'must be changed from the local default in production',
       });
+    }
+    if (env.PAYMENT_PROVIDER === 'razorpay') {
+      for (const key of [
+        'RAZORPAY_KEY_ID',
+        'RAZORPAY_KEY_SECRET',
+        'RAZORPAY_WEBHOOK_SECRET',
+      ] as const) {
+        if (!env[key])
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: [key],
+            message: 'required when PAYMENT_PROVIDER=razorpay',
+          });
+      }
     }
     if (env.MAPS_PROVIDER === 'google' && !env.GOOGLE_MAPS_API_KEY) {
       ctx.addIssue({

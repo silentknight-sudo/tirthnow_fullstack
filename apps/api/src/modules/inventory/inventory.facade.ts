@@ -23,6 +23,7 @@ import {
 
 export interface HotelStayContext {
   hotelId: string;
+  cityId: string;
   hotelName: string;
   vendorId: string;
   roomTypeId: string;
@@ -62,6 +63,7 @@ export class InventoryFacade {
       throw AppException.notFound('Room type not found');
     return {
       hotelId: rt.hotelId,
+      cityId: rt.hotel.cityId,
       hotelName: t(rt.hotel.nameI18n, 'en'),
       vendorId: rt.hotel.vendorId,
       roomTypeId: rt.id,
@@ -99,6 +101,10 @@ export class InventoryFacade {
 
   pickVehicle(vendorId: string, vehicleClass: VehicleClass) {
     return this.cabs.pickVehicle(vendorId, vehicleClass);
+  }
+
+  async vendorCityId(vendorId: string): Promise<string | null> {
+    return (await this.vendors.get(vendorId))?.cityId ?? null;
   }
 
   async vehicle(vehicleId: string) {

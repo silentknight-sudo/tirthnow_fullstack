@@ -39,6 +39,17 @@ export interface AppConfig {
   };
   portals: { vendorUrl: string; adminUrl: string };
   dataEncryptionKey: Buffer;
+  payments: {
+    provider: Env['PAYMENT_PROVIDER'];
+    mockSecret: string;
+    razorpayKeyId: string | undefined;
+    razorpayKeySecret: string | undefined;
+    razorpayWebhookSecret: string | undefined;
+    orderHoldMinutes: number;
+    payoutHoldDays: number;
+    payoutMinPaise: number;
+    gstOnCommissionBps: number;
+  };
   maps: { provider: Env['MAPS_PROVIDER']; googleApiKey: string | undefined };
   storage: {
     provider: Env['STORAGE_PROVIDER'];
@@ -106,6 +117,17 @@ export function loadConfig(source: NodeJS.ProcessEnv): AppConfig {
     },
     portals: { vendorUrl: e.VENDOR_PORTAL_URL, adminUrl: e.ADMIN_PORTAL_URL },
     dataEncryptionKey: Buffer.from(e.DATA_ENCRYPTION_KEY, 'base64'),
+    payments: {
+      provider: e.PAYMENT_PROVIDER,
+      mockSecret: e.MOCK_PAYMENT_SECRET,
+      razorpayKeyId: e.RAZORPAY_KEY_ID,
+      razorpayKeySecret: e.RAZORPAY_KEY_SECRET,
+      razorpayWebhookSecret: e.RAZORPAY_WEBHOOK_SECRET,
+      orderHoldMinutes: e.ORDER_HOLD_MINUTES,
+      payoutHoldDays: e.PAYOUT_SETTLEMENT_HOLD_DAYS,
+      payoutMinPaise: e.PAYOUT_MIN_PAISE,
+      gstOnCommissionBps: e.PLATFORM_GST_BPS,
+    },
     maps: { provider: e.MAPS_PROVIDER, googleApiKey: e.GOOGLE_MAPS_API_KEY },
     storage: {
       provider: e.STORAGE_PROVIDER,

@@ -214,6 +214,8 @@ enum RefundStatus {
 
 enum LedgerAccount {
   platform_clearing
+  /// Vendor share of orders whose service has not finished; moves to vendor_payable on completion.
+  vendor_pending
   vendor_payable
   platform_revenue
   gst_payable

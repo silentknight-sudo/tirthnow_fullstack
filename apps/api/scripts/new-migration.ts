@@ -92,7 +92,8 @@ function create(name: string): void {
   }
   fs.writeFileSync(file, `${kept}\n`);
   prisma(['migrate', 'deploy']);
-  process.stdout.write(`Created and applied ${dir}\n`);
+  prisma(['generate']);
+  process.stdout.write(`Created and applied ${dir}; Prisma client regenerated\n`);
 }
 
 if (require.main === module) {

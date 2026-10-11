@@ -32,7 +32,10 @@ export async function createTestApp(
     imports: [AppModule.forRoot(config)],
     controllers: opts.controllers ?? [],
   }).compile();
-  const app = moduleRef.createNestApplication<NestExpressApplication>({ bufferLogs: true });
+  const app = moduleRef.createNestApplication<NestExpressApplication>({
+    bufferLogs: true,
+    rawBody: true,
+  });
   configureApp(app, config);
   // Listen once on an ephemeral port: supertest's per-request listen/close races under load.
   await app.listen(0, '127.0.0.1');

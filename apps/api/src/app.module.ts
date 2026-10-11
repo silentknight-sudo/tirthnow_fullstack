@@ -10,6 +10,8 @@ import { CatalogModule } from './modules/catalog';
 import { FilesModule } from './modules/files';
 import { IdentityModule } from './modules/identity';
 import { InventoryModule } from './modules/inventory';
+import { OrdersModule } from './modules/orders';
+import { PaymentsModule } from './modules/payments';
 import { VendorsModule } from './modules/vendors';
 
 @Module({})
@@ -29,6 +31,8 @@ export class AppModule {
         CatalogModule,
         VendorsModule,
         InventoryModule,
+        PaymentsModule,
+        OrdersModule,
         ...(config.isProduction ? [] : [DevModule]),
       ],
     };
