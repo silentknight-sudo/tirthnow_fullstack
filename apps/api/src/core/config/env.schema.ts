@@ -62,6 +62,17 @@ export const envSchema = z
     SMTP_PASS: optionalString,
     EMAIL_FROM: z.string().default('Tirth Now <no-reply@tirthnow.local>'),
 
+    STORAGE_PROVIDER: z.enum(['mock', 's3']).default('mock'),
+    S3_ENDPOINT: optionalString,
+    S3_REGION: z.string().default('auto'),
+    S3_ACCESS_KEY_ID: optionalString,
+    S3_SECRET_ACCESS_KEY: optionalString,
+    S3_BUCKET_PUBLIC: z.string().default('tirthnow-public'),
+    S3_BUCKET_PRIVATE: z.string().default('tirthnow-private'),
+    MEDIA_PUBLIC_BASE_URL: optionalString,
+    UPLOAD_MAX_IMAGE_MB: z.coerce.number().positive().default(15),
+    UPLOAD_MAX_VIDEO_MB: z.coerce.number().positive().default(200),
+
     VENDOR_PORTAL_URL: z.string().url().default('http://localhost:3001'),
     ADMIN_PORTAL_URL: z.string().url().default('http://localhost:3002'),
   })
@@ -77,6 +88,7 @@ export const envSchema = z
     const selectors = {
       firebase_auth: env.FIREBASE_AUTH_PROVIDER,
       email: env.EMAIL_PROVIDER,
+      storage: env.STORAGE_PROVIDER,
     } as const;
     for (const [capability, provider] of Object.entries(selectors)) {
       if (provider === 'mock' && !env.ALLOW_MOCK_PROVIDERS.includes(capability)) {
@@ -85,6 +97,17 @@ export const envSchema = z
           path: [`${capability.toUpperCase()}_PROVIDER`],
           message: `mock provider is not allowed in production (add "${capability}" to ALLOW_MOCK_PROVIDERS to override)`,
         });
+      }
+    }
+    if (env.STORAGE_PROVIDER === 's3') {
+      for (const key of ['S3_ACCESS_KEY_ID', 'S3_SECRET_ACCESS_KEY'] as const) {
+        if (!env[key]) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: [key],
+            message: 'required when STORAGE_PROVIDER=s3',
+          });
+        }
       }
     }
     if (env.FIREBASE_AUTH_PROVIDER === 'firebase') {

@@ -21,6 +21,7 @@ import {
 } from '../../../core/providers';
 import { REDIS } from '../../../core/redis';
 import { type DeviceInfoDto } from '../dto/auth.dto';
+import { DevicesService } from './devices.service';
 import { OtpService } from './otp.service';
 import { PasswordService } from './password.service';
 import { newOpaqueToken, sha256 } from './secrets';
@@ -42,6 +43,7 @@ export class AuthService {
     private readonly tokens: TokenService,
     private readonly passwords: PasswordService,
     private readonly otp: OtpService,
+    private readonly devices: DevicesService,
     @Inject(FIREBASE_AUTH_PROVIDER) private readonly firebase: FirebaseAuthProvider,
     @Inject(EMAIL_PROVIDER) private readonly email: EmailProvider,
     @Inject(REDIS) private readonly redis: Redis,
@@ -76,7 +78,7 @@ export class AuthService {
           'Account is not active',
         );
       }
-      const deviceId = device ? await this.upsertDevice(tx, user.id, device) : null;
+      const deviceId = device ? await this.devices.upsert(tx, user.id, device) : null;
       await tx.user.update({ where: { id: user.id }, data: { lastLoginAt: new Date() } });
       const loaded = await this.users.findWithRoles(user.id, tx);
       if (!loaded) throw AppException.unauthorized();
@@ -154,47 +156,6 @@ export class AuthService {
       return AppException.conflict('This phone or email is already used by another account');
     }
     return err;
-  }
-
-  private async upsertDevice(
-    tx: Prisma.TransactionClient,
-    userId: string,
-    d: DeviceInfoDto,
-  ): Promise<string> {
-    const fields = {
-      platform: d.platform,
-      appVersion: d.appVersion ?? null,
-      locale: d.locale ?? null,
-      lastSeenAt: new Date(),
-    };
-    if (d.deviceId) {
-      const own = await tx.device.findFirst({ where: { id: d.deviceId, userId } });
-      if (own) {
-        if (d.fcmToken && d.fcmToken !== own.fcmToken) {
-          // An FCM token identifies one app install; detach it from any other device row.
-          await tx.device.updateMany({
-            where: { fcmToken: d.fcmToken, NOT: { id: own.id } },
-            data: { fcmToken: null },
-          });
-        }
-        await tx.device.update({
-          where: { id: own.id },
-          data: { ...fields, ...(d.fcmToken ? { fcmToken: d.fcmToken } : {}) },
-        });
-        return own.id;
-      }
-    }
-    if (d.fcmToken) {
-      // Shared phones: the token moves to whoever signed in last.
-      const device = await tx.device.upsert({
-        where: { fcmToken: d.fcmToken },
-        create: { userId, fcmToken: d.fcmToken, ...fields },
-        update: { userId, ...fields },
-      });
-      return device.id;
-    }
-    const device = await tx.device.create({ data: { userId, ...fields } });
-    return device.id;
   }
 
   // ───────────── Portals: email + password (+ optional OTP) ─────────────

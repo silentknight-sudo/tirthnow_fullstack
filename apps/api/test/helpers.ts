@@ -150,3 +150,36 @@ export async function signInPortal(
 }
 
 export const bearer = (token: string): [string, string] => ['authorization', `Bearer ${token}`];
+
+/**
+ * Upload through the presign → PUT → complete flow (mock storage serves PUTs on /v1/dev/storage),
+ * then run the media queue so the asset is verified and ready.
+ */
+export async function uploadFile(
+  t: TestApp,
+  token: string,
+  opts: { purpose: string; mimeType: string; body: Buffer; declaredSize?: number },
+): Promise<{ mediaId: string; status: number; completeBody: unknown }> {
+  const presign = await t.http
+    .post('/v1/files/presign')
+    .set('authorization', `Bearer ${token}`)
+    .send({
+      purpose: opts.purpose,
+      mimeType: opts.mimeType,
+      sizeBytes: opts.declaredSize ?? opts.body.length,
+    });
+  if (presign.status !== 201)
+    throw new Error(`presign failed ${presign.status} ${JSON.stringify(presign.body)}`);
+  const { mediaId, uploadUrl, headers } = presign.body as {
+    mediaId: string;
+    uploadUrl: string;
+    headers: Record<string, string>;
+  };
+  const url = new URL(uploadUrl);
+  await t.http.put(`${url.pathname}${url.search}`).set(headers).send(opts.body).expect(200);
+  const complete = await t.http
+    .post(`/v1/files/${mediaId}/complete`)
+    .set('authorization', `Bearer ${token}`)
+    .send();
+  return { mediaId, status: complete.status, completeBody: complete.body };
+}

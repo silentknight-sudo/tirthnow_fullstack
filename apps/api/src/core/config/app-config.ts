@@ -38,6 +38,18 @@ export interface AppConfig {
     from: string;
   };
   portals: { vendorUrl: string; adminUrl: string };
+  storage: {
+    provider: Env['STORAGE_PROVIDER'];
+    endpoint: string | undefined;
+    region: string;
+    accessKeyId: string | undefined;
+    secretAccessKey: string | undefined;
+    publicBucket: string;
+    privateBucket: string;
+    publicBaseUrl: string | undefined;
+    maxImageBytes: number;
+    maxVideoBytes: number;
+  };
 }
 
 export class ConfigValidationError extends Error {
@@ -91,5 +103,17 @@ export function loadConfig(source: NodeJS.ProcessEnv): AppConfig {
       from: e.EMAIL_FROM,
     },
     portals: { vendorUrl: e.VENDOR_PORTAL_URL, adminUrl: e.ADMIN_PORTAL_URL },
+    storage: {
+      provider: e.STORAGE_PROVIDER,
+      endpoint: e.S3_ENDPOINT,
+      region: e.S3_REGION,
+      accessKeyId: e.S3_ACCESS_KEY_ID,
+      secretAccessKey: e.S3_SECRET_ACCESS_KEY,
+      publicBucket: e.S3_BUCKET_PUBLIC,
+      privateBucket: e.S3_BUCKET_PRIVATE,
+      publicBaseUrl: e.MEDIA_PUBLIC_BASE_URL,
+      maxImageBytes: Math.round(e.UPLOAD_MAX_IMAGE_MB * 1024 * 1024),
+      maxVideoBytes: Math.round(e.UPLOAD_MAX_VIDEO_MB * 1024 * 1024),
+    },
   };
 }

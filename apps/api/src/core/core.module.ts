@@ -9,6 +9,7 @@ import { PrismaModule } from './prisma';
 import { ProvidersModule } from './providers';
 import { QueueModule } from './queue';
 import { RedisModule } from './redis';
+import { SettingsModule } from './settings';
 
 /** Infrastructure shared by the HTTP API and the worker. */
 @Module({})
@@ -25,6 +26,7 @@ export class CoreModule {
         QueueModule,
         AuditModule,
         MaintenanceModule,
+        SettingsModule,
         EventEmitterModule.forRoot({ wildcard: false, ignoreErrors: false }),
         ProvidersModule,
       ],

@@ -6,6 +6,8 @@ import { DevModule } from './core/dev/dev.module';
 import { HealthModule } from './core/health';
 import { IdempotencyModule } from './core/idempotency';
 import { ThrottleModule } from './core/throttle';
+import { CatalogModule } from './modules/catalog';
+import { FilesModule } from './modules/files';
 import { IdentityModule } from './modules/identity';
 
 @Module({})
@@ -21,6 +23,8 @@ export class AppModule {
         IdempotencyModule,
         HealthModule,
         IdentityModule,
+        FilesModule,
+        CatalogModule,
         ...(config.isProduction ? [] : [DevModule]),
       ],
     };

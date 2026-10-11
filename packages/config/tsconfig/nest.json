@@ -9,6 +9,7 @@
     "isolatedModules": false,
     "declaration": false,
     "incremental": true,
-    "removeComments": true
+    "removeComments": true,
+    "useDefineForClassFields": false
   }
 }

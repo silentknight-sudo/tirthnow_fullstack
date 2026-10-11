@@ -76,6 +76,13 @@ export function normalizeException(exception: unknown): Normalized {
         message: 'Resource already exists',
       };
     }
+    if (exception.code === 'P2003') {
+      return {
+        status: HttpStatus.BAD_REQUEST,
+        code: ERROR_CODES.BAD_REQUEST,
+        message: 'A referenced resource does not exist',
+      };
+    }
     if (exception.code === 'P2025') {
       return {
         status: HttpStatus.NOT_FOUND,

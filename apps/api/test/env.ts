@@ -18,6 +18,7 @@ Object.assign(process.env, {
   JWT_ACCESS_SECRET: 'test-access-secret-that-is-long-enough-0123456789',
   FIREBASE_AUTH_PROVIDER: 'mock',
   EMAIL_PROVIDER: 'mock',
+  STORAGE_PROVIDER: 'mock',
   THROTTLE_DEFAULT_PER_MIN: '10000',
   THROTTLE_AUTH_PER_MIN: '10000',
   CORS_ORIGINS: 'http://localhost:3001',
