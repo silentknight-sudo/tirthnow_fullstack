@@ -22,6 +22,8 @@ const optionalString = z
   .transform((v) => (v === undefined || v.trim() === '' ? undefined : v));
 
 const LOCAL_ACCESS_SECRET = 'change-me-local-access-secret-min-32-chars';
+/** Local-development key from .env.example (never valid in production). */
+export const LOCAL_ENCRYPTION_KEY = 'dGlydGgtbm93LWxvY2FsLWRldi1rZXktMzJieXRlcyE=';
 
 /** Raw environment, validated at boot. Add new variables here and to .env.example. */
 export const envSchema = z
@@ -46,6 +48,16 @@ export const envSchema = z
     JWT_ACCESS_TTL: z.string().default('15m').transform(parseDurationSeconds),
     JWT_REFRESH_TTL_DAYS: z.coerce.number().int().min(1).max(365).default(30),
     JWT_ISSUER: z.string().default('tirth-now'),
+
+    DATA_ENCRYPTION_KEY: z
+      .string()
+      .refine(
+        (v) => Buffer.from(v, 'base64').length === 32,
+        'must be 32 bytes, base64-encoded (openssl rand -base64 32)',
+      ),
+
+    MAPS_PROVIDER: z.enum(['mock', 'google']).default('mock'),
+    GOOGLE_MAPS_API_KEY: optionalString,
 
     THROTTLE_DEFAULT_PER_MIN: z.coerce.number().int().positive().default(120),
     THROTTLE_AUTH_PER_MIN: z.coerce.number().int().positive().default(10),
@@ -89,6 +101,7 @@ export const envSchema = z
       firebase_auth: env.FIREBASE_AUTH_PROVIDER,
       email: env.EMAIL_PROVIDER,
       storage: env.STORAGE_PROVIDER,
+      maps: env.MAPS_PROVIDER,
     } as const;
     for (const [capability, provider] of Object.entries(selectors)) {
       if (provider === 'mock' && !env.ALLOW_MOCK_PROVIDERS.includes(capability)) {
@@ -98,6 +111,20 @@ export const envSchema = z
           message: `mock provider is not allowed in production (add "${capability}" to ALLOW_MOCK_PROVIDERS to override)`,
         });
       }
+    }
+    if (env.DATA_ENCRYPTION_KEY === LOCAL_ENCRYPTION_KEY) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['DATA_ENCRYPTION_KEY'],
+        message: 'must be changed from the local default in production',
+      });
+    }
+    if (env.MAPS_PROVIDER === 'google' && !env.GOOGLE_MAPS_API_KEY) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['GOOGLE_MAPS_API_KEY'],
+        message: 'required when MAPS_PROVIDER=google',
+      });
     }
     if (env.STORAGE_PROVIDER === 's3') {
       for (const key of ['S3_ACCESS_KEY_ID', 'S3_SECRET_ACCESS_KEY'] as const) {

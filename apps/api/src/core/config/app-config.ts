@@ -38,6 +38,8 @@ export interface AppConfig {
     from: string;
   };
   portals: { vendorUrl: string; adminUrl: string };
+  dataEncryptionKey: Buffer;
+  maps: { provider: Env['MAPS_PROVIDER']; googleApiKey: string | undefined };
   storage: {
     provider: Env['STORAGE_PROVIDER'];
     endpoint: string | undefined;
@@ -103,6 +105,8 @@ export function loadConfig(source: NodeJS.ProcessEnv): AppConfig {
       from: e.EMAIL_FROM,
     },
     portals: { vendorUrl: e.VENDOR_PORTAL_URL, adminUrl: e.ADMIN_PORTAL_URL },
+    dataEncryptionKey: Buffer.from(e.DATA_ENCRYPTION_KEY, 'base64'),
+    maps: { provider: e.MAPS_PROVIDER, googleApiKey: e.GOOGLE_MAPS_API_KEY },
     storage: {
       provider: e.STORAGE_PROVIDER,
       endpoint: e.S3_ENDPOINT,

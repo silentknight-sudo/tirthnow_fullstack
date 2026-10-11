@@ -1,3 +1,4 @@
+import { type AddressInfo } from 'node:net';
 import { type INestApplication, type Type } from '@nestjs/common';
 import { getQueueToken } from '@nestjs/bullmq';
 import { type NestExpressApplication } from '@nestjs/platform-express';
@@ -33,10 +34,12 @@ export async function createTestApp(
   }).compile();
   const app = moduleRef.createNestApplication<NestExpressApplication>({ bufferLogs: true });
   configureApp(app, config);
-  await app.init();
+  // Listen once on an ephemeral port: supertest's per-request listen/close races under load.
+  await app.listen(0, '127.0.0.1');
+  const address = app.getHttpServer().address() as AddressInfo;
   return {
     app,
-    http: request(app.getHttpServer()),
+    http: request(`http://127.0.0.1:${address.port}`),
     prisma: app.get(PrismaService),
     redis: app.get<Redis>(REDIS),
     email: app.get(MockEmailAdapter),
@@ -182,4 +185,78 @@ export async function uploadFile(
     .set('authorization', `Bearer ${token}`)
     .send();
   return { mediaId, status: complete.status, completeBody: complete.body };
+}
+
+/** A minimal valid PDF for KYC uploads. */
+export const PDF_BYTES = Buffer.from('%PDF-1.4\n1 0 obj<<>>endobj\ntrailer<<>>\n%%EOF');
+
+/**
+ * Create an active vendor owned by a fresh portal user, with KYC approved by an admin.
+ * Returns tokens refreshed so they carry the vendor claims.
+ */
+export async function createActiveVendor(
+  t: TestApp,
+  opts: {
+    email: string;
+    type: 'hotel' | 'cab' | 'restaurant' | 'experience' | 'multi';
+    cityId?: string;
+    adminToken: string;
+  },
+): Promise<{ vendorId: string; token: string; userId: string }> {
+  await createPortalUser(t, { email: opts.email, password: 'Password-123' });
+  const owner = await signInPortal(t, opts.email, 'Password-123');
+  const created = await t.http
+    .post('/v1/vendors')
+    .set('authorization', `Bearer ${owner.token}`)
+    .send({
+      type: opts.type,
+      legalName: `${opts.email} Pvt Ltd`,
+      displayName: opts.email,
+      pan: 'ABCDE1234F',
+      ...(opts.cityId ? { cityId: opts.cityId } : {}),
+    });
+  if (created.status !== 201)
+    throw new Error(`vendor create failed ${created.status} ${JSON.stringify(created.body)}`);
+  const vendorId = (created.body as { id: string }).id;
+  const needed = (created.body as { missingDocuments: string[] }).missingDocuments;
+  // Vendor claims arrive with a fresh token (portal does this right after onboarding starts).
+  Object.assign(owner, await signInPortal(t, opts.email, 'Password-123'));
+  const { MediaProcessor } = await import('../src/modules/files');
+  for (const docType of needed) {
+    const { mediaId } = await uploadFile(t, owner.token, {
+      purpose: 'kyc_document',
+      mimeType: 'application/pdf',
+      body: PDF_BYTES,
+    });
+    await drainQueue(t, 'media', MediaProcessor);
+    const added = await t.http
+      .post(`/v1/vendors/${vendorId}/kyc-documents`)
+      .set('authorization', `Bearer ${owner.token}`)
+      .send({ docType, mediaId });
+    if (added.status !== 201)
+      throw new Error(`kyc add failed ${added.status} ${JSON.stringify(added.body)}`);
+  }
+  await t.http
+    .post(`/v1/vendors/${vendorId}/submit`)
+    .set('authorization', `Bearer ${owner.token}`)
+    .expect(200);
+  const docs = await t.prisma.vendorKycDocument.findMany({ where: { vendorId } });
+  for (const d of docs) {
+    await t.http
+      .post(`/v1/admin/vendors/${vendorId}/kyc-documents/${d.id}/review`)
+      .set('authorization', `Bearer ${opts.adminToken}`)
+      .send({ decision: 'approved' })
+      .expect(200);
+  }
+  await t.http
+    .post(`/v1/admin/vendors/${vendorId}/approve`)
+    .set('authorization', `Bearer ${opts.adminToken}`)
+    .expect(200);
+  const login = await signInPortal(t, opts.email, 'Password-123');
+  return { vendorId, token: login.token, userId: login.userId };
+}
+
+export async function adminToken(t: TestApp, email = 'admin@ops.test'): Promise<string> {
+  await createPortalUser(t, { email, password: 'Password-123', roles: ['user', 'admin'] });
+  return (await signInPortal(t, email, 'Password-123')).token;
 }

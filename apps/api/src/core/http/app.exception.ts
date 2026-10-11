@@ -5,7 +5,8 @@ import { ERROR_CODES, type ErrorCode } from '@tirth-now/shared-types';
 export class AppException extends HttpException {
   constructor(
     public readonly code: ErrorCode,
-    status: HttpStatus,
+    /** HTTP status code (HttpStatus member or number). */
+    status: number,
     message: string,
     public readonly details?: unknown,
   ) {

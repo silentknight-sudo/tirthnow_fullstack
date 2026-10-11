@@ -19,6 +19,8 @@ Object.assign(process.env, {
   FIREBASE_AUTH_PROVIDER: 'mock',
   EMAIL_PROVIDER: 'mock',
   STORAGE_PROVIDER: 'mock',
+  MAPS_PROVIDER: 'mock',
+  DATA_ENCRYPTION_KEY: Buffer.alloc(32, 9).toString('base64'),
   THROTTLE_DEFAULT_PER_MIN: '10000',
   THROTTLE_AUTH_PER_MIN: '10000',
   CORS_ORIGINS: 'http://localhost:3001',

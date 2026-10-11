@@ -5,6 +5,7 @@ const base = {
   DATABASE_URL: 'postgresql://u:p@localhost:5432/db',
   REDIS_URL: 'redis://localhost:6379',
   JWT_ACCESS_SECRET: 'a'.repeat(40),
+  DATA_ENCRYPTION_KEY: Buffer.alloc(32, 7).toString('base64'),
 };
 
 describe('loadConfig', () => {
@@ -53,7 +54,7 @@ describe('loadConfig', () => {
     const c = loadConfig({
       ...base,
       NODE_ENV: 'production',
-      ALLOW_MOCK_PROVIDERS: 'firebase_auth,email,storage',
+      ALLOW_MOCK_PROVIDERS: 'firebase_auth,email,storage,maps',
     });
     expect(c.isProduction).toBe(true);
     expect(c.swaggerEnabled).toBe(false);

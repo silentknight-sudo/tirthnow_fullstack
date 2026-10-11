@@ -5,3 +5,4 @@ export * from './firebase-auth/firebase-auth.provider';
 export * from './providers.module';
 export * from './storage/mock.adapter';
 export * from './storage/storage.provider';
+export * from './maps/maps.provider';
