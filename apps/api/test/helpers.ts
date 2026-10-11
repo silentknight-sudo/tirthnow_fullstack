@@ -332,3 +332,12 @@ export async function collectEvents<T>(
   socket.off(event, handler);
   return got;
 }
+
+/** Smallest valid-looking MP4 header (ftyp box) plus padding; passes content sniffing. */
+export const MP4_BYTES = Buffer.concat([
+  Buffer.from([0x00, 0x00, 0x00, 0x18]),
+  Buffer.from('ftypisom'),
+  Buffer.from([0x00, 0x00, 0x02, 0x00]),
+  Buffer.from('isommp42'),
+  Buffer.alloc(2048, 0),
+]);

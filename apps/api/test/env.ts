@@ -26,6 +26,8 @@ Object.assign(process.env, {
   WHATSAPP_PROVIDER: 'mock',
   WEATHER_PROVIDER: 'mock',
   TRANSIT_PROVIDER: 'mock',
+  VIDEO_PROVIDER: 'mock',
+  MODERATION_PROVIDER: 'mock',
   DATA_ENCRYPTION_KEY: Buffer.alloc(32, 9).toString('base64'),
   THROTTLE_DEFAULT_PER_MIN: '10000',
   THROTTLE_AUTH_PER_MIN: '10000',

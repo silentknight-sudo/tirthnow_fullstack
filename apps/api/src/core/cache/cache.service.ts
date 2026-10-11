@@ -16,6 +16,11 @@ export class CacheService {
     await this.redis.set(`cache:${key}`, JSON.stringify(value), 'EX', ttlSeconds);
   }
 
+  /** Atomic first-writer-wins marker (dedupe); true when this call set it. */
+  async setIfAbsent(key: string, ttlSeconds: number): Promise<boolean> {
+    return (await this.redis.set(`cache:${key}`, '1', 'EX', ttlSeconds, 'NX')) === 'OK';
+  }
+
   async getOrSet<T>(key: string, ttlSeconds: number, load: () => Promise<T>): Promise<T> {
     const hit = await this.get<T>(key);
     if (hit !== null) return hit;

@@ -83,6 +83,16 @@ export const envSchema = z
     WHATSAPP_PHONE_NUMBER_ID: optionalString,
     WHATSAPP_ACCESS_TOKEN: optionalString,
 
+    VIDEO_PROVIDER: z.enum(['mock', 'cloudflare_stream', 'mux']).default('mock'),
+    MOCK_VIDEO_SECRET: z.string().min(8).default('local-mock-video-secret'),
+    CF_STREAM_ACCOUNT_ID: optionalString,
+    CF_STREAM_API_TOKEN: optionalString,
+    CF_STREAM_WEBHOOK_SECRET: optionalString,
+    MUX_TOKEN_ID: optionalString,
+    MUX_TOKEN_SECRET: optionalString,
+    MUX_WEBHOOK_SECRET: optionalString,
+    MODERATION_PROVIDER: z.enum(['mock']).default('mock'),
+
     WEATHER_PROVIDER: z.enum(['mock', 'openweather']).default('mock'),
     OPENWEATHER_API_KEY: optionalString,
     WEATHER_CACHE_SECONDS: z.coerce.number().int().min(60).max(3600).default(900),
@@ -133,6 +143,8 @@ export const envSchema = z
       sms: env.SMS_PROVIDER,
       whatsapp: env.WHATSAPP_PROVIDER,
       weather: env.WEATHER_PROVIDER,
+      video: env.VIDEO_PROVIDER,
+      moderation: env.MODERATION_PROVIDER,
     } as const;
     for (const [capability, provider] of Object.entries(selectors)) {
       if (provider === 'mock' && !env.ALLOW_MOCK_PROVIDERS.includes(capability)) {
@@ -170,6 +182,16 @@ export const envSchema = z
         env.WHATSAPP_PROVIDER === 'meta',
         'WHATSAPP_PROVIDER=meta',
         ['WHATSAPP_PHONE_NUMBER_ID', 'WHATSAPP_ACCESS_TOKEN'],
+      ],
+      [
+        env.VIDEO_PROVIDER === 'cloudflare_stream',
+        'VIDEO_PROVIDER=cloudflare_stream',
+        ['CF_STREAM_ACCOUNT_ID', 'CF_STREAM_API_TOKEN', 'CF_STREAM_WEBHOOK_SECRET'],
+      ],
+      [
+        env.VIDEO_PROVIDER === 'mux',
+        'VIDEO_PROVIDER=mux',
+        ['MUX_TOKEN_ID', 'MUX_TOKEN_SECRET', 'MUX_WEBHOOK_SECRET'],
       ],
       [
         env.WEATHER_PROVIDER === 'openweather',

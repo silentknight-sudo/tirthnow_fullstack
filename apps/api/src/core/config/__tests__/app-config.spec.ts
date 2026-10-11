@@ -54,7 +54,8 @@ describe('loadConfig', () => {
     const c = loadConfig({
       ...base,
       NODE_ENV: 'production',
-      ALLOW_MOCK_PROVIDERS: 'firebase_auth,email,storage,maps,payment,push,sms,whatsapp,weather',
+      ALLOW_MOCK_PROVIDERS:
+        'firebase_auth,email,storage,maps,payment,push,sms,whatsapp,weather,video,moderation',
     });
     expect(c.isProduction).toBe(true);
     expect(c.swaggerEnabled).toBe(false);

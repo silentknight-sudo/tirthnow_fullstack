@@ -68,6 +68,11 @@ export class MediaProcessor extends RoleAwareProcessor {
         { mediaId, declared: asset.mimeType, sniffed },
         'upload rejected by content sniffing',
       );
+      await this.announce(FILES_EVENTS.rejected, {
+        mediaId: asset.id,
+        kind: asset.kind,
+        purpose: purposeOfKey(asset.storageKey),
+      });
       return 'rejected';
     }
 
@@ -81,8 +86,20 @@ export class MediaProcessor extends RoleAwareProcessor {
       kind: asset.kind,
       purpose: purposeOfKey(asset.storageKey),
     };
-    this.events.emit(FILES_EVENTS.uploaded, event);
+    await this.announce(FILES_EVENTS.uploaded, event);
     return 'ready';
+  }
+
+  /** Listeners run before the job completes (they usually queue follow-up work). */
+  private async announce(name: string, event: MediaReadyEvent): Promise<void> {
+    try {
+      await this.events.emitAsync(name, event);
+    } catch (err) {
+      this.logger.error(
+        { err, event: name, mediaId: event.mediaId },
+        'media event listener failed',
+      );
+    }
   }
 
   private async processImage(asset: MediaAsset): Promise<void> {

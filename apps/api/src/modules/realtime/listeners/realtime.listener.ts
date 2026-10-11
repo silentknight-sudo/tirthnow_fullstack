@@ -4,6 +4,7 @@ import { CacheService } from '../../../core/cache';
 import { MaintenanceRegistry } from '../../../core/maintenance';
 import { type AartiChangedEvent, CATALOG_EVENTS, CatalogFacade } from '../../catalog';
 import { type CabLocationEvent, ORDER_EVENTS, type OrderEvent } from '../../orders';
+import { REELS_EVENTS, type ReportedEvent } from '../../reels';
 import { SAFETY_EVENTS, type SosEvent } from '../../safety';
 import { RealtimePublisher } from '../realtime.publisher';
 import { roomName } from '../rooms';
@@ -68,6 +69,11 @@ export class RealtimeListener implements OnModuleInit {
     this.rt.toRoom([roomName.admin(), roomName.sos(e.shareToken)], 'sos.location', sosPayload(e));
   }
 
+  @OnEvent(REELS_EVENTS.reported)
+  onReported(e: ReportedEvent): void {
+    this.rt.toRoom(roomName.admin(), 'moderation.new', e);
+  }
+
   @OnEvent(CATALOG_EVENTS.aartiChanged, { async: true, promisify: true })
   async onAartiChanged(e: AartiChangedEvent): Promise<void> {
     try {
@@ -91,8 +97,7 @@ export class RealtimeListener implements OnModuleInit {
     let sent = 0;
     for (const a of starting) {
       const key = `rt:aarti-live:${a.scheduleId}:${a.startsAt}`;
-      if (await this.cache.get(key)) continue;
-      await this.cache.set(key, 1, 3_600);
+      if (!(await this.cache.setIfAbsent(key, 3_600))) continue;
       this.rt.toRoom(roomName.aarti(a.templeId), 'aarti.live', {
         templeId: a.templeId,
         scheduleId: a.scheduleId,

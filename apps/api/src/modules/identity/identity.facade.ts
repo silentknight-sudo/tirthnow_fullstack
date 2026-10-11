@@ -1,12 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { type AuthUser } from '@tirth-now/shared-types';
 import { PrismaService } from '../../core/prisma';
+import { FilesFacade } from '../files';
 import { type EmergencyContactResponse } from './dto/me.dto';
 import { AuthService } from './services/auth.service';
 import { DevicesService } from './services/devices.service';
 import { EmergencyContactsService } from './services/emergency-contacts.service';
 import { ProfileService } from './services/profile.service';
 import { UsersService } from './services/users.service';
+
+export interface PublicProfile {
+  id: string;
+  displayName: string;
+  avatarUrl: string | null;
+}
 
 export interface UserContact {
   id: string;
@@ -27,8 +34,39 @@ export class IdentityFacade {
     private readonly devices: DevicesService,
     private readonly contacts: EmergencyContactsService,
     private readonly profiles: ProfileService,
+    private readonly files: FilesFacade,
     private readonly prisma: PrismaService,
   ) {}
+
+  /** Public creator/reviewer cards: name and avatar only. */
+  async publicProfiles(userIds: string[]): Promise<Map<string, PublicProfile>> {
+    const ids = [...new Set(userIds)];
+    if (ids.length === 0) return new Map();
+    const rows = await this.prisma.user.findMany({
+      where: { id: { in: ids } },
+      select: { id: true, status: true, profile: { select: { displayName: true, avatar: true } } },
+    });
+    const out = new Map<string, PublicProfile>();
+    for (const r of rows) {
+      const avatar = r.profile?.avatar;
+      out.set(r.id, {
+        id: r.id,
+        displayName: r.status === 'deleted' ? 'Deleted user' : (r.profile?.displayName ?? 'Yatri'),
+        avatarUrl:
+          r.status !== 'deleted' && avatar?.status === 'ready'
+            ? await this.files.url(avatar, 'thumb')
+            : null,
+      });
+    }
+    return out;
+  }
+
+  async userStatus(userId: string): Promise<string | null> {
+    return (
+      (await this.prisma.user.findUnique({ where: { id: userId }, select: { status: true } }))
+        ?.status ?? null
+    );
+  }
 
   async notificationPrefs(userId: string): Promise<Record<string, unknown>> {
     return (await this.profiles.get(userId)).notificationPrefs;

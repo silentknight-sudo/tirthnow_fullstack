@@ -118,6 +118,30 @@ export const TEMPLATES = {
     androidChannel: 'orders',
     priority: 'normal',
   },
+  review_reply: {
+    channels: ['push', 'in_app'],
+    category: 'orders',
+    title: {
+      en: '{{business}} replied to your review',
+      hi: '{{business}} ने आपकी समीक्षा का जवाब दिया',
+    },
+    body: { en: '"{{reply}}"', hi: '"{{reply}}"' },
+    variables: ['business', 'reply'],
+    androidChannel: 'general',
+    priority: 'normal',
+  },
+  content_warning: {
+    channels: ['push', 'in_app'],
+    category: 'system',
+    title: { en: 'Community guidelines', hi: 'सामुदायिक दिशानिर्देश' },
+    body: {
+      en: 'Some of your content broke our community guidelines and was {{outcome}}. Repeated issues can lead to suspension.',
+      hi: 'आपकी कुछ सामग्री ने सामुदायिक दिशानिर्देशों का उल्लंघन किया और उसे {{outcome}}। बार-बार ऐसा होने पर खाता निलंबित हो सकता है।',
+    },
+    variables: ['outcome'],
+    androidChannel: 'general',
+    priority: 'normal',
+  },
   vendor_status: {
     channels: ['push', 'in_app'],
     category: 'vendor',

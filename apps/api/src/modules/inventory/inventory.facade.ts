@@ -165,6 +165,23 @@ export class InventoryFacade {
     return row?.vendorId ?? null;
   }
 
+  /** Ids of a vendor's listings (vendor review inbox). */
+  async vendorListingIds(
+    vendorId: string,
+  ): Promise<{ hotel: string[]; restaurant: string[]; experience: string[] }> {
+    const where = { vendorId, deletedAt: null };
+    const [hotels, restaurants, experiences] = await Promise.all([
+      this.prisma.hotel.findMany({ where, select: { id: true } }),
+      this.prisma.restaurant.findMany({ where, select: { id: true } }),
+      this.prisma.experience.findMany({ where, select: { id: true } }),
+    ]);
+    return {
+      hotel: hotels.map((h) => h.id),
+      restaurant: restaurants.map((r) => r.id),
+      experience: experiences.map((e) => e.id),
+    };
+  }
+
   /** Denormalised rating on hotels (reviews module keeps it current). */
   async setHotelRating(hotelId: string, avg: number, count: number): Promise<void> {
     await this.prisma.hotel.update({

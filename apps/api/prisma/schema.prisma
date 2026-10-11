@@ -1342,6 +1342,10 @@ model Reel {
   cityId           String?          @map("city_id") @db.Uuid
   templeId         String?          @map("temple_id") @db.Uuid
   durationMs       Int?             @map("duration_ms")
+  /// Asset id at the video provider (Cloudflare Stream uid / Mux asset id).
+  videoProviderId  String?          @unique @map("video_provider_id")
+  playbackUrl      String?          @map("playback_url")
+  posterUrl        String?          @map("poster_url")
   status           ReelStatus       @default(processing)
   moderationStatus ModerationStatus @default(pending) @map("moderation_status")
   likeCount        Int              @default(0) @map("like_count")

@@ -67,6 +67,17 @@ export interface AppConfig {
     cacheSeconds: number;
   };
   transit: { provider: Env['TRANSIT_PROVIDER'] };
+  video: {
+    provider: Env['VIDEO_PROVIDER'];
+    mockSecret: string;
+    cfAccountId: string | undefined;
+    cfApiToken: string | undefined;
+    cfWebhookSecret: string | undefined;
+    muxTokenId: string | undefined;
+    muxTokenSecret: string | undefined;
+    muxWebhookSecret: string | undefined;
+  };
+  moderation: { provider: Env['MODERATION_PROVIDER'] };
   sos: { maxPer10Min: number; shareHours: number };
   storage: {
     provider: Env['STORAGE_PROVIDER'];
@@ -162,6 +173,17 @@ export function loadConfig(source: NodeJS.ProcessEnv): AppConfig {
       cacheSeconds: e.WEATHER_CACHE_SECONDS,
     },
     transit: { provider: e.TRANSIT_PROVIDER },
+    video: {
+      provider: e.VIDEO_PROVIDER,
+      mockSecret: e.MOCK_VIDEO_SECRET,
+      cfAccountId: e.CF_STREAM_ACCOUNT_ID,
+      cfApiToken: e.CF_STREAM_API_TOKEN,
+      cfWebhookSecret: e.CF_STREAM_WEBHOOK_SECRET,
+      muxTokenId: e.MUX_TOKEN_ID,
+      muxTokenSecret: e.MUX_TOKEN_SECRET,
+      muxWebhookSecret: e.MUX_WEBHOOK_SECRET,
+    },
+    moderation: { provider: e.MODERATION_PROVIDER },
     sos: { maxPer10Min: e.SOS_MAX_PER_10_MIN, shareHours: e.SOS_SHARE_HOURS },
     storage: {
       provider: e.STORAGE_PROVIDER,

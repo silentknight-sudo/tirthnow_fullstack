@@ -32,6 +32,21 @@ export class FilesFacade {
     for (const id of mediaIds) await this.files.requireReady(id, opts);
   }
 
+  /** The asset row (any status), or null. */
+  get(mediaId: string): Promise<MediaAsset | null> {
+    return this.files.find(mediaId);
+  }
+
+  /** Public URLs (`variant` when available) for ready assets, in input order; others are skipped. */
+  async urls(mediaIds: string[], variant?: string): Promise<string[]> {
+    const out: string[] = [];
+    for (const id of mediaIds) {
+      const asset = await this.files.find(id);
+      if (asset?.status === 'ready') out.push(await this.files.url(asset, variant));
+    }
+    return out;
+  }
+
   url(asset: MediaAsset, variant?: string): Promise<string> {
     return this.files.url(asset, variant);
   }

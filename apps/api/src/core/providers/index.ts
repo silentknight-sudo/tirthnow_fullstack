@@ -17,3 +17,6 @@ export * from './whatsapp/whatsapp.provider';
 export * from './whatsapp/mock.adapter';
 export * from './weather/weather.provider';
 export * from './transit/transit.provider';
+export * from './moderation/moderation.provider';
+export * from './video/video.provider';
+export * from './video/mock.adapter';

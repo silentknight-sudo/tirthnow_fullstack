@@ -119,6 +119,10 @@ export class FilesService {
 
   // ───────────── used by the facade ─────────────
 
+  find(mediaId: string): Promise<MediaAsset | null> {
+    return this.prisma.mediaAsset.findFirst({ where: { id: mediaId, deletedAt: null } });
+  }
+
   async requireReady(
     mediaId: string,
     opts: {

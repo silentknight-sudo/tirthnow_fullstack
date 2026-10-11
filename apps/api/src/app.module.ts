@@ -14,6 +14,8 @@ import { NotificationsModule } from './modules/notifications';
 import { OrdersModule } from './modules/orders';
 import { PaymentsModule } from './modules/payments';
 import { RealtimeModule } from './modules/realtime';
+import { ReelsModule } from './modules/reels';
+import { ReviewsModule } from './modules/reviews';
 import { SafetyModule } from './modules/safety';
 import { TransitModule } from './modules/transit';
 import { VendorsModule } from './modules/vendors';
@@ -40,6 +42,8 @@ export class AppModule {
         OrdersModule,
         NotificationsModule,
         SafetyModule,
+        ReviewsModule,
+        ReelsModule,
         RealtimeModule.forRoot(config),
         WeatherModule,
         TransitModule,

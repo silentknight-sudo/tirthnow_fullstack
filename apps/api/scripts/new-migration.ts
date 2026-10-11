@@ -48,7 +48,8 @@ function shadowUrl(): string {
   return url.toString();
 }
 
-function check(): void {
+/** SQL that brings the migration history up to schema.prisma (rx_ drops removed). */
+function pendingSql(): { kept: string; removed: string[]; hasStatements: boolean } {
   const sql = prisma([
     'migrate',
     'diff',
@@ -60,37 +61,37 @@ function check(): void {
     shadowUrl(),
     '--script',
   ]);
-  const { kept } = stripRawObjectDrops(sql);
-  const meaningful = kept
-    .split('\n')
-    .filter((l) => l.trim() !== '' && !l.startsWith('--'))
-    .join('\n');
-  if (meaningful !== '') {
+  const { kept, removed } = stripRawObjectDrops(sql);
+  const hasStatements = kept.split('\n').some((l) => l.trim() !== '' && !l.startsWith('--'));
+  return { kept, removed, hasStatements };
+}
+
+function check(): void {
+  const { kept, hasStatements } = pendingSql();
+  if (hasStatements) {
     process.stderr.write(`schema.prisma has changes without a migration:\n${kept}\n`);
     process.exit(1);
   }
   process.stdout.write('Migrations are in sync with schema.prisma\n');
 }
 
+/** Prisma's folder naming: UTC YYYYMMDDHHMMSS_name. */
+function folderName(name: string, now = new Date()): string {
+  return `${now.toISOString().replace(/[-:T]/g, '').slice(0, 14)}_${name}`;
+}
+
+// Uses `migrate diff` rather than `migrate dev --create-only`: no interactive prompts
+// (warnings about new unique constraints block non-interactive runs) and no rx_ drop offers.
 function create(name: string): void {
-  const before = new Set(fs.readdirSync(migrationsDir));
-  prisma(['migrate', 'dev', '--create-only', '--name', name]);
-  const created = fs.readdirSync(migrationsDir).filter((d) => !before.has(d));
-  const dir = created[0];
-  if (!dir) {
+  const { kept, removed, hasStatements } = pendingSql();
+  for (const r of removed) process.stdout.write(`Stripped raw-object statement:\n${r}\n`);
+  if (!hasStatements) {
     process.stdout.write('No schema changes; nothing created.\n');
     return;
   }
-  const file = path.join(migrationsDir, dir, 'migration.sql');
-  const { kept, removed } = stripRawObjectDrops(fs.readFileSync(file, 'utf8'));
-  for (const r of removed) process.stdout.write(`Stripped raw-object statement:\n${r}\n`);
-  const hasStatements = kept.split('\n').some((l) => l.trim() !== '' && !l.startsWith('--'));
-  if (!hasStatements) {
-    fs.rmSync(path.join(migrationsDir, dir), { recursive: true });
-    process.stdout.write('Only raw-object drops were generated; migration removed.\n');
-    return;
-  }
-  fs.writeFileSync(file, `${kept}\n`);
+  const dir = folderName(name);
+  fs.mkdirSync(path.join(migrationsDir, dir));
+  fs.writeFileSync(path.join(migrationsDir, dir, 'migration.sql'), `${kept}\n`);
   prisma(['migrate', 'deploy']);
   prisma(['generate']);
   process.stdout.write(`Created and applied ${dir}; Prisma client regenerated\n`);
