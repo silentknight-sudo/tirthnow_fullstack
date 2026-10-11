@@ -12,9 +12,7 @@ export class ReviewsFacade {
   ) {}
 
   /** Author and text for the moderation queue; null when missing or deleted. */
-  async preview(
-    reviewId: string,
-  ): Promise<{
+  async preview(reviewId: string): Promise<{
     id: string;
     userId: string;
     rating: number;

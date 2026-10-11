@@ -43,9 +43,7 @@ interface Draft {
   serviceStartsAt: Date;
   serviceEndsAt: Date;
   /** Runs inside the order transaction: holds inventory and returns priced lines. */
-  hold: (
-    tx: Tx,
-  ) => Promise<
+  hold: (tx: Tx) => Promise<
     {
       itemType: string;
       refId: string | null;

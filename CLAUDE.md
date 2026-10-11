@@ -9,7 +9,7 @@ structural changes. Keep this file updated as phases land.
 |---|---|---|
 | 0 | Architecture docs, ERD, ADRs, repo tree | Done |
 | 1 | Foundation: monorepo wiring, docker-compose, NestJS skeleton, Prisma schema + seed, auth, CI | Done |
-| 2 | Backend modules | Not started |
+| 2 | Backend modules (all 16 modules, 227 routes, realtime, workers) | Done |
 | 3 | Mobile app (Flutter) | Not started |
 | 4 | Vendor portal | Not started |
 | 5 | Admin portal | Not started |
@@ -49,7 +49,7 @@ pnpm lint | pnpm typecheck | pnpm test | pnpm build
 pnpm test:e2e                # API e2e against DATABASE_URL_TEST + Redis db 15
 pnpm format                  # prettier
 
-pnpm db:migrate:new <name>   # create + apply a migration (strips rx_ drops, ADR-0008)
+pnpm db:migrate:new <name>   # create (via migrate diff, no prompts) + apply + generate; strips rx_ drops (ADR-0008)
 pnpm --filter @tirth-now/api db:check   # CI: migrations in sync with schema.prisma
 pnpm --filter @tirth-now/api db:deploy  # apply migrations
 pnpm db:seed                 # idempotent local seed
@@ -84,6 +84,16 @@ Do not use plain `prisma migrate dev` to create migrations (it will offer to dro
 - Providers: interface + DI token + `mock.adapter.ts` + real adapter + module choosing by config, wrapped in `callWithPolicy()` (timeout/retry). Register in `src/core/providers/providers.module.ts`. Lint blocks vendor SDK imports outside `src/core/providers`.
 - Lint rule `tn/module-boundaries` blocks deep imports across `src/modules/*` and any `core → modules` import.
 - Seed data uses deterministic UUIDs (`sid('kind:key')`) so re-running updates in place.
+
+## How the Phase 2 modules fit
+
+- Cross-module reactions go through domain events (`order.*`, `payment.*`, `refund.*`, `payout.*`, `vendor.*`, `sos.*`, `reel.published`, `review.flagged`, `media.uploaded|rejected`, `catalog.aarti_changed`). Listeners must never throw into the emitter (wrap and log).
+- Payments: double-entry ledger (ADR-0009), commission + GST on commission (ADR-0010), payouts (ADR-0011). Every new money flow posts to the ledger and gets a balanced-ledger assertion in e2e.
+- Realtime: never import the realtime module; emit a domain event and map it in `realtime/listeners`. All emits go through `RealtimePublisher` (Redis emitter), so workers can publish (ADR-0013).
+- Notifications: add a template in `notifications/templates.ts` (en + hi, declare variables) and call `NotificationsFacade.notifyUsers()`; categories map to user preferences.
+- Periodic work: `MaintenanceRegistry.registerRecurring(name, everyMs, fn)` (runs on the maintenance queue in the worker); daily clean-ups use `register()`.
+- AI: system prompts start with `[task:<name>]` (the mock LLM dispatches on it). Aarti times only via `get_aarti_schedule` / the planner's DB candidates (ADR-0015). Models: `LLM_MODEL_DEFAULT` / `LLM_MODEL_CHEAP`.
+- Mock-only test helpers: `MockPaymentAdapter.holdRefunds`, `MockVideoAdapter.holdAssets`, `MockSmsAdapter.rejectNumbers`, `MockLlmAdapter.calls`; Socket.IO helpers `connectSocket` / `subscribeRoom` / `nextEvent` in `test/helpers.ts`.
 
 ## Naming
 

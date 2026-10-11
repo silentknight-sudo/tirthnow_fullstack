@@ -65,14 +65,12 @@ export class ChatController {
   ): Promise<void> {
     // Not-found and quota errors are ordinary JSON responses (thrown before the stream opens).
     const prepared = await this.chat.prepare(u, id, dto.content);
-    res
-      .status(200)
-      .set({
-        'content-type': 'text/event-stream; charset=utf-8',
-        'cache-control': 'no-cache, no-transform',
-        connection: 'keep-alive',
-        'x-accel-buffering': 'no',
-      });
+    res.status(200).set({
+      'content-type': 'text/event-stream; charset=utf-8',
+      'cache-control': 'no-cache, no-transform',
+      connection: 'keep-alive',
+      'x-accel-buffering': 'no',
+    });
     res.flushHeaders();
     let closed = false;
     res.on('close', () => {

@@ -518,7 +518,7 @@ erDiagram
   ledger_entries {
     uuid id PK
     uuid txn_id "groups balanced entries"
-    ledger_account account "platform_clearing|vendor_payable|platform_revenue|gst_payable|refunds_payable"
+    ledger_account account "platform_clearing|vendor_pending|vendor_payable|platform_revenue|gst_payable|refunds_payable"
     uuid vendor_id FK
     uuid order_id FK
     uuid payout_id FK
@@ -836,6 +836,14 @@ Differences from the diagrams above, which stay at the conceptual level:
 - Triggers: `ledger_entries_balanced` (deferred constraint trigger: each `txn_id` nets to zero at commit) and `*_append_only` on `ledger_entries`, `audit_logs`, `order_status_history` (UPDATE/DELETE rejected).
 - Raw indexes: HNSW cosine on `knowledge_chunks.embedding`, trigram GIN on temple names (en/hi), partial `orders(hold_expires_at) WHERE status='pending'`.
 
+## Phase 2 schema changes
+
+| Migration | Change | Why |
+|---|---|---|
+| `ledger_vendor_pending` | `ledger_account` gains `vendor_pending` | Sales sit in `vendor_pending` until the service is completed (or a cancellation keeps a penalty), then settle to `vendor_payable` (ADR-0009). |
+| `aarti_reminders` | New table `aarti_reminders (user_id, aarti_schedule_id, minutes_before, last_occurrence_at)`, unique per user + schedule | Per-user reminders owned by notifications; `last_occurrence_at` makes the per-minute scheduler send once per occurrence. |
+| `reel_playback` | `reels.video_provider_id` (unique), `playback_url`, `poster_url` | Link webhooks from Cloudflare Stream / Mux to the reel and store the HLS URL. |
+
 ## Table notes
 
 ### Identity
@@ -863,14 +871,14 @@ Differences from the diagrams above, which stay at the conceptual level:
 - **order_status_history** is append-only and is the audit trail for disputes.
 
 ### Payments
-- **payment_events.provider_event_id UNIQUE** makes the webhook handler idempotent: insert-or-ignore, and only the inserting request processes the event. Signature-invalid events are stored with `signature_valid=false` and not processed.
+- **payment_events.provider_event_id UNIQUE** makes the webhook handler idempotent: insert-or-ignore, and only the inserting request processes the event. Webhooks with an invalid signature are rejected before anything is stored, so a forged request can never claim a real event id. Processing runs under a row lock and stamps `processed_at`; re-deliveries are no-ops.
 - **commission_rules** resolution: most specific active rule wins (vendor > city+type > type > global), tie-broken by `priority`. The resolved rule id and amount are snapshotted onto the order at confirmation so later rule edits don't change history.
-- **ledger_entries** — append-only, double-entry; each `txn_id` group must balance (sum debits = sum credits), enforced by a deferred constraint trigger. Vendor balance = Σ(credit − debit) on `vendor_payable` for that vendor.
+- **ledger_entries** — append-only, double-entry; each `txn_id` group must balance (sum debits = sum credits), enforced by a deferred constraint trigger. Accounts: `platform_clearing`, `vendor_pending` (sold, not yet delivered), `vendor_payable` (earned), `platform_revenue`, `gst_payable` (GST on commission), `refunds_payable`. Postings per event are in ADR-0009. Vendor payable = Σ(credit − debit) on `vendor_payable`; payout eligibility in ADR-0011.
 - **payouts** require admin approval (`pending_approval → approved`) before the Route transfer executes.
 
 ### Reviews & reels
 - **reviews.order_id** unique → one verified review per completed order. Reviews on temples have no order.
-- **reels** counters are denormalized and updated by the same transaction as the like/save/comment write (or by a periodic reconciler). `score` is recomputed by a job: recency decay + engagement + locality boost + creator follow graph.
+- **reels** counters are denormalized: likes/saves change only when the insert/delete actually happened; `comment_count` is recounted (approved, undeleted comments) after every comment change. `score` is a hot score (engagement decaying with age) recomputed every 10 minutes for the last 30 days. Status flow: `processing → published | hidden (flagged caption or 3 reports) | removed`.
 - **reports** with `reporter_id IS NULL` are AI auto-flags from the moderation job.
 
 ### AI
@@ -880,7 +888,8 @@ Differences from the diagrams above, which stay at the conceptual level:
 
 ### Ops
 - **notification_templates.dlt_template_id** — TRAI DLT requires pre-registered SMS templates; the SMS adapter refuses to send a template without one in production.
-- **sos_events** — `location_trail` holds the last ~240 points (2 h at 30 s); older points are discarded. `share_token` is 128-bit random, URL-safe, and expires at resolution + 1 h.
+- **sos_events** — `location_trail` keeps the newest 500 points (appended in SQL so concurrent updates never drop points). `share_token` is 128-bit random, URL-safe, valid for `SOS_SHARE_HOURS` and expires immediately when the SOS is closed. `dispatch_result` records the notification ids so a retried dispatch job never alerts contacts twice.
+- **aarti_reminders** — owned by notifications; see Phase 2 schema changes.
 - **audit_logs** — append-only (no UPDATE/DELETE grants for the app role in production).
 - **app_config** — feature flags, banners, min app version; read by clients via `GET /v1/config` (cached 60 s).
 

@@ -11,9 +11,9 @@ Lead times matter: start the slow ones (★) early.
 | 4 | ★ Razorpay account + KYC, **Route** enabled, webhook secret | Payments, vendor payouts | `RAZORPAY_*` | Route activation needs a separate request to Razorpay. |
 | 5 | ★ MSG91 account + **TRAI DLT** entity & template registration | SMS (SOS, OTP fallback, booking) | `MSG91_*`, template ids in `notification_templates` | DLT approval can take 1–3 weeks. |
 | 6 | ★ WhatsApp Business (Meta) verification + message templates | SOS + booking messages | `WHATSAPP_*` | Stays mocked until approved. |
-| 7 | Google Cloud project: Maps (Directions, Places, Distance Matrix, Maps SDK Android/iOS), Speech-to-Text, Text-to-Speech, Vision, Translate | Maps, voice, landmark, translation | `GOOGLE_MAPS_API_KEY`, `GOOGLE_APPLICATION_CREDENTIALS_JSON` | Separate restricted keys for server, Android, iOS, web. |
-| 8 | Anthropic (Claude) API key | AI guide, planner, moderation | `ANTHROPIC_API_KEY`, `LLM_MODEL_*` | |
-| 9 | Embeddings provider key (OpenAI or Voyage) | RAG | `OPENAI_API_KEY` / `VOYAGE_API_KEY` | Must yield 1536-dim vectors (ADR-0003). |
+| 7 | Google Cloud project: Maps (Routes API, Maps SDK Android/iOS), Speech-to-Text, Text-to-Speech, Vision | Maps, voice, landmark recognition | `GOOGLE_MAPS_API_KEY`, `GOOGLE_CLOUD_API_KEY` | Separate restricted keys: server Maps key, server key limited to Speech/TTS/Vision, and app keys per platform. |
+| 8 | Anthropic (Claude) API key | AI guide, planner, moderation | `ANTHROPIC_API_KEY`, `LLM_MODEL_*` | Defaults `claude-opus-5-5` / `claude-haiku-5-5` (ADR-0015). |
+| 9 | OpenAI API key (embeddings only) | RAG knowledge base | `OPENAI_API_KEY` | `text-embedding-3-small`, 1536 dimensions. |
 | 10 | Cloudflare account: R2 buckets (public + private), Stream (or Mux) | Media, reels | `S3_*`, `CF_STREAM_*` / `MUX_*` | |
 | 11 | OpenWeather API key | Weather | `OPENWEATHER_API_KEY` | |
 | 12 | Transit partner (train search API) | Transit | TBD | Mock + IRCTC deep links until chosen. |
@@ -39,3 +39,12 @@ with the gateway id; text in the row overrides the built-in wording.
 
 Push notifications need no registration beyond the Firebase project (row 1); the
 mobile app must create the Android channels `orders`, `aarti`, `sos` and `general`.
+
+## Content the client team prepares (Phase 2)
+
+- **Knowledge base**: approve the catalog sync (`POST /v1/admin/knowledge-documents/sync-catalog`)
+  and upload vetted guides (parikrama, etiquette, festival stories) as text or PDF. Only
+  approved documents are quoted by the AI guide.
+- **Commission rules**: at least one global rule (`/v1/admin/commission-rules`) before
+  the first booking; vendor-specific rules for launch partners.
+- **Helplines**: `safety.helplines` setting in `/v1/admin/config` (defaults to 112).

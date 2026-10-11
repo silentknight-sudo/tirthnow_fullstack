@@ -176,7 +176,7 @@ flowchart TB
 | reels | reels, reel_likes, reel_comments, reel_saves, follows, reports, moderation_actions |
 | ai | knowledge_documents, knowledge_chunks, chat_sessions, chat_messages, itineraries, itinerary_days, itinerary_items, ai_usage |
 | safety | sos_events (emergency_contacts read via identity facade) |
-| notifications | notifications, notification_templates |
+| notifications | notifications, notification_templates, aarti_reminders |
 | admin | audit_logs, app_config |
 
 \* `emergency_contacts` lives in identity (it is profile data) and is read by safety.

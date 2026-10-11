@@ -206,9 +206,7 @@ export class ReviewsService {
     if (!matches) throw notAllowed('This order is not for that listing');
   }
 
-  private async moderate(
-    body: string | undefined,
-  ): Promise<{
+  private async moderate(body: string | undefined): Promise<{
     status: ModerationStatus;
     flagged: ReviewFlaggedEvent['categories'];
     scores: ReviewFlaggedEvent['scores'];
