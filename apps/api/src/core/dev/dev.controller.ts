@@ -14,7 +14,18 @@ import { SkipThrottle } from '@nestjs/throttler';
 import { type Request, type Response } from 'express';
 import { Public } from '../auth';
 import { AppException } from '../http';
-import { type Bucket, MockEmailAdapter, MockStorageAdapter, type OutboxEntry } from '../providers';
+import {
+  type Bucket,
+  MockEmailAdapter,
+  MockPushAdapter,
+  MockSmsAdapter,
+  MockStorageAdapter,
+  MockWhatsAppAdapter,
+  type OutboxEntry,
+  type SentPush,
+  type SentSms,
+  type SentWhatsApp,
+} from '../providers';
 
 const MAX_UPLOAD = 250 * 1024 * 1024;
 
@@ -36,13 +47,21 @@ function bucketOf(value: string): Bucket {
 export class DevController {
   constructor(
     private readonly mockEmail: MockEmailAdapter,
+    private readonly mockPush: MockPushAdapter,
+    private readonly mockSms: MockSmsAdapter,
+    private readonly mockWhatsApp: MockWhatsAppAdapter,
     private readonly mockStorage: MockStorageAdapter,
   ) {}
 
-  /** Messages captured by mock providers (EMAIL_PROVIDER=mock). */
+  /** Messages captured by mock providers (EMAIL/PUSH/SMS/WHATSAPP_PROVIDER=mock). */
   @Get('outbox')
-  outbox(): { email: OutboxEntry[] } {
-    return { email: this.mockEmail.outbox };
+  outbox(): { email: OutboxEntry[]; push: SentPush[]; sms: SentSms[]; whatsapp: SentWhatsApp[] } {
+    return {
+      email: this.mockEmail.outbox,
+      push: this.mockPush.outbox,
+      sms: this.mockSms.outbox,
+      whatsapp: this.mockWhatsApp.outbox,
+    };
   }
 
   /** Target of mock presigned PUT URLs (STORAGE_PROVIDER=mock). */

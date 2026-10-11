@@ -71,6 +71,22 @@ export const envSchema = z
 
     THROTTLE_DEFAULT_PER_MIN: z.coerce.number().int().positive().default(120),
     THROTTLE_AUTH_PER_MIN: z.coerce.number().int().positive().default(10),
+    SOS_MAX_PER_10_MIN: z.coerce.number().int().min(1).max(20).default(3),
+    SOS_SHARE_HOURS: z.coerce.number().int().min(1).max(48).default(2),
+
+    PUSH_PROVIDER: z.enum(['mock', 'fcm']).default('mock'),
+    SMS_PROVIDER: z.enum(['mock', 'msg91']).default('mock'),
+    MSG91_AUTH_KEY: optionalString,
+    MSG91_SENDER_ID: optionalString,
+    MSG91_DLT_ENTITY_ID: optionalString,
+    WHATSAPP_PROVIDER: z.enum(['mock', 'meta']).default('mock'),
+    WHATSAPP_PHONE_NUMBER_ID: optionalString,
+    WHATSAPP_ACCESS_TOKEN: optionalString,
+
+    WEATHER_PROVIDER: z.enum(['mock', 'openweather']).default('mock'),
+    OPENWEATHER_API_KEY: optionalString,
+    WEATHER_CACHE_SECONDS: z.coerce.number().int().min(60).max(3600).default(900),
+    TRANSIT_PROVIDER: z.enum(['mock']).default('mock'),
 
     FIREBASE_AUTH_PROVIDER: z.enum(['mock', 'firebase']).default('mock'),
     FIREBASE_PROJECT_ID: optionalString,
@@ -113,6 +129,10 @@ export const envSchema = z
       storage: env.STORAGE_PROVIDER,
       maps: env.MAPS_PROVIDER,
       payment: env.PAYMENT_PROVIDER,
+      push: env.PUSH_PROVIDER,
+      sms: env.SMS_PROVIDER,
+      whatsapp: env.WHATSAPP_PROVIDER,
+      weather: env.WEATHER_PROVIDER,
     } as const;
     for (const [capability, provider] of Object.entries(selectors)) {
       if (provider === 'mock' && !env.ALLOW_MOCK_PROVIDERS.includes(capability)) {
@@ -141,6 +161,35 @@ export const envSchema = z
             code: z.ZodIssueCode.custom,
             path: [key],
             message: 'required when PAYMENT_PROVIDER=razorpay',
+          });
+      }
+    }
+    const requires: [boolean, string, (keyof typeof env)[]][] = [
+      [env.SMS_PROVIDER === 'msg91', 'SMS_PROVIDER=msg91', ['MSG91_AUTH_KEY', 'MSG91_SENDER_ID']],
+      [
+        env.WHATSAPP_PROVIDER === 'meta',
+        'WHATSAPP_PROVIDER=meta',
+        ['WHATSAPP_PHONE_NUMBER_ID', 'WHATSAPP_ACCESS_TOKEN'],
+      ],
+      [
+        env.WEATHER_PROVIDER === 'openweather',
+        'WEATHER_PROVIDER=openweather',
+        ['OPENWEATHER_API_KEY'],
+      ],
+      [
+        env.PUSH_PROVIDER === 'fcm',
+        'PUSH_PROVIDER=fcm',
+        ['FIREBASE_PROJECT_ID', 'FIREBASE_CLIENT_EMAIL', 'FIREBASE_PRIVATE_KEY'],
+      ],
+    ];
+    for (const [active, when, keys] of requires) {
+      if (!active) continue;
+      for (const key of keys) {
+        if (!env[key])
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: [key],
+            message: `required when ${when}`,
           });
       }
     }

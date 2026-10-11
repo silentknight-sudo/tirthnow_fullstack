@@ -7,6 +7,7 @@ import { QUEUES, RoleAwareProcessor, runsWorkers } from '../queue';
 import { MaintenanceRegistry } from './maintenance.registry';
 
 export const PURGE_JOB = 'purge-expired';
+const RECURRING_PREFIX = 'run-';
 
 @Processor(QUEUES.maintenance, { autorun: false })
 export class MaintenanceProcessor extends RoleAwareProcessor implements OnApplicationBootstrap {
@@ -36,10 +37,22 @@ export class MaintenanceProcessor extends RoleAwareProcessor implements OnApplic
         { pattern: '45 21 * * *' },
         { name: PURGE_JOB },
       );
+      for (const r of this.registry.recurringTasks()) {
+        const name = `${RECURRING_PREFIX}${r.name}`;
+        void this.queue.upsertJobScheduler(
+          name,
+          { every: r.everyMs },
+          { name, opts: { attempts: 1 } },
+        );
+      }
     }
   }
 
   async process(job: Job): Promise<Record<string, number>> {
+    if (job.name.startsWith(RECURRING_PREFIX)) {
+      const name = job.name.slice(RECURRING_PREFIX.length);
+      return { [name]: await this.registry.runRecurring(name) };
+    }
     if (job.name !== PURGE_JOB) return {};
     const results = await this.registry.runAll();
     this.logger.log({ results }, 'maintenance complete');

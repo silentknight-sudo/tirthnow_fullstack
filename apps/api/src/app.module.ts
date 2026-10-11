@@ -10,9 +10,14 @@ import { CatalogModule } from './modules/catalog';
 import { FilesModule } from './modules/files';
 import { IdentityModule } from './modules/identity';
 import { InventoryModule } from './modules/inventory';
+import { NotificationsModule } from './modules/notifications';
 import { OrdersModule } from './modules/orders';
 import { PaymentsModule } from './modules/payments';
+import { RealtimeModule } from './modules/realtime';
+import { SafetyModule } from './modules/safety';
+import { TransitModule } from './modules/transit';
 import { VendorsModule } from './modules/vendors';
+import { WeatherModule } from './modules/weather';
 
 @Module({})
 export class AppModule {
@@ -33,6 +38,11 @@ export class AppModule {
         InventoryModule,
         PaymentsModule,
         OrdersModule,
+        NotificationsModule,
+        SafetyModule,
+        RealtimeModule.forRoot(config),
+        WeatherModule,
+        TransitModule,
         ...(config.isProduction ? [] : [DevModule]),
       ],
     };

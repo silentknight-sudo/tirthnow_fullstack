@@ -425,6 +425,7 @@ model User {
   chatSessions      ChatSession[]
   itineraries       Itinerary[]
   notifications     Notification[]
+  aartiReminders    AartiReminder[]
   sosEvents         SosEvent[]          @relation("SosUser")
   sosHandled        SosEvent[]          @relation("SosHandler")
   auditLogs         AuditLog[]
@@ -623,6 +624,7 @@ model AartiSchedule {
 
   temple         Temple          @relation(fields: [templeId], references: [id], onDelete: Cascade)
   itineraryItems ItineraryItem[]
+  reminders      AartiReminder[]
 
   @@index([templeId, localTime])
   @@map("aarti_schedules")
@@ -1679,6 +1681,24 @@ model Notification {
   @@index([userId, createdAt(sort: Desc)])
   @@index([status, scheduledFor])
   @@map("notifications")
+}
+
+/// Per-user aarti reminder; the scheduler sends one push per occurrence (last_occurrence_at dedupes).
+model AartiReminder {
+  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId           String    @map("user_id") @db.Uuid
+  aartiScheduleId  String    @map("aarti_schedule_id") @db.Uuid
+  minutesBefore    Int       @default(30) @map("minutes_before") @db.SmallInt
+  lastOccurrenceAt DateTime? @map("last_occurrence_at") @db.Timestamptz(3)
+  createdAt        DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt        DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  aartiSchedule AartiSchedule @relation(fields: [aartiScheduleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, aartiScheduleId])
+  @@index([aartiScheduleId])
+  @@map("aarti_reminders")
 }
 
 model SosEvent {

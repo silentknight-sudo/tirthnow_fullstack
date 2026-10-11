@@ -24,3 +24,18 @@ Lead times matter: start the slow ones (★) early.
 | 17 | Legal: privacy policy, terms, refund/cancellation policy, Data Protection (DPDP Act 2023) notices | Store listings, payments | URLs in `app_config` | |
 | 18 | **Verify seeded content**: temple list, coordinates and every aarti time (`apps/api/prisma/seed/catalog-data.ts`) with each temple or a local content team | Catalog, AI guide (quotes aarti times from the DB) | — | Seed times are realistic samples, not verified timings. |
 | 19 | **Decide Node.js runtime**: spec says Node 20, which reached end-of-life in April 2026. Recommend Node 22 LTS for CI and production images | Security patches | `.nvmrc`, Dockerfiles | See ADR-0007. |
+
+## Message templates to register (rows 5 and 6)
+
+Until these are approved the API uses the mock SMS / WhatsApp adapters. After approval,
+add a row per key and channel in `notification_templates` (admin portal → templates)
+with the gateway id; text in the row overrides the built-in wording.
+
+| Key | Channel | Variables (in order) | Purpose |
+|---|---|---|---|
+| `sos_alert` | SMS (DLT) | `name`, `link`, `police` | Alert emergency contacts with the live-location link |
+| `sos_alert` | WhatsApp (utility) | `name`, `link`, `police` | Same, on WhatsApp |
+| `sos_resolved` | SMS (DLT) | `name` | Tell contacts the traveller is safe |
+
+Push notifications need no registration beyond the Firebase project (row 1); the
+mobile app must create the Android channels `orders`, `aarti`, `sos` and `general`.

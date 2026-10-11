@@ -14,7 +14,9 @@ import { type AuthPrincipal, CurrentUser } from '../../../core/auth';
 import { type Page } from '../../../core/http';
 import { Idempotent } from '../../../core/idempotency';
 import { VendorAccessGuard, VendorPermissionRequired } from '../../vendors';
-import { OrderQueryDto, OrderResponse, ReasonDto } from '../dto/orders.dto';
+import { CabLocationDto, OrderQueryDto, OrderResponse, ReasonDto } from '../dto/orders.dto';
+import { type CabLocationEvent } from '../events';
+import { CabTrackingService } from '../services/cab-tracking.service';
 import { OrdersService } from '../services/orders.service';
 
 const UUID = new ParseUUIDPipe();
@@ -25,7 +27,20 @@ const UUID = new ParseUUIDPipe();
 @VendorPermissionRequired('orders.manage')
 @Controller('vendors/:vid/orders')
 export class VendorOrdersController {
-  constructor(private readonly orders: OrdersService) {}
+  constructor(
+    private readonly orders: OrdersService,
+    private readonly tracking: CabTrackingService,
+  ) {}
+
+  @Post(':id/location')
+  @HttpCode(200)
+  location(
+    @Param('vid', UUID) vid: string,
+    @Param('id', UUID) id: string,
+    @Body() dto: CabLocationDto,
+  ): Promise<CabLocationEvent> {
+    return this.tracking.update(vid, id, dto);
+  }
 
   @Get()
   @ApiOkResponse({ type: [OrderResponse] })

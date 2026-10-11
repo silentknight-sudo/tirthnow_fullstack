@@ -56,6 +56,20 @@ export class AartiService {
     return expandSchedules(schedules, from, to).map((o) => this.toResponse(o, lang));
   }
 
+  async instancesForSchedules(
+    scheduleIds: string[],
+    from: string,
+    to: string,
+    lang: Lang,
+  ): Promise<AartiInstanceResponse[]> {
+    if (scheduleIds.length === 0) return [];
+    const schedules = await this.prisma.aartiSchedule.findMany({
+      where: { id: { in: scheduleIds }, temple: { deletedAt: null } },
+      include: { temple: { select: { nameI18n: true } } },
+    });
+    return expandSchedules(schedules, from, to).map((o) => this.toResponse(o, lang));
+  }
+
   /** Next aarti that has not ended yet (looks a week ahead). */
   async nextForTemple(
     templeId: string,

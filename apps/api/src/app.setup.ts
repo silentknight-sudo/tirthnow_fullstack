@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import { Logger } from 'nestjs-pino';
 import { type AppConfig } from './core/config';
 import { AllExceptionsFilter, createValidationPipe } from './core/http';
+import { RedisIoAdapter } from './modules/realtime';
 
 export const API_PREFIX = 'v1';
 
@@ -31,8 +32,11 @@ export function configureApp(app: NestExpressApplication, config: AppConfig): vo
     exclude: [
       { path: 'healthz', method: RequestMethod.GET },
       { path: 'readyz', method: RequestMethod.GET },
+      // SOS share links sent by SMS stay short: /s/<token>.
+      { path: 's/:shareToken', method: RequestMethod.GET },
     ],
   });
+  app.useWebSocketAdapter(new RedisIoAdapter(app, config));
   app.useGlobalPipes(createValidationPipe());
   app.useGlobalFilters(new AllExceptionsFilter());
   app.enableShutdownHooks();

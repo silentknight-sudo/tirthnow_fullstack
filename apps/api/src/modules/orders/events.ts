@@ -9,7 +9,8 @@ export const ORDER_EVENTS = {
   refunded: 'order.refunded',
   accepted: 'order.accepted',
   pending: 'order.pending',
-} as const satisfies Partial<Record<OrderStatus | 'created' | 'accepted', string>>;
+  cabLocation: 'cab.location_updated',
+} as const satisfies Partial<Record<OrderStatus | 'created' | 'accepted' | 'cabLocation', string>>;
 
 export interface OrderEvent {
   orderId: string;
@@ -21,4 +22,14 @@ export interface OrderEvent {
   status: OrderStatus;
   actorType: string;
   reason: string | null;
+}
+
+/** Driver position for a cab order (also cached for GET /orders/:id/tracking). */
+export interface CabLocationEvent {
+  orderId: string;
+  lat: number;
+  lng: number;
+  headingDeg: number | null;
+  speedKph: number | null;
+  at: string;
 }

@@ -51,6 +51,23 @@ export interface AppConfig {
     gstOnCommissionBps: number;
   };
   maps: { provider: Env['MAPS_PROVIDER']; googleApiKey: string | undefined };
+  messaging: {
+    pushProvider: Env['PUSH_PROVIDER'];
+    smsProvider: Env['SMS_PROVIDER'];
+    msg91AuthKey: string | undefined;
+    msg91SenderId: string | undefined;
+    msg91DltEntityId: string | undefined;
+    whatsappProvider: Env['WHATSAPP_PROVIDER'];
+    whatsappPhoneNumberId: string | undefined;
+    whatsappAccessToken: string | undefined;
+  };
+  weather: {
+    provider: Env['WEATHER_PROVIDER'];
+    openWeatherApiKey: string | undefined;
+    cacheSeconds: number;
+  };
+  transit: { provider: Env['TRANSIT_PROVIDER'] };
+  sos: { maxPer10Min: number; shareHours: number };
   storage: {
     provider: Env['STORAGE_PROVIDER'];
     endpoint: string | undefined;
@@ -129,6 +146,23 @@ export function loadConfig(source: NodeJS.ProcessEnv): AppConfig {
       gstOnCommissionBps: e.PLATFORM_GST_BPS,
     },
     maps: { provider: e.MAPS_PROVIDER, googleApiKey: e.GOOGLE_MAPS_API_KEY },
+    messaging: {
+      pushProvider: e.PUSH_PROVIDER,
+      smsProvider: e.SMS_PROVIDER,
+      msg91AuthKey: e.MSG91_AUTH_KEY,
+      msg91SenderId: e.MSG91_SENDER_ID,
+      msg91DltEntityId: e.MSG91_DLT_ENTITY_ID,
+      whatsappProvider: e.WHATSAPP_PROVIDER,
+      whatsappPhoneNumberId: e.WHATSAPP_PHONE_NUMBER_ID,
+      whatsappAccessToken: e.WHATSAPP_ACCESS_TOKEN,
+    },
+    weather: {
+      provider: e.WEATHER_PROVIDER,
+      openWeatherApiKey: e.OPENWEATHER_API_KEY,
+      cacheSeconds: e.WEATHER_CACHE_SECONDS,
+    },
+    transit: { provider: e.TRANSIT_PROVIDER },
+    sos: { maxPer10Min: e.SOS_MAX_PER_10_MIN, shareHours: e.SOS_SHARE_HOURS },
     storage: {
       provider: e.STORAGE_PROVIDER,
       endpoint: e.S3_ENDPOINT,

@@ -64,6 +64,20 @@ export class CatalogFacade {
     return this.aarti.instancesForTemples(templeIds, from, to, lang);
   }
 
+  /** Occurrences of specific schedules between two IST dates (reminders). */
+  aartiOccurrences(
+    scheduleIds: string[],
+    from: string,
+    to: string,
+    lang: Lang,
+  ): Promise<AartiInstanceResponse[]> {
+    return this.aarti.instancesForSchedules(scheduleIds, from, to, lang);
+  }
+
+  nextAarti(templeId: string, lang: Lang, now?: Date): Promise<AartiInstanceResponse | null> {
+    return this.aarti.nextForTemple(templeId, lang, now);
+  }
+
   upcomingAarti(
     cityId: string | undefined,
     limit: number,

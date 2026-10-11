@@ -5,6 +5,7 @@ import { type EmergencyContactResponse } from './dto/me.dto';
 import { AuthService } from './services/auth.service';
 import { DevicesService } from './services/devices.service';
 import { EmergencyContactsService } from './services/emergency-contacts.service';
+import { ProfileService } from './services/profile.service';
 import { UsersService } from './services/users.service';
 
 export interface UserContact {
@@ -25,8 +26,46 @@ export class IdentityFacade {
     private readonly users: UsersService,
     private readonly devices: DevicesService,
     private readonly contacts: EmergencyContactsService,
+    private readonly profiles: ProfileService,
     private readonly prisma: PrismaService,
   ) {}
+
+  async notificationPrefs(userId: string): Promise<Record<string, unknown>> {
+    return (await this.profiles.get(userId)).notificationPrefs;
+  }
+
+  /** Partial update, merged into the stored preferences. */
+  async updateNotificationPrefs(
+    userId: string,
+    prefs: {
+      aartiReminders?: boolean;
+      bookingUpdates?: boolean;
+      marketing?: boolean;
+      defaultReminderMinutes?: number;
+    },
+  ): Promise<Record<string, unknown>> {
+    return (await this.profiles.update(userId, { notificationPrefs: prefs })).notificationPrefs;
+  }
+
+  /** Active, non-guest users in a city segment (broadcasts). */
+  async activeUserIds(filter: {
+    homeCityId?: string;
+    limit: number;
+    afterId?: string;
+  }): Promise<string[]> {
+    const rows = await this.prisma.user.findMany({
+      where: {
+        status: 'active',
+        isGuest: false,
+        ...(filter.homeCityId ? { profile: { homeCityId: filter.homeCityId } } : {}),
+        ...(filter.afterId ? { id: { gt: filter.afterId } } : {}),
+      },
+      select: { id: true },
+      orderBy: { id: 'asc' },
+      take: filter.limit,
+    });
+    return rows.map((r) => r.id);
+  }
 
   getAuthUser(userId: string): Promise<AuthUser> {
     return this.auth.me(userId);

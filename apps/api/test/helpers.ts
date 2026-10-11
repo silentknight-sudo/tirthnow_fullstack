@@ -6,17 +6,25 @@ import { Test } from '@nestjs/testing';
 import argon2 from 'argon2';
 import { type Job, type Queue } from 'bullmq';
 import { type Redis } from 'ioredis';
+import { io, type Socket as ClientSocket } from 'socket.io-client';
 import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { configureApp } from '../src/app.setup';
 import { type AppConfig, loadConfig } from '../src/core/config';
 import { PrismaService } from '../src/core/prisma';
-import { MockEmailAdapter } from '../src/core/providers';
+import {
+  MockEmailAdapter,
+  MockPushAdapter,
+  MockSmsAdapter,
+  MockWhatsAppAdapter,
+} from '../src/core/providers';
 import { REDIS } from '../src/core/redis';
 
 export interface TestApp {
   app: INestApplication;
   http: ReturnType<typeof request>;
+  /** http://127.0.0.1:<port> (Socket.IO clients connect to `${baseUrl}/rt`). */
+  baseUrl: string;
   prisma: PrismaService;
   redis: Redis;
   email: MockEmailAdapter;
@@ -43,6 +51,7 @@ export async function createTestApp(
   return {
     app,
     http: request(`http://127.0.0.1:${address.port}`),
+    baseUrl: `http://127.0.0.1:${address.port}`,
     prisma: app.get(PrismaService),
     redis: app.get<Redis>(REDIS),
     email: app.get(MockEmailAdapter),
@@ -62,6 +71,10 @@ export async function resetState(t: TestApp): Promise<void> {
   }
   await t.redis.flushdb();
   t.email.outbox.length = 0;
+  t.app.get(MockPushAdapter).outbox.length = 0;
+  t.app.get(MockSmsAdapter).outbox.length = 0;
+  t.app.get(MockSmsAdapter).rejectNumbers.clear();
+  t.app.get(MockWhatsAppAdapter).outbox.length = 0;
 }
 
 const FAST_ARGON = {
@@ -262,4 +275,60 @@ export async function createActiveVendor(
 export async function adminToken(t: TestApp, email = 'admin@ops.test'): Promise<string> {
   await createPortalUser(t, { email, password: 'Password-123', roles: ['user', 'admin'] });
   return (await signInPortal(t, email, 'Password-123')).token;
+}
+
+/** Connected Socket.IO client for the /rt namespace (anonymous without a token). */
+export async function connectSocket(t: TestApp, token?: string): Promise<ClientSocket> {
+  const socket = io(`${t.baseUrl}/rt`, {
+    auth: token ? { token } : {},
+    transports: ['websocket'],
+    forceNew: true,
+    reconnection: false,
+  });
+  await new Promise<void>((resolve, reject) => {
+    socket.once('connect', () => {
+      resolve();
+    });
+    socket.once('connect_error', reject);
+  });
+  return socket;
+}
+
+export function subscribeRoom(
+  socket: ClientSocket,
+  room: string,
+): Promise<{ ok: boolean; error?: string }> {
+  return socket.timeout(3_000).emitWithAck('subscribe', { room }) as Promise<{
+    ok: boolean;
+    error?: string;
+  }>;
+}
+
+/** Resolve with the next payload of `event` (rejects after `ms`). */
+export function nextEvent<T>(socket: ClientSocket, event: string, ms = 3_000): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const timer = setTimeout(() => {
+      socket.off(event, handler);
+      reject(new Error(`no ${event} within ${String(ms)} ms`));
+    }, ms);
+    const handler = (payload: T) => {
+      clearTimeout(timer);
+      resolve(payload);
+    };
+    socket.once(event, handler);
+  });
+}
+
+/** Collect payloads of `event` for `ms` (to assert something was NOT received). */
+export async function collectEvents<T>(
+  socket: ClientSocket,
+  event: string,
+  ms = 400,
+): Promise<T[]> {
+  const got: T[] = [];
+  const handler = (payload: T) => got.push(payload);
+  socket.on(event, handler);
+  await new Promise((r) => setTimeout(r, ms));
+  socket.off(event, handler);
+  return got;
 }

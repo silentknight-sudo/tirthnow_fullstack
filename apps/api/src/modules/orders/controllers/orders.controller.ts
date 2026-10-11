@@ -28,7 +28,9 @@ import {
   OrderResponse,
   PaymentIntentResponse,
   VerifyPaymentDto,
+  CabTrackingResponse,
 } from '../dto/orders.dto';
+import { CabTrackingService } from '../services/cab-tracking.service';
 import { OrdersService } from '../services/orders.service';
 
 @ApiTags('orders')
@@ -36,7 +38,10 @@ import { OrdersService } from '../services/orders.service';
 @NoGuests()
 @Controller('orders')
 export class OrdersController {
-  constructor(private readonly orders: OrdersService) {}
+  constructor(
+    private readonly orders: OrdersService,
+    private readonly cabTracking: CabTrackingService,
+  ) {}
 
   @Post()
   @Idempotent('order.create')
@@ -60,6 +65,15 @@ export class OrdersController {
     @Query() q: OrderQueryDto,
   ): Promise<Page<OrderResponse>> {
     return this.orders.listMine(user, q);
+  }
+
+  @Get(':id/tracking')
+  @ApiOkResponse({ type: CabTrackingResponse })
+  tracking(
+    @CurrentUser() user: AuthPrincipal,
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<CabTrackingResponse> {
+    return this.cabTracking.forUser(user, id);
   }
 
   @Get(':id')

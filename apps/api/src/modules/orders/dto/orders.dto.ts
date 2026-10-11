@@ -225,3 +225,31 @@ export class CancellationPreviewResponse {
   @ApiProperty() penaltyPaise!: number;
   @ApiProperty() reason!: string;
 }
+
+export class CabLocationDto {
+  @ApiProperty({ example: 27.5806 }) @IsLatitude() lat!: number;
+  @ApiProperty({ example: 77.6996 }) @IsLongitude() lng!: number;
+  @ApiPropertyOptional({ minimum: 0, maximum: 359 })
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  @Max(359)
+  headingDeg?: number;
+  @ApiPropertyOptional({ minimum: 0, maximum: 200 })
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  @Max(200)
+  speedKph?: number;
+}
+
+export class CabTrackingResponse {
+  @ApiProperty() orderId!: string;
+  @ApiProperty({ nullable: true, type: Number }) lat!: number | null;
+  @ApiProperty({ nullable: true, type: Number }) lng!: number | null;
+  @ApiProperty({ nullable: true, type: Number }) headingDeg!: number | null;
+  @ApiProperty({ nullable: true, type: Number }) speedKph!: number | null;
+  @ApiProperty({ nullable: true, type: String }) at!: string | null;
+  @ApiProperty({ description: 'Socket.IO room for live updates (event cab.location)' })
+  room!: string;
+}

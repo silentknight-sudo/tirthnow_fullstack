@@ -14,3 +14,7 @@ export function pickLang(text: I18nText, lang: Lang): string {
 }
 
 export const DISPLAY_TIME_ZONE = 'Asia/Kolkata';
+
+export function isLang(value: unknown): value is Lang {
+  return typeof value === 'string' && (LANGS as readonly string[]).includes(value);
+}

@@ -4,7 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { type AccessTokenClaims, ERROR_CODES, isRole } from '@tirth-now/shared-types';
 import { AppException } from '../http';
 import { IS_PUBLIC_KEY } from './decorators';
-import { type RequestWithPrincipal } from './principal';
+import { type AuthPrincipal, type RequestWithPrincipal } from './principal';
 
 function bearerToken(header: unknown): string | null {
   if (typeof header !== 'string') return null;
@@ -24,6 +24,27 @@ function isClaims(value: unknown): value is AccessTokenClaims {
     Array.isArray(v.vendorIds) &&
     v.vendorIds.every((x) => typeof x === 'string')
   );
+}
+
+/** Verify an access JWT; null when invalid or expired. Shared by the HTTP guard and the realtime gateway. */
+export async function principalFromToken(
+  jwt: JwtService,
+  token: string,
+): Promise<AuthPrincipal | null> {
+  let payload: unknown;
+  try {
+    payload = await jwt.verifyAsync(token);
+  } catch {
+    return null;
+  }
+  if (!isClaims(payload)) return null;
+  return {
+    userId: payload.sub,
+    roles: payload.roles,
+    vendorIds: payload.vendorIds,
+    sessionId: payload.sid,
+    isGuest: payload.guest,
+  };
 }
 
 /** Global guard: verifies the access JWT unless the route is @Public(). */
@@ -46,24 +67,14 @@ export class JwtAuthGuard implements CanActivate {
     const token = bearerToken(req.headers.authorization);
     if (!token) throw AppException.unauthorized();
 
-    let payload: unknown;
-    try {
-      payload = await this.jwt.verifyAsync(token);
-    } catch {
+    const principal = await principalFromToken(this.jwt, token);
+    if (!principal) {
       throw AppException.unauthorized(
         ERROR_CODES.AUTH_UNAUTHENTICATED,
         'Access token is invalid or expired',
       );
     }
-    if (!isClaims(payload)) throw AppException.unauthorized();
-
-    req.user = {
-      userId: payload.sub,
-      roles: payload.roles,
-      vendorIds: payload.vendorIds,
-      sessionId: payload.sid,
-      isGuest: payload.guest,
-    };
+    req.user = principal;
     return true;
   }
 }
