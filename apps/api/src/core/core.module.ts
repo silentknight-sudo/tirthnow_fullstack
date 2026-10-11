@@ -1,8 +1,13 @@
 import { type DynamicModule, Module } from '@nestjs/common';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { AuditModule } from './audit';
+import { CacheModule } from './cache';
 import { type AppConfig, ConfigModule } from './config';
 import { LoggingModule } from './logging';
+import { MaintenanceModule } from './maintenance';
 import { PrismaModule } from './prisma';
 import { ProvidersModule } from './providers';
+import { QueueModule } from './queue';
 import { RedisModule } from './redis';
 
 /** Infrastructure shared by the HTTP API and the worker. */
@@ -16,6 +21,11 @@ export class CoreModule {
         LoggingModule,
         PrismaModule,
         RedisModule,
+        CacheModule,
+        QueueModule,
+        AuditModule,
+        MaintenanceModule,
+        EventEmitterModule.forRoot({ wildcard: false, ignoreErrors: false }),
         ProvidersModule,
       ],
     };

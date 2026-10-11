@@ -16,6 +16,40 @@ export class ProviderTimeoutError extends Error {
   }
 }
 
+export class ProviderUnavailableError extends Error {
+  constructor(provider: string) {
+    super(`${provider} is temporarily unavailable (circuit open)`);
+    this.name = 'ProviderUnavailableError';
+  }
+}
+
+/**
+ * Per-provider circuit breaker: after `failureThreshold` consecutive transient failures the
+ * circuit opens for `cooldownMs`; calls fail fast with ProviderUnavailableError meanwhile.
+ * One trial call is let through after the cooldown (half-open).
+ */
+interface CircuitState {
+  failures: number;
+  openUntil: number;
+}
+const circuits = new Map<string, CircuitState>();
+const FAILURE_THRESHOLD = 5;
+const COOLDOWN_MS = 30_000;
+
+function circuitFor(provider: string): CircuitState {
+  let state = circuits.get(provider);
+  if (!state) {
+    state = { failures: 0, openUntil: 0 };
+    circuits.set(provider, state);
+  }
+  return state;
+}
+
+/** Test helper. */
+export function resetCircuits(): void {
+  circuits.clear();
+}
+
 const NETWORK_CODES = new Set([
   'ECONNRESET',
   'ECONNREFUSED',
@@ -65,11 +99,24 @@ export async function callWithPolicy<T>(
   policy: Partial<CallPolicy> = {},
 ): Promise<T> {
   const p = { ...DEFAULT_CALL_POLICY, ...policy };
+  const circuit = circuitFor(provider);
+  if (circuit.openUntil > Date.now()) throw new ProviderUnavailableError(provider);
   for (let attempt = 0; ; attempt++) {
     try {
-      return await withTimeout(provider, p.timeoutMs, fn);
+      const result = await withTimeout(provider, p.timeoutMs, fn);
+      circuit.failures = 0;
+      return result;
     } catch (err) {
-      if (attempt >= p.retries || !p.isRetryable(err)) throw err;
+      const transient = p.isRetryable(err);
+      if (transient) {
+        circuit.failures++;
+        if (circuit.failures >= FAILURE_THRESHOLD) {
+          circuit.openUntil = Date.now() + COOLDOWN_MS;
+          circuit.failures = 0;
+          throw new ProviderUnavailableError(provider);
+        }
+      }
+      if (attempt >= p.retries || !transient) throw err;
       const cap = p.baseDelayMs * 2 ** attempt;
       await sleep(Math.floor(Math.random() * cap));
     }

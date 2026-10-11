@@ -61,6 +61,13 @@ export function normalizeException(exception: unknown): Normalized {
           : messageOf(exception.getResponse(), exception.message),
     };
   }
+  if (exception instanceof Error && exception.name === 'ProviderUnavailableError') {
+    return {
+      status: HttpStatus.SERVICE_UNAVAILABLE,
+      code: ERROR_CODES.PROVIDER_UNAVAILABLE,
+      message: 'A dependent service is temporarily unavailable, please retry shortly',
+    };
+  }
   if (exception instanceof Prisma.PrismaClientKnownRequestError) {
     if (exception.code === 'P2002') {
       return {

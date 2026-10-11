@@ -1,4 +1,14 @@
-import { callWithPolicy, isTransientError, ProviderTimeoutError } from '../call-policy';
+import {
+  callWithPolicy,
+  isTransientError,
+  ProviderTimeoutError,
+  ProviderUnavailableError,
+  resetCircuits,
+} from '../call-policy';
+
+beforeEach(() => {
+  resetCircuits();
+});
 
 describe('callWithPolicy', () => {
   it('retries transient failures then succeeds', async () => {
@@ -50,6 +60,34 @@ describe('callWithPolicy', () => {
         retries: 0,
       }),
     ).rejects.toBeInstanceOf(ProviderTimeoutError);
+  });
+});
+
+describe('circuit breaker', () => {
+  it('opens after repeated transient failures and fails fast', async () => {
+    const failing = () => Promise.reject(Object.assign(new Error('down'), { status: 503 }));
+    await expect(
+      callWithPolicy('flaky', failing, { retries: 10, baseDelayMs: 1 }),
+    ).rejects.toBeInstanceOf(ProviderUnavailableError);
+    let called = false;
+    await expect(
+      callWithPolicy('flaky', () => {
+        called = true;
+        return Promise.resolve('ok');
+      }),
+    ).rejects.toBeInstanceOf(ProviderUnavailableError);
+    expect(called).toBe(false);
+  });
+
+  it('does not count client errors', async () => {
+    for (let i = 0; i < 10; i++) {
+      await expect(
+        callWithPolicy('strict', () =>
+          Promise.reject(Object.assign(new Error('bad'), { status: 400 })),
+        ),
+      ).rejects.toThrow('bad');
+    }
+    await expect(callWithPolicy('strict', () => Promise.resolve('ok'))).resolves.toBe('ok');
   });
 });
 

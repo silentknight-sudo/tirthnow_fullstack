@@ -1,7 +1,9 @@
 import { type INestApplication, type Type } from '@nestjs/common';
+import { getQueueToken } from '@nestjs/bullmq';
 import { type NestExpressApplication } from '@nestjs/platform-express';
 import { Test } from '@nestjs/testing';
 import argon2 from 'argon2';
+import { type Job, type Queue } from 'bullmq';
 import { type Redis } from 'ioredis';
 import request from 'supertest';
 import { AppModule } from '../src/app.module';
@@ -100,3 +102,51 @@ export function tokenFromResetEmail(text: string): string {
   if (!m?.[1]) throw new Error('no reset token in email');
   return decodeURIComponent(m[1]);
 }
+
+/** Process every queued job of `queue` synchronously with the given processor (deterministic tests). */
+export async function drainQueue(
+  t: TestApp,
+  queue: string,
+  processor: Type<{ process(job: Job): Promise<unknown> }>,
+): Promise<unknown[]> {
+  const q = t.app.get<Queue>(getQueueToken(queue));
+  const proc = t.app.get(processor);
+  const results: unknown[] = [];
+  for (let round = 0; round < 20; round++) {
+    const jobs = await q.getJobs(['waiting', 'prioritized', 'delayed']);
+    if (jobs.length === 0) break;
+    for (const job of jobs) {
+      results.push(await proc.process(job));
+      await job.remove();
+    }
+  }
+  return results;
+}
+
+/** Sign in a mobile user through the mock Firebase exchange. */
+export async function signInMobile(
+  t: TestApp,
+  uid: string,
+  phone = `+9198${String(Math.floor(Math.random() * 1e8)).padStart(8, '0')}`,
+): Promise<{ token: string; userId: string; refreshToken: string }> {
+  const res = await t.http.post('/v1/auth/firebase').send({ idToken: `mock:${uid}:${phone}` });
+  if (res.status !== 200)
+    throw new Error(`sign-in failed: ${res.status} ${JSON.stringify(res.body)}`);
+  const body = res.body as { accessToken: string; refreshToken: string; user: { id: string } };
+  return { token: body.accessToken, userId: body.user.id, refreshToken: body.refreshToken };
+}
+
+/** Sign in a portal user created with createPortalUser. */
+export async function signInPortal(
+  t: TestApp,
+  email: string,
+  password: string,
+): Promise<{ token: string; userId: string }> {
+  const res = await t.http.post('/v1/auth/portal/login').send({ email, password });
+  if (res.status !== 200)
+    throw new Error(`portal sign-in failed: ${res.status} ${JSON.stringify(res.body)}`);
+  const body = res.body as { accessToken: string; user: { id: string } };
+  return { token: body.accessToken, userId: body.user.id };
+}
+
+export const bearer = (token: string): [string, string] => ['authorization', `Bearer ${token}`];

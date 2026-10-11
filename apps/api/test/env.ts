@@ -10,6 +10,8 @@ const testDb =
 
 Object.assign(process.env, {
   NODE_ENV: 'test',
+  // Jobs are drained explicitly in tests (see drainQueue) so runs are deterministic.
+  PROCESS_ROLE: 'api',
   DATABASE_URL: testDb,
   REDIS_URL: process.env.REDIS_URL_TEST ?? 'redis://localhost:6379/15',
   LOG_LEVEL: 'silent',
