@@ -9,6 +9,7 @@ module.exports = {
         'mobile',
         'vendor-portal',
         'admin-portal',
+        'website',
         'shared-types',
         'api-client',
         'ui',
