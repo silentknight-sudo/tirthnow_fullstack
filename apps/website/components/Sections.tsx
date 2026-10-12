@@ -34,6 +34,7 @@ export function Nav({ c, lang, setLang }: { c: Content; lang: Lang; setLang: (l:
         <span>Tirth Now</span>
       </a>
       <nav className="links">
+        <a href="#yatra">{lang === 'hi' ? 'यात्रा' : 'Yatra'}</a>
         <a href="#features">{c.nav.features}</a>
         <a href="#guide">{c.nav.guide}</a>
         <a href="#safety">{c.nav.safety}</a>

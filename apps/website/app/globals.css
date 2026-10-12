@@ -1501,3 +1501,308 @@ section {
     min-width: 52px;
   }
 }
+
+/* yatra packages */
+.yatra {
+  background: linear-gradient(var(--paper), var(--paper-2));
+}
+.yatra-filters {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: -24px 0 40px;
+}
+.yatra-filters button {
+  padding: 9px 20px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  font-weight: 600;
+  color: var(--brown);
+  transition: all 0.25s;
+}
+.yatra-filters button.on {
+  background: var(--brown);
+  color: var(--paper);
+  border-color: var(--brown);
+}
+.yatra-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+.yatra-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 40px -32px rgba(59, 36, 20, 0.6);
+}
+.yatra-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.yatra-top .tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--saffron);
+  background: rgba(217, 119, 43, 0.12);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+.yatra-top .dur {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.yatra-card h3 {
+  font-size: 1.7rem;
+  margin-bottom: 14px;
+}
+.yatra-card .label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--gold);
+  font-weight: 700;
+  margin: 6px 0 6px;
+}
+.route {
+  list-style: none;
+  position: relative;
+  padding-left: 18px;
+  margin-bottom: 8px;
+  display: grid;
+  gap: 4px;
+  font-size: 0.92rem;
+}
+.route::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: var(--line);
+}
+.route li {
+  position: relative;
+}
+.route li::before {
+  content: '';
+  position: absolute;
+  left: -18px;
+  top: 8px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 2px solid var(--gold);
+}
+.incl {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+.incl li {
+  font-size: 0.8rem;
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: var(--paper-2);
+  color: var(--brown);
+}
+.yatra-foot {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--line);
+}
+.yatra-foot small {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+.yatra-foot strong {
+  font-family: var(--display);
+  font-size: 1.9rem;
+  color: var(--brown);
+  line-height: 1.1;
+}
+.yatra-sample {
+  text-align: center;
+  margin-top: 28px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* live darshan */
+.darshan {
+  background: var(--night);
+  color: #e9d6b4;
+}
+.darshan-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 60px;
+  align-items: center;
+  max-width: 1140px;
+  margin: 0 auto;
+}
+.darshan .section-head {
+  text-align: left;
+  margin: 0 0 28px;
+}
+.live-frame {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border-radius: 28px;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 70%, #6b2f12, #1d120a 70%);
+  border: 1px solid rgba(217, 178, 106, 0.25);
+  display: grid;
+  place-items: center;
+}
+.live-glow {
+  position: absolute;
+  inset: 30% 20% 10%;
+  background: radial-gradient(circle, rgba(255, 179, 71, 0.45), transparent 65%);
+  filter: blur(20px);
+}
+.live-diya {
+  position: relative;
+  width: 90px;
+  height: 90px;
+}
+.live-diya .flame {
+  width: 34px;
+  height: 56px;
+}
+.live-diya::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  translate: -50% 0;
+  width: 90px;
+  height: 26px;
+  border-radius: 0 0 45px 45px;
+  background: var(--gold);
+}
+.live-badge {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #b3261e;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.live-badge i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
+  animation: blink 1.2s infinite;
+}
+.live-cap {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: #f7e7c5;
+  font-weight: 600;
+}
+.svc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.svc {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 22px;
+  height: 100%;
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  color: var(--brown);
+}
+.svc strong {
+  font-size: 1.05rem;
+}
+.svc p {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+.svc.dark {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(217, 178, 106, 0.22);
+  color: var(--gold-soft);
+}
+.svc.dark strong {
+  color: #f7e7c5;
+}
+.svc.dark p {
+  color: #b9a17e;
+}
+.local-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+@media (max-width: 1100px) {
+  .yatra-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .local-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 900px) {
+  .darshan-grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+  .live-frame {
+    aspect-ratio: 16 / 10;
+  }
+}
+@media (max-width: 640px) {
+  .yatra-grid,
+  .local-grid,
+  .svc-grid {
+    grid-template-columns: 1fr;
+  }
+  .yatra-card {
+    padding: 22px 18px;
+  }
+  .yatra-filters {
+    margin-top: -16px;
+  }
+}

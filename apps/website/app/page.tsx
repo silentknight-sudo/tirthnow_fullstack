@@ -20,6 +20,7 @@ import {
   Showcase,
   Stats,
 } from '@/components/Sections';
+import { LiveDarshan, YatraPackages } from '@/components/Yatra';
 
 export default function Home() {
   const [lang, setLang] = useState<Lang>('en');
@@ -34,12 +35,14 @@ export default function Home() {
         <Hero c={c} />
         <Showcase c={c} />
         <Journey c={c} />
+        <YatraPackages lang={lang} />
         <Aarti c={c} />
         <Features c={c} />
         <Guide c={c} />
         <Planner c={c} />
         <Safety c={c} />
         <Reels c={c} />
+        <LiveDarshan lang={lang} />
         <Stats c={c} />
         <Partners c={c} />
         <Faq c={c} />
