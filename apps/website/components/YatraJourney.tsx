@@ -246,7 +246,7 @@ export function YatraJourney() {
                 transition: moving && follow ? 'none' : 'transform 0.8s cubic-bezier(.22,1,.36,1)',
               }}
             >
-              <rect x={-1500} y={-1500} width={4000} height={3700} fill="#f6eedd" />
+              <rect x={-1500} y={-1500} width={4000} height={3700} fill="#f3e8d0" />
               <rect x={-1500} y={-1500} width={4000} height={3700} fill="url(#yj-grid)" />
               {/* parks and fields */}
               <ellipse cx={120} cy={180} rx={160} ry={90} fill="#e4dcb8" opacity={0.6} />
