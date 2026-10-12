@@ -22,6 +22,7 @@ apps/api              NestJS modular monolith (HTTP + worker entrypoints)
 apps/mobile           Flutter app
 apps/vendor-portal    Next.js 14
 apps/admin-portal     Next.js 14
+apps/website          Marketing site (Next.js static export, framer-motion scroll motion)
 packages/shared-types TS types + Zod schemas (shared with API and portals)
 packages/api-client   OpenAPI-generated client for portals
 packages/ui           Shared React components + Tailwind preset
