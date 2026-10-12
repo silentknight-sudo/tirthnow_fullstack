@@ -77,6 +77,11 @@ export function YatraPackages({ lang }: { lang: Lang }) {
           ))}
         </AnimatePresence>
       </motion.div>
+      <div className="center">
+        <a className="btn" href="/journey/">
+          {lang === 'hi' ? 'इंटरैक्टिव यात्रा देखें →' : 'Try the interactive yatra journey →'}
+        </a>
+      </div>
       <p className="yatra-sample">{y.sample}</p>
     </section>
   );

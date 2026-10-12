@@ -1806,3 +1806,454 @@ section {
     margin-top: -16px;
   }
 }
+
+/* ---------- Yatra Journey (interactive) ---------- */
+.yj {
+  height: 100vh;
+  height: 100dvh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  background: var(--night);
+  color: #f7e7c5;
+  overflow: hidden;
+}
+.yj-top {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 20px;
+  background: #140c06;
+  border-bottom: 1px solid rgba(217, 178, 106, 0.15);
+}
+.yj-back {
+  font-weight: 600;
+  white-space: nowrap;
+  color: #f7e7c5;
+}
+.yj-title {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(217, 178, 106, 0.4);
+  color: var(--gold-soft);
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  white-space: nowrap;
+}
+.yj-steps {
+  list-style: none;
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+}
+.yj-steps li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px 4px 4px;
+  border-radius: 999px;
+  color: #9b8466;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+.yj-steps .n {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+.yj-steps li.past {
+  color: var(--gold-soft);
+}
+.yj-steps li.past .n {
+  background: var(--gold);
+  color: var(--night);
+}
+.yj-steps li.now {
+  color: #fff;
+  background: rgba(217, 119, 43, 0.18);
+}
+.yj-steps li.now .n {
+  background: var(--saffron);
+  color: #fff;
+  box-shadow: 0 0 0 4px rgba(217, 119, 43, 0.3);
+}
+
+.yj-body {
+  position: relative;
+  min-height: 0;
+}
+.yj-map {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.yj-map svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.yj-river {
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 26px;
+  fill: #4c7f93;
+  opacity: 0.8;
+}
+.yj-river.hill {
+  fill: #8a6a2c;
+}
+.yj-stop .pin {
+  fill: #fffaf0;
+  stroke: #b8862f;
+  stroke-width: 3;
+}
+.yj-stop.past .pin {
+  fill: #f7e2b4;
+}
+.yj-stop.now .pin {
+  stroke: #d9772b;
+  stroke-width: 5;
+}
+.yj-stop .label {
+  fill: #fffaf0;
+  stroke: rgba(107, 63, 31, 0.2);
+}
+.yj-stop.now .label {
+  fill: #d9772b;
+  stroke: none;
+}
+.yj-stop .label-t {
+  font: 600 13px var(--body);
+  fill: #3b2414;
+}
+.yj-stop.now .label-t {
+  fill: #fff;
+}
+
+.yj-hud {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 16px;
+  border-radius: 18px;
+  background: rgba(20, 12, 6, 0.92);
+  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.7);
+  max-width: calc(100% - 32px);
+}
+.yj-hud .speed {
+  display: grid;
+  place-items: center;
+  padding: 6px 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  min-width: 64px;
+}
+.yj-hud .speed strong {
+  font-size: 1.8rem;
+  color: #ffd78a;
+  line-height: 1;
+  font-family: ui-monospace, monospace;
+}
+.yj-hud .speed small {
+  font-size: 0.65rem;
+  color: #b9a17e;
+}
+.yj-hud .info {
+  display: grid;
+  gap: 2px;
+  font-size: 0.85rem;
+}
+.yj-hud .info span {
+  color: #ffd78a;
+  font-family: ui-monospace, monospace;
+  font-size: 0.8rem;
+}
+.yj-hud .info .trip {
+  color: #b9a17e;
+}
+.yj-enroute {
+  position: absolute;
+  top: 112px;
+  left: 16px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(20, 12, 6, 0.92);
+  font-size: 0.88rem;
+}
+.yj-enroute b {
+  color: var(--gold-soft);
+}
+.yj-note {
+  position: absolute;
+  bottom: 10px;
+  left: 16px;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.yj-panel {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  bottom: 16px;
+  width: 380px;
+  overflow-y: auto;
+  padding: 22px;
+  border-radius: 24px;
+  background: rgba(20, 12, 6, 0.95);
+  border: 1px solid rgba(217, 178, 106, 0.15);
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.yj-panel.closed {
+  bottom: auto;
+}
+.yj-panel-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.yj-panel-head .k {
+  color: var(--saffron);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.yj-panel-head .diff {
+  margin-left: auto;
+  font-size: 0.72rem;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(120, 200, 120, 0.4);
+  color: #8fd18f;
+}
+.yj-panel-head .diff.moderate {
+  border-color: rgba(255, 190, 90, 0.4);
+  color: #ffc46b;
+}
+.yj-panel-head .collapse {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+}
+.yj-panel h2 {
+  color: #fff;
+  font-size: 2rem;
+  line-height: 1.05;
+}
+.yj-panel .hi {
+  font-family: var(--deva);
+  color: var(--gold-soft);
+  margin-top: -6px;
+}
+.yj-facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.yj-facts div {
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(217, 178, 106, 0.2);
+  display: grid;
+  gap: 2px;
+}
+.yj-facts small {
+  color: #b9a17e;
+  font-size: 0.72rem;
+}
+.yj-facts b {
+  font-size: 0.88rem;
+}
+.yj-panel .about {
+  color: #e9d6b4;
+}
+.yj-panel .lbl {
+  color: var(--gold-soft);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+.yj-panel .hl,
+.yj-panel .tips {
+  list-style: none;
+  display: grid;
+  gap: 6px;
+  font-size: 0.9rem;
+  overflow: hidden;
+}
+.yj-panel .hl li::before {
+  content: '• ';
+  color: var(--saffron);
+}
+.yj-panel .tips li {
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #e9d6b4;
+}
+.tips-toggle {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-top: 1px solid rgba(217, 178, 106, 0.15);
+  border-bottom: 1px solid rgba(217, 178, 106, 0.15);
+  color: var(--gold-soft);
+  font-weight: 600;
+  text-align: left;
+}
+.yj-continue {
+  margin-top: auto;
+  padding: 14px;
+  border-radius: 14px;
+  background: linear-gradient(90deg, #d9772b, #e8902f);
+  color: #fff;
+  font-weight: 700;
+}
+.yj-continue:disabled {
+  opacity: 0.5;
+  cursor: progress;
+}
+
+.yj-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--paper);
+  color: var(--ink);
+  border-top: 1px solid var(--line);
+}
+.yj-select {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--card);
+}
+.yj-select select {
+  border: 0;
+  background: none;
+  font: 600 0.95rem var(--body);
+  color: var(--brown);
+  max-width: 230px;
+}
+.yj-play {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+}
+.yj-play button,
+.yj-toggles button {
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  font-weight: 600;
+  color: var(--brown);
+}
+.yj-play button:disabled {
+  opacity: 0.4;
+}
+.yj-play .main {
+  background: linear-gradient(90deg, #d9772b, #e8902f);
+  color: #fff;
+  border: 0;
+  min-width: 140px;
+}
+.yj-toggles {
+  display: flex;
+  gap: 8px;
+}
+.yj-toggles button.on {
+  background: rgba(217, 119, 43, 0.12);
+  border-color: var(--saffron);
+  color: var(--saffron);
+}
+.yj-speed {
+  display: flex;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.yj-speed button {
+  border: 0;
+  border-radius: 0;
+  padding: 10px 12px;
+}
+
+@media (max-width: 900px) {
+  .yj {
+    height: auto;
+    min-height: 100dvh;
+    grid-template-rows: auto auto auto auto;
+    overflow: visible;
+  }
+  .yj-top {
+    flex-wrap: wrap;
+    gap: 8px 12px;
+  }
+  .yj-steps {
+    margin-left: 0;
+    width: 100%;
+  }
+  .yj-body {
+    display: contents;
+  }
+  .yj-map {
+    position: relative;
+    height: 56vh;
+  }
+  .yj-hud {
+    top: 10px;
+    left: 10px;
+    padding: 8px 10px;
+    gap: 10px;
+  }
+  .yj-hud .speed strong {
+    font-size: 1.3rem;
+  }
+  .yj-enroute {
+    top: auto;
+    bottom: 30px;
+    left: 10px;
+  }
+  .yj-panel {
+    position: static;
+    width: auto;
+    border-radius: 0;
+    order: 3;
+  }
+  .yj-controls {
+    order: 2;
+  }
+  .yj-play {
+    margin-left: 0;
+  }
+  .yj-select {
+    flex: 1 1 160px;
+  }
+  .yj-select select {
+    max-width: none;
+    width: 100%;
+  }
+}
