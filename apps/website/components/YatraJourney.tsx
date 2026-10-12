@@ -11,6 +11,7 @@ import {
   welcomeLine,
   type VoiceLang,
 } from '@/lib/narration';
+import { STOP_HI } from '@/lib/journey-hi';
 import {
   VEHICLES,
   YATRAS,
@@ -265,6 +266,14 @@ export function YatraJourney() {
   };
 
   const current = stops[idx] as JourneyStop;
+  const hiText = voiceLang === 'hi' ? STOP_HI[current.id] : undefined;
+  const isHi = hiText !== undefined;
+  const text = {
+    about: hiText?.about ?? current.about,
+    hours: hiText?.hours ?? current.hours,
+    highlights: hiText?.highlights ?? current.highlights,
+    tips: hiText?.tips ?? current.tips,
+  };
   const next = stops[idx + 1];
   const done = idx >= stops.length - 1 && !moving;
   const liveSpeed = moving ? vehicle.kmh : 0;
@@ -538,18 +547,20 @@ export function YatraJourney() {
               <>
                 <div className="yj-facts">
                   <div>
-                    <small>Visiting time</small>
-                    <b>{current.visitMins} mins</b>
+                    <small>{isHi ? 'दर्शन का समय' : 'Visiting time'}</small>
+                    <b>
+                      {current.visitMins} {isHi ? 'मिनट' : 'mins'}
+                    </b>
                   </div>
                   <div>
-                    <small>Timing / hours</small>
-                    <b>{current.hours}</b>
+                    <small>{isHi ? 'समय' : 'Timing / hours'}</small>
+                    <b>{text.hours}</b>
                   </div>
                 </div>
-                <p className="about">{current.about}</p>
-                <p className="lbl">✦ Sacred highlights</p>
+                <p className="about">{text.about}</p>
+                <p className="lbl">✦ {isHi ? 'मुख्य आकर्षण' : 'Sacred highlights'}</p>
                 <ul className="hl">
-                  {current.highlights.map((h) => (
+                  {text.highlights.map((h) => (
                     <li key={h}>{h}</li>
                   ))}
                 </ul>
@@ -560,7 +571,8 @@ export function YatraJourney() {
                   }}
                   aria-expanded={tipsOpen}
                 >
-                  🛈 Pilgrim tips ({current.tips.length}) <span>{tipsOpen ? '−' : '+'}</span>
+                  🛈 {isHi ? 'यात्री सुझाव' : 'Pilgrim tips'} ({text.tips.length}){' '}
+                  <span>{tipsOpen ? '−' : '+'}</span>
                 </button>
                 <AnimatePresence initial={false}>
                   {tipsOpen ? (
@@ -570,7 +582,7 @@ export function YatraJourney() {
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
                     >
-                      {current.tips.map((t) => (
+                      {text.tips.map((t) => (
                         <li key={t}>{t}</li>
                       ))}
                     </motion.ul>

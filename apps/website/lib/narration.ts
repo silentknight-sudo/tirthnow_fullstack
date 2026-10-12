@@ -1,4 +1,5 @@
 import type { JourneyStop, Vehicle, Yatra } from './journey';
+import { STOP_HI } from './journey-hi';
 
 export type VoiceLang = 'en' | 'hi';
 
@@ -30,6 +31,11 @@ function list(items: string[]): string {
   return `${items.slice(0, -1).join(', ')} and ${items[items.length - 1] ?? ''}`;
 }
 
+function listHi(items: string[]): string {
+  if (items.length <= 1) return items.join('');
+  return `${items.slice(0, -1).join(', ')} और ${items[items.length - 1] ?? ''}`;
+}
+
 function totalKm(y: Yatra): number {
   return y.stops.reduce((sum, s) => sum + s.kmFromPrev, 0);
 }
@@ -55,10 +61,15 @@ export function departLine(next: JourneyStop, v: Vehicle, lang: VoiceLang): stri
 export function arriveLine(stop: JourneyStop, isLast: boolean, lang: VoiceLang): string {
   const seasonal = stop.hours.toLowerCase().includes('live timings');
   if (lang === 'hi') {
+    const hi = STOP_HI[stop.id];
+    const hl = hi?.highlights.slice(0, 3) ?? [];
     const parts = [
       `हम ${stop.hiName} पहुँच गए हैं।`,
-      `यह एक ${KIND_HI[stop.kind]} है। यहाँ लगभग ${String(stop.visitMins)} मिनट रुकें।`,
+      hi ? hi.about : `यह एक ${KIND_HI[stop.kind]} है।`,
+      hl.length ? `यहाँ की विशेषताएँ: ${listHi(hl)}।` : '',
+      `यहाँ लगभग ${String(stop.visitMins)} मिनट रुकें।`,
       seasonal ? 'दर्शन का समय मौसम के अनुसार बदलता है, आज का समय ऐप में देखें।' : '',
+      hi?.tips[0] ? `यात्री सुझाव: ${hi.tips[0]}।` : '',
       isLast ? 'आपकी यात्रा पूरी हुई। तीर्थ नाउ के साथ यात्रा करने के लिए धन्यवाद। राधे राधे!' : '',
     ];
     return parts.filter(Boolean).join(' ');
