@@ -43,6 +43,7 @@ export interface Content {
     secondary: string;
     scroll: string;
   };
+  showcase: { kicker: string; title: string; sub: string };
   journey: { kicker: string; title: string; sub: string; stops: { name: string; note: string }[] };
   aarti: {
     kicker: string;
@@ -112,6 +113,11 @@ const en: Content = {
     primary: 'Get early access',
     secondary: 'See how it works',
     scroll: 'Scroll to begin the yatra',
+  },
+  showcase: {
+    kicker: 'Inside the app',
+    title: 'Designed for the devotee',
+    sub: 'Calm screens, big type and Braj colours — from live aarti to booking a room to calling for help.',
   },
   journey: {
     kicker: 'The yatra',
@@ -408,6 +414,11 @@ const hi: Content = {
     primary: 'जल्दी पहुँच पाएँ',
     secondary: 'देखें कैसे काम करता है',
     scroll: 'यात्रा शुरू करने के लिए स्क्रॉल करें',
+  },
+  showcase: {
+    kicker: 'ऐप के अंदर',
+    title: 'भक्तों के लिए बना',
+    sub: 'शांत स्क्रीन, बड़े अक्षर और ब्रज के रंग — लाइव आरती से कमरा बुक करने और मदद बुलाने तक।',
   },
   journey: {
     kicker: 'यात्रा',

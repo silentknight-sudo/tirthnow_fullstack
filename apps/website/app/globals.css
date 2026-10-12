@@ -1222,3 +1222,123 @@ section {
     grid-template-columns: 1fr;
   }
 }
+
+/* device frames (Stitch screens) */
+.device {
+  width: 260px;
+  aspect-ratio: 9 / 19.5;
+  border-radius: 36px;
+  padding: 8px;
+  background: var(--night);
+  box-shadow:
+    0 40px 70px -35px rgba(29, 18, 10, 0.75),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+}
+.device img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 28px;
+  background: var(--paper);
+}
+
+.showcase {
+  padding: 0;
+  height: 260vh;
+  background: linear-gradient(var(--paper-2), var(--paper));
+}
+.showcase-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 70px;
+}
+.showcase-sticky .section-head {
+  margin-bottom: 24px;
+  padding: 0 24px;
+}
+.fan {
+  position: relative;
+  height: 580px;
+  display: flex;
+  justify-content: center;
+}
+.fan-phone {
+  position: absolute;
+  top: 0;
+}
+
+.plan-stack {
+  position: relative;
+}
+.plan-phone {
+  position: absolute;
+  right: 0;
+  top: -40px;
+  z-index: 0;
+  opacity: 0.95;
+}
+.plan-phone .device {
+  width: 220px;
+  transform: rotate(8deg);
+}
+.plan-card {
+  position: relative;
+  z-index: 1;
+  margin-right: 150px;
+}
+
+.sos-wrap {
+  gap: 0;
+}
+.sos-phone {
+  position: absolute;
+  right: -10px;
+  top: 10px;
+  z-index: 0;
+}
+.sos-phone .device {
+  width: 210px;
+}
+.sos-wrap .sos {
+  margin-right: 180px;
+  z-index: 1;
+}
+.sos-wrap .ring {
+  margin-right: 180px;
+}
+
+.reel-row {
+  align-items: center;
+}
+.reel-device {
+  width: 230px;
+}
+
+@media (max-width: 900px) {
+  .showcase {
+    height: 220vh;
+  }
+  .fan {
+    height: 440px;
+    transform: scale(0.62);
+    transform-origin: top center;
+  }
+  .plan-phone,
+  .sos-phone {
+    display: none;
+  }
+  .plan-card {
+    margin-right: 0;
+  }
+  .sos-wrap .sos,
+  .sos-wrap .ring {
+    margin-right: 0;
+  }
+}

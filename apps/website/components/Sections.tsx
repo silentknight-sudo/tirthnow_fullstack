@@ -7,6 +7,7 @@ import {
   useScroll,
   useSpring,
   useTransform,
+  type MotionValue,
 } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import type { Content, Lang } from '@/lib/content';
@@ -159,6 +160,67 @@ export function Hero({ c }: { c: Content }) {
       >
         {c.hero.scroll} ↓
       </motion.div>
+    </section>
+  );
+}
+
+/* ---------- Device + Showcase: phones fan out on scroll ---------- */
+
+export function Device({ src, alt, className }: { src: string; alt: string; className?: string }) {
+  return (
+    <div className={`device${className ? ` ${className}` : ''}`}>
+      <img src={src} alt={alt} loading="lazy" />
+    </div>
+  );
+}
+
+const SHOWCASE = [
+  {
+    src: '/images/screen-aarti-phone.webp',
+    alt: 'Temple and aarti details screen',
+    x: -560,
+    r: -14,
+  },
+  { src: '/images/screen-chat-phone.webp', alt: 'AI Braj Guide chat screen', x: -280, r: -7 },
+  { src: '/images/screen-home-phone.webp', alt: 'Tirth Now home screen', x: 0, r: 0 },
+  { src: '/images/screen-booking-phone.webp', alt: 'Dharamshala booking screen', x: 280, r: 7 },
+  { src: '/images/screen-sos-phone.webp', alt: 'Emergency SOS screen', x: 560, r: 14 },
+];
+
+function FanPhone({
+  p,
+  i,
+  progress,
+}: {
+  p: (typeof SHOWCASE)[number];
+  i: number;
+  progress: MotionValue<number>;
+}) {
+  const x = useTransform(progress, [0, 0.6], [0, p.x]);
+  const rotate = useTransform(progress, [0, 0.6], [0, p.r]);
+  const y = useTransform(progress, [0, 0.6], [40, Math.abs(p.r) * 3]);
+  const scale = useTransform(progress, [0, 0.6], [0.85, i === 2 ? 1.08 : 0.94]);
+  return (
+    <motion.div className="fan-phone" style={{ x, rotate, y, scale, zIndex: 10 - Math.abs(i - 2) }}>
+      <Device src={p.src} alt={p.alt} />
+    </motion.div>
+  );
+}
+
+export function Showcase({ c }: { c: Content }) {
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end end'] });
+  const progress = useSpring(scrollYProgress, { stiffness: 90, damping: 25 });
+  return (
+    <section className="showcase" ref={ref}>
+      <div className="showcase-sticky">
+        <SectionHead kicker={c.showcase.kicker} title={c.showcase.title} sub={c.showcase.sub} />
+        <div className="fan">
+          {SHOWCASE.map((p, i) => (
+            <FanPhone key={p.src} p={p} i={i} progress={progress} />
+          ))}
+        </div>
+      </div>
     </section>
   );
 }
@@ -449,10 +511,14 @@ export function Guide({ c }: { c: Content }) {
 export function Planner({ c }: { c: Content }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start 80%', 'end 50%'] });
+  const phoneY = useTransform(scrollYProgress, [0, 1], [80, -40]);
   return (
     <section className="planner">
       <div className="planner-grid">
-        <Reveal>
+        <Reveal className="plan-stack">
+          <motion.div className="plan-phone" style={{ y: phoneY }}>
+            <Device src="/images/screen-planner-phone.webp" alt="Trip planner screen" />
+          </motion.div>
           <div className="plan-card" ref={ref}>
             <div className="plan-head">
               <Icon name="map" size={20} /> {c.planner.day}
@@ -508,6 +574,15 @@ export function Safety({ c }: { c: Content }) {
           </ol>
         </div>
         <div className="sos-wrap">
+          <motion.div
+            className="sos-phone"
+            initial={{ opacity: 0, x: 60, rotate: 12 }}
+            whileInView={{ opacity: 1, x: 0, rotate: 6 }}
+            viewport={{ once: true, margin: '-20%' }}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <Device src="/images/screen-sos-phone.webp" alt="Emergency SOS screen" />
+          </motion.div>
           <span className="ring r1" />
           <span className="ring r2" />
           <span className="ring r3" />
@@ -546,6 +621,11 @@ export function Reels({ c }: { c: Content }) {
     <section className="reels" ref={ref}>
       <SectionHead kicker={c.reels.kicker} title={c.reels.title} sub={c.reels.sub} />
       <motion.div className="reel-row" style={{ x }}>
+        <Device
+          className="reel-device"
+          src="/images/screen-reels-phone.webp"
+          alt="Sacred Reels screen"
+        />
         {c.reels.captions.map((cap, i) => (
           <motion.div
             key={cap}
