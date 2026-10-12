@@ -42,6 +42,9 @@ export function Nav({ c, lang, setLang }: { c: Content; lang: Lang; setLang: (l:
         <a href="#faq">{c.nav.faq}</a>
       </nav>
       <div className="nav-actions">
+        <a href="/journey/" className="nav-journey">
+          <span aria-hidden="true">✦</span> {lang === 'hi' ? 'यात्रा जर्नी' : 'Yatra Journey'}
+        </a>
         <button
           className="lang"
           onClick={() => {
