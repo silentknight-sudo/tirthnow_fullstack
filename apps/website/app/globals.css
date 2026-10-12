@@ -1342,3 +1342,162 @@ section {
     margin-right: 0;
   }
 }
+
+/* responsive refinements */
+@media (max-width: 1200px) {
+  .hero-logo img {
+    width: min(440px, 34vw);
+  }
+  .fan {
+    transform: scale(0.8);
+    transform-origin: top center;
+    height: 500px;
+  }
+  .plan-phone,
+  .sos-phone {
+    display: none;
+  }
+  .plan-card {
+    margin-right: 0;
+  }
+  .sos-wrap .sos,
+  .sos-wrap .ring {
+    margin-right: 0;
+  }
+  .partner-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero-logo img {
+    width: 220px;
+  }
+  .fan {
+    transform: scale(0.62);
+    height: 400px;
+  }
+}
+
+@media (max-width: 640px) {
+  .journey-map {
+    aspect-ratio: auto;
+    display: grid;
+    gap: 14px;
+    padding-left: 28px;
+  }
+  .journey-map::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 8px;
+    bottom: 8px;
+    width: 3px;
+    background: linear-gradient(var(--gold), var(--saffron));
+    border-radius: 3px;
+  }
+  .journey-map svg {
+    display: none;
+  }
+  .stop {
+    position: relative;
+    left: auto !important;
+    top: auto !important;
+    translate: none;
+  }
+  .stop .dot {
+    position: absolute;
+    left: -28px;
+    width: 20px;
+    height: 20px;
+    border-width: 4px;
+  }
+  .stop-card,
+  .stop.left .stop-card,
+  .stop.right .stop-card {
+    position: static;
+    width: 100%;
+    text-align: left;
+    padding: 12px 16px;
+  }
+  .stop-card strong {
+    font-size: 1.25rem;
+  }
+  .stop-card span {
+    font-size: 0.88rem;
+  }
+  .fan {
+    transform: scale(0.5);
+    height: 320px;
+  }
+  .section-head {
+    margin-bottom: 40px;
+  }
+  .countdown-card h3 {
+    font-size: 2rem;
+  }
+  .digit {
+    font-size: 2.2rem;
+    min-width: 60px;
+  }
+  .schedule li {
+    grid-template-columns: 56px 1fr auto;
+    padding: 12px 14px;
+    gap: 10px;
+  }
+  .schedule time {
+    font-size: 1.2rem;
+  }
+  .stat strong {
+    font-size: 3rem;
+  }
+  .sos-wrap {
+    height: 360px;
+  }
+  .sos,
+  .ring {
+    width: 180px;
+    height: 180px;
+  }
+  .reel,
+  .reel-device {
+    width: 180px;
+  }
+  .reel {
+    height: 320px;
+  }
+  .plan-card {
+    padding: 22px 18px;
+  }
+  .tl-item {
+    grid-template-columns: 48px 1fr;
+  }
+  .faq-item button {
+    padding: 16px 18px;
+    font-size: 0.98rem;
+  }
+  .stores .store {
+    min-width: 0;
+    flex: 1 1 140px;
+  }
+  .brand span {
+    font-size: 1.15rem;
+  }
+  .lang {
+    padding: 6px 12px;
+  }
+}
+
+@media (max-width: 380px) {
+  .hero h1 {
+    font-size: 2.8rem;
+  }
+  .cta-row .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .digit {
+    font-size: 1.9rem;
+    min-width: 52px;
+  }
+}
