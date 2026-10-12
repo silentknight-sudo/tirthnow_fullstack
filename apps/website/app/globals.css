@@ -2392,3 +2392,120 @@ section {
     animation: none;
   }
 }
+
+/* voice guide */
+.yj-guide {
+  position: absolute;
+  left: 50%;
+  bottom: 34px;
+  translate: -50% 0;
+  z-index: 3;
+  width: min(560px, calc(100% - 440px));
+  min-width: 280px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 14px 18px;
+  border-radius: 20px;
+  background: rgba(255, 250, 240, 0.97);
+  border: 1px solid var(--line);
+  box-shadow: 0 24px 48px -24px rgba(59, 36, 20, 0.6);
+}
+.yj-guide .ava {
+  position: relative;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 1.3rem;
+  background: linear-gradient(135deg, #f7e2b4, #ead1a0);
+}
+.yj-guide.talking .ava i {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid var(--saffron);
+  animation: journey-pulse 1.2s ease-out infinite;
+}
+.yj-guide b {
+  display: block;
+  font-family: var(--display);
+  font-size: 1.05rem;
+  color: var(--brown);
+}
+.yj-guide p {
+  font-size: 0.9rem;
+  color: var(--ink);
+  line-height: 1.45;
+  max-height: 7.3em;
+  overflow-y: auto;
+}
+.yj-listen {
+  padding: 11px;
+  border-radius: 999px;
+  border: 1px solid var(--gold);
+  color: var(--brown);
+  font-weight: 600;
+  background: rgba(184, 134, 47, 0.08);
+}
+.yj-listen:hover {
+  background: rgba(184, 134, 47, 0.16);
+}
+@media (max-width: 900px) {
+  .yj-guide {
+    position: static;
+    translate: none;
+    width: auto;
+    min-width: 0;
+    margin: 0;
+    border-radius: 0;
+    border-width: 1px 0;
+    box-shadow: none;
+    order: 2;
+  }
+}
+@media (max-width: 900px) {
+  .yj {
+    overflow-x: hidden;
+  }
+  .yj-toggles,
+  .yj-play {
+    flex-wrap: wrap;
+  }
+  .yj-top {
+    max-width: 100vw;
+  }
+  .yj-title {
+    white-space: normal;
+  }
+}
+@media (max-width: 900px) {
+  .yj-guide {
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    translate: none;
+    width: auto;
+    min-width: 0;
+    padding: 10px 12px;
+    border-radius: 16px;
+    border-width: 1px;
+    box-shadow: 0 16px 30px -18px rgba(59, 36, 20, 0.6);
+  }
+  .yj-guide .ava {
+    width: 34px;
+    height: 34px;
+    font-size: 1rem;
+  }
+  .yj-guide p {
+    font-size: 0.82rem;
+    max-height: 5.8em;
+  }
+  .yj-enroute,
+  .yj-note {
+    display: none;
+  }
+}

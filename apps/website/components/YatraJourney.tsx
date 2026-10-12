@@ -3,6 +3,15 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
+  arriveLine,
+  departLine,
+  speak,
+  speechSupported,
+  stopSpeaking,
+  welcomeLine,
+  type VoiceLang,
+} from '@/lib/narration';
+import {
   VEHICLES,
   YATRAS,
   rupees,
@@ -65,6 +74,55 @@ export function YatraJourney() {
   const first = stops[0] as JourneyStop;
   const [pos, setPos] = useState<Pos>({ x: first.x, y: first.y, angle: 0 });
 
+  // Voice guide
+  const [voiceOn, setVoiceOn] = useState(true);
+  const [voiceLang, setVoiceLang] = useState<VoiceLang>('en');
+  const [caption, setCaption] = useState('');
+  const [narrating, setNarrating] = useState(false);
+  const [canSpeak, setCanSpeak] = useState(true);
+  const pending = useRef(0);
+  const voiceRef = useRef<{ on: boolean; lang: VoiceLang; rate: number }>({
+    on: true,
+    lang: 'en',
+    rate: 1,
+  });
+  useEffect(() => {
+    voiceRef.current = {
+      on: voiceOn,
+      lang: voiceLang,
+      rate: Math.min(1.35, 0.95 + (mult - 1) * 0.12),
+    };
+  }, [voiceOn, voiceLang, mult]);
+  useEffect(() => {
+    setCanSpeak(speechSupported());
+    // Some browsers load voices lazily.
+    if (speechSupported()) window.speechSynthesis.getVoices();
+    return () => {
+      stopSpeaking();
+    };
+  }, []);
+
+  const say = useCallback(async (text: string) => {
+    const v = voiceRef.current;
+    if (!v.on) {
+      setCaption(text);
+      return;
+    }
+    pending.current += 1;
+    setNarrating(true);
+    await speak(text, v.lang, v.rate, () => {
+      setCaption(text);
+    });
+    pending.current = Math.max(0, pending.current - 1);
+    setNarrating(pending.current > 0);
+  }, []);
+
+  const silence = useCallback(() => {
+    stopSpeaking();
+    pending.current = 0;
+    setNarrating(false);
+  }, []);
+
   const legRefs = useRef<(SVGPathElement | null)[]>([]);
   const timers = useRef<number[]>([]);
   const legs = useMemo(
@@ -89,6 +147,8 @@ export function YatraJourney() {
 
   const reset = useCallback(() => {
     clearTimers();
+    silence();
+    setCaption('');
     setMoving(false);
     setAuto(false);
     setIdx(0);
@@ -96,7 +156,7 @@ export function YatraJourney() {
     setKmDone(0);
     setTipsOpen(false);
     placeAt(0);
-  }, [placeAt]);
+  }, [placeAt, silence]);
 
   useEffect(() => {
     reset();
@@ -137,6 +197,7 @@ export function YatraJourney() {
               : Math.round(next.kmFromPrev * vehicle.perKmPaise)),
         );
         setPanelOpen(true);
+        arriveRef.current(idx + 1);
       }
     };
     raf = requestAnimationFrame(step);
@@ -145,25 +206,39 @@ export function YatraJourney() {
     };
   }, [moving, idx, stops, vehicle, mult]);
 
-  // Auto-play: dwell at each stop, then continue.
+  // Narration hooks, kept in refs so the animation effects stay stable.
+  const arriveRef = useRef<(i: number) => void>(() => undefined);
+  const departRef = useRef<() => void>(() => undefined);
+  arriveRef.current = (i: number) => {
+    const s = stops[i];
+    if (s) void say(arriveLine(s, i === stops.length - 1, voiceLang));
+  };
+  departRef.current = () => {
+    const n = stops[idx + 1];
+    if (!n) return;
+    void say(departLine(n, vehicle, voiceLang));
+    setMoving(true);
+  };
+
+  // Auto-play: let the guide finish, dwell briefly, then continue.
   useEffect(() => {
-    if (!auto || moving) return;
+    if (!auto || moving || narrating) return;
     if (idx >= stops.length - 1) {
       setAuto(false);
       return;
     }
     const t = window.setTimeout(() => {
-      setMoving(true);
-    }, 1800 / mult);
+      departRef.current();
+    }, 1200 / mult);
     timers.current.push(t);
     return () => {
       window.clearTimeout(t);
     };
-  }, [auto, moving, idx, stops.length, mult]);
+  }, [auto, moving, narrating, idx, stops.length, mult]);
 
   const goNext = () => {
     if (moving || idx >= stops.length - 1) return;
-    setMoving(true);
+    departRef.current();
   };
   const goPrev = () => {
     if (moving || idx === 0) return;
@@ -180,7 +255,13 @@ export function YatraJourney() {
       }, 50);
       return;
     }
-    setAuto((a) => !a);
+    if (auto) {
+      setAuto(false);
+      silence();
+      return;
+    }
+    setAuto(true);
+    if (idx === 0) void say(welcomeLine(yatra, vehicle, voiceLang));
   };
 
   const current = stops[idx] as JourneyStop;
@@ -361,6 +442,30 @@ export function YatraJourney() {
             </g>
           </svg>
 
+          {/* voice guide caption */}
+          <AnimatePresence>
+            {caption ? (
+              <motion.div
+                key={caption}
+                className={`yj-guide${narrating ? ' talking' : ''}`}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 8 }}
+                transition={{ duration: 0.3 }}
+                aria-live="polite"
+              >
+                <span className="ava" aria-hidden="true">
+                  🙏
+                  <i />
+                </span>
+                <div>
+                  <b>{voiceLang === 'hi' ? 'ब्रज गाइड' : 'Braj Guide'}</b>
+                  <p>{caption}</p>
+                </div>
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
+
           {/* HUD */}
           <div className="yj-hud">
             <div className="speed">
@@ -473,6 +578,15 @@ export function YatraJourney() {
                 </AnimatePresence>
               </>
             ) : null}
+            <button
+              className="yj-listen"
+              onClick={() => {
+                silence();
+                void say(arriveLine(current, idx === stops.length - 1, voiceLang));
+              }}
+            >
+              🔊 {voiceLang === 'hi' ? 'गाइड से सुनें' : 'Hear the guide'}
+            </button>
             <button className="yj-continue" onClick={done ? reset : goNext} disabled={moving}>
               {done ? 'Start again ↺' : next ? `Continue to ${next.name} →` : ''}
             </button>
@@ -534,6 +648,31 @@ export function YatraJourney() {
           </button>
         </div>
         <div className="yj-toggles">
+          <button
+            className={voiceOn ? 'on' : ''}
+            onClick={() => {
+              if (voiceOn) silence();
+              setVoiceOn((v) => !v);
+            }}
+            aria-pressed={voiceOn}
+            title={canSpeak ? 'Voice guide' : 'Voice not supported in this browser — captions only'}
+          >
+            {voiceOn ? '🔊 Voice guide' : '🔇 Voice off'}
+          </button>
+          <div className="yj-speed" role="group" aria-label="Guide language">
+            {(['en', 'hi'] as const).map((l) => (
+              <button
+                key={l}
+                className={voiceLang === l ? 'on' : ''}
+                onClick={() => {
+                  silence();
+                  setVoiceLang(l);
+                }}
+              >
+                {l === 'en' ? 'EN' : 'हि'}
+              </button>
+            ))}
+          </div>
           <button
             className={follow ? 'on' : ''}
             onClick={() => {
