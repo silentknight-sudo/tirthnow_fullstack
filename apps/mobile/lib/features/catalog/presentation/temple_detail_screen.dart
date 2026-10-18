@@ -66,7 +66,7 @@ class _Body extends ConsumerWidget {
               style: const TextStyle(
                 fontFamily: 'Cormorant',
                 fontFeatures: liningFigures,
-                color: TnColors.brown,
+                color: TnColors.navy,
               ),
             ),
             background: CoverImage(temple.coverUrl, height: 260, radius: 0),

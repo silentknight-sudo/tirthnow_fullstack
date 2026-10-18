@@ -31,7 +31,9 @@ export function Nav({ c, lang, setLang }: { c: Content; lang: Lang; setLang: (l:
     <header className={`nav${solid ? ' solid' : ''}`}>
       <a href="#top" className="brand">
         <img src="/logo.png" alt="" width={40} height={40} />
-        <span>Tirth Now</span>
+        <span>
+          Tirth<b>Now</b>
+        </span>
       </a>
       <nav className="links">
         <a href="#yatra">{lang === 'hi' ? 'यात्रा' : 'Yatra'}</a>

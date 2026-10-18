@@ -153,7 +153,7 @@ class NotificationSettingsScreen extends ConsumerWidget {
                       if (list.isEmpty) const EmptyState(icon: Icons.notifications_none),
                       for (final r in list)
                         ListTile(
-                          leading: const Icon(Icons.notifications_active, color: TnColors.gold),
+                          leading: const Icon(Icons.notifications_active, color: TnColors.accent),
                           title: Text(r.aartiName),
                           subtitle: Text(
                             '${r.templeName} · ${l.minutesBefore('${r.minutesBefore}')}',

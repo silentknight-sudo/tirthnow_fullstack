@@ -67,7 +67,7 @@ class OrdersScreen extends ConsumerWidget {
                     final o = list[i];
                     return Card(
                       child: ListTile(
-                        leading: Icon(orderIcon(o.type), color: TnColors.brown),
+                        leading: Icon(orderIcon(o.type), color: TnColors.navy),
                         title: Text(orderTitle(o)),
                         subtitle: Text(
                           '${o.code} · ${formatRupees(o.totalPaise, locale: context.lang)}',
@@ -110,7 +110,7 @@ class OrderDetailScreen extends ConsumerWidget {
               children: [
                 Row(
                   children: [
-                    Icon(orderIcon(o.type), color: TnColors.brown, size: 32),
+                    Icon(orderIcon(o.type), color: TnColors.navy, size: 32),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(orderTitle(o), style: Theme.of(context).textTheme.titleLarge),
@@ -181,7 +181,7 @@ class OrderDetailScreen extends ConsumerWidget {
                   for (final h in o.history!)
                     ListTile(
                       dense: true,
-                      leading: const Icon(Icons.circle, size: 10, color: TnColors.gold),
+                      leading: const Icon(Icons.circle, size: 10, color: TnColors.accent),
                       title: Text(orderStatusLabel(context, h.to)),
                       subtitle: Text(
                         '${formatIstDate(DateTime.parse(h.at), locale: money)} ${formatIstTime(DateTime.parse(h.at))}',

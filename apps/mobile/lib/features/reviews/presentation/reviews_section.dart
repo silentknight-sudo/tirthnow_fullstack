@@ -95,7 +95,7 @@ class ReviewsSection extends ConsumerWidget {
                       tooltip: '$i',
                       icon: Icon(
                         i <= rating ? Icons.star : Icons.star_border,
-                        color: TnColors.gold,
+                        color: TnColors.accent,
                         size: 32,
                       ),
                       onPressed: () => setSheet(() => rating = i),

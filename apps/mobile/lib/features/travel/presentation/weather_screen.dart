@@ -62,7 +62,7 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
                     child: ListTile(
                       leading: Icon(
                         a.severity == 'warning' ? Icons.warning_amber : Icons.info_outline,
-                        color: a.severity == 'warning' ? TnColors.saffron : TnColors.gold,
+                        color: a.severity == 'warning' ? TnColors.saffron : TnColors.accent,
                       ),
                       title: Text(a.message),
                       subtitle: Text(a.date),
@@ -126,7 +126,7 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
                       if (r.trains.isEmpty) const EmptyState(icon: Icons.train_outlined),
                       for (final t in r.trains)
                         ListTile(
-                          leading: const Icon(Icons.train_outlined, color: TnColors.brown),
+                          leading: const Icon(Icons.train_outlined, color: TnColors.navy),
                           title: Text('${t.number} ${t.name}'),
                           subtitle: Text(
                             '${t.departs} → ${t.arrives} · ${(t.durationMin / 60).toStringAsFixed(1)} h',

@@ -323,7 +323,7 @@ export function YatraJourney() {
           >
             <defs>
               <pattern id="yj-grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                <path d="M40 0H0V40" fill="none" stroke="rgba(107,63,31,0.06)" strokeWidth="1" />
+                <path d="M40 0H0V40" fill="none" stroke="rgba(28, 60, 107,0.06)" strokeWidth="1" />
               </pattern>
               <radialGradient id="yj-glow">
                 <stop offset="0%" stopColor="#ffb347" stopOpacity="0.55" />
@@ -378,7 +378,7 @@ export function YatraJourney() {
               />
               <path
                 d="M-200 420 L1200 380 M-200 120 L1200 200 M300 -200 L260 900 M720 -200 L760 900"
-                stroke="rgba(107,63,31,0.08)"
+                stroke="rgba(28, 60, 107,0.08)"
                 strokeWidth={16}
                 fill="none"
               />
@@ -389,7 +389,7 @@ export function YatraJourney() {
                   <path
                     d={d}
                     fill="none"
-                    stroke="rgba(107,63,31,0.18)"
+                    stroke="rgba(28, 60, 107,0.18)"
                     strokeWidth={8}
                     strokeLinecap="round"
                     strokeDasharray="2 14"
@@ -400,7 +400,7 @@ export function YatraJourney() {
                     }}
                     d={d}
                     fill="none"
-                    stroke={i < idx ? '#d9772b' : 'transparent'}
+                    stroke={i < idx ? '#e07a2e' : 'transparent'}
                     strokeWidth={7}
                     strokeLinecap="round"
                   />
@@ -438,7 +438,7 @@ export function YatraJourney() {
               {/* vehicle */}
               <g transform={`translate(${String(pos.x)} ${String(pos.y)})`}>
                 <circle r={30} fill="url(#yj-glow)" />
-                <circle r={20} fill="#3b2414" stroke="#ffd78a" strokeWidth={3} />
+                <circle r={20} fill="#14233d" stroke="#ffc58a" strokeWidth={3} />
                 <text
                   y={7}
                   textAnchor="middle"

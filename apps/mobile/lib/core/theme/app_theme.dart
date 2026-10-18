@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
 /// Brand tokens, taken from the logo and shared with the website
-/// (cream paper, temple brown, antique gold, saffron).
+/// (temple navy, saffron flag, warm white paper).
 abstract final class TnColors {
-  static const paper = Color(0xFFF6EEDD);
-  static const paper2 = Color(0xFFEFE3C8);
-  static const card = Color(0xFFFFFAF0);
-  static const ink = Color(0xFF3B2414);
-  static const brown = Color(0xFF6B3F1F);
-  static const gold = Color(0xFFB8862F);
-  static const goldSoft = Color(0xFFD9B26A);
-  static const saffron = Color(0xFFD9772B);
-  static const muted = Color(0xFF7D6650);
-  static const night = Color(0xFF1D120A);
-  static const line = Color(0x2E6B3F1F);
+  static const paper = Color(0xFFF7F6F1);
+  static const paper2 = Color(0xFFEDEAE0);
+  static const card = Color(0xFFFFFFFF);
+  static const ink = Color(0xFF14233D);
+  static const navy = Color(0xFF1C3C6B);
+  static const accent = Color(0xFFC9692A);
+  static const accentSoft = Color(0xFFE9A15F);
+  static const saffron = Color(0xFFE07A2E);
+  static const muted = Color(0xFF5E6B80);
+  static const night = Color(0xFF0C1A30);
+  static const line = Color(0x2E1C3C6B);
   static const sos = Color(0xFFB3261E);
   static const success = Color(0xFF3F7A3F);
 }
@@ -26,10 +26,10 @@ abstract final class TnTheme {
 
   static ThemeData light() {
     final scheme = ColorScheme.fromSeed(
-      seedColor: TnColors.brown,
-      primary: TnColors.brown,
+      seedColor: TnColors.navy,
+      primary: TnColors.navy,
       onPrimary: TnColors.paper,
-      secondary: TnColors.gold,
+      secondary: TnColors.accent,
       tertiary: TnColors.saffron,
       surface: TnColors.paper,
       onSurface: TnColors.ink,
@@ -40,7 +40,7 @@ abstract final class TnTheme {
       colorScheme: scheme,
       fontFamilyFallback: const ['TiroDevanagari'],
     );
-    final text = base.textTheme.apply(bodyColor: TnColors.ink, displayColor: TnColors.brown);
+    final text = base.textTheme.apply(bodyColor: TnColors.ink, displayColor: TnColors.navy);
     return base.copyWith(
       scaffoldBackgroundColor: TnColors.paper,
       textTheme: text.copyWith(
@@ -63,7 +63,7 @@ abstract final class TnTheme {
       ),
       appBarTheme: const AppBarTheme(
         backgroundColor: TnColors.paper,
-        foregroundColor: TnColors.brown,
+        foregroundColor: TnColors.navy,
         elevation: 0,
         scrolledUnderElevation: 0,
         centerTitle: false,
@@ -72,7 +72,7 @@ abstract final class TnTheme {
           fontFeatures: liningFigures,
           fontSize: 22,
           fontWeight: FontWeight.w700,
-          color: TnColors.brown,
+          color: TnColors.navy,
         ),
       ),
       cardTheme: CardThemeData(
@@ -86,7 +86,7 @@ abstract final class TnTheme {
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
-          backgroundColor: TnColors.brown,
+          backgroundColor: TnColors.navy,
           foregroundColor: TnColors.paper,
           minimumSize: const Size(48, 48),
           shape: const StadiumBorder(),
@@ -95,15 +95,15 @@ abstract final class TnTheme {
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          foregroundColor: TnColors.brown,
+          foregroundColor: TnColors.navy,
           minimumSize: const Size(48, 48),
-          side: const BorderSide(color: TnColors.gold),
+          side: const BorderSide(color: TnColors.accent),
           shape: const StadiumBorder(),
         ),
       ),
       chipTheme: base.chipTheme.copyWith(
         backgroundColor: TnColors.card,
-        selectedColor: TnColors.brown,
+        selectedColor: TnColors.navy,
         side: const BorderSide(color: TnColors.line),
         shape: const StadiumBorder(),
       ),
@@ -121,7 +121,7 @@ abstract final class TnTheme {
       ),
       navigationBarTheme: const NavigationBarThemeData(
         backgroundColor: TnColors.card,
-        indicatorColor: Color(0x29B8862F),
+        indicatorColor: Color(0x29C9692A),
       ),
       dividerTheme: const DividerThemeData(color: TnColors.line),
     );

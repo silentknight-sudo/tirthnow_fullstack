@@ -1,6 +1,6 @@
 # ADR-0017: Mobile app structure, generated API models and brand theme
 
-- **Status:** Accepted
+- **Status:** Accepted (brand theme superseded by ADR-0018)
 - **Date:** 2026-10-18
 
 ## Context

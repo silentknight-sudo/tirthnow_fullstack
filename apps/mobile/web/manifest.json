@@ -1,11 +1,11 @@
 {
-    "name": "tirth_now",
-    "short_name": "tirth_now",
+    "name": "Tirth Now",
+    "short_name": "Tirth Now",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#F7F6F1",
+    "theme_color": "#1C3C6B",
+    "description": "Aarti times, darshan, stays, rides, SOS and an AI guide for Braj yatra.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

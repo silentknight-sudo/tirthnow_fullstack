@@ -231,7 +231,7 @@ class _PlanItem extends StatelessWidget {
             fontFeatures: liningFigures,
             fontSize: 18,
             fontWeight: FontWeight.w700,
-            color: TnColors.brown,
+            color: TnColors.navy,
           ),
         ),
         title: Text(item['title'] as String? ?? ''),

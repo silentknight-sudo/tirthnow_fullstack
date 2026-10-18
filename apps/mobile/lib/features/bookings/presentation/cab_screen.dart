@@ -158,7 +158,7 @@ class _QuoteTile extends ConsumerWidget {
           quote.class_ == 'e_rickshaw' || quote.class_ == 'auto'
               ? Icons.electric_rickshaw
               : Icons.local_taxi,
-          color: TnColors.brown,
+          color: TnColors.navy,
         ),
         title: Text('${quote.class_.replaceAll('_', ' ')} · ${quote.vendorName}'),
         subtitle: Text(

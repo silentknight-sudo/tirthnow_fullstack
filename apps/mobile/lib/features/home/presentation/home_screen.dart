@@ -133,13 +133,13 @@ class _QuickActions extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = context.l10n;
     final items = <(IconData, String, String, Color)>[
-      (Icons.temple_hindu_outlined, l.navTemples, '/temples', TnColors.brown),
-      (Icons.bed_outlined, l.stays, '/book/hotels', TnColors.brown),
-      (Icons.local_taxi_outlined, l.cabs, '/book/cabs', TnColors.brown),
-      (Icons.restaurant_outlined, l.food, '/book/restaurants', TnColors.brown),
-      (Icons.auto_awesome_outlined, l.guideTitle, '/guide', TnColors.brown),
-      (Icons.map_outlined, l.planner, '/guide/planner', TnColors.brown),
-      (Icons.play_circle_outline, l.reels, '/reels', TnColors.brown),
+      (Icons.temple_hindu_outlined, l.navTemples, '/temples', TnColors.navy),
+      (Icons.bed_outlined, l.stays, '/book/hotels', TnColors.navy),
+      (Icons.local_taxi_outlined, l.cabs, '/book/cabs', TnColors.navy),
+      (Icons.restaurant_outlined, l.food, '/book/restaurants', TnColors.navy),
+      (Icons.auto_awesome_outlined, l.guideTitle, '/guide', TnColors.navy),
+      (Icons.map_outlined, l.planner, '/guide/planner', TnColors.navy),
+      (Icons.play_circle_outline, l.reels, '/reels', TnColors.navy),
       (Icons.sos_outlined, l.sosTitle, '/sos', TnColors.sos),
     ];
     return GridView.count(
@@ -164,7 +164,7 @@ class _QuickActions extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: color == TnColors.sos
                         ? const Color(0x1FB3261E)
-                        : const Color(0xFFF7E2B4),
+                        : const Color(0xFFF6E6D2),
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Icon(icon, color: color),
@@ -222,7 +222,9 @@ class _WeatherCard extends StatelessWidget {
                         const SizedBox(height: 6),
                         Pill(
                           advisory.message,
-                          color: advisory.severity == 'warning' ? TnColors.saffron : TnColors.gold,
+                          color: advisory.severity == 'warning'
+                              ? TnColors.saffron
+                              : TnColors.accent,
                         ),
                       ],
                     ],

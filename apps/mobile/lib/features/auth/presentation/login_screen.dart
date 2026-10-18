@@ -98,7 +98,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             ),
             const SizedBox(height: 16),
             Center(
-              child: Image.asset('assets/images/logo.png', height: 150, semanticLabel: l.appName),
+              child: Image.asset(
+                'assets/images/logo_full.png',
+                height: 170,
+                semanticLabel: l.appName,
+              ),
             ),
             const SizedBox(height: 16),
             Text(

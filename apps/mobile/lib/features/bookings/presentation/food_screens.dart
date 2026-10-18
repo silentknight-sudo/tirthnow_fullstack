@@ -40,7 +40,7 @@ class RestaurantsScreen extends ConsumerWidget {
                           runSpacing: 6,
                           children: [
                             if (r.isPureVeg) Pill(l.veg, color: TnColors.success),
-                            if (r.isSatvik) Pill(l.satvik, color: TnColors.gold),
+                            if (r.isSatvik) Pill(l.satvik, color: TnColors.accent),
                             if (r.address != null)
                               Text(r.address!, style: const TextStyle(color: TnColors.muted)),
                           ],

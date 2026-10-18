@@ -37,7 +37,7 @@ class BookHubScreen extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(icon, size: 36, color: TnColors.brown),
+                        Icon(icon, size: 36, color: TnColors.navy),
                         const SizedBox(height: 8),
                         Text(label, style: Theme.of(context).textTheme.titleMedium),
                       ],
@@ -49,7 +49,7 @@ class BookHubScreen extends StatelessWidget {
           const SizedBox(height: 16),
           Card(
             child: ListTile(
-              leading: const Icon(Icons.receipt_long_outlined, color: TnColors.brown),
+              leading: const Icon(Icons.receipt_long_outlined, color: TnColors.navy),
               title: Text(l.myBookings),
               trailing: const Icon(Icons.chevron_right),
               onTap: () => context.push('/book/orders'),

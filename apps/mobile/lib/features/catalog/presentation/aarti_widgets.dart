@@ -40,7 +40,7 @@ class NextAartiCard extends StatelessWidget {
                     Text(
                       l.nextAarti.toUpperCase(),
                       style: const TextStyle(
-                        color: TnColors.goldSoft,
+                        color: TnColors.accentSoft,
                         fontSize: 12,
                         letterSpacing: 1.6,
                         fontWeight: FontWeight.w600,
@@ -50,7 +50,7 @@ class NextAartiCard extends StatelessWidget {
                     Text(
                       aarti.name,
                       style: const TextStyle(
-                        color: Color(0xFFF7E7C5),
+                        color: Color(0xFFF3EFE6),
                         fontFamily: 'Cormorant',
                         fontFeatures: liningFigures,
                         fontSize: 22,
@@ -59,22 +59,22 @@ class NextAartiCard extends StatelessWidget {
                     ),
                     Text(
                       '${aarti.templeName ?? ''} · ${aarti.localTime} IST',
-                      style: const TextStyle(color: Color(0xFFCDB796)),
+                      style: const TextStyle(color: Color(0xFFB8C3D6)),
                     ),
                     const SizedBox(height: 10),
                     if (!starts.isAfter(DateTime.now()))
-                      Pill(l.happeningNow, color: const Color(0xFFFFD78A), icon: Icons.circle)
+                      Pill(l.happeningNow, color: const Color(0xFFFFC58A), icon: Icons.circle)
                     else
                       Row(
                         children: [
                           Text(
                             '${l.startsIn}  ',
-                            style: const TextStyle(color: Color(0xFFCDB796), fontSize: 12),
+                            style: const TextStyle(color: Color(0xFFB8C3D6), fontSize: 12),
                           ),
                           Countdown(
                             target: starts,
                             style: const TextStyle(
-                              color: Color(0xFFFFD78A),
+                              color: Color(0xFFFFC58A),
                               fontSize: 24,
                               fontWeight: FontWeight.w700,
                               fontFeatures: [FontFeature.tabularFigures()],
@@ -148,7 +148,7 @@ class _DiyaState extends State<_Diya> with SingleTickerProviderStateMixin {
             width: 48,
             height: 16,
             decoration: const BoxDecoration(
-              color: TnColors.gold,
+              color: TnColors.accent,
               borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
             ),
           ),
@@ -183,7 +183,7 @@ class AartiTile extends ConsumerWidget {
           fontFeatures: liningFigures,
           fontSize: 20,
           fontWeight: FontWeight.w700,
-          color: past ? TnColors.muted : TnColors.brown,
+          color: past ? TnColors.muted : TnColors.navy,
         ),
       ),
       title: Text(aarti.name),
@@ -201,7 +201,7 @@ class AartiTile extends ConsumerWidget {
             tooltip: reminder == null ? l.remindMe : l.reminderSet,
             icon: Icon(
               reminder == null ? Icons.notifications_none : Icons.notifications_active,
-              color: reminder == null ? TnColors.muted : TnColors.gold,
+              color: reminder == null ? TnColors.muted : TnColors.accent,
             ),
             onPressed: () => _toggle(context, ref, reminder),
           ),

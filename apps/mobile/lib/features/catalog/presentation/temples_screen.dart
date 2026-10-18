@@ -65,7 +65,7 @@ class _TemplesScreenState extends ConsumerState<TemplesScreen> {
                         label: Text(c?.name ?? l.allBraj),
                         selected: city == c?.id,
                         labelStyle: TextStyle(
-                          color: city == c?.id ? TnColors.paper : TnColors.brown,
+                          color: city == c?.id ? TnColors.paper : TnColors.navy,
                         ),
                         onSelected: (_) => ref.read(cityFilterProvider.notifier).set(c?.id),
                       ),

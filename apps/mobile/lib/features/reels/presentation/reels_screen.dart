@@ -154,7 +154,7 @@ class _ReelPageState extends ConsumerState<_ReelPage> {
               ),
               if (r.caption != null) Text(r.caption!, style: const TextStyle(color: Colors.white)),
               if (r.templeName != null)
-                Pill(r.templeName!, color: TnColors.goldSoft, icon: Icons.temple_hindu),
+                Pill(r.templeName!, color: TnColors.accentSoft, icon: Icons.temple_hindu),
             ],
           ),
         ),

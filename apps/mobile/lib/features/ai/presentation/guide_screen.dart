@@ -266,7 +266,7 @@ class _GuideScreenState extends ConsumerState<GuideScreen> {
                       child: CircleAvatar(
                         radius: 24,
                         backgroundColor: _recording ? TnColors.sos : TnColors.paper2,
-                        child: Icon(Icons.mic, color: _recording ? Colors.white : TnColors.brown),
+                        child: Icon(Icons.mic, color: _recording ? Colors.white : TnColors.navy),
                       ),
                     ),
                   ),
@@ -302,7 +302,7 @@ class _Bubble extends StatelessWidget {
         padding: const EdgeInsets.all(12),
         constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.82),
         decoration: BoxDecoration(
-          color: user ? TnColors.brown : TnColors.card,
+          color: user ? TnColors.navy : TnColors.card,
           border: user ? null : Border.all(color: TnColors.line),
           borderRadius: BorderRadius.only(
             topLeft: const Radius.circular(18),
@@ -324,7 +324,7 @@ class _Bubble extends StatelessWidget {
                 Text(
                   '[${c.n}] ${c.title}',
                   style: const TextStyle(
-                    color: TnColors.gold,
+                    color: TnColors.accent,
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
                   ),
@@ -336,7 +336,7 @@ class _Bubble extends StatelessWidget {
                 child: IconButton(
                   visualDensity: VisualDensity.compact,
                   tooltip: context.l10n.voiceAsk,
-                  icon: const Icon(Icons.volume_up_outlined, size: 20, color: TnColors.gold),
+                  icon: const Icon(Icons.volume_up_outlined, size: 20, color: TnColors.accent),
                   onPressed: onSpeak,
                 ),
               ),

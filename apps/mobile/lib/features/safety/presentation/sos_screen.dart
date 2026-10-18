@@ -144,8 +144,8 @@ class _SosScreenState extends ConsumerState<SosScreen> with SingleTickerProvider
       backgroundColor: TnColors.night,
       appBar: AppBar(
         backgroundColor: TnColors.night,
-        foregroundColor: const Color(0xFFF7E7C5),
-        title: Text(l.sosTitle, style: const TextStyle(color: Color(0xFFF7E7C5))),
+        foregroundColor: const Color(0xFFF3EFE6),
+        title: Text(l.sosTitle, style: const TextStyle(color: Color(0xFFF3EFE6))),
       ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 40),
@@ -163,7 +163,7 @@ class _SosScreenState extends ConsumerState<SosScreen> with SingleTickerProvider
                     ? l.sosCountdown('${(holdSeconds * (1 - _hold.value)).ceil()}')
                     : l.sosHold,
                 textAlign: TextAlign.center,
-                style: const TextStyle(color: Color(0xFFF7E7C5), fontSize: 16),
+                style: const TextStyle(color: Color(0xFFF3EFE6), fontSize: 16),
               ),
             ),
             if (contacts.isEmpty) ...[
@@ -171,9 +171,9 @@ class _SosScreenState extends ConsumerState<SosScreen> with SingleTickerProvider
               Card(
                 color: const Color(0x14FFFFFF),
                 child: ListTile(
-                  leading: const Icon(Icons.contact_phone_outlined, color: TnColors.goldSoft),
-                  title: Text(l.sosNoContacts, style: const TextStyle(color: Color(0xFFE9D6B4))),
-                  trailing: const Icon(Icons.chevron_right, color: TnColors.goldSoft),
+                  leading: const Icon(Icons.contact_phone_outlined, color: TnColors.accentSoft),
+                  title: Text(l.sosNoContacts, style: const TextStyle(color: Color(0xFFDFE5EF))),
+                  trailing: const Icon(Icons.chevron_right, color: TnColors.accentSoft),
                   onTap: () => context.push('/profile/contacts'),
                 ),
               ),
@@ -195,13 +195,13 @@ class _SosScreenState extends ConsumerState<SosScreen> with SingleTickerProvider
           const SizedBox(height: 16),
           Text(
             l.nearbyHelp,
-            style: const TextStyle(color: TnColors.goldSoft, fontWeight: FontWeight.w700),
+            style: const TextStyle(color: TnColors.accentSoft, fontWeight: FontWeight.w700),
           ),
           directory.when(
             loading: () =>
                 const Padding(padding: EdgeInsets.all(16), child: LinearProgressIndicator()),
             error: (e, _) =>
-                Text(errorText(context, e), style: const TextStyle(color: Color(0xFFE9D6B4))),
+                Text(errorText(context, e), style: const TextStyle(color: Color(0xFFDFE5EF))),
             data: (d) => Column(
               children: [
                 for (final h in d.helplines) _HelpTile(title: h.name, phone: h.phone),
@@ -246,7 +246,7 @@ class _SosButton extends StatelessWidget {
                   child: CircularProgressIndicator(
                     value: controller.value,
                     strokeWidth: 6,
-                    color: const Color(0xFFFFD78A),
+                    color: const Color(0xFFFFC58A),
                     backgroundColor: const Color(0x33FFFFFF),
                   ),
                 ),
@@ -311,13 +311,13 @@ class _ActiveSosPanel extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Icon(Icons.health_and_safety, color: Color(0xFFFFD78A), size: 48),
+            const Icon(Icons.health_and_safety, color: Color(0xFFFFC58A), size: 48),
             const SizedBox(height: 8),
             Text(
               l.sosActive,
               textAlign: TextAlign.center,
               style: const TextStyle(
-                color: Color(0xFFF7E7C5),
+                color: Color(0xFFF3EFE6),
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
               ),
@@ -327,7 +327,7 @@ class _ActiveSosPanel extends StatelessWidget {
               Text(
                 l.locationDenied,
                 textAlign: TextAlign.center,
-                style: const TextStyle(color: TnColors.goldSoft),
+                style: const TextStyle(color: TnColors.accentSoft),
               ),
             ],
             const SizedBox(height: 16),
@@ -338,13 +338,13 @@ class _ActiveSosPanel extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             OutlinedButton(
-              style: OutlinedButton.styleFrom(foregroundColor: const Color(0xFFF7E7C5)),
+              style: OutlinedButton.styleFrom(foregroundColor: const Color(0xFFF3EFE6)),
               onPressed: onSafe,
               child: Text(l.sosSafe),
             ),
             if (cancellable)
               TextButton(
-                style: TextButton.styleFrom(foregroundColor: TnColors.goldSoft),
+                style: TextButton.styleFrom(foregroundColor: TnColors.accentSoft),
                 onPressed: onCancel,
                 child: Text(l.sosCancel),
               ),
@@ -367,15 +367,15 @@ class _HelpTile extends StatelessWidget {
     final p = phone;
     return ListTile(
       contentPadding: EdgeInsets.zero,
-      title: Text(title, style: const TextStyle(color: Color(0xFFF7E7C5))),
+      title: Text(title, style: const TextStyle(color: Color(0xFFF3EFE6))),
       subtitle: subtitle == null
           ? null
-          : Text(subtitle!, style: const TextStyle(color: Color(0xFFB9A17E))),
+          : Text(subtitle!, style: const TextStyle(color: Color(0xFF97A5BD))),
       trailing: p == null
           ? null
           : IconButton(
               tooltip: p,
-              icon: const Icon(Icons.call, color: TnColors.goldSoft),
+              icon: const Icon(Icons.call, color: TnColors.accentSoft),
               onPressed: () => launchUrl(Uri.parse('tel:$p')),
             ),
     );

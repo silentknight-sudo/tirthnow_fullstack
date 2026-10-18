@@ -96,7 +96,7 @@ class EmptyState extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 40, color: TnColors.goldSoft),
+            Icon(icon, size: 40, color: TnColors.accentSoft),
             const SizedBox(height: 12),
             Text(message ?? context.l10n.emptyList, textAlign: TextAlign.center),
           ],
@@ -108,7 +108,7 @@ class EmptyState extends StatelessWidget {
 
 /// Small rounded label.
 class Pill extends StatelessWidget {
-  const Pill(this.text, {super.key, this.color = TnColors.gold, this.icon});
+  const Pill(this.text, {super.key, this.color = TnColors.accent, this.icon});
 
   final String text;
   final Color color;

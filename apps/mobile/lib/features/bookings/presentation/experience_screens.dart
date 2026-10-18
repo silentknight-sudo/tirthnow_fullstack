@@ -36,7 +36,7 @@ class ExperiencesScreen extends ConsumerWidget {
                       subtitle: Text('${x.durationMin} min · ${x.kind.replaceAll('_', ' ')}'),
                       trailing: Text(
                         formatRupees(x.pricePaise, locale: context.lang),
-                        style: const TextStyle(fontWeight: FontWeight.w700, color: TnColors.brown),
+                        style: const TextStyle(fontWeight: FontWeight.w700, color: TnColors.navy),
                       ),
                       onTap: () => context.push('/book/experiences/${x.id}'),
                     ),

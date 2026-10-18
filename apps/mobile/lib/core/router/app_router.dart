@@ -163,7 +163,7 @@ class _Splash extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
     body: Center(
-      child: Image.asset('assets/images/logo.png', height: 160, semanticLabel: 'Tirth Now'),
+      child: Image.asset('assets/images/logo_full.png', height: 180, semanticLabel: 'Tirth Now'),
     ),
   );
 }
