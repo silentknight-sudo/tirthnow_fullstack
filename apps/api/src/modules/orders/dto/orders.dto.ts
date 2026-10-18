@@ -209,6 +209,12 @@ export class OrderResponse {
   @ApiProperty() createdAt!: string;
 }
 
+/** Cursor page of the caller's orders. */
+export class OrderPageResponse {
+  @ApiProperty({ type: [OrderResponse] }) data!: OrderResponse[];
+  @ApiProperty({ nullable: true, type: String }) nextCursor!: string | null;
+}
+
 export class CreateOrderResponse {
   @ApiProperty({ type: OrderResponse }) order!: OrderResponse;
   @ApiProperty({

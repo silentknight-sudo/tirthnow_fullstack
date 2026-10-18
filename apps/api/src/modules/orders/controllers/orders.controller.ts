@@ -24,6 +24,7 @@ import {
   CancelOrderDto,
   CreateOrderDto,
   CreateOrderResponse,
+  OrderPageResponse,
   OrderQueryDto,
   OrderResponse,
   PaymentIntentResponse,
@@ -59,7 +60,7 @@ export class OrdersController {
   }
 
   @Get()
-  @ApiOkResponse({ type: [OrderResponse] })
+  @ApiOkResponse({ type: OrderPageResponse })
   list(
     @CurrentUser() user: AuthPrincipal,
     @Query() q: OrderQueryDto,

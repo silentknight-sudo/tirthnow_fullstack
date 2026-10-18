@@ -20,6 +20,7 @@
     "db:reset": "prisma migrate reset --force",
     "db:studio": "prisma studio",
     "db:check": "tsx scripts/new-migration.ts --check",
+    "openapi:export": "nest build && node dist/openapi-export.js",
     "postinstall": "prisma generate"
   },
   "dependencies": {

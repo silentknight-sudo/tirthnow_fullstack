@@ -1,6 +1,6 @@
 import { RequestMethod } from '@nestjs/common';
 import { type NestExpressApplication } from '@nestjs/platform-express';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { DocumentBuilder, type OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
 import { Logger } from 'nestjs-pino';
 import { type AppConfig } from './core/config';
@@ -42,13 +42,17 @@ export function configureApp(app: NestExpressApplication, config: AppConfig): vo
   app.enableShutdownHooks();
 
   if (config.swaggerEnabled) {
-    const doc = new DocumentBuilder()
-      .setTitle('Tirth Now API')
-      .setDescription('REST API for the Tirth Now mobile app, vendor portal and admin portal.')
-      .setVersion('1.0')
-      .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' })
-      .build();
-    const document = SwaggerModule.createDocument(app, doc);
-    SwaggerModule.setup('docs', app, document, { jsonDocumentUrl: 'docs-json' });
+    SwaggerModule.setup('docs', app, buildOpenApiDocument(app), { jsonDocumentUrl: 'docs-json' });
   }
+}
+
+/** The OpenAPI document served at /docs-json and exported for clients (pnpm openapi:export). */
+export function buildOpenApiDocument(app: NestExpressApplication): OpenAPIObject {
+  const doc = new DocumentBuilder()
+    .setTitle('Tirth Now API')
+    .setDescription('REST API for the Tirth Now mobile app, vendor portal and admin portal.')
+    .setVersion('1.0')
+    .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' })
+    .build();
+  return SwaggerModule.createDocument(app, doc);
 }
