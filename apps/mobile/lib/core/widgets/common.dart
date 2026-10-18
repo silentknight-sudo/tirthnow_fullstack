@@ -149,11 +149,12 @@ class CoverImage extends StatelessWidget {
     final placeholder = Container(
       height: height,
       color: TnColors.paper2,
-      alignment: Alignment.center,
+      alignment: const Alignment(0.8, 0),
+      // Faint and off to the side so titles laid over the cover stay readable.
       child: Image.asset(
         'assets/images/logo.png',
-        height: height * 0.45,
-        opacity: const AlwaysStoppedAnimation(0.5),
+        height: height * 0.6,
+        opacity: const AlwaysStoppedAnimation(0.12),
       ),
     );
     final u = url;
