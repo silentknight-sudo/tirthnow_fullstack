@@ -24,6 +24,9 @@ Lead times matter: start the slow ones (★) early.
 | 17 | Legal: privacy policy, terms, refund/cancellation policy, Data Protection (DPDP Act 2023) notices | Store listings, payments | URLs in `app_config` | |
 | 18 | **Verify seeded content**: temple list, coordinates and every aarti time (`apps/api/prisma/seed/catalog-data.ts`) with each temple or a local content team | Catalog, AI guide (quotes aarti times from the DB) | — | Seed times are realistic samples, not verified timings. |
 | 19 | **Decide Node.js runtime**: spec says Node 20, which reached end-of-life in April 2026. Recommend Node 22 LTS for CI and production images | Security patches | `.nvmrc`, Dockerfiles | See ADR-0007. |
+| 20 | **Final app identity**: package / bundle id (now `com.tirthnow.tirth_now`), launcher icons, splash, store listing text and screenshots (en + hi) | Store release | `android/app/build.gradle.kts`, Xcode project | Changing the id after launch is not possible. |
+| 21 | Razorpay **key id** for the app build and Firebase files placed in the app | Mobile release builds | `--dart-define=AUTH_PROVIDER=firebase PAYMENT_PROVIDER=razorpay RAZORPAY_KEY_ID=…`; `android/app/google-services.json`, `ios/Runner/GoogleService-Info.plist` | Key id is public; never put the Razorpay secret in the app. |
+| 22 | Production API origin(s) for the app and CORS for any web build | Mobile release | `--dart-define=API_BASE_URL`, `CORS_ORIGINS` | |
 
 ## Message templates to register (rows 5 and 6)
 

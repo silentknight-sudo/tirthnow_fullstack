@@ -66,6 +66,19 @@ Clients only ever hold **publishable/restricted** keys:
 Secrets (Razorpay secret, LLM and embedding keys, MSG91, Google API key) live only in
 the API's environment.
 
+### Mobile app adapters (Phase 3)
+
+The Flutter app follows the same pattern on the client (ADR-0017), selected at build
+time with `--dart-define` (no secrets are compiled in):
+
+| Capability | Interface | Real | Mock (default) | Switch |
+|---|---|---|---|---|
+| Identity | `IdentityProvider` | Firebase Auth phone OTP / anonymous | mints `mock:<uid>:<phone>` tokens; OTP `123456` | `AUTH_PROVIDER=firebase` |
+| Payment checkout | `PaymentCheckout` | `razorpay_flutter` | test sheet → `POST /v1/dev/payments/checkout` (non-production API, `PAYMENT_PROVIDER=mock`) | `PAYMENT_PROVIDER=razorpay`, `RAZORPAY_KEY_ID` |
+| Location | `LocationService` | geolocator (falls back to an approximate Vrindavan fix, accuracy 5 km, when GPS is off) | — | — |
+
+Other build-time setting: `API_BASE_URL` (API origin without `/v1`).
+
 ### Webhooks
 
 | Source | Endpoint | Verification |

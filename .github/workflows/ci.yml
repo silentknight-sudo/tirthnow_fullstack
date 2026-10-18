@@ -96,3 +96,110 @@ jobs:
 
       - name: Build
         run: pnpm build
+
+      - name: OpenAPI snapshot is current (input for the mobile models)
+        run: |
+          cp .env.example .env
+          node apps/api/dist/openapi-export.js --check
+
+  mobile:
+    name: mobile · analyze · test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: apps/mobile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.47.7
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - name: Generated code is current (API models, l10n)
+        run: |
+          node tool/gen_api_models.mjs
+          flutter gen-l10n
+          dart format lib/core/api/api_models.dart lib/l10n
+          git diff --exit-code -- lib/core/api/api_models.dart lib/l10n
+      - run: dart format --output=none --set-exit-if-changed lib test tool
+      - run: flutter analyze
+      - run: flutter test
+
+  mobile-contract:
+    name: mobile · contract tests against the API
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: tirthnow
+          POSTGRES_PASSWORD: tirthnow
+          POSTGRES_DB: tirthnow
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U tirthnow" --health-interval 5s --health-timeout 3s --health-retries 20
+      redis:
+        image: redis:7-alpine
+        ports: ['6379:6379']
+        options: >-
+          --health-cmd "redis-cli ping" --health-interval 5s --health-timeout 3s --health-retries 20
+    env:
+      NODE_ENV: development
+      STORAGE_PROVIDER: mock
+      EMAIL_PROVIDER: mock
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.47.7
+          channel: stable
+          cache: true
+      - run: pnpm install --frozen-lockfile
+      - run: cp .env.example .env
+      - name: Migrate, seed and start the API (all providers mocked)
+        run: |
+          pnpm --filter @tirth-now/api db:deploy
+          pnpm db:seed
+          pnpm --filter @tirth-now/api build
+          (cd apps/api && node dist/main.js > /tmp/api.log 2>&1 &)
+          for i in $(seq 1 60); do curl -sf http://localhost:4000/healthz && break; sleep 1; done
+      - name: Contract tests
+        working-directory: apps/mobile
+        run: |
+          flutter pub get
+          flutter test test/contract --dart-define=API_CONTRACT_URL=http://localhost:4000
+      - name: API log
+        if: failure()
+        run: tail -200 /tmp/api.log
+
+  mobile-android:
+    name: mobile · Android debug build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: apps/mobile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.47.7
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: flutter build apk --debug

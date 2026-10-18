@@ -1,0 +1,252 @@
+{
+  "@@locale": "en",
+  "appName": "Tirth Now",
+  "navHome": "Home",
+  "navTemples": "Temples",
+  "navBook": "Book",
+  "navGuide": "Guide",
+  "navProfile": "Profile",
+  "retry": "Try again",
+  "cancel": "Cancel",
+  "save": "Save",
+  "delete": "Delete",
+  "done": "Done",
+  "continueLabel": "Continue",
+  "seeAll": "See all",
+  "loading": "Loading…",
+  "errorGeneric": "Something went wrong.",
+  "errorOffline": "You are offline. Showing saved data where possible.",
+  "emptyList": "Nothing here yet.",
+  "signInToContinue": "Sign in with your phone to continue.",
+  "signIn": "Sign in",
+  "welcomeTitle": "Every tirth, right now.",
+  "welcomeSub": "Aarti times, darshan, stays, rides, SOS and an AI guide for your yatra in Braj.",
+  "chooseLanguage": "Choose language",
+  "phoneLabel": "Mobile number",
+  "phoneHint": "10-digit number",
+  "phoneInvalid": "Enter a valid 10-digit Indian mobile number.",
+  "sendOtp": "Send OTP",
+  "otpLabel": "6-digit OTP",
+  "otpSentTo": "We sent a code to {phone}",
+  "@otpSentTo": {
+    "placeholders": {
+      "phone": {}
+    }
+  },
+  "otpInvalid": "Enter the 6-digit code.",
+  "verify": "Verify",
+  "mockOtpHint": "Test mode: use 123456",
+  "continueAsGuest": "Continue as guest",
+  "guestNote": "Guests can browse, ask the guide and use SOS. Sign in to book.",
+  "greeting": "Radhe Radhe{name}",
+  "@greeting": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "nextAarti": "Next aarti",
+  "startsIn": "Starts in",
+  "upcomingAartis": "Upcoming aartis",
+  "festivals": "Festivals",
+  "weather": "Weather",
+  "quickActions": "Quick actions",
+  "nearbyTemples": "Temples",
+  "noUpcomingAarti": "No aarti scheduled in the next few hours.",
+  "feelsLike": "Feels like {temp}",
+  "@feelsLike": {
+    "placeholders": {
+      "temp": {}
+    }
+  },
+  "searchTemples": "Search temples",
+  "crowd": "Crowd",
+  "crowdLevel0": "Very low",
+  "crowdLevel1": "Low",
+  "crowdLevel2": "Moderate",
+  "crowdLevel3": "High",
+  "crowdLevel4": "Very high",
+  "aartiSchedule": "Aarti schedule",
+  "today": "Today",
+  "tomorrow": "Tomorrow",
+  "remindMe": "Remind me",
+  "reminderSet": "Reminder set",
+  "reminderRemoved": "Reminder removed",
+  "directions": "Directions",
+  "dressCode": "Dress code",
+  "about": "About",
+  "live": "Live",
+  "watchLive": "Watch live",
+  "timesFromTemple": "Times come from the temple's published schedule.",
+  "bookTitle": "Book",
+  "stays": "Stays",
+  "cabs": "Cabs",
+  "food": "Food",
+  "experiences": "Experiences",
+  "myBookings": "My bookings",
+  "checkIn": "Check-in",
+  "checkOut": "Check-out",
+  "guests": "Guests",
+  "rooms": "Rooms",
+  "perNight": "per night",
+  "selectRoom": "Select room",
+  "bookNow": "Book now",
+  "payNow": "Pay {amount}",
+  "@payNow": {
+    "placeholders": {
+      "amount": {}
+    }
+  },
+  "total": "Total",
+  "taxes": "Taxes",
+  "fees": "Fees",
+  "cancellationPolicy": "Cancellation policy",
+  "pickup": "Pickup",
+  "drop": "Drop",
+  "getQuotes": "Get fares",
+  "veg": "Pure veg",
+  "satvik": "Satvik",
+  "addToOrder": "Add",
+  "slots": "Available slots",
+  "seats": "Seats",
+  "orderStatus_pending": "Awaiting payment",
+  "orderStatus_confirmed": "Confirmed",
+  "orderStatus_in_progress": "In progress",
+  "orderStatus_completed": "Completed",
+  "orderStatus_cancelled": "Cancelled",
+  "orderStatus_refunded": "Refunded",
+  "cancelBooking": "Cancel booking",
+  "refundAmount": "Refund: {amount}",
+  "@refundAmount": {
+    "placeholders": {
+      "amount": {}
+    }
+  },
+  "paymentSuccess": "Payment successful. Your booking is confirmed.",
+  "paymentFailed": "Payment did not complete.",
+  "mockCheckoutTitle": "Test checkout",
+  "mockCheckoutBody": "No real money is charged in test mode.",
+  "mockPaySucceed": "Pay (succeed)",
+  "mockPayFail": "Fail payment",
+  "trackRide": "Track ride",
+  "writeReview": "Write a review",
+  "rating": "Rating",
+  "reviewHint": "Share your experience",
+  "sosTitle": "SOS",
+  "sosHold": "Press and hold for help",
+  "sosCountdown": "Sending alert in {seconds}",
+  "@sosCountdown": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "sosActive": "Help is on the way. Your family has been alerted.",
+  "sosShareLink": "Share live location",
+  "sosCancel": "Cancel alert",
+  "sosSafe": "I am safe",
+  "sosNoContacts": "Add emergency contacts so we can alert your family.",
+  "callEmergency": "Call 112",
+  "nearbyHelp": "Nearby help",
+  "emergencyContacts": "Emergency contacts",
+  "addContact": "Add contact",
+  "name": "Name",
+  "relation": "Relation",
+  "locationDenied": "Location permission is off. Alerts will go without your location.",
+  "notifications": "Notifications",
+  "markAllRead": "Mark all read",
+  "notificationPrefs": "Notification settings",
+  "aartiReminders": "Aarti reminders",
+  "minutesBefore": "{minutes} min before",
+  "@minutesBefore": {
+    "placeholders": {
+      "minutes": {}
+    }
+  },
+  "profile": "Profile",
+  "language": "Language",
+  "displayName": "Your name",
+  "signOut": "Sign out",
+  "deleteAccount": "Delete account",
+  "deleteAccountConfirm": "This permanently deletes your account and data. Continue?",
+  "guestUser": "Guest",
+  "weatherAndTrains": "Weather & trains",
+  "trainsTo": "Trains",
+  "fromStation": "From",
+  "toStation": "To",
+  "search": "Search",
+  "reels": "Reels",
+  "comments": "Comments",
+  "addComment": "Add a comment",
+  "saved": "Saved",
+  "guideTitle": "Braj Guide",
+  "guideHint": "Ask about temples, aarti, stays…",
+  "guideIntro": "Radhe Radhe! Ask me anything about Braj. Aarti times always come from the temple schedule.",
+  "newChat": "New chat",
+  "sources": "Sources",
+  "planner": "Trip planner",
+  "planTrip": "Plan my trip",
+  "days": "Days",
+  "pace": "Pace",
+  "paceRelaxed": "Relaxed",
+  "paceModerate": "Moderate",
+  "paceIntense": "Packed",
+  "startDate": "Start date",
+  "sharePlan": "Share",
+  "downloadPdf": "Download PDF",
+  "voiceAsk": "Hold to speak",
+  "identifyTemple": "Identify a temple",
+  "quotaLeft": "{count} questions left today",
+  "@quotaLeft": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "changeNumber": "Change number",
+  "freeCancellation": "Free cancellation until {hours} h before check-in; {pct}% charge after that.",
+  "@freeCancellation": {
+    "placeholders": {
+      "pct": {},
+      "hours": {}
+    }
+  },
+  "nightsCount": "{count, plural, =1{1 night} other{{count} nights}}",
+  "@nightsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "roomsLeft": "{count} left",
+  "@roomsLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "nightFare": "night fare",
+  "driverAt": "Driver is {km} km away",
+  "@driverAt": {
+    "placeholders": {
+      "km": {}
+    }
+  },
+  "driverLocation": "Driver's live location",
+  "eldersInGroup": "Elders in the group",
+  "wheelchairAccess": "Wheelchair access",
+  "minTravel": "{minutes} min travel",
+  "@minTravel": {
+    "placeholders": {
+      "minutes": {}
+    }
+  },
+  "allBraj": "All Braj",
+  "dayN": "Day {n}",
+  "@dayN": {
+    "placeholders": {
+      "n": {}
+    }
+  },
+  "send": "Send",
+  "happeningNow": "Happening now"
+}

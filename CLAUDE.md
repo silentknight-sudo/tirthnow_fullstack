@@ -10,7 +10,7 @@ structural changes. Keep this file updated as phases land.
 | 0 | Architecture docs, ERD, ADRs, repo tree | Done |
 | 1 | Foundation: monorepo wiring, docker-compose, NestJS skeleton, Prisma schema + seed, auth, CI | Done |
 | 2 | Backend modules (all 16 modules, 227 routes, realtime, workers) | Done |
-| 3 | Mobile app (Flutter) | Not started |
+| 3 | Mobile app (Flutter): auth, home, temples + aarti, bookings + payments, SOS, notifications, reels, AI guide + planner | Done |
 | 4 | Vendor portal | Not started |
 | 5 | Admin portal | Not started |
 | 6 | Hardening & release | Not started |
@@ -55,7 +55,11 @@ pnpm --filter @tirth-now/api db:check   # CI: migrations in sync with schema.pri
 pnpm --filter @tirth-now/api db:deploy  # apply migrations
 pnpm db:seed                 # idempotent local seed
 pnpm --filter @tirth-now/api start:worker   # worker process (after build)
-cd apps/mobile && flutter run               # Phase 3
+pnpm --filter @tirth-now/api openapi:export   # API → packages/api-client/openapi.json
+cd apps/mobile && node tool/gen_api_models.mjs  # → lib/core/api/api_models.dart (committed)
+cd apps/mobile && flutter run                   # mock auth (OTP 123456) + mock payments
+cd apps/mobile && flutter analyze && flutter test
+cd apps/mobile && flutter test test/contract --dart-define=API_CONTRACT_URL=http://localhost:4000
 ```
 
 Do not use plain `prisma migrate dev` to create migrations (it will offer to drop `rx_` indexes).
@@ -96,6 +100,17 @@ Do not use plain `prisma migrate dev` to create migrations (it will offer to dro
 - AI: system prompts start with `[task:<name>]` (the mock LLM dispatches on it). Aarti times only via `get_aarti_schedule` / the planner's DB candidates (ADR-0015). Models: `LLM_MODEL_DEFAULT` / `LLM_MODEL_CHEAP`.
 - Mock-only test helpers: `MockPaymentAdapter.holdRefunds`, `MockVideoAdapter.holdAssets`, `MockSmsAdapter.rejectNumbers`, `MockLlmAdapter.calls`; Socket.IO helpers `connectSocket` / `subscribeRoom` / `nextEvent` in `test/helpers.ts`.
 
+## How the mobile app fits (Phase 3)
+
+- Read ADR-0017 first. Riverpod 3 (no codegen), go_router `StatefulShellRoute` (Home, Temples, Book, Guide, Profile); `/sos` works signed out.
+- Never hand-write API types: change the API, run `openapi:export`, then `tool/gen_api_models.mjs`. CI fails if either is stale.
+- All HTTP goes through `ApiClient` (`core/api/api_client.dart`): `/v1` prefix, `Accept-Language`, bearer token, single shared refresh on 401. Pass `idempotencyKey: ApiClient.newIdempotencyKey()` for orders, payment verify, cancel and SOS — one key per user tap.
+- Client-side providers mirror the API pattern: `IdentityProvider` (mock | firebase) and `PaymentCheckout` (mock | razorpay), chosen by `--dart-define`. Mock OTP is `123456`; mock checkout calls the API's dev checkout.
+- Every UI string lives in `lib/l10n/app_en.arb` + `app_hi.arb`; run `flutter gen-l10n`. Money via `formatRupees(paise)`, times via `formatIstTime` (IST for display only).
+- Aarti times are shown exactly as the API returns them; the app never computes or estimates them.
+- Guests can browse, chat with the guide and use SOS; bookings, reviews, reminders and the planner call `requireSignedIn()`.
+- Theme tokens in `core/theme/app_theme.dart` (`TnColors`), same palette as the website; fonts bundled in `assets/fonts`.
+
 ## Naming
 
 - DB: snake_case plural tables, snake_case columns; Prisma models PascalCase singular with `@@map`.
@@ -103,13 +118,13 @@ Do not use plain `prisma migrate dev` to create migrations (it will offer to dro
 - Error codes: `UPPER_SNAKE`, namespaced (`ORDER_INVALID_TRANSITION`, `AUTH_REFRESH_REUSED`), defined in `@tirth-now/shared-types`.
 - Queue names: `<module>` with job names `<verb>-<noun>`.
 - Events: `<entity>.<past-tense>` e.g. `order.confirmed`, `payment.captured`.
-- Flutter: `lib/features/<feature>/{data,domain,presentation}`; generated `*.g.dart` / `*.freezed.dart` are not committed (build_runner in CI).
+- Flutter: `lib/features/<feature>/{data,presentation}`; no build_runner. API models are generated from OpenAPI into `lib/core/api/api_models.dart` and committed (ADR-0017).
 
 ## Testing
 
 - API: Jest unit tests in `__tests__/*.spec.ts` next to code; e2e (`test/*.e2e-spec.ts`) with Supertest against `DATABASE_URL_TEST`, migrated once in global setup and truncated (except `roles`) via `resetState()`. Redis uses DB 15. All providers mocked; read sent emails from `MockEmailAdapter.outbox`.
 - Portals: Playwright against API with mocks.
-- Mobile: flutter_test + integration_test.
+- Mobile: unit + widget tests (`flutter test`, providers overridden in `test/helpers.dart`), contract tests against a live API (`test/contract`, run in CI).
 
 ## Git
 
