@@ -78,6 +78,18 @@ The contract tests drive the app's repositories against a running API: sign-in,
 catalog, a hotel booking paid through the test checkout and then cancelled, SOS,
 notifications, reels, and the AI guide's streamed answer and planner.
 
+## Installable APK
+
+The `Mobile APK` workflow (`.github/workflows/mobile-apk.yml`) builds on every push
+that touches `apps/mobile` and on demand (Actions → Mobile APK → Run workflow). Download
+`tirth-now-apk` from the run: `app-release.apk` installs on any Android phone;
+`app-arm64-v8a-release.apk` is smaller for modern phones. It is signed with the debug
+key, so it is for testing, not Google Play.
+
+The API address is compiled in: pass `api_base_url` when running the workflow, or set
+the repository variable `MOBILE_API_BASE_URL` (e.g. `https://api.example.com`). The
+default `http://10.0.2.2:4000` only works in the Android emulator.
+
 ## Before store release
 
 See `docs/CLIENT_SETUP_TODO.md`: Firebase project files (`google-services.json`,
