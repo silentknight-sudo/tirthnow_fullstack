@@ -59,7 +59,8 @@ abstract final class TnTheme {
           fontWeight: FontWeight.w600,
           fontFeatures: liningFigures,
         ),
-        titleLarge: text.titleLarge?.copyWith(fontFamily: _display, fontWeight: FontWeight.w700),
+        titleLarge: text.titleLarge?.copyWith(fontWeight: FontWeight.w700),
+        titleMedium: text.titleMedium?.copyWith(fontWeight: FontWeight.w600),
       ),
       appBarTheme: const AppBarTheme(
         backgroundColor: TnColors.paper,
@@ -68,16 +69,17 @@ abstract final class TnTheme {
         scrolledUnderElevation: 0,
         centerTitle: false,
         titleTextStyle: TextStyle(
-          fontFamily: _display,
           fontFeatures: liningFigures,
-          fontSize: 22,
-          fontWeight: FontWeight.w700,
+          fontSize: 20,
+          fontWeight: FontWeight.w800,
           color: TnColors.navy,
         ),
       ),
       cardTheme: CardThemeData(
         color: TnColors.card,
-        elevation: 0,
+        elevation: 2,
+        shadowColor: const Color(0x261C3C6B),
+        surfaceTintColor: Colors.transparent,
         margin: EdgeInsets.zero,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(18),
@@ -111,11 +113,11 @@ abstract final class TnTheme {
         filled: true,
         fillColor: TnColors.card,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(28),
           borderSide: const BorderSide(color: TnColors.line),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(28),
           borderSide: const BorderSide(color: TnColors.line),
         ),
       ),

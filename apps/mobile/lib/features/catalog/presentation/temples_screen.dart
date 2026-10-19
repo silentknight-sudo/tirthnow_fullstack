@@ -37,6 +37,7 @@ class _TemplesScreenState extends ConsumerState<TemplesScreen> {
     final temples = ref.watch(templesProvider);
     final cities = ref.watch(citiesProvider).value ?? const <CityResponse>[];
     final city = ref.watch(cityFilterProvider);
+    final cityNames = {for (final c in cities) c.id: c.name};
     return Scaffold(
       appBar: AppBar(title: Text(l.navTemples)),
       body: Column(
@@ -45,7 +46,7 @@ class _TemplesScreenState extends ConsumerState<TemplesScreen> {
             padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
             child: TextField(
               decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.search),
+                prefixIcon: const Icon(Icons.search, color: TnColors.navy),
                 hintText: l.searchTemples,
               ),
               onChanged: (v) => setState(() => _query = v.trim().toLowerCase()),
@@ -90,11 +91,17 @@ class _TemplesScreenState extends ConsumerState<TemplesScreen> {
                 if (shown.isEmpty) return const EmptyState(icon: Icons.temple_hindu_outlined);
                 return RefreshIndicator(
                   onRefresh: () async => ref.invalidate(templesProvider),
-                  child: ListView.separated(
-                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 96),
+                  child: GridView.builder(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 110),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 14,
+                      crossAxisSpacing: 12,
+                      mainAxisExtent: 222,
+                    ),
                     itemCount: shown.length,
-                    separatorBuilder: (_, _) => const SizedBox(height: 12),
-                    itemBuilder: (_, i) => TempleCard(temple: shown[i]),
+                    itemBuilder: (_, i) =>
+                        TempleCard(temple: shown[i], city: cityNames[shown[i].cityId]),
                   ),
                 );
               },
@@ -106,14 +113,17 @@ class _TemplesScreenState extends ConsumerState<TemplesScreen> {
   }
 }
 
+/// Photo card with a crowd badge, used in the temples grid and on home.
 class TempleCard extends StatelessWidget {
-  const TempleCard({super.key, required this.temple});
+  const TempleCard({super.key, required this.temple, this.city, this.imageHeight = 120});
 
   final TempleSummaryResponse temple;
+  final String? city;
+  final double imageHeight;
 
   @override
   Widget build(BuildContext context) {
-    final l = context.l10n;
+    final level = temple.crowdLevel;
     return Card(
       clipBehavior: Clip.antiAlias,
       child: InkWell(
@@ -121,33 +131,66 @@ class TempleCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CoverImage(temple.coverUrl, height: 140, radius: 0),
-            Padding(
-              padding: const EdgeInsets.all(14),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    temple.name,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 20),
-                  ),
-                  const SizedBox(height: 6),
-                  Wrap(
-                    spacing: 6,
-                    runSpacing: 6,
-                    children: [
-                      Pill(
-                        '${l.crowd}: ${crowdLabel(context, temple.crowdLevel)}',
-                        color: crowdColor(temple.crowdLevel),
+            Stack(
+              children: [
+                CoverImage(temple.coverUrl, height: imageHeight, radius: 0),
+                Positioned(
+                  left: 8,
+                  top: 8,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                    decoration: BoxDecoration(
+                      color: crowdColor(level),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      crowdLabel(context, level),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
                       ),
-                      if (temple.distanceKm != null)
-                        Pill('${temple.distanceKm!.toStringAsFixed(1)} km', icon: Icons.near_me),
-                      for (final t in temple.tags.take(2)) Pill(t, color: TnColors.muted),
-                    ],
+                    ),
                   ),
-                ],
+                ),
+                if (temple.distanceKm != null)
+                  Positioned(
+                    right: 8,
+                    top: 8,
+                    child: Pill('${temple.distanceKm!.toStringAsFixed(1)} km', icon: Icons.near_me),
+                  ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10, 8, 10, 0),
+              child: Text(
+                temple.name,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 14, height: 1.2),
               ),
             ),
+            if (city != null)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 2, 10, 0),
+                child: Row(
+                  children: [
+                    const Icon(Icons.place_outlined, size: 13, color: TnColors.muted),
+                    const SizedBox(width: 2),
+                    Text(city!, style: const TextStyle(color: TnColors.muted, fontSize: 12)),
+                  ],
+                ),
+              ),
+            if (temple.tags.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 6, 10, 0),
+                child: Text(
+                  temple.tags.take(2).join(' · '),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(color: TnColors.accent, fontSize: 11),
+                ),
+              ),
           ],
         ),
       ),

@@ -10,48 +10,103 @@ class BookHubScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
-    final tiles = <(IconData, String, String)>[
-      (Icons.bed_outlined, l.stays, '/book/hotels'),
-      (Icons.local_taxi_outlined, l.cabs, '/book/cabs'),
-      (Icons.restaurant_outlined, l.food, '/book/restaurants'),
-      (Icons.sailing_outlined, l.experiences, '/book/experiences'),
+    // (icon, title, subtitle, route, icon colour, tint)
+    final tiles = <(IconData, String, String, String, Color, Color)>[
+      (
+        Icons.apartment_rounded,
+        l.stays,
+        l.staysSub,
+        '/book/hotels',
+        const Color(0xFF4338CA),
+        const Color(0xFFEEF0FF),
+      ),
+      (
+        Icons.local_taxi_rounded,
+        l.cabs,
+        l.cabsSub,
+        '/book/cabs',
+        const Color(0xFF15803D),
+        const Color(0xFFEAF7EE),
+      ),
+      (
+        Icons.restaurant_rounded,
+        l.food,
+        l.foodSub,
+        '/book/restaurants',
+        const Color(0xFFD97706),
+        const Color(0xFFFFF6E0),
+      ),
+      (
+        Icons.celebration_rounded,
+        l.experiences,
+        l.experiencesSub,
+        '/book/experiences',
+        const Color(0xFFBE185D),
+        const Color(0xFFFDEDF4),
+      ),
     ];
     return Scaffold(
       appBar: AppBar(title: Text(l.bookTitle)),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 96),
+        padding: const EdgeInsets.fromLTRB(16, 0, 16, 110),
         children: [
+          Text(l.bookSub, style: const TextStyle(color: TnColors.muted)),
+          const SizedBox(height: 14),
           GridView.count(
             crossAxisCount: 2,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             mainAxisSpacing: 12,
             crossAxisSpacing: 12,
-            childAspectRatio: 1.25,
+            childAspectRatio: 0.98,
             children: [
-              for (final (icon, label, path) in tiles)
+              for (final (icon, title, sub, path, color, tint) in tiles)
                 Card(
+                  clipBehavior: Clip.antiAlias,
                   child: InkWell(
-                    borderRadius: BorderRadius.circular(18),
                     onTap: () => context.push(path),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(icon, size: 36, color: TnColors.navy),
-                        const SizedBox(height: 8),
-                        Text(label, style: Theme.of(context).textTheme.titleMedium),
-                      ],
+                    child: Padding(
+                      padding: const EdgeInsets.all(14),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 52,
+                            height: 52,
+                            decoration: BoxDecoration(color: tint, shape: BoxShape.circle),
+                            child: Icon(icon, color: color, size: 28),
+                          ),
+                          const Spacer(),
+                          Text(
+                            title,
+                            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            sub,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(color: TnColors.muted, fontSize: 12),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 14),
           Card(
             child: ListTile(
-              leading: const Icon(Icons.receipt_long_outlined, color: TnColors.navy),
-              title: Text(l.myBookings),
-              trailing: const Icon(Icons.chevron_right),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+              leading: Container(
+                width: 44,
+                height: 44,
+                decoration: const BoxDecoration(color: Color(0xFFEFF3FA), shape: BoxShape.circle),
+                child: const Icon(Icons.receipt_long_rounded, color: TnColors.navy),
+              ),
+              title: Text(l.myBookings, style: const TextStyle(fontWeight: FontWeight.w700)),
+              trailing: const Icon(Icons.chevron_right_rounded),
               onTap: () => context.push('/book/orders'),
             ),
           ),

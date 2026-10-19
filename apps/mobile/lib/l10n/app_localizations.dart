@@ -1250,6 +1250,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Help is one tap away'**
   String get trustSosBody;
+
+  /// No description provided for @staysSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Dharamshalas & hotels near temples'**
+  String get staysSub;
+
+  /// No description provided for @cabsSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed fares between temples'**
+  String get cabsSub;
+
+  /// No description provided for @foodSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Pure veg & satvik meals'**
+  String get foodSub;
+
+  /// No description provided for @experiencesSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Boat rides, walks & aarti seats'**
+  String get experiencesSub;
+
+  /// No description provided for @bookSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything for your yatra, in one place'**
+  String get bookSub;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

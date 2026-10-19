@@ -625,4 +625,19 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get trustSosBody => 'मदद बस एक टैप दूर';
+
+  @override
+  String get staysSub => 'मंदिरों के पास धर्मशालाएँ व होटल';
+
+  @override
+  String get cabsSub => 'मंदिरों के बीच तय किराया';
+
+  @override
+  String get foodSub => 'शुद्ध शाकाहारी व सात्विक भोजन';
+
+  @override
+  String get experiencesSub => 'नाव सवारी, पदयात्रा व आरती सीट';
+
+  @override
+  String get bookSub => 'आपकी यात्रा की हर ज़रूरत, एक जगह';
 }

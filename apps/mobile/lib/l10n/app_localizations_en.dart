@@ -625,4 +625,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get trustSosBody => 'Help is one tap away';
+
+  @override
+  String get staysSub => 'Dharamshalas & hotels near temples';
+
+  @override
+  String get cabsSub => 'Fixed fares between temples';
+
+  @override
+  String get foodSub => 'Pure veg & satvik meals';
+
+  @override
+  String get experiencesSub => 'Boat rides, walks & aarti seats';
+
+  @override
+  String get bookSub => 'Everything for your yatra, in one place';
 }

@@ -274,5 +274,10 @@
   "trustPayTitle": "Secure booking",
   "trustPayBody": "Verified payments",
   "trustSosTitle": "SOS 24×7",
-  "trustSosBody": "Help is one tap away"
+  "trustSosBody": "Help is one tap away",
+  "staysSub": "Dharamshalas & hotels near temples",
+  "cabsSub": "Fixed fares between temples",
+  "foodSub": "Pure veg & satvik meals",
+  "experiencesSub": "Boat rides, walks & aarti seats",
+  "bookSub": "Everything for your yatra, in one place"
 }

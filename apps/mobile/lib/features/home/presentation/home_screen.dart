@@ -7,7 +7,7 @@ import '../../../core/format/formatters.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/widgets/common.dart';
 import '../../catalog/data/catalog_repository.dart';
-import '../../catalog/presentation/temples_screen.dart' show crowdLabel;
+import '../../catalog/presentation/temples_screen.dart' show TempleCard, crowdLabel;
 
 /// Home: guide search, at-a-glance cards (weather, crowd, next aarti, darshan),
 /// quick access grid, trip planner banner, popular temples and festivals.
@@ -688,7 +688,7 @@ class _PopularTemples extends ConsumerWidget {
       for (final c in ref.watch(citiesProvider).value ?? const <CityResponse>[]) c.id: c.name,
     };
     return SizedBox(
-      height: 206,
+      height: 218,
       child: temples.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (_, _) => const SizedBox.shrink(),
@@ -697,79 +697,9 @@ class _PopularTemples extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
           itemCount: list.length.clamp(0, 10),
           separatorBuilder: (_, _) => const SizedBox(width: 12),
-          itemBuilder: (_, i) => _TempleCard(temple: list[i], city: cities[list[i].cityId]),
-        ),
-      ),
-    );
-  }
-}
-
-class _TempleCard extends StatelessWidget {
-  const _TempleCard({required this.temple, this.city});
-
-  final TempleSummaryResponse temple;
-  final String? city;
-
-  @override
-  Widget build(BuildContext context) {
-    final level = temple.crowdLevel;
-    final badge = level >= 3
-        ? const Color(0xFFB3261E)
-        : level == 2
-        ? const Color(0xFFE07A2E)
-        : const Color(0xFF3F7A3F);
-    return SizedBox(
-      width: 150,
-      child: DecoratedBox(
-        decoration: _softCard(),
-        child: Material(
-          type: MaterialType.transparency,
-          child: InkWell(
-            borderRadius: BorderRadius.circular(18),
-            onTap: () => context.push('/temples/${temple.id}'),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Stack(
-                  children: [
-                    CoverImage(temple.coverUrl, height: 112, radius: 18),
-                    Positioned(
-                      left: 8,
-                      top: 8,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                        decoration: BoxDecoration(
-                          color: badge,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          crowdLabel(context, level),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 10,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 8, 10, 0),
-                  child: Text(
-                    temple.name,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13, height: 1.2),
-                  ),
-                ),
-                if (city != null)
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 2, 10, 0),
-                    child: Text(city!, style: const TextStyle(color: TnColors.muted, fontSize: 12)),
-                  ),
-              ],
-            ),
+          itemBuilder: (_, i) => SizedBox(
+            width: 152,
+            child: TempleCard(temple: list[i], city: cities[list[i].cityId], imageHeight: 108),
           ),
         ),
       ),
