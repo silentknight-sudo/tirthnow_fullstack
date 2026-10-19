@@ -1,0 +1,56 @@
+# Render Blueprint: the API with PostgreSQL (pgvector) and Redis, all providers
+# mocked (test OTP 123456, test checkout). See docs/DEPLOY_RENDER.md.
+databases:
+  - name: tirthnow-db
+    plan: free
+    databaseName: tirthnow
+    user: tirthnow
+    postgresMajorVersion: '16'
+
+services:
+  - type: keyvalue
+    name: tirthnow-redis
+    plan: free
+    maxmemoryPolicy: noeviction # BullMQ queues must not be evicted
+    ipAllowList: []
+
+  - type: web
+    name: tirthnow-api
+    runtime: node
+    plan: free
+    region: singapore
+    healthCheckPath: /healthz
+    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm --filter "@tirth-now/api..." build
+    startCommand: pnpm --filter @tirth-now/api db:deploy && pnpm --filter @tirth-now/api db:seed && node apps/api/dist/main.js
+    envVars:
+      - key: NODE_VERSION
+        value: '22'
+      # "development" keeps the mock adapters and the test checkout available.
+      # Switch to "production" only once the real providers are configured.
+      - key: NODE_ENV
+        value: development
+      - key: API_PORT
+        value: '10000'
+      - key: TRUST_PROXY
+        value: '1'
+      - key: LOG_LEVEL
+        value: info
+      - key: SWAGGER_ENABLED
+        value: 'true'
+      - key: CORS_ORIGINS
+        sync: false # e.g. https://your-site.vercel.app
+      - key: API_PUBLIC_URL
+        sync: false # e.g. https://tirthnow-api.onrender.com
+      - key: DATABASE_URL
+        fromDatabase:
+          name: tirthnow-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: keyvalue
+          name: tirthnow-redis
+          property: connectionString
+      - key: JWT_ACCESS_SECRET
+        generateValue: true
+      - key: DATA_ENCRYPTION_KEY
+        generateValue: true # 256-bit base64, as the config requires
