@@ -34,6 +34,15 @@ sign in with any number.
 2. **Actions → Mobile APK → Run workflow** (or push a change under `apps/mobile`).
 3. Download `tirth-now-apk` from the run and install `app-release.apk`.
 
+## Troubleshooting
+
+- **`P1001: Can't reach database server at dpg-…-a:5432`**: the database and the web
+  service are in different regions (Render's internal hostnames only resolve inside
+  one region). All three resources must be in the same region (`singapore` in
+  `render.yaml`). A region cannot be changed after creation: delete the database and
+  the Key Value instance in the dashboard, then **Manual sync** the Blueprint to
+  recreate them.
+
 ## Free-plan limits
 
 - The web service sleeps after 15 minutes idle; the first request then takes ~1 minute.
