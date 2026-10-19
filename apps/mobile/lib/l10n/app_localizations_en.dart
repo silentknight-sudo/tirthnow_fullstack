@@ -566,4 +566,63 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get happeningNow => 'Happening now';
+
+  @override
+  String get tagline => 'Your Braj yatra companion';
+
+  @override
+  String get askGuide => 'Ask Braj Guide anything…';
+
+  @override
+  String get aiVoice => 'AI Voice';
+
+  @override
+  String get quickAccess => 'Quick access';
+
+  @override
+  String get liveCrowd => 'Live crowd';
+
+  @override
+  String get viewAll => 'View all';
+
+  @override
+  String get brajDarshan => 'Braj darshan';
+
+  @override
+  String templeCount(int count) {
+    return '$count temples';
+  }
+
+  @override
+  String get viewPlan => 'View plan';
+
+  @override
+  String get trains => 'Trains';
+
+  @override
+  String get popularTemples => 'Popular temples';
+
+  @override
+  String get tripPlannerTitle => 'AI Trip Planner';
+
+  @override
+  String get tripPlannerBody => 'Plan your Braj yatra with AI in seconds';
+
+  @override
+  String get trustAartiTitle => 'Live aarti times';
+
+  @override
+  String get trustAartiBody => 'From temple schedules';
+
+  @override
+  String get trustPayTitle => 'Secure booking';
+
+  @override
+  String get trustPayBody => 'Verified payments';
+
+  @override
+  String get trustSosTitle => 'SOS 24×7';
+
+  @override
+  String get trustSosBody => 'Help is one tap away';
 }

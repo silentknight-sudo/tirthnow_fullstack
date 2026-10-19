@@ -566,4 +566,63 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get happeningNow => 'अभी चल रही है';
+
+  @override
+  String get tagline => 'आपकी ब्रज यात्रा का साथी';
+
+  @override
+  String get askGuide => 'ब्रज गाइड से कुछ भी पूछें…';
+
+  @override
+  String get aiVoice => 'AI आवाज़';
+
+  @override
+  String get quickAccess => 'त्वरित सेवाएँ';
+
+  @override
+  String get liveCrowd => 'लाइव भीड़';
+
+  @override
+  String get viewAll => 'सभी देखें';
+
+  @override
+  String get brajDarshan => 'ब्रज दर्शन';
+
+  @override
+  String templeCount(int count) {
+    return '$count मंदिर';
+  }
+
+  @override
+  String get viewPlan => 'योजना देखें';
+
+  @override
+  String get trains => 'ट्रेनें';
+
+  @override
+  String get popularTemples => 'लोकप्रिय मंदिर';
+
+  @override
+  String get tripPlannerTitle => 'AI यात्रा योजनाकार';
+
+  @override
+  String get tripPlannerBody => 'AI से सेकंडों में अपनी ब्रज यात्रा की योजना बनाएँ';
+
+  @override
+  String get trustAartiTitle => 'लाइव आरती समय';
+
+  @override
+  String get trustAartiBody => 'मंदिर की समय-सारणी से';
+
+  @override
+  String get trustPayTitle => 'सुरक्षित बुकिंग';
+
+  @override
+  String get trustPayBody => 'सत्यापित भुगतान';
+
+  @override
+  String get trustSosTitle => 'SOS 24×7';
+
+  @override
+  String get trustSosBody => 'मदद बस एक टैप दूर';
 }

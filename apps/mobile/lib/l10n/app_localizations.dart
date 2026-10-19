@@ -1136,6 +1136,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Happening now'**
   String get happeningNow;
+
+  /// No description provided for @tagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Braj yatra companion'**
+  String get tagline;
+
+  /// No description provided for @askGuide.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask Braj Guide anything…'**
+  String get askGuide;
+
+  /// No description provided for @aiVoice.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Voice'**
+  String get aiVoice;
+
+  /// No description provided for @quickAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick access'**
+  String get quickAccess;
+
+  /// No description provided for @liveCrowd.
+  ///
+  /// In en, this message translates to:
+  /// **'Live crowd'**
+  String get liveCrowd;
+
+  /// No description provided for @viewAll.
+  ///
+  /// In en, this message translates to:
+  /// **'View all'**
+  String get viewAll;
+
+  /// No description provided for @brajDarshan.
+  ///
+  /// In en, this message translates to:
+  /// **'Braj darshan'**
+  String get brajDarshan;
+
+  /// No description provided for @templeCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} temples'**
+  String templeCount(int count);
+
+  /// No description provided for @viewPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'View plan'**
+  String get viewPlan;
+
+  /// No description provided for @trains.
+  ///
+  /// In en, this message translates to:
+  /// **'Trains'**
+  String get trains;
+
+  /// No description provided for @popularTemples.
+  ///
+  /// In en, this message translates to:
+  /// **'Popular temples'**
+  String get popularTemples;
+
+  /// No description provided for @tripPlannerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Trip Planner'**
+  String get tripPlannerTitle;
+
+  /// No description provided for @tripPlannerBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan your Braj yatra with AI in seconds'**
+  String get tripPlannerBody;
+
+  /// No description provided for @trustAartiTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Live aarti times'**
+  String get trustAartiTitle;
+
+  /// No description provided for @trustAartiBody.
+  ///
+  /// In en, this message translates to:
+  /// **'From temple schedules'**
+  String get trustAartiBody;
+
+  /// No description provided for @trustPayTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Secure booking'**
+  String get trustPayTitle;
+
+  /// No description provided for @trustPayBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified payments'**
+  String get trustPayBody;
+
+  /// No description provided for @trustSosTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'SOS 24×7'**
+  String get trustSosTitle;
+
+  /// No description provided for @trustSosBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Help is one tap away'**
+  String get trustSosBody;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

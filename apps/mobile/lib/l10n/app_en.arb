@@ -248,5 +248,31 @@
     }
   },
   "send": "Send",
-  "happeningNow": "Happening now"
+  "happeningNow": "Happening now",
+  "tagline": "Your Braj yatra companion",
+  "askGuide": "Ask Braj Guide anything…",
+  "aiVoice": "AI Voice",
+  "quickAccess": "Quick access",
+  "liveCrowd": "Live crowd",
+  "viewAll": "View all",
+  "brajDarshan": "Braj darshan",
+  "templeCount": "{count} temples",
+  "@templeCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "viewPlan": "View plan",
+  "trains": "Trains",
+  "popularTemples": "Popular temples",
+  "tripPlannerTitle": "AI Trip Planner",
+  "tripPlannerBody": "Plan your Braj yatra with AI in seconds",
+  "trustAartiTitle": "Live aarti times",
+  "trustAartiBody": "From temple schedules",
+  "trustPayTitle": "Secure booking",
+  "trustPayBody": "Verified payments",
+  "trustSosTitle": "SOS 24×7",
+  "trustSosBody": "Help is one tap away"
 }

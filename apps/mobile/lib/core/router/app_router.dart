@@ -191,37 +191,128 @@ class _Shell extends StatelessWidget {
               onPressed: () => context.push('/sos'),
               child: const Text('SOS', style: TextStyle(fontWeight: FontWeight.w800)),
             ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: shell.currentIndex,
-        onDestinationSelected: (i) => shell.goBranch(i, initialLocation: i == shell.currentIndex),
-        destinations: [
-          NavigationDestination(
-            icon: const Icon(Icons.home_outlined),
-            selectedIcon: const Icon(Icons.home),
-            label: l.navHome,
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.temple_hindu_outlined),
-            selectedIcon: const Icon(Icons.temple_hindu),
-            label: l.navTemples,
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.luggage_outlined),
-            selectedIcon: const Icon(Icons.luggage),
-            label: l.navBook,
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.auto_awesome_outlined),
-            selectedIcon: const Icon(Icons.auto_awesome),
-            label: l.navGuide,
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.person_outline),
-            selectedIcon: const Icon(Icons.person),
-            label: l.navProfile,
-          ),
+      bottomNavigationBar: _BottomBar(
+        index: shell.currentIndex,
+        onSelect: (i) => shell.goBranch(i, initialLocation: i == shell.currentIndex),
+        items: [
+          (Icons.home_outlined, Icons.home_rounded, l.navHome),
+          (Icons.temple_hindu_outlined, Icons.temple_hindu, l.navTemples),
+          (Icons.luggage_outlined, Icons.luggage, l.navBook),
+          (Icons.auto_awesome_outlined, Icons.auto_awesome, l.navGuide),
+          (Icons.person_outline_rounded, Icons.person_rounded, l.navProfile),
         ],
       ),
     );
   }
+}
+
+/// Bottom bar with a raised centre button (Book), as in the home design.
+class _BottomBar extends StatelessWidget {
+  const _BottomBar({required this.index, required this.onSelect, required this.items});
+
+  final int index;
+  final ValueChanged<int> onSelect;
+  final List<(IconData, IconData, String)> items;
+
+  @override
+  Widget build(BuildContext context) {
+    final centre = items.length ~/ 2;
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
+        boxShadow: [BoxShadow(color: Color(0x1A1C3C6B), blurRadius: 16, offset: Offset(0, -2))],
+      ),
+      child: SafeArea(
+        top: false,
+        child: SizedBox(
+          height: 68,
+          child: Row(
+            children: [
+              for (var i = 0; i < items.length; i++)
+                Expanded(
+                  child: Semantics(
+                    button: true,
+                    selected: i == index,
+                    label: items[i].$3,
+                    child: InkResponse(
+                      onTap: () => onSelect(i),
+                      child: i == centre
+                          ? _centre(items[i], selected: i == index)
+                          : _item(items[i], selected: i == index),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _item((IconData, IconData, String) item, {required bool selected}) {
+    final color = selected ? TnColors.navy : TnColors.muted;
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: const EdgeInsets.all(6),
+          decoration: BoxDecoration(
+            color: selected ? TnColors.navy : Colors.transparent,
+            shape: BoxShape.circle,
+          ),
+          child: Icon(
+            selected ? item.$2 : item.$1,
+            color: selected ? Colors.white : color,
+            size: 22,
+          ),
+        ),
+        const SizedBox(height: 2),
+        Text(
+          item.$3,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontSize: 11,
+            color: color,
+            fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _centre((IconData, IconData, String) item, {required bool selected}) => Column(
+    mainAxisAlignment: MainAxisAlignment.end,
+    children: [
+      Transform.translate(
+        offset: const Offset(0, -14),
+        child: Container(
+          width: 56,
+          height: 56,
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(colors: [TnColors.navy, Color(0xFF27508A)]),
+            shape: BoxShape.circle,
+            border: Border.all(color: Colors.white, width: 4),
+            boxShadow: const [
+              BoxShadow(color: Color(0x401C3C6B), blurRadius: 12, offset: Offset(0, 4)),
+            ],
+          ),
+          child: Icon(selected ? item.$2 : item.$1, color: Colors.white),
+        ),
+      ),
+      Transform.translate(
+        offset: const Offset(0, -10),
+        child: Text(
+          item.$3,
+          style: TextStyle(
+            fontSize: 11,
+            color: selected ? TnColors.navy : TnColors.muted,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ),
+    ],
+  );
 }
