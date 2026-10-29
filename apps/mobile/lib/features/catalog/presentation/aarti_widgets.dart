@@ -58,7 +58,7 @@ class NextAartiCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '${aarti.templeName ?? ''} · ${aarti.localTime} IST',
+                      [aarti.templeName, '${aarti.localTime} IST'].whereType<String>().join(' · '),
                       style: const TextStyle(color: Color(0xFFB8C3D6)),
                     ),
                     const SizedBox(height: 10),

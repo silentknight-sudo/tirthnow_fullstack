@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/api/api_models.dart';
@@ -59,59 +60,20 @@ class _Body extends ConsumerWidget {
       slivers: [
         SliverAppBar(
           pinned: true,
-          expandedHeight: 220,
+          expandedHeight: 230,
+          backgroundColor: TnColors.paper,
           flexibleSpace: FlexibleSpaceBar(
-            title: Text(
-              temple.name,
-              style: const TextStyle(
-                fontFamily: 'Cormorant',
-                fontFeatures: liningFigures,
-                color: TnColors.navy,
-              ),
-            ),
-            background: CoverImage(temple.coverUrl, height: 260, radius: 0),
+            background: CoverImage(temple.coverUrl, height: 270, radius: 0),
           ),
         ),
         SliverList(
           delegate: SliverChildListDelegate([
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-              child: Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: [
-                  Pill(
-                    '${l.crowd}: ${crowdLabel(context, temple.crowdLevel)}',
-                    color: crowdColor(temple.crowdLevel),
-                  ),
-                  for (final tag in temple.tags) Pill(tag, color: TnColors.muted),
-                ],
-              ),
-            ),
+            _Header(temple: temple),
             if (next != null)
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                padding: const EdgeInsets.fromLTRB(16, 14, 16, 0),
                 child: NextAartiCard(aarti: next),
               ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      icon: const Icon(Icons.directions_outlined),
-                      label: Text(l.directions),
-                      onPressed: () => launchUrl(
-                        Uri.parse(
-                          'https://www.google.com/maps/dir/?api=1&destination=${temple.lat},${temple.lng}',
-                        ),
-                        mode: LaunchMode.externalApplication,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
             SectionTitle(l.aartiSchedule),
             Card(
               margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -149,8 +111,6 @@ class _Body extends ConsumerWidget {
                 ),
               ),
             ],
-            if (temple.address != null)
-              ListTile(leading: const Icon(Icons.place_outlined), title: Text(temple.address!)),
             ReviewsSection(targetType: 'temple', targetId: temple.id),
             const SizedBox(height: 96),
           ]),
@@ -158,4 +118,141 @@ class _Body extends ConsumerWidget {
       ],
     );
   }
+}
+
+/// Name, crowd and tags, plus round quick actions (directions, share).
+class _Header extends StatelessWidget {
+  const _Header({required this.temple});
+
+  final TempleDetailResponse temple;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final mapsUrl =
+        'https://www.google.com/maps/dir/?api=1&destination=${temple.lat},${temple.lng}';
+    return Container(
+      margin: const EdgeInsets.fromLTRB(16, 14, 16, 0),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: TnColors.line),
+        boxShadow: const [
+          BoxShadow(color: Color(0x141C3C6B), blurRadius: 14, offset: Offset(0, 4)),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            temple.name,
+            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: TnColors.navy),
+          ),
+          if (temple.address != null) ...[
+            const SizedBox(height: 4),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(Icons.place_outlined, size: 16, color: TnColors.muted),
+                const SizedBox(width: 4),
+                Expanded(
+                  child: Text(
+                    temple.address!,
+                    style: const TextStyle(color: TnColors.muted, fontSize: 13),
+                  ),
+                ),
+              ],
+            ),
+          ],
+          const SizedBox(height: 10),
+          Wrap(
+            spacing: 6,
+            runSpacing: 6,
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  color: crowdColor(temple.crowdLevel),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Text(
+                  '${l.crowd}: ${crowdLabel(context, temple.crowdLevel)}',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              for (final tag in temple.tags) Pill(tag, color: TnColors.accent),
+            ],
+          ),
+          const SizedBox(height: 14),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _Action(
+                icon: Icons.directions_rounded,
+                label: l.directions,
+                color: const Color(0xFF15803D),
+                tint: const Color(0xFFEAF7EE),
+                onTap: () => launchUrl(Uri.parse(mapsUrl), mode: LaunchMode.externalApplication),
+              ),
+              _Action(
+                icon: Icons.ios_share_rounded,
+                label: l.sharePlan,
+                color: const Color(0xFF4338CA),
+                tint: const Color(0xFFEEF0FF),
+                onTap: () =>
+                    SharePlus.instance.share(ShareParams(text: '${temple.name}\n$mapsUrl')),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _Action extends StatelessWidget {
+  const _Action({
+    required this.icon,
+    required this.label,
+    required this.color,
+    required this.tint,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final Color color;
+  final Color tint;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) => InkResponse(
+    onTap: onTap,
+    radius: 40,
+    child: SizedBox(
+      width: 92,
+      child: Column(
+        children: [
+          Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(color: tint, shape: BoxShape.circle),
+            child: Icon(icon, color: color),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+          ),
+        ],
+      ),
+    ),
+  );
 }
