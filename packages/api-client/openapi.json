@@ -360,6 +360,57 @@
         ],
         "type": "object"
       },
+      "CabFareResponse": {
+        "properties": {
+          "baseFarePaise": {
+            "type": "number"
+          },
+          "class": {
+            "enum": [
+              "auto",
+              "hatchback",
+              "sedan",
+              "suv",
+              "tempo_traveller",
+              "e_rickshaw"
+            ],
+            "type": "string"
+          },
+          "fixedRoutes": {
+            "items": {
+              "$ref": "#/components/schemas/FixedRouteDto"
+            },
+            "type": "array"
+          },
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "minFarePaise": {
+            "type": "number"
+          },
+          "nightSurchargePct": {
+            "type": "number"
+          },
+          "perKmPaise": {
+            "type": "number"
+          },
+          "perMinPaise": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "class",
+          "baseFarePaise",
+          "perKmPaise",
+          "perMinPaise",
+          "minFarePaise",
+          "nightSurchargePct",
+          "fixedRoutes"
+        ],
+        "type": "object"
+      },
       "CabLocationDto": {
         "properties": {
           "headingDeg": {
@@ -3252,6 +3303,25 @@
         ],
         "type": "object"
       },
+      "PayoutPageResponse": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/PayoutResponse"
+            },
+            "type": "array"
+          },
+          "nextCursor": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "data",
+          "nextCursor"
+        ],
+        "type": "object"
+      },
       "PayoutResponse": {
         "properties": {
           "amountPaise": {
@@ -5741,6 +5811,25 @@
           "myPermissions",
           "kycDocuments",
           "missingDocuments"
+        ],
+        "type": "object"
+      },
+      "VendorReviewPageResponse": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/ReviewResponse"
+            },
+            "type": "array"
+          },
+          "nextCursor": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "data",
+          "nextCursor"
         ],
         "type": "object"
       },
@@ -12835,6 +12924,16 @@
         ],
         "responses": {
           "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CabFareResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            },
             "description": ""
           }
         },
@@ -13951,6 +14050,13 @@
         ],
         "responses": {
           "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayoutPageResponse"
+                }
+              }
+            },
             "description": ""
           }
         },
@@ -14208,6 +14314,13 @@
         ],
         "responses": {
           "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VendorReviewPageResponse"
+                }
+              }
+            },
             "description": ""
           }
         },

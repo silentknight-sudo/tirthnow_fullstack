@@ -364,6 +364,55 @@ class CabEstimateDto {
 }
 
 @immutable
+class CabFareResponse {
+  const CabFareResponse({
+    required this.baseFarePaise,
+    required this.class_,
+    required this.fixedRoutes,
+    required this.id,
+    required this.minFarePaise,
+    required this.nightSurchargePct,
+    required this.perKmPaise,
+    required this.perMinPaise,
+  });
+
+  factory CabFareResponse.fromJson(Map<String, dynamic> json) => CabFareResponse(
+    baseFarePaise: json['baseFarePaise'] as num,
+    class_: json['class'] as String,
+    fixedRoutes: (json['fixedRoutes'] as List<dynamic>)
+        .map((dynamic x) => FixedRouteDto.fromJson(_map(x)))
+        .toList(),
+    id: json['id'] as String,
+    minFarePaise: json['minFarePaise'] as num,
+    nightSurchargePct: json['nightSurchargePct'] as num,
+    perKmPaise: json['perKmPaise'] as num,
+    perMinPaise: json['perMinPaise'] as num,
+  );
+
+  final num baseFarePaise;
+
+  /// One of: auto, hatchback, sedan, suv, tempo_traveller, e_rickshaw.
+  final String class_;
+  final List<FixedRouteDto> fixedRoutes;
+  final String id;
+  final num minFarePaise;
+  final num nightSurchargePct;
+  final num perKmPaise;
+  final num perMinPaise;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'baseFarePaise': baseFarePaise,
+    'class': class_,
+    'fixedRoutes': fixedRoutes.map((x) => x.toJson()).toList(),
+    'id': id,
+    'minFarePaise': minFarePaise,
+    'nightSurchargePct': nightSurchargePct,
+    'perKmPaise': perKmPaise,
+    'perMinPaise': perMinPaise,
+  };
+}
+
+@immutable
 class CabLocationDto {
   const CabLocationDto({this.headingDeg, required this.lat, required this.lng, this.speedKph});
 
@@ -3381,6 +3430,26 @@ class PaymentIntentResponse {
 }
 
 @immutable
+class PayoutPageResponse {
+  const PayoutPageResponse({required this.data, this.nextCursor});
+
+  factory PayoutPageResponse.fromJson(Map<String, dynamic> json) => PayoutPageResponse(
+    data: (json['data'] as List<dynamic>)
+        .map((dynamic x) => PayoutResponse.fromJson(_map(x)))
+        .toList(),
+    nextCursor: json['nextCursor'] == null ? null : json['nextCursor'] as String,
+  );
+
+  final List<PayoutResponse> data;
+  final String? nextCursor;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'data': data.map((x) => x.toJson()).toList(),
+    'nextCursor': ?nextCursor,
+  };
+}
+
+@immutable
 class PayoutResponse {
   const PayoutResponse({
     required this.amountPaise,
@@ -6008,6 +6077,26 @@ class VendorResponse {
     'pan': ?pan,
     'status': status,
     'type': type,
+  };
+}
+
+@immutable
+class VendorReviewPageResponse {
+  const VendorReviewPageResponse({required this.data, this.nextCursor});
+
+  factory VendorReviewPageResponse.fromJson(Map<String, dynamic> json) => VendorReviewPageResponse(
+    data: (json['data'] as List<dynamic>)
+        .map((dynamic x) => ReviewResponse.fromJson(_map(x)))
+        .toList(),
+    nextCursor: json['nextCursor'] == null ? null : json['nextCursor'] as String,
+  );
+
+  final List<ReviewResponse> data;
+  final String? nextCursor;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'data': data.map((x) => x.toJson()).toList(),
+    'nextCursor': ?nextCursor,
   };
 }
 

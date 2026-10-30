@@ -38,7 +38,10 @@ export class ExperiencesService {
       where: { vendorId, deletedAt: null },
       orderBy: { createdAt: 'asc' },
     });
-    return rows.map((e) => this.toResponse(e, 'en', null));
+    // Vendors manage the next 30 days of slots from the portal.
+    return Promise.all(
+      rows.map(async (e) => this.toResponse(e, 'en', await this.slots(e.id, { days: 30 }))),
+    );
   }
 
   async create(

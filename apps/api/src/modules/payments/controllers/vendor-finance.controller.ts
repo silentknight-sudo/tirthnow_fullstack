@@ -4,7 +4,12 @@ import { type Response } from 'express';
 import { type Page } from '../../../core/http';
 import { CursorQueryDto } from '../../../core/http';
 import { VendorAccessGuard, VendorPermissionRequired } from '../../vendors';
-import { EarningsResponse, PayoutResponse, StatementQueryDto } from '../dto/payments.dto';
+import {
+  EarningsResponse,
+  PayoutPageResponse,
+  PayoutResponse,
+  StatementQueryDto,
+} from '../dto/payments.dto';
 import { PayoutsService } from '../services/payouts.service';
 import { StatementsService } from '../services/statements.service';
 
@@ -26,6 +31,7 @@ export class VendorFinanceController {
   }
 
   @Get('payouts')
+  @ApiOkResponse({ type: PayoutPageResponse })
   payouts_(
     @Param('vid', ParseUUIDPipe) vid: string,
     @Query() q: CursorQueryDto,

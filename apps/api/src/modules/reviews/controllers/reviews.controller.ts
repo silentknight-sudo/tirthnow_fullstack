@@ -19,6 +19,7 @@ import {
   CreateReviewDto,
   ReplyDto,
   ReviewPageResponse,
+  VendorReviewPageResponse,
   ReviewQueryDto,
   ReviewResponse,
   UpdateReviewDto,
@@ -85,6 +86,7 @@ export class VendorReviewsController {
 
   @Get()
   @VendorPermissionRequired(null)
+  @ApiOkResponse({ type: VendorReviewPageResponse })
   list(
     @Param('vid', ParseUUIDPipe) vid: string,
     @Query() q: VendorReviewQueryDto,

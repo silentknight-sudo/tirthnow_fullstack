@@ -101,3 +101,9 @@ export class PayoutResponse {
   @ApiProperty({ type: String, nullable: true }) failureReason!: string | null;
   @ApiProperty() createdAt!: string;
 }
+
+/** Cursor page of a vendor's payouts. */
+export class PayoutPageResponse {
+  @ApiProperty({ type: [PayoutResponse] }) data!: PayoutResponse[];
+  @ApiProperty({ nullable: true, type: String }) nextCursor!: string | null;
+}

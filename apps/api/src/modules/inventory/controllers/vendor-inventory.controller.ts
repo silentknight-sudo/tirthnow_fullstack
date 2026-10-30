@@ -18,6 +18,7 @@ import { VehicleClass } from '@prisma/client';
 import { type AuthPrincipal, CurrentUser } from '../../../core/auth';
 import { VendorAccessGuard, VendorPermissionRequired } from '../../vendors';
 import {
+  CabFareResponse,
   CreateVehicleDto,
   UpdateVehicleDto,
   UpsertCabFareDto,
@@ -205,6 +206,7 @@ export class VendorInventoryController {
 
   @Get('cab-fares')
   @VendorPermissionRequired(null)
+  @ApiOkResponse({ type: [CabFareResponse] })
   listFares(@Param('vid', UUID) vid: string) {
     return this.cabs.listFares(vid);
   }

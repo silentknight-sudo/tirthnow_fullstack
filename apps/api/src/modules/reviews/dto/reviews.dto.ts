@@ -119,3 +119,9 @@ export class ReviewPageResponse {
   @ApiProperty({ type: [ReviewResponse] }) data!: ReviewResponse[];
   @ApiProperty({ nullable: true, type: String }) nextCursor!: string | null;
 }
+
+/** Cursor page of reviews about a vendor's listings (portal). */
+export class VendorReviewPageResponse {
+  @ApiProperty({ type: [ReviewResponse] }) data!: ReviewResponse[];
+  @ApiProperty({ nullable: true, type: String }) nextCursor!: string | null;
+}

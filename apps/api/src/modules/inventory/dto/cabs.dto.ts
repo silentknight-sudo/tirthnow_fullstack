@@ -112,3 +112,14 @@ export class CabQuoteResponse {
   @ApiProperty() fixedRoute!: boolean;
   @ApiProperty() seats!: number;
 }
+
+export class CabFareResponse {
+  @ApiProperty({ format: 'uuid' }) id!: string;
+  @ApiProperty({ enum: VehicleClass }) class!: VehicleClass;
+  @ApiProperty() baseFarePaise!: number;
+  @ApiProperty() perKmPaise!: number;
+  @ApiProperty() perMinPaise!: number;
+  @ApiProperty() minFarePaise!: number;
+  @ApiProperty() nightSurchargePct!: number;
+  @ApiProperty({ type: [FixedRouteDto] }) fixedRoutes!: FixedRouteDto[];
+}
