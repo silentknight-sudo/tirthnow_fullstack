@@ -1,0 +1,12 @@
+{
+  "extends": "@tirth-now/config/tsconfig/library.json",
+  "compilerOptions": {
+    "lib": ["ES2022", "DOM"],
+    "noEmit": true,
+    "types": [],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "declarationMap": false
+  },
+  "include": ["src", "eslint.config.mjs"]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "@tirth-now/api-client",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Typed HTTP client for the Tirth Now API, generated from its OpenAPI document",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "generate": "openapi-typescript openapi.json -o src/schema.ts && prettier --write src/schema.ts",
+    "check": "openapi-typescript openapi.json -o /tmp/tn-schema.ts && prettier --stdin-filepath src/schema.ts < /tmp/tn-schema.ts | diff -q - src/schema.ts",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "openapi-fetch": "0.17.0"
+  },
+  "devDependencies": {
+    "@tirth-now/config": "workspace:*",
+    "eslint": "^9.39.0",
+    "openapi-typescript": "7.13.0",
+    "prettier": "^3.6.2",
+    "typescript": "~5.9.3"
+  }
+}
