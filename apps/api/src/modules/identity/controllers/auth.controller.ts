@@ -2,6 +2,8 @@ import { Body, Controller, HttpCode, HttpStatus, Post, Req } from '@nestjs/commo
 import {
   ApiAcceptedResponse,
   ApiBearerAuth,
+  ApiConflictResponse,
+  ApiCreatedResponse,
   ApiExtraModels,
   ApiNoContentResponse,
   ApiOkResponse,
@@ -20,6 +22,7 @@ import {
   LogoutDto,
   OtpVerifyDto,
   PortalLoginDto,
+  PortalRegisterDto,
   RefreshDto,
   ResetPasswordDto,
 } from '../dto/auth.dto';
@@ -67,6 +70,15 @@ export class AuthController {
     @Req() req: Request,
   ): Promise<AuthResultResponse | OtpChallengeResponse> {
     return this.auth.portalLogin(dto.email, dto.password, clientContext(req));
+  }
+
+  @Public()
+  @Post('portal/register')
+  @ApiOperation({ summary: 'Create a portal account (vendors) and sign in' })
+  @ApiCreatedResponse({ type: AuthResultResponse })
+  @ApiConflictResponse({ description: 'AUTH_EMAIL_TAKEN' })
+  portalRegister(@Body() dto: PortalRegisterDto, @Req() req: Request): Promise<AuthResultResponse> {
+    return this.auth.portalRegister(dto.email, dto.password, dto.displayName, clientContext(req));
   }
 
   @Public()

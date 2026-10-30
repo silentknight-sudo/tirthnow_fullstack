@@ -184,6 +184,41 @@ export class AuthService {
     return this.completeLogin(user.id, ctx);
   }
 
+  /** Self-service portal account (vendors); vendor roles come from onboarding. */
+  async portalRegister(
+    email: string,
+    password: string,
+    displayName: string,
+    ctx: ClientContext,
+  ): Promise<AuthResultWithDevice> {
+    const normalised = email.trim().toLowerCase();
+    const passwordHash = await this.passwords.hash(password);
+    let userId: string;
+    try {
+      userId = await this.prisma.$transaction(async (tx) => {
+        const created = await tx.user.create({
+          data: {
+            email: normalised,
+            passwordHash,
+            profile: { create: { displayName: displayName.trim() } },
+          },
+        });
+        await this.users.grantRole(tx, created.id, 'user');
+        return created.id;
+      });
+    } catch (err) {
+      if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2002') {
+        throw AppException.conflict(
+          'An account with this email already exists',
+          ERROR_CODES.AUTH_EMAIL_TAKEN,
+        );
+      }
+      throw err;
+    }
+    this.logger.log({ userId }, 'portal account registered');
+    return this.completeLogin(userId, ctx);
+  }
+
   async verifyPortalOtp(
     challengeId: string,
     code: string,

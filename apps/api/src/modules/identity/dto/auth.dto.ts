@@ -71,6 +71,27 @@ export class PortalLoginDto {
   password!: string;
 }
 
+export class PortalRegisterDto {
+  @ApiProperty({ example: 'owner@example.com' })
+  @IsEmail()
+  @MaxLength(254)
+  email!: string;
+
+  @ApiProperty({ format: 'password', description: 'Min 10 chars with a letter and a digit' })
+  @IsString()
+  @MinLength(10)
+  @MaxLength(128)
+  @Matches(/[A-Za-z]/, { message: 'password must contain a letter' })
+  @Matches(/\d/, { message: 'password must contain a digit' })
+  password!: string;
+
+  @ApiProperty({ example: 'Radhika Sharma' })
+  @IsString()
+  @MinLength(2)
+  @MaxLength(80)
+  displayName!: string;
+}
+
 export class OtpVerifyDto {
   @ApiProperty({ format: 'uuid' })
   @IsUUID()

@@ -3439,6 +3439,29 @@
         ],
         "type": "object"
       },
+      "PortalRegisterDto": {
+        "properties": {
+          "displayName": {
+            "example": "Radhika Sharma",
+            "type": "string"
+          },
+          "email": {
+            "example": "owner@example.com",
+            "type": "string"
+          },
+          "password": {
+            "description": "Min 10 chars with a letter and a digit",
+            "format": "password",
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "password",
+          "displayName"
+        ],
+        "type": "object"
+      },
       "PresignUploadDto": {
         "properties": {
           "mimeType": {
@@ -9213,6 +9236,44 @@
           }
         },
         "summary": "Set a new password with a reset token; signs out all sessions",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/v1/auth/portal/register": {
+      "post": {
+        "operationId": "AuthController_portalRegister",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PortalRegisterDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResultResponse"
+                }
+              }
+            },
+            "description": ""
+          },
+          "409": {
+            "description": "AUTH_EMAIL_TAKEN"
+          },
+          "429": {
+            "description": "Rate limited (RATE_LIMITED)"
+          }
+        },
+        "summary": "Create a portal account (vendors) and sign in",
         "tags": [
           "auth"
         ]

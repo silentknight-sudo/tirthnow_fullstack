@@ -348,6 +348,35 @@ describe('auth', () => {
     });
   });
 
+  describe('portal register', () => {
+    it('creates an account, signs in, and the same password logs in again', async () => {
+      const res = await t.http
+        .post('/v1/auth/portal/register')
+        .send({ email: 'New.Owner@tirthnow.test', password: 'Strong-pass-1', displayName: 'Asha' })
+        .expect(201);
+      const body = res.body as AuthBody;
+      expect(body.user.roles).toEqual(['user']);
+      expect(body.accessToken).toBeTruthy();
+      await t.http
+        .post('/v1/auth/portal/login')
+        .send({ email: 'new.owner@tirthnow.test', password: 'Strong-pass-1' })
+        .expect(200);
+    });
+
+    it('rejects a taken email and a weak password', async () => {
+      await createPortalUser(t, { email: 'taken@tirthnow.test', password: 'Correct-horse-1' });
+      const taken = await t.http
+        .post('/v1/auth/portal/register')
+        .send({ email: 'TAKEN@tirthnow.test', password: 'Strong-pass-1', displayName: 'X Y' })
+        .expect(409);
+      expect(taken.body.error.code).toBe('AUTH_EMAIL_TAKEN');
+      await t.http
+        .post('/v1/auth/portal/register')
+        .send({ email: 'weak@tirthnow.test', password: 'short', displayName: 'X Y' })
+        .expect(400);
+    });
+  });
+
   describe('portal OTP', () => {
     beforeEach(async () => {
       await createPortalUser(t, {

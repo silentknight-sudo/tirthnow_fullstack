@@ -3555,6 +3555,29 @@ class PortalLoginDto {
 }
 
 @immutable
+class PortalRegisterDto {
+  const PortalRegisterDto({required this.displayName, required this.email, required this.password});
+
+  factory PortalRegisterDto.fromJson(Map<String, dynamic> json) => PortalRegisterDto(
+    displayName: json['displayName'] as String,
+    email: json['email'] as String,
+    password: json['password'] as String,
+  );
+
+  final String displayName;
+  final String email;
+
+  /// Min 10 chars with a letter and a digit
+  final String password;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'displayName': displayName,
+    'email': email,
+    'password': password,
+  };
+}
+
+@immutable
 class PresignUploadDto {
   const PresignUploadDto({required this.mimeType, required this.purpose, required this.sizeBytes});
 
