@@ -109,7 +109,13 @@ Do not use plain `prisma migrate dev` to create migrations (it will offer to dro
 - Every UI string lives in `lib/l10n/app_en.arb` + `app_hi.arb`; run `flutter gen-l10n`. Money via `formatRupees(paise)`, times via `formatIstTime` (IST for display only).
 - Aarti times are shown exactly as the API returns them; the app never computes or estimates them.
 - Guests can browse, chat with the guide and use SOS; bookings, reviews, reminders and the planner call `requireSignedIn()`.
-- Theme tokens in `core/theme/app_theme.dart` (`TnColors`), same palette as the website; fonts bundled in `assets/fonts`.
+- Theme tokens in `core/theme/app_theme.dart` (`TnColors`: navy, accent/saffron on warm white, ADR-0018), same palette as the website; fonts bundled in `assets/fonts`.
+- Installable APK: `.github/workflows/mobile-apk.yml` (repo variable `MOBILE_API_BASE_URL` sets the API origin).
+
+## Deployment
+
+- API demo on Render via `render.yaml` (Blueprint; all resources in one region). Guide: `docs/DEPLOY_RENDER.md`.
+- Client-facing status docs: `docs/PROGRESS_BRIEF.pdf`, `docs/PROJECT_STATUS.pdf`, `docs/CLIENT_REQUIREMENTS.pdf`.
 
 ## Naming
 
