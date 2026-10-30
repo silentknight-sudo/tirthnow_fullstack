@@ -102,6 +102,9 @@ jobs:
           cp .env.example .env
           node apps/api/dist/openapi-export.js --check
 
+      - name: Portal API client is current
+        run: pnpm --filter @tirth-now/api-client check
+
   mobile:
     name: mobile · analyze · test
     runs-on: ubuntu-latest
@@ -179,6 +182,66 @@ jobs:
         run: |
           flutter pub get
           flutter test test/contract --dart-define=API_CONTRACT_URL=http://localhost:4000
+      - name: API log
+        if: failure()
+        run: tail -200 /tmp/api.log
+
+  vendor-portal:
+    name: vendor portal · browser tests against the API
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: tirthnow
+          POSTGRES_PASSWORD: tirthnow
+          POSTGRES_DB: tirthnow
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U tirthnow" --health-interval 5s --health-timeout 3s --health-retries 20
+      redis:
+        image: redis:7-alpine
+        ports: ['6379:6379']
+        options: >-
+          --health-cmd "redis-cli ping" --health-interval 5s --health-timeout 3s --health-retries 20
+    env:
+      NODE_ENV: development
+      STORAGE_PROVIDER: mock
+      EMAIL_PROVIDER: mock
+      NEXT_PUBLIC_API_BASE_URL: http://localhost:4000
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: cp .env.example .env
+      - name: Migrate, seed and start the API (all providers mocked)
+        run: |
+          pnpm --filter @tirth-now/api db:deploy
+          pnpm db:seed
+          pnpm --filter @tirth-now/api build
+          (cd apps/api && node dist/main.js > /tmp/api.log 2>&1 &)
+          for i in $(seq 1 60); do curl -sf http://localhost:4000/healthz && break; sleep 1; done
+      - name: Build and serve the portal
+        working-directory: apps/vendor-portal
+        run: |
+          pnpm build
+          (python3 -m http.server 3001 -d out > /tmp/portal.log 2>&1 &)
+      - run: pnpm --filter @tirth-now/vendor-portal exec playwright install --with-deps chromium
+      - name: Playwright
+        run: pnpm --filter @tirth-now/vendor-portal e2e
+        env:
+          CI: 'true'
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: vendor-portal-traces
+          path: apps/vendor-portal/test-results
+          retention-days: 7
       - name: API log
         if: failure()
         run: tail -200 /tmp/api.log

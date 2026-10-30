@@ -27,6 +27,7 @@ Lead times matter: start the slow ones (★) early.
 | 20 | **Final app identity**: package / bundle id (now `com.tirthnow.tirth_now`), launcher icons, splash, store listing text and screenshots (en + hi) | Store release | `android/app/build.gradle.kts`, Xcode project | Changing the id after launch is not possible. |
 | 21 | Razorpay **key id** for the app build and Firebase files placed in the app | Mobile release builds | `--dart-define=AUTH_PROVIDER=firebase PAYMENT_PROVIDER=razorpay RAZORPAY_KEY_ID=…`; `android/app/google-services.json`, `ios/Runner/GoogleService-Info.plist` | Key id is public; never put the Razorpay secret in the app. |
 | 22 | Production API origin(s) for the app and CORS for any web build | Mobile release | `--dart-define=API_BASE_URL`, `CORS_ORIGINS` | |
+| 23 | **Partner portal domain** (e.g. partners.tirthnow.in) and static hosting (Vercel/Cloudflare Pages) | Vendor portal | `NEXT_PUBLIC_API_BASE_URL` at build; add the origin to `CORS_ORIGINS`; set `VENDOR_PORTAL_URL` for email links | Needs the email provider (row 16) for password-reset and OTP emails. |
 
 ## Message templates to register (rows 5 and 6)
 

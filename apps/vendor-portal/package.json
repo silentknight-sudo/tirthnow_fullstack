@@ -9,7 +9,7 @@
     "start": "npx serve out -l 3001",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
-    "test:e2e": "playwright test"
+    "e2e": "playwright test"
   },
   "dependencies": {
     "@hookform/resolvers": "5.2.2",

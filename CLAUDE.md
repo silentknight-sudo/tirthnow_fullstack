@@ -11,7 +11,7 @@ structural changes. Keep this file updated as phases land.
 | 1 | Foundation: monorepo wiring, docker-compose, NestJS skeleton, Prisma schema + seed, auth, CI | Done |
 | 2 | Backend modules (all 16 modules, 227 routes, realtime, workers) | Done |
 | 3 | Mobile app (Flutter): auth, home, temples + aarti, bookings + payments, SOS, notifications, reels, AI guide + planner | Done |
-| 4 | Vendor portal | Not started |
+| 4 | Vendor portal (Next.js static, typed API client, Playwright) | Done |
 | 5 | Admin portal | Not started |
 | 6 | Hardening & release | Not started |
 
@@ -20,11 +20,11 @@ structural changes. Keep this file updated as phases land.
 ```
 apps/api              NestJS modular monolith (HTTP + worker entrypoints)
 apps/mobile           Flutter app
-apps/vendor-portal    Next.js 14
+apps/vendor-portal    Next.js 14 static export (partner portal)
 apps/admin-portal     Next.js 14
 apps/website          Marketing site (Next.js static export, framer-motion scroll motion)
 packages/shared-types TS types + Zod schemas (shared with API and portals)
-packages/api-client   OpenAPI-generated client for portals
+packages/api-client   openapi-typescript schema + openapi-fetch client for portals
 packages/ui           Shared React components + Tailwind preset
 packages/config       eslint / tsconfig / prettier presets
 infra/docker          docker-compose + Dockerfiles
@@ -60,6 +60,9 @@ cd apps/mobile && node tool/gen_api_models.mjs  # → lib/core/api/api_models.da
 cd apps/mobile && flutter run                   # mock auth (OTP 123456) + mock payments
 cd apps/mobile && flutter analyze && flutter test
 cd apps/mobile && flutter test test/contract --dart-define=API_CONTRACT_URL=http://localhost:4000
+pnpm --filter @tirth-now/api-client generate      # openapi.json → typed portal client
+pnpm --filter @tirth-now/vendor-portal dev        # partner portal on :3001
+pnpm --filter @tirth-now/vendor-portal e2e        # Playwright (built portal + seeded API)
 ```
 
 Do not use plain `prisma migrate dev` to create migrations (it will offer to drop `rx_` indexes).
@@ -116,6 +119,14 @@ Do not use plain `prisma migrate dev` to create migrations (it will offer to dro
 
 - API demo on Render via `render.yaml` (Blueprint; all resources in one region). Guide: `docs/DEPLOY_RENDER.md`.
 - Client-facing status docs: `docs/PROGRESS_BRIEF.pdf`, `docs/PROJECT_STATUS.pdf`, `docs/CLIENT_REQUIREMENTS.pdf`.
+
+## How the vendor portal fits (Phase 4)
+
+- Read ADR-0019. Static export (`out/`), client components + TanStack Query; detail pages take `?id=`.
+- All calls via `api` from `lib/api.ts` (`@tirth-now/api-client`): `api.GET('/v1/...', { params })`, typed from `src/schema.ts`. Never hand-write request/response types; regenerate with `pnpm --filter @tirth-now/api-client generate` after `openapi:export`.
+- Forms: React Hook Form + Zod, rules mirror the API DTOs (`lib/validation.ts`). Money typed in rupees → `toPaise()`; display with `rupees()`. Times shown in IST (`lib/format.ts`).
+- Gate UI with `useVendor().can('<permission>')`; the API enforces the same.
+- `pnpm --filter @tirth-now/vendor-portal e2e` runs Playwright against the built portal on :3001 and a seeded API on :4000.
 
 ## Naming
 

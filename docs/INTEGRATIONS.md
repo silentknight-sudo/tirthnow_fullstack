@@ -61,7 +61,7 @@ Clients only ever hold **publishable/restricted** keys:
 | Client | Keys |
 |---|---|
 | Mobile | Firebase config (`google-services.json`, `GoogleService-Info.plist`), Google Maps SDK key (restricted to app signature/bundle id), Razorpay `key_id` (returned by API per order), Sentry DSN |
-| Portals | `NEXT_PUBLIC_API_URL`, `NEXT_PUBLIC_SENTRY_DSN`, `NEXT_PUBLIC_GOOGLE_MAPS_KEY` (HTTP-referrer restricted) |
+| Portals | `NEXT_PUBLIC_API_BASE_URL` (API origin, no `/v1`; vendor portal uses it today), `NEXT_PUBLIC_SENTRY_DSN`, `NEXT_PUBLIC_GOOGLE_MAPS_KEY` (HTTP-referrer restricted) |
 
 Secrets (Razorpay secret, LLM and embedding keys, MSG91, Google API key) live only in
 the API's environment.
