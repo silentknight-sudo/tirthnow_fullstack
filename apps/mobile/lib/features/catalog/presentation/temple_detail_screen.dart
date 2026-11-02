@@ -7,6 +7,7 @@ import '../../../core/api/api_models.dart';
 import '../../../core/format/formatters.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/widgets/common.dart';
+import '../../../core/widgets/place_images.dart';
 import '../../reviews/presentation/reviews_section.dart';
 import '../data/catalog_repository.dart';
 import 'aarti_widgets.dart';
@@ -63,7 +64,12 @@ class _Body extends ConsumerWidget {
           expandedHeight: 230,
           backgroundColor: TnColors.paper,
           flexibleSpace: FlexibleSpaceBar(
-            background: CoverImage(temple.coverUrl, height: 270, radius: 0),
+            background: CoverImage(
+              temple.coverUrl,
+              height: 270,
+              radius: 0,
+              fallbackAsset: templeImage(temple.slug),
+            ),
           ),
         ),
         SliverList(

@@ -138,25 +138,31 @@ class Pill extends StatelessWidget {
 
 /// Network image with a calm placeholder (covers often fail on weak signal).
 class CoverImage extends StatelessWidget {
-  const CoverImage(this.url, {super.key, this.height = 160, this.radius = 18});
+  const CoverImage(this.url, {super.key, this.height = 160, this.radius = 18, this.fallbackAsset});
 
   final String? url;
   final double height;
   final double radius;
 
+  /// Bundled photo shown when there is no cover URL (or it fails to load).
+  final String? fallbackAsset;
+
   @override
   Widget build(BuildContext context) {
-    final placeholder = Container(
-      height: height,
-      color: TnColors.paper2,
-      alignment: const Alignment(0.8, 0),
-      // Faint and off to the side so titles laid over the cover stay readable.
-      child: Image.asset(
-        'assets/images/logo.png',
-        height: height * 0.6,
-        opacity: const AlwaysStoppedAnimation(0.12),
-      ),
-    );
+    final asset = fallbackAsset;
+    final placeholder = asset != null
+        ? Image.asset(asset, height: height, width: double.infinity, fit: BoxFit.cover)
+        : Container(
+            height: height,
+            color: TnColors.paper2,
+            alignment: const Alignment(0.8, 0),
+            // Faint and off to the side so titles laid over the cover stay readable.
+            child: Image.asset(
+              'assets/images/logo.png',
+              height: height * 0.6,
+              opacity: const AlwaysStoppedAnimation(0.12),
+            ),
+          );
     final u = url;
     return ClipRRect(
       borderRadius: BorderRadius.circular(radius),

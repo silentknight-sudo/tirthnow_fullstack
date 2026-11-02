@@ -279,5 +279,22 @@
   "cabsSub": "Fixed fares between temples",
   "foodSub": "Pure veg & satvik meals",
   "experiencesSub": "Boat rides, walks & aarti seats",
-  "bookSub": "Everything for your yatra, in one place"
+  "bookSub": "Everything for your yatra, in one place",
+  "brandTagline": "हर तीर्थ, आपके साथ",
+  "welcomeBack": "Welcome back",
+  "welcomeBackSub": "Login to continue your spiritual journey",
+  "registerTitle": "Welcome",
+  "registerSub": "Create an account to begin your Braj journey",
+  "tabLogin": "Login",
+  "tabRegister": "Register",
+  "fullName": "Full name",
+  "fullNameHint": "Your full name",
+  "nameRequired": "Please enter your full name",
+  "guestSub": "Explore as guest (limited access)",
+  "orLabel": "OR",
+  "loginFooter": "Yatra, darshan, stays and safety — all in one app",
+  "splashSub": "India's spiritual journey app",
+  "scan": "Scan",
+  "myTrips": "My Trips",
+  "aiGuide": "AI Guide"
 }

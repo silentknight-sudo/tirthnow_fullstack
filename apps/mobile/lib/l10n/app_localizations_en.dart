@@ -640,4 +640,55 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bookSub => 'Everything for your yatra, in one place';
+
+  @override
+  String get brandTagline => 'हर तीर्थ, आपके साथ';
+
+  @override
+  String get welcomeBack => 'Welcome back';
+
+  @override
+  String get welcomeBackSub => 'Login to continue your spiritual journey';
+
+  @override
+  String get registerTitle => 'Welcome';
+
+  @override
+  String get registerSub => 'Create an account to begin your Braj journey';
+
+  @override
+  String get tabLogin => 'Login';
+
+  @override
+  String get tabRegister => 'Register';
+
+  @override
+  String get fullName => 'Full name';
+
+  @override
+  String get fullNameHint => 'Your full name';
+
+  @override
+  String get nameRequired => 'Please enter your full name';
+
+  @override
+  String get guestSub => 'Explore as guest (limited access)';
+
+  @override
+  String get orLabel => 'OR';
+
+  @override
+  String get loginFooter => 'Yatra, darshan, stays and safety — all in one app';
+
+  @override
+  String get splashSub => 'India\'s spiritual journey app';
+
+  @override
+  String get scan => 'Scan';
+
+  @override
+  String get myTrips => 'My Trips';
+
+  @override
+  String get aiGuide => 'AI Guide';
 }

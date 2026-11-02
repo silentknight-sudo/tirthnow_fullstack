@@ -640,4 +640,55 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get bookSub => 'आपकी यात्रा की हर ज़रूरत, एक जगह';
+
+  @override
+  String get brandTagline => 'हर तीर्थ, आपके साथ';
+
+  @override
+  String get welcomeBack => 'फिर से स्वागत है';
+
+  @override
+  String get welcomeBackSub => 'अपनी आध्यात्मिक यात्रा जारी रखने के लिए लॉगिन करें';
+
+  @override
+  String get registerTitle => 'स्वागत है';
+
+  @override
+  String get registerSub => 'अपनी ब्रज यात्रा शुरू करने के लिए खाता बनाएँ';
+
+  @override
+  String get tabLogin => 'लॉगिन';
+
+  @override
+  String get tabRegister => 'रजिस्टर';
+
+  @override
+  String get fullName => 'पूरा नाम';
+
+  @override
+  String get fullNameHint => 'आपका पूरा नाम';
+
+  @override
+  String get nameRequired => 'कृपया अपना पूरा नाम लिखें';
+
+  @override
+  String get guestSub => 'मेहमान के रूप में देखें (सीमित सुविधा)';
+
+  @override
+  String get orLabel => 'या';
+
+  @override
+  String get loginFooter => 'यात्रा, दर्शन, सुविधा और सुरक्षा – सब कुछ एक ही ऐप में';
+
+  @override
+  String get splashSub => 'भारत का आध्यात्मिक यात्रा ऐप';
+
+  @override
+  String get scan => 'स्कैन';
+
+  @override
+  String get myTrips => 'मेरी यात्राएँ';
+
+  @override
+  String get aiGuide => 'AI गाइड';
 }

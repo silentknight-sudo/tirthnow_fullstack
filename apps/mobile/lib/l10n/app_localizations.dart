@@ -1280,6 +1280,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Everything for your yatra, in one place'**
   String get bookSub;
+
+  /// No description provided for @brandTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'हर तीर्थ, आपके साथ'**
+  String get brandTagline;
+
+  /// No description provided for @welcomeBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back'**
+  String get welcomeBack;
+
+  /// No description provided for @welcomeBackSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Login to continue your spiritual journey'**
+  String get welcomeBackSub;
+
+  /// No description provided for @registerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome'**
+  String get registerTitle;
+
+  /// No description provided for @registerSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Create an account to begin your Braj journey'**
+  String get registerSub;
+
+  /// No description provided for @tabLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get tabLogin;
+
+  /// No description provided for @tabRegister.
+  ///
+  /// In en, this message translates to:
+  /// **'Register'**
+  String get tabRegister;
+
+  /// No description provided for @fullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full name'**
+  String get fullName;
+
+  /// No description provided for @fullNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your full name'**
+  String get fullNameHint;
+
+  /// No description provided for @nameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your full name'**
+  String get nameRequired;
+
+  /// No description provided for @guestSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore as guest (limited access)'**
+  String get guestSub;
+
+  /// No description provided for @orLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'OR'**
+  String get orLabel;
+
+  /// No description provided for @loginFooter.
+  ///
+  /// In en, this message translates to:
+  /// **'Yatra, darshan, stays and safety — all in one app'**
+  String get loginFooter;
+
+  /// No description provided for @splashSub.
+  ///
+  /// In en, this message translates to:
+  /// **'India\'s spiritual journey app'**
+  String get splashSub;
+
+  /// No description provided for @scan.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan'**
+  String get scan;
+
+  /// No description provided for @myTrips.
+  ///
+  /// In en, this message translates to:
+  /// **'My Trips'**
+  String get myTrips;
+
+  /// No description provided for @aiGuide.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Guide'**
+  String get aiGuide;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

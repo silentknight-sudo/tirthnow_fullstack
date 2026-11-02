@@ -7,6 +7,7 @@ import '../../../core/api/api_models.dart';
 import '../../../core/format/formatters.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/widgets/common.dart';
+import '../../../core/widgets/place_images.dart';
 import '../../reviews/presentation/reviews_section.dart';
 import '../data/bookings_repository.dart';
 import 'checkout_flow.dart';
@@ -205,7 +206,7 @@ class _HotelCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CoverImage(hotel.coverUrl, height: 130, radius: 0),
+            CoverImage(hotel.coverUrl, height: 130, radius: 0, fallbackAsset: stayImage),
             Padding(
               padding: const EdgeInsets.all(14),
               child: Row(
@@ -276,7 +277,7 @@ class HotelDetailScreen extends ConsumerWidget {
           return ListView(
             padding: const EdgeInsets.only(bottom: 40),
             children: [
-              CoverImage(h.coverUrl, height: 200, radius: 0),
+              CoverImage(h.coverUrl, height: 200, radius: 0, fallbackAsset: stayImage),
               const SizedBox(height: 12),
               const _StayBar(),
               if (h.description != null)

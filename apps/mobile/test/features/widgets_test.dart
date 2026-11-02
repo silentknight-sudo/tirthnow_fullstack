@@ -26,6 +26,11 @@ AartiInstanceResponse aartiIn(Duration d) {
 void main() {
   group('LoginScreen', () {
     testWidgets('rejects an invalid phone number', (tester) async {
+      // Phone-shaped surface so the whole login card fits without scrolling.
+      tester.view
+        ..physicalSize = const Size(430, 1400)
+        ..devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
       await pumpApp(tester, const LoginScreen());
       await tester.enterText(find.byKey(const Key('phone')), '12345');
       await tester.tap(find.text('Send OTP'));
@@ -35,6 +40,11 @@ void main() {
     });
 
     testWidgets('moves to the OTP step and shows the test-mode hint', (tester) async {
+      // Phone-shaped surface so the whole login card fits without scrolling.
+      tester.view
+        ..physicalSize = const Size(430, 1400)
+        ..devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
       await pumpApp(tester, const LoginScreen());
       await tester.enterText(find.byKey(const Key('phone')), '9812345678');
       await tester.tap(find.text('Send OTP'));

@@ -6,6 +6,7 @@ import '../../../core/api/api_models.dart';
 import '../../../core/format/formatters.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/widgets/common.dart';
+import '../../../core/widgets/place_images.dart';
 import '../../reviews/presentation/reviews_section.dart';
 import '../data/bookings_repository.dart';
 import 'checkout_flow.dart';
@@ -32,6 +33,10 @@ class RestaurantsScreen extends ConsumerWidget {
                   return Card(
                     child: ListTile(
                       contentPadding: const EdgeInsets.all(14),
+                      leading: ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.asset(foodImage, width: 64, height: 64, fit: BoxFit.cover),
+                      ),
                       title: Text(r.name, style: Theme.of(context).textTheme.titleMedium),
                       subtitle: Padding(
                         padding: const EdgeInsets.only(top: 6),

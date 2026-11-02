@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/ai/presentation/guide_screen.dart';
+import '../../features/ai/presentation/identify.dart';
 import '../../features/ai/presentation/planner_screen.dart';
 import '../../features/auth/data/session_controller.dart';
 import '../../features/auth/presentation/login_screen.dart';
@@ -24,10 +27,17 @@ import '../../features/travel/presentation/weather_screen.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
 
-/// Re-runs redirects when the session changes.
+/// Keeps the splash on screen briefly at launch so it is seen, not flashed.
+final _splashHoldProvider = FutureProvider<void>(
+  (ref) => Future<void>.delayed(const Duration(milliseconds: 1800)),
+);
+
+/// Re-runs redirects when the session changes or the splash hold ends.
 class _SessionListenable extends ChangeNotifier {
   _SessionListenable(Ref ref) {
-    ref.listen(sessionProvider, (_, _) => notifyListeners());
+    ref
+      ..listen(sessionProvider, (_, _) => notifyListeners())
+      ..listen(_splashHoldProvider, (_, _) => notifyListeners());
   }
 }
 
@@ -40,7 +50,9 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     redirect: (context, state) {
       final s = ref.read(sessionProvider);
       final atLogin = state.matchedLocation == '/login';
-      if (s.restoring) return state.matchedLocation == '/splash' ? null : '/splash';
+      if (s.restoring || ref.read(_splashHoldProvider).isLoading) {
+        return state.matchedLocation == '/splash' ? null : '/splash';
+      }
       // SOS must always be reachable, signed in or not.
       if (!s.signedIn && state.matchedLocation == '/sos') return null;
       if (!s.signedIn) return atLogin ? null : '/login';
@@ -161,11 +173,72 @@ class _Splash extends StatelessWidget {
   const _Splash();
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    body: Center(
-      child: Image.asset('assets/images/logo_full.png', height: 180, semanticLabel: 'Tirth Now'),
-    ),
-  );
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    return Scaffold(
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Image.asset('assets/images/canva/splash.jpg', fit: BoxFit.cover),
+          // Lighten the sky behind the logo so the navy wordmark reads.
+          const DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0xCCFFFFFF),
+                  Color(0x00FFFFFF),
+                  Color(0x000C1A30),
+                  Color(0x990C1A30),
+                ],
+                stops: [0, 0.42, 0.7, 1],
+              ),
+            ),
+          ),
+          SafeArea(
+            child: Column(
+              children: [
+                const SizedBox(height: 56),
+                Image.asset('assets/images/logo_full.png', height: 190, semanticLabel: 'TirthNow'),
+                const SizedBox(height: 10),
+                Text(
+                  '— ${l.brandTagline} —',
+                  style: const TextStyle(
+                    color: TnColors.navy,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const Spacer(),
+                Text(
+                  l.splashSub,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 14),
+                const SizedBox(
+                  width: 120,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                    child: LinearProgressIndicator(
+                      minHeight: 5,
+                      color: TnColors.saffron,
+                      backgroundColor: Color(0x66FFFFFF),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 36),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 /// Bottom navigation plus an always-visible SOS button.
@@ -191,14 +264,34 @@ class _Shell extends StatelessWidget {
               onPressed: () => context.push('/sos'),
               child: const Text('SOS', style: TextStyle(fontWeight: FontWeight.w800)),
             ),
+      // Home · AI Guide · Scan (camera) · My Trips · Profile. Temples and Book
+      // stay as branches, reached from Home's quick access.
       bottomNavigationBar: _BottomBar(
-        index: shell.currentIndex,
-        onSelect: (i) => shell.goBranch(i, initialLocation: i == shell.currentIndex),
+        index: switch (shell.currentIndex) {
+          3 => 1,
+          2 => 3,
+          4 => 4,
+          _ => 0,
+        },
+        onSelect: (i) {
+          switch (i) {
+            case 0:
+              shell.goBranch(0, initialLocation: shell.currentIndex == 0);
+            case 1:
+              shell.goBranch(3, initialLocation: shell.currentIndex == 3);
+            case 2:
+              unawaited(identifyTempleFromCamera(context));
+            case 3:
+              context.go('/book/orders');
+            default:
+              shell.goBranch(4, initialLocation: shell.currentIndex == 4);
+          }
+        },
         items: [
           (Icons.home_outlined, Icons.home_rounded, l.navHome),
-          (Icons.temple_hindu_outlined, Icons.temple_hindu, l.navTemples),
-          (Icons.luggage_outlined, Icons.luggage, l.navBook),
-          (Icons.auto_awesome_outlined, Icons.auto_awesome, l.navGuide),
+          (Icons.smart_toy_outlined, Icons.smart_toy_rounded, l.aiGuide),
+          (Icons.qr_code_scanner_rounded, Icons.qr_code_scanner_rounded, l.scan),
+          (Icons.luggage_outlined, Icons.luggage, l.myTrips),
           (Icons.person_outline_rounded, Icons.person_rounded, l.navProfile),
         ],
       ),

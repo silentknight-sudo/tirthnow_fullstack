@@ -6,6 +6,7 @@ import '../../../core/api/api_models.dart';
 import '../../../core/format/formatters.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/widgets/common.dart';
+import '../../../core/widgets/place_images.dart';
 import '../../catalog/data/catalog_repository.dart';
 import '../../catalog/presentation/temples_screen.dart' show TempleCard, crowdLabel;
 
@@ -607,64 +608,58 @@ class _PlannerBanner extends StatelessWidget {
       child: Material(
         borderRadius: BorderRadius.circular(20),
         clipBehavior: Clip.antiAlias,
-        child: Ink(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Color(0xFFEFF3FA), Color(0xFFFFF1E4)],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-            ),
-          ),
-          child: InkWell(
-            onTap: () => context.push('/guide/planner'),
+        elevation: 2,
+        shadowColor: const Color(0x331C3C6B),
+        child: InkWell(
+          onTap: () => context.push('/guide/planner'),
+          child: AspectRatio(
+            aspectRatio: 2.4,
             child: Stack(
+              fit: StackFit.expand,
               children: [
-                Positioned(
-                  right: -6,
-                  top: -4,
-                  bottom: -4,
-                  child: Opacity(
-                    opacity: 0.18,
-                    child: Image.asset('assets/images/logo.png', height: 130),
-                  ),
+                Image.asset(
+                  plannerBannerImage,
+                  fit: BoxFit.cover,
+                  alignment: Alignment.centerRight,
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
+                  padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                const Icon(Icons.auto_awesome, color: TnColors.saffron, size: 20),
-                                const SizedBox(width: 6),
-                                Text(
-                                  l.tripPlannerTitle,
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w800,
-                                    color: TnColors.navy,
-                                  ),
-                                ),
-                              ],
+                      Row(
+                        children: [
+                          const Icon(Icons.auto_awesome, color: TnColors.navy, size: 20),
+                          const SizedBox(width: 6),
+                          Text(
+                            l.tripPlannerTitle,
+                            style: const TextStyle(
+                              fontSize: 19,
+                              fontWeight: FontWeight.w800,
+                              color: TnColors.navy,
                             ),
-                            const SizedBox(height: 6),
-                            Text(
-                              l.tripPlannerBody,
-                              style: const TextStyle(color: TnColors.ink, fontSize: 13),
-                            ),
-                          ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                      SizedBox(
+                        width: 190,
+                        child: Text(
+                          l.tripPlannerBody,
+                          style: const TextStyle(color: TnColors.ink, fontSize: 13),
                         ),
                       ),
-                      const SizedBox(width: 8),
-                      FilledButton(
-                        onPressed: () => context.push('/guide/planner'),
-                        style: FilledButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                      const Spacer(),
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: FilledButton(
+                          onPressed: () => context.push('/guide/planner'),
+                          style: FilledButton.styleFrom(
+                            minimumSize: const Size(0, 38),
+                            padding: const EdgeInsets.symmetric(horizontal: 18),
+                          ),
+                          child: Text(l.planTrip),
                         ),
-                        child: Text(l.planTrip),
                       ),
                     ],
                   ),

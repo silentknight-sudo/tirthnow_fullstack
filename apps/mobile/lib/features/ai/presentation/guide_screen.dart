@@ -12,6 +12,7 @@ import '../../../core/theme/app_theme.dart';
 import '../../../core/widgets/common.dart';
 import '../../auth/data/session_controller.dart';
 import '../data/ai_repository.dart';
+import 'identify.dart';
 
 /// Chat with the Braj guide. Answers stream in token by token; citations
 /// are listed under each answer; any answer can be read aloud.
@@ -150,28 +151,6 @@ class _GuideScreenState extends ConsumerState<GuideScreen> {
     }
   }
 
-  Future<void> _identify() async {
-    final photo = await ImagePicker().pickImage(
-      source: ImageSource.camera,
-      maxWidth: 1600,
-      imageQuality: 85,
-    );
-    if (photo == null) return;
-    try {
-      await _ensureSession();
-      final matches = await _ai.identifyLandmark(await photo.readAsBytes(), 'image/jpeg');
-      if (!mounted) return;
-      if (matches.isEmpty) {
-        showSnack(context, context.l10n.emptyList);
-        return;
-      }
-      final best = matches.first;
-      await context.push('/temples/${best['templeId']}');
-    } on Object catch (e) {
-      if (mounted) showSnack(context, errorText(context, e));
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
@@ -192,7 +171,7 @@ class _GuideScreenState extends ConsumerState<GuideScreen> {
           IconButton(
             tooltip: l.identifyTemple,
             icon: const Icon(Icons.photo_camera_outlined),
-            onPressed: _identify,
+            onPressed: () => identifyTempleFromCamera(context),
           ),
           IconButton(
             tooltip: l.planner,

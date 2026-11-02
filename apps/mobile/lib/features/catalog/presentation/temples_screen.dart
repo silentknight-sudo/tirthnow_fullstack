@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../core/api/api_models.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/widgets/common.dart';
+import '../../../core/widgets/place_images.dart';
 import '../data/catalog_repository.dart';
 
 String crowdLabel(BuildContext context, num level) {
@@ -133,7 +134,12 @@ class TempleCard extends StatelessWidget {
           children: [
             Stack(
               children: [
-                CoverImage(temple.coverUrl, height: imageHeight, radius: 0),
+                CoverImage(
+                  temple.coverUrl,
+                  height: imageHeight,
+                  radius: 0,
+                  fallbackAsset: templeImage(temple.slug),
+                ),
                 Positioned(
                   left: 8,
                   top: 8,
