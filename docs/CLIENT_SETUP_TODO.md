@@ -52,3 +52,12 @@ mobile app must create the Android channels `orders`, `aarti`, `sos` and `genera
 - **Commission rules**: at least one global rule (`/v1/admin/commission-rules`) before
   the first booking; vendor-specific rules for launch partners.
 - **Helplines**: `safety.helplines` setting in `/v1/admin/config` (defaults to 112).
+
+## Demo reels (`apps/api/assets/demo-reels`)
+
+The four seeded "adiyogi" reels use Canva-generated images, an original score
+generated in code (no third-party music), and a Hindi voice-over made with the
+open-source Piper voice `hi_IN-priyamvada-medium`. That voice's training data is
+licensed **CC BY-NC-SA 4.0 (non-commercial)**. Before a commercial launch,
+re-record the voice-overs with a voice artist or a licensed commercial TTS
+(e.g. Google Cloud or Azure Hindi voices), or remove these demo reels.
