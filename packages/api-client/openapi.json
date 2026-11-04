@@ -5280,6 +5280,32 @@
         },
         "type": "object"
       },
+      "UpdateReelDto": {
+        "properties": {
+          "caption": {
+            "maxLength": 2200,
+            "type": "string"
+          },
+          "hashtags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "templeId": {
+            "description": "null removes the tag",
+            "format": "uuid",
+            "nullable": true,
+            "type": "string"
+          },
+          "thumbnailMediaId": {
+            "description": "New uploaded reel_thumbnail (cover)",
+            "format": "uuid",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
       "UpdateRestaurantDto": {
         "properties": {
           "acceptsOrders": {
@@ -11228,6 +11254,50 @@
             "bearer": []
           }
         ],
+        "tags": [
+          "reels"
+        ]
+      },
+      "patch": {
+        "operationId": "ReelsController_update",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateReelDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReelResponse"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Edit your reel: caption, hashtags, temple tag or cover",
         "tags": [
           "reels"
         ]

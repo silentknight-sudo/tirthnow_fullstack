@@ -1892,7 +1892,8 @@ export interface paths {
     delete: operations['ReelsController_remove'];
     options?: never;
     head?: never;
-    patch?: never;
+    /** Edit your reel: caption, hashtags, temple tag or cover */
+    patch: operations['ReelsController_update'];
     trace?: never;
   };
   '/v1/reels/{id}/comments': {
@@ -4722,6 +4723,20 @@ export interface components {
       notificationPrefs?: components['schemas']['NotificationPrefsDto'];
       /** @enum {string} */
       preferredLang?: 'en' | 'hi';
+    };
+    UpdateReelDto: {
+      caption?: string;
+      hashtags?: string[];
+      /**
+       * Format: uuid
+       * @description null removes the tag
+       */
+      templeId?: string | null;
+      /**
+       * Format: uuid
+       * @description New uploaded reel_thumbnail (cover)
+       */
+      thumbnailMediaId?: string;
     };
     UpdateRestaurantDto: {
       /** @description Accept in-app food orders */
@@ -8076,6 +8091,31 @@ export interface operations {
           [name: string]: unknown;
         };
         content?: never;
+      };
+    };
+  };
+  ReelsController_update: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateReelDto'];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ReelResponse'];
+        };
       };
     };
   };

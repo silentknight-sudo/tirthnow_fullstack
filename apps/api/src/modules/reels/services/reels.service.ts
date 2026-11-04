@@ -22,6 +22,7 @@ import { FilesFacade } from '../../files';
 import { IdentityFacade, type PublicProfile } from '../../identity';
 import {
   type CreateReelDto,
+  type UpdateReelDto,
   type FeedQueryDto,
   type ReelPageResponse,
   type ReelResponse,
@@ -286,6 +287,43 @@ export class ReelsService implements OnModuleInit {
   }
 
   // ───────────── engagement ─────────────
+
+  async update(
+    user: AuthPrincipal,
+    id: string,
+    dto: UpdateReelDto,
+    lang: Lang,
+  ): Promise<ReelResponse> {
+    const reel = await this.prisma.reel.findFirst({
+      where: { id, userId: user.userId, deletedAt: null },
+    });
+    if (!reel) throw AppException.notFound('Reel not found');
+    if (dto.thumbnailMediaId)
+      await this.files.requireReady(dto.thumbnailMediaId, {
+        ownerUserId: user.userId,
+        purposes: ['reel_thumbnail'],
+      });
+    if (dto.templeId && !(await this.catalog.templeExists(dto.templeId)))
+      throw AppException.badRequest('Unknown templeId');
+    const caption = dto.caption === undefined ? reel.caption : dto.caption.trim() || null;
+    // A changed caption is checked again, like a new post.
+    const check =
+      dto.caption !== undefined && caption ? await this.moderator.moderateText(caption) : null;
+    const updated = await this.prisma.reel.update({
+      where: { id },
+      data: {
+        caption,
+        ...(dto.caption !== undefined || dto.hashtags !== undefined
+          ? { hashtags: normalizeHashtags(dto.hashtags ?? reel.hashtags, caption ?? undefined) }
+          : {}),
+        ...(dto.templeId !== undefined ? { templeId: dto.templeId } : {}),
+        ...(dto.thumbnailMediaId ? { thumbnailMediaId: dto.thumbnailMediaId } : {}),
+        ...(check?.flagged ? { moderationStatus: 'flagged' as const } : {}),
+      },
+    });
+    if (check?.flagged) await this.moderation.autoReport('reel', id, check);
+    return this.toResponse(updated, user.userId, lang);
+  }
 
   async remove(user: AuthPrincipal, id: string): Promise<void> {
     const reel = await this.prisma.reel.findFirst({

@@ -50,6 +50,35 @@ export class CreateReelDto {
   @ApiPropertyOptional({ format: 'uuid' }) @IsOptional() @IsUUID() templeId?: string;
 }
 
+/** Owner edits after posting; omitted fields stay as they are. */
+export class UpdateReelDto {
+  @ApiPropertyOptional({ maxLength: 2200 })
+  @IsOptional()
+  @IsString()
+  @MaxLength(2200)
+  caption?: string;
+  @ApiPropertyOptional({ type: [String] })
+  @IsOptional()
+  @IsArray()
+  @ArrayMaxSize(30)
+  @IsString({ each: true })
+  @MaxLength(41, { each: true })
+  hashtags?: string[];
+  @ApiPropertyOptional({
+    type: String,
+    format: 'uuid',
+    nullable: true,
+    description: 'null removes the tag',
+  })
+  @IsOptional()
+  @IsUUID()
+  templeId?: string | null;
+  @ApiPropertyOptional({ format: 'uuid', description: 'New uploaded reel_thumbnail (cover)' })
+  @IsOptional()
+  @IsUUID()
+  thumbnailMediaId?: string;
+}
+
 const toBool = ({ value }: { value: unknown }) =>
   value === 'true' ? true : value === 'false' ? false : value;
 

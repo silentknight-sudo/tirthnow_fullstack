@@ -467,6 +467,30 @@ describe('reviews, reels and moderation', () => {
     expect(video.removed).toHaveLength(1);
   });
 
+  it('lets the owner edit caption, hashtags and temple tag, and nobody else', async () => {
+    const reel = await postReel(alice.token);
+    const edited = await t.http
+      .patch(`/v1/reels/${reel.id}`)
+      .set(...bearer(alice.token))
+      .send({ caption: 'Mangla #darshan at dawn', hashtags: ['Braj'], templeId: null })
+      .expect(200);
+    expect(edited.body).toMatchObject({
+      caption: 'Mangla #darshan at dawn',
+      hashtags: ['braj', 'darshan'],
+      templeId: null,
+    });
+    await t.http
+      .patch(`/v1/reels/${reel.id}`)
+      .set(...bearer(bob.token))
+      .send({ caption: 'hijack' })
+      .expect(404);
+    await t.http
+      .patch(`/v1/reels/${reel.id}`)
+      .set(...bearer(alice.token))
+      .send({ templeId: '00000000-0000-4000-8000-000000000000' })
+      .expect(400);
+  });
+
   it('finishes transcoding by signed webhook and keeps flagged captions out of the feed', async () => {
     video.holdAssets = true;
     const reel = await postReel(alice.token);

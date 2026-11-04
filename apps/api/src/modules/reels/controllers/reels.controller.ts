@@ -6,6 +6,7 @@ import {
   HttpCode,
   Param,
   ParseUUIDPipe,
+  Patch,
   Post,
   Query,
 } from '@nestjs/common';
@@ -23,6 +24,7 @@ import {
   FeedQueryDto,
   ReelPageResponse,
   ReelResponse,
+  UpdateReelDto,
 } from '../dto/reels.dto';
 import { ModerationService } from '../services/moderation.service';
 import { ReelsService } from '../services/reels.service';
@@ -81,6 +83,19 @@ export class ReelsController {
     @ReqLang() lang: Lang,
   ): Promise<ReelResponse> {
     return this.reels.get(u, id, lang);
+  }
+
+  @Patch(':id')
+  @NoGuests()
+  @ApiOperation({ summary: 'Edit your reel: caption, hashtags, temple tag or cover' })
+  @ApiOkResponse({ type: ReelResponse })
+  update(
+    @CurrentUser() u: AuthPrincipal,
+    @Param('id', UUID) id: string,
+    @Body() dto: UpdateReelDto,
+    @ReqLang() lang: Lang,
+  ): Promise<ReelResponse> {
+    return this.reels.update(u, id, dto, lang);
   }
 
   @Delete(':id')
