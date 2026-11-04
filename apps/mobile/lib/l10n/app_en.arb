@@ -331,5 +331,57 @@
         "type": "int"
       }
     }
+  },
+  "editVideo": "Edit video",
+  "editVideoHint": "Trim, filters, speed, text, sound",
+  "reset": "Reset",
+  "trim": "Trim",
+  "filters": "Filters",
+  "speed": "Speed",
+  "text": "Text",
+  "sound": "Sound",
+  "trimHint": "Drag the ends to choose the part to share",
+  "addText": "Add text",
+  "textHint": "Drag text to move it · tap to edit",
+  "originalSound": "Original sound",
+  "typeSomething": "Type something…",
+  "textPlain": "Plain",
+  "textBox": "Box",
+  "textOutline": "Outline",
+  "filter_none": "Normal",
+  "filter_warm": "Warm",
+  "filter_cool": "Cool",
+  "filter_vivid": "Vivid",
+  "filter_mono": "Mono",
+  "filter_sepia": "Sepia",
+  "filter_fade": "Fade",
+  "filter_saffron": "Saffron",
+  "followingEmpty": "Follow creators to see their reels here",
+  "follow": "Follow",
+  "followingButton": "Following",
+  "viewProfile": "View profile",
+  "report": "Report",
+  "reportWhy": "Why are you reporting this reel?",
+  "reportSpam": "Spam",
+  "reportNudity": "Nudity or sexual content",
+  "reportHate": "Hate speech",
+  "reportViolence": "Violence",
+  "reportHarassment": "Bullying or harassment",
+  "reportMisinformation": "False information",
+  "reportScam": "Scam or fraud",
+  "reportOther": "Something else",
+  "reportThanks": "Thanks — our team will review it",
+  "share": "Share",
+  "noCommentsYet": "No comments yet. Start the conversation.",
+  "commentPosted": "Comment posted — it appears once approved",
+  "reply": "Reply",
+  "justNow": "now",
+  "replyingTo": "Replying to {name}",
+  "@replyingTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
   }
 }

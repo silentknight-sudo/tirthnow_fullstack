@@ -1520,6 +1520,7 @@ class CreateReelDto {
   const CreateReelDto({
     this.caption,
     this.cityId,
+    this.edits,
     this.hashtags,
     this.templeId,
     this.thumbnailMediaId,
@@ -1529,6 +1530,7 @@ class CreateReelDto {
   factory CreateReelDto.fromJson(Map<String, dynamic> json) => CreateReelDto(
     caption: json['caption'] == null ? null : json['caption'] as String,
     cityId: json['cityId'] == null ? null : json['cityId'] as String,
+    edits: json['edits'] == null ? null : ReelEditsDto.fromJson(_map(json['edits'])),
     hashtags: json['hashtags'] == null
         ? null
         : (json['hashtags'] as List<dynamic>).map((dynamic x) => x as String).toList(),
@@ -1539,6 +1541,7 @@ class CreateReelDto {
 
   final String? caption;
   final String? cityId;
+  final ReelEditsDto? edits;
   final List<String>? hashtags;
   final String? templeId;
 
@@ -1551,6 +1554,7 @@ class CreateReelDto {
   Map<String, dynamic> toJson() => <String, dynamic>{
     'caption': ?caption,
     'cityId': ?cityId,
+    'edits': ?edits?.toJson(),
     'hashtags': ?hashtags,
     'templeId': ?templeId,
     'thumbnailMediaId': ?thumbnailMediaId,
@@ -3772,6 +3776,89 @@ class ReasonDto {
 }
 
 @immutable
+class ReelEditsDto {
+  const ReelEditsDto({
+    required this.filter,
+    required this.muted,
+    required this.overlays,
+    required this.speed,
+    this.trimEndMs,
+    required this.trimStartMs,
+  });
+
+  factory ReelEditsDto.fromJson(Map<String, dynamic> json) => ReelEditsDto(
+    filter: json['filter'] as String,
+    muted: json['muted'] as bool,
+    overlays: (json['overlays'] as List<dynamic>)
+        .map((dynamic x) => ReelOverlayDto.fromJson(_map(x)))
+        .toList(),
+    speed: json['speed'] as num,
+    trimEndMs: json['trimEndMs'] == null ? null : json['trimEndMs'] as num,
+    trimStartMs: json['trimStartMs'] as num,
+  );
+
+  /// One of: none, warm, cool, vivid, mono, sepia, fade, saffron.
+  final String filter;
+  final bool muted;
+  final List<ReelOverlayDto> overlays;
+
+  /// One of: 0.5, 1, 1.5, 2.
+  final num speed;
+
+  /// null = to the end
+  final num? trimEndMs;
+  final num trimStartMs;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'filter': filter,
+    'muted': muted,
+    'overlays': overlays.map((x) => x.toJson()).toList(),
+    'speed': speed,
+    'trimEndMs': ?trimEndMs,
+    'trimStartMs': trimStartMs,
+  };
+}
+
+@immutable
+class ReelOverlayDto {
+  const ReelOverlayDto({
+    required this.color,
+    required this.size,
+    required this.style,
+    required this.text,
+    required this.x,
+    required this.y,
+  });
+
+  factory ReelOverlayDto.fromJson(Map<String, dynamic> json) => ReelOverlayDto(
+    color: json['color'] as String,
+    size: json['size'] as num,
+    style: json['style'] as String,
+    text: json['text'] as String,
+    x: json['x'] as num,
+    y: json['y'] as num,
+  );
+
+  final String color;
+  final num size;
+
+  /// One of: plain, box, outline.
+  final String style;
+  final String text;
+  final num x;
+  final num y;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'color': color,
+    'size': size,
+    'style': style,
+    'text': text,
+    'x': x,
+    'y': y,
+  };
+}
+
+@immutable
 class ReelPageResponse {
   const ReelPageResponse({required this.data, this.nextCursor});
 
@@ -3800,6 +3887,8 @@ class ReelResponse {
     required this.createdAt,
     required this.creator,
     this.durationMs,
+    this.edits,
+    required this.followingCreator,
     required this.hashtags,
     required this.id,
     required this.likeCount,
@@ -3822,6 +3911,8 @@ class ReelResponse {
     createdAt: json['createdAt'] as String,
     creator: CreatorResponse.fromJson(_map(json['creator'])),
     durationMs: json['durationMs'] == null ? null : json['durationMs'] as num,
+    edits: json['edits'] == null ? null : ReelEditsDto.fromJson(_map(json['edits'])),
+    followingCreator: json['followingCreator'] as bool,
     hashtags: (json['hashtags'] as List<dynamic>).map((dynamic x) => x as String).toList(),
     id: json['id'] as String,
     likeCount: json['likeCount'] as num,
@@ -3843,6 +3934,10 @@ class ReelResponse {
   final String createdAt;
   final CreatorResponse creator;
   final num? durationMs;
+  final ReelEditsDto? edits;
+
+  /// The viewer follows the creator
+  final bool followingCreator;
   final List<String> hashtags;
   final String id;
   final num likeCount;
@@ -3868,6 +3963,8 @@ class ReelResponse {
     'createdAt': createdAt,
     'creator': creator.toJson(),
     'durationMs': ?durationMs,
+    'edits': ?edits?.toJson(),
+    'followingCreator': followingCreator,
     'hashtags': hashtags,
     'id': id,
     'likeCount': likeCount,
@@ -5506,10 +5603,17 @@ class UpdateProfileDto {
 
 @immutable
 class UpdateReelDto {
-  const UpdateReelDto({this.caption, this.hashtags, this.templeId, this.thumbnailMediaId});
+  const UpdateReelDto({
+    this.caption,
+    this.edits,
+    this.hashtags,
+    this.templeId,
+    this.thumbnailMediaId,
+  });
 
   factory UpdateReelDto.fromJson(Map<String, dynamic> json) => UpdateReelDto(
     caption: json['caption'] == null ? null : json['caption'] as String,
+    edits: json['edits'] == null ? null : ReelEditsDto.fromJson(_map(json['edits'])),
     hashtags: json['hashtags'] == null
         ? null
         : (json['hashtags'] as List<dynamic>).map((dynamic x) => x as String).toList(),
@@ -5518,6 +5622,7 @@ class UpdateReelDto {
   );
 
   final String? caption;
+  final ReelEditsDto? edits;
   final List<String>? hashtags;
 
   /// null removes the tag
@@ -5528,6 +5633,7 @@ class UpdateReelDto {
 
   Map<String, dynamic> toJson() => <String, dynamic>{
     'caption': ?caption,
+    'edits': ?edits?.toJson(),
     'hashtags': ?hashtags,
     'templeId': ?templeId,
     'thumbnailMediaId': ?thumbnailMediaId,

@@ -1550,6 +1550,276 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reel updated'**
   String get reelSaved;
+
+  /// No description provided for @editVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit video'**
+  String get editVideo;
+
+  /// No description provided for @editVideoHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Trim, filters, speed, text, sound'**
+  String get editVideoHint;
+
+  /// No description provided for @reset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get reset;
+
+  /// No description provided for @trim.
+  ///
+  /// In en, this message translates to:
+  /// **'Trim'**
+  String get trim;
+
+  /// No description provided for @filters.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get filters;
+
+  /// No description provided for @speed.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed'**
+  String get speed;
+
+  /// No description provided for @text.
+  ///
+  /// In en, this message translates to:
+  /// **'Text'**
+  String get text;
+
+  /// No description provided for @sound.
+  ///
+  /// In en, this message translates to:
+  /// **'Sound'**
+  String get sound;
+
+  /// No description provided for @trimHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Drag the ends to choose the part to share'**
+  String get trimHint;
+
+  /// No description provided for @addText.
+  ///
+  /// In en, this message translates to:
+  /// **'Add text'**
+  String get addText;
+
+  /// No description provided for @textHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Drag text to move it · tap to edit'**
+  String get textHint;
+
+  /// No description provided for @originalSound.
+  ///
+  /// In en, this message translates to:
+  /// **'Original sound'**
+  String get originalSound;
+
+  /// No description provided for @typeSomething.
+  ///
+  /// In en, this message translates to:
+  /// **'Type something…'**
+  String get typeSomething;
+
+  /// No description provided for @textPlain.
+  ///
+  /// In en, this message translates to:
+  /// **'Plain'**
+  String get textPlain;
+
+  /// No description provided for @textBox.
+  ///
+  /// In en, this message translates to:
+  /// **'Box'**
+  String get textBox;
+
+  /// No description provided for @textOutline.
+  ///
+  /// In en, this message translates to:
+  /// **'Outline'**
+  String get textOutline;
+
+  /// No description provided for @filter_none.
+  ///
+  /// In en, this message translates to:
+  /// **'Normal'**
+  String get filter_none;
+
+  /// No description provided for @filter_warm.
+  ///
+  /// In en, this message translates to:
+  /// **'Warm'**
+  String get filter_warm;
+
+  /// No description provided for @filter_cool.
+  ///
+  /// In en, this message translates to:
+  /// **'Cool'**
+  String get filter_cool;
+
+  /// No description provided for @filter_vivid.
+  ///
+  /// In en, this message translates to:
+  /// **'Vivid'**
+  String get filter_vivid;
+
+  /// No description provided for @filter_mono.
+  ///
+  /// In en, this message translates to:
+  /// **'Mono'**
+  String get filter_mono;
+
+  /// No description provided for @filter_sepia.
+  ///
+  /// In en, this message translates to:
+  /// **'Sepia'**
+  String get filter_sepia;
+
+  /// No description provided for @filter_fade.
+  ///
+  /// In en, this message translates to:
+  /// **'Fade'**
+  String get filter_fade;
+
+  /// No description provided for @filter_saffron.
+  ///
+  /// In en, this message translates to:
+  /// **'Saffron'**
+  String get filter_saffron;
+
+  /// No description provided for @followingEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow creators to see their reels here'**
+  String get followingEmpty;
+
+  /// No description provided for @follow.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow'**
+  String get follow;
+
+  /// No description provided for @followingButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Following'**
+  String get followingButton;
+
+  /// No description provided for @viewProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'View profile'**
+  String get viewProfile;
+
+  /// No description provided for @report.
+  ///
+  /// In en, this message translates to:
+  /// **'Report'**
+  String get report;
+
+  /// No description provided for @reportWhy.
+  ///
+  /// In en, this message translates to:
+  /// **'Why are you reporting this reel?'**
+  String get reportWhy;
+
+  /// No description provided for @reportSpam.
+  ///
+  /// In en, this message translates to:
+  /// **'Spam'**
+  String get reportSpam;
+
+  /// No description provided for @reportNudity.
+  ///
+  /// In en, this message translates to:
+  /// **'Nudity or sexual content'**
+  String get reportNudity;
+
+  /// No description provided for @reportHate.
+  ///
+  /// In en, this message translates to:
+  /// **'Hate speech'**
+  String get reportHate;
+
+  /// No description provided for @reportViolence.
+  ///
+  /// In en, this message translates to:
+  /// **'Violence'**
+  String get reportViolence;
+
+  /// No description provided for @reportHarassment.
+  ///
+  /// In en, this message translates to:
+  /// **'Bullying or harassment'**
+  String get reportHarassment;
+
+  /// No description provided for @reportMisinformation.
+  ///
+  /// In en, this message translates to:
+  /// **'False information'**
+  String get reportMisinformation;
+
+  /// No description provided for @reportScam.
+  ///
+  /// In en, this message translates to:
+  /// **'Scam or fraud'**
+  String get reportScam;
+
+  /// No description provided for @reportOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Something else'**
+  String get reportOther;
+
+  /// No description provided for @reportThanks.
+  ///
+  /// In en, this message translates to:
+  /// **'Thanks — our team will review it'**
+  String get reportThanks;
+
+  /// No description provided for @share.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get share;
+
+  /// No description provided for @noCommentsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No comments yet. Start the conversation.'**
+  String get noCommentsYet;
+
+  /// No description provided for @commentPosted.
+  ///
+  /// In en, this message translates to:
+  /// **'Comment posted — it appears once approved'**
+  String get commentPosted;
+
+  /// No description provided for @reply.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply'**
+  String get reply;
+
+  /// No description provided for @justNow.
+  ///
+  /// In en, this message translates to:
+  /// **'now'**
+  String get justNow;
+
+  /// No description provided for @replyingTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Replying to {name}'**
+  String replyingTo(String name);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

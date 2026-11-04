@@ -3,12 +3,15 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:video_player/video_player.dart';
 
 import '../../../core/api/api_models.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/widgets/common.dart';
 import '../../catalog/data/catalog_repository.dart';
 import '../data/reels_repository.dart';
+import 'reel_player.dart';
+import 'reel_video_editor.dart';
 
 /// Edit a posted reel's caption, hashtags, temple tag or cover.
 /// Returns the updated reel, or null if nothing was saved.
@@ -35,6 +38,8 @@ class _EditSheetState extends ConsumerState<_EditSheet> {
   late String? _templeId = widget.reel.templeId;
   Uint8List? _cover;
   bool _busy = false;
+  late ReelEditsDto _edits = widget.reel.edits ?? noEdits;
+  bool _editsChanged = false;
 
   @override
   void dispose() {
@@ -53,6 +58,30 @@ class _EditSheetState extends ConsumerState<_EditSheet> {
     setState(() => _cover = bytes);
   }
 
+  Future<void> _editVideo() async {
+    final url = widget.reel.playbackUrl;
+    if (url == null) return;
+    final v = VideoPlayerController.networkUrl(Uri.parse(url));
+    setState(() => _busy = true);
+    try {
+      await v.initialize();
+      await v.setLooping(true);
+      if (!mounted) return;
+      final result = await openReelVideoEditor(context, v, _edits);
+      if (result != null && mounted) {
+        setState(() {
+          _edits = result;
+          _editsChanged = true;
+        });
+      }
+    } on Object catch (e) {
+      if (mounted) showSnack(context, errorText(context, e));
+    } finally {
+      await v.dispose();
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
   Future<void> _save() async {
     final l = context.l10n;
     setState(() => _busy = true);
@@ -66,6 +95,7 @@ class _EditSheetState extends ConsumerState<_EditSheet> {
             hashtags: hashtagsIn(caption),
             templeId: _templeId,
             cover: _cover,
+            edits: _editsChanged ? _edits : null,
           );
       ref
         ..invalidate(myReelsProvider)
@@ -131,6 +161,12 @@ class _EditSheetState extends ConsumerState<_EditSheet> {
               ),
             ],
           ),
+          if (widget.reel.playbackUrl != null)
+            TextButton.icon(
+              onPressed: _busy ? null : _editVideo,
+              icon: const Icon(Icons.movie_edit),
+              label: Text(l.editVideo),
+            ),
           TextButton.icon(
             onPressed: _busy ? null : _pickCover,
             icon: const Icon(Icons.image_outlined),

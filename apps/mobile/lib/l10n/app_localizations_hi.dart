@@ -777,4 +777,141 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get reelSaved => 'रील अपडेट हो गई';
+
+  @override
+  String get editVideo => 'वीडियो संपादित करें';
+
+  @override
+  String get editVideoHint => 'ट्रिम, फ़िल्टर, गति, टेक्स्ट, आवाज़';
+
+  @override
+  String get reset => 'रीसेट';
+
+  @override
+  String get trim => 'ट्रिम';
+
+  @override
+  String get filters => 'फ़िल्टर';
+
+  @override
+  String get speed => 'गति';
+
+  @override
+  String get text => 'टेक्स्ट';
+
+  @override
+  String get sound => 'आवाज़';
+
+  @override
+  String get trimHint => 'साझा करने वाला हिस्सा चुनने के लिए किनारे खींचें';
+
+  @override
+  String get addText => 'टेक्स्ट जोड़ें';
+
+  @override
+  String get textHint => 'टेक्स्ट हिलाने के लिए खींचें · बदलने के लिए टैप करें';
+
+  @override
+  String get originalSound => 'मूल आवाज़';
+
+  @override
+  String get typeSomething => 'कुछ लिखें…';
+
+  @override
+  String get textPlain => 'सादा';
+
+  @override
+  String get textBox => 'बॉक्स';
+
+  @override
+  String get textOutline => 'आउटलाइन';
+
+  @override
+  String get filter_none => 'सामान्य';
+
+  @override
+  String get filter_warm => 'गर्म';
+
+  @override
+  String get filter_cool => 'ठंडा';
+
+  @override
+  String get filter_vivid => 'चटक';
+
+  @override
+  String get filter_mono => 'मोनो';
+
+  @override
+  String get filter_sepia => 'सीपिया';
+
+  @override
+  String get filter_fade => 'फ़ेड';
+
+  @override
+  String get filter_saffron => 'केसरिया';
+
+  @override
+  String get followingEmpty => 'क्रिएटर्स को फ़ॉलो करें, उनकी रील्स यहाँ दिखेंगी';
+
+  @override
+  String get follow => 'फ़ॉलो';
+
+  @override
+  String get followingButton => 'फ़ॉलो कर रहे हैं';
+
+  @override
+  String get viewProfile => 'प्रोफ़ाइल देखें';
+
+  @override
+  String get report => 'रिपोर्ट करें';
+
+  @override
+  String get reportWhy => 'आप यह रील क्यों रिपोर्ट कर रहे हैं?';
+
+  @override
+  String get reportSpam => 'स्पैम';
+
+  @override
+  String get reportNudity => 'अश्लील सामग्री';
+
+  @override
+  String get reportHate => 'नफ़रत भरी भाषा';
+
+  @override
+  String get reportViolence => 'हिंसा';
+
+  @override
+  String get reportHarassment => 'धमकाना या उत्पीड़न';
+
+  @override
+  String get reportMisinformation => 'गलत जानकारी';
+
+  @override
+  String get reportScam => 'धोखाधड़ी';
+
+  @override
+  String get reportOther => 'कुछ और';
+
+  @override
+  String get reportThanks => 'धन्यवाद — हमारी टीम इसकी जाँच करेगी';
+
+  @override
+  String get share => 'साझा करें';
+
+  @override
+  String get noCommentsYet => 'अभी कोई टिप्पणी नहीं। बातचीत शुरू करें।';
+
+  @override
+  String get commentPosted => 'टिप्पणी भेजी गई — स्वीकृति के बाद दिखेगी';
+
+  @override
+  String get reply => 'जवाब दें';
+
+  @override
+  String get justNow => 'अभी';
+
+  @override
+  String replyingTo(String name) {
+    return '$name को जवाब';
+  }
 }

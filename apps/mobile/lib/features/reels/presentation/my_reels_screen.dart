@@ -5,34 +5,41 @@ import 'package:go_router/go_router.dart';
 import '../../../core/api/api_models.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/widgets/common.dart';
+import '../../bookings/presentation/checkout_flow.dart';
 import '../data/reels_repository.dart';
 import 'reels_screen.dart';
 
-/// Your profile as a creator: counts, a "New reel" button and a 3-column grid
-/// of your reels (including ones still processing or under review).
+/// A creator's profile, like Instagram: counts, Follow (or New reel on your
+/// own page) and a 3-column grid of reels. [userId] null = you.
 class MyReelsScreen extends ConsumerWidget {
-  const MyReelsScreen({super.key});
+  const MyReelsScreen({super.key, this.userId});
+
+  final String? userId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l = context.l10n;
-    final page = ref.watch(myReelsProvider);
+    final id = userId;
+    final provider = id == null ? myReelsProvider : creatorProvider(id);
+    final page = ref.watch(provider);
+    final isMe = page.value?.profile.isMe ?? id == null;
     return Scaffold(
       appBar: AppBar(
-        title: Text(l.myReels),
+        title: Text(page.value?.profile.displayName ?? l.myReels),
         actions: [
-          IconButton(
-            tooltip: l.newReel,
-            icon: const Icon(Icons.add_box_outlined),
-            onPressed: () => context.push('/reels/new'),
-          ),
+          if (isMe)
+            IconButton(
+              tooltip: l.newReel,
+              icon: const Icon(Icons.add_box_outlined),
+              onPressed: () => context.push('/reels/new'),
+            ),
         ],
       ),
       body: AsyncView(
         value: page,
-        onRetry: () => ref.invalidate(myReelsProvider),
+        onRetry: () => ref.invalidate(provider),
         builder: (p) => RefreshIndicator(
-          onRefresh: () async => ref.invalidate(myReelsProvider),
+          onRefresh: () async => ref.invalidate(provider),
           child: CustomScrollView(
             slivers: [
               SliverToBoxAdapter(child: _Header(profile: p.profile)),
@@ -77,13 +84,54 @@ class MyReelsScreen extends ConsumerWidget {
   }
 }
 
-class _Header extends StatelessWidget {
+class _Header extends ConsumerStatefulWidget {
   const _Header({required this.profile});
 
   final CreatorProfileResponse profile;
 
   @override
+  ConsumerState<_Header> createState() => _HeaderState();
+}
+
+class _HeaderState extends ConsumerState<_Header> {
+  late bool _following = widget.profile.isFollowing;
+  late num _followers = widget.profile.followerCount;
+  bool _busy = false;
+
+  @override
+  void didUpdateWidget(_Header old) {
+    super.didUpdateWidget(old);
+    _following = widget.profile.isFollowing;
+    _followers = widget.profile.followerCount;
+  }
+
+  Future<void> _toggle() async {
+    if (!requireSignedIn(context, ref) || _busy) return;
+    final on = !_following;
+    setState(() {
+      _busy = true;
+      _following = on;
+      _followers += on ? 1 : -1;
+    });
+    try {
+      await ref.read(reelsRepositoryProvider).follow(widget.profile.id, on: on);
+      ref.invalidate(reelsFeedProvider(followingFeed));
+    } on Object catch (e) {
+      if (mounted) {
+        setState(() {
+          _following = !on;
+          _followers += on ? -1 : 1;
+        });
+        showSnack(context, errorText(context, e));
+      }
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final profile = widget.profile;
     final l = context.l10n;
     Widget stat(num n, String label) => Expanded(
       child: Column(
@@ -118,7 +166,7 @@ class _Header extends StatelessWidget {
               ),
               const SizedBox(width: 12),
               stat(profile.reelCount, l.reelsCount),
-              stat(profile.followerCount, l.followers),
+              stat(_followers, l.followers),
               stat(profile.followingCount, l.following),
             ],
           ),
@@ -133,11 +181,15 @@ class _Header extends StatelessWidget {
           const SizedBox(height: 10),
           SizedBox(
             width: double.infinity,
-            child: FilledButton.icon(
-              onPressed: () => context.push('/reels/new'),
-              icon: const Icon(Icons.add),
-              label: Text(l.newReel),
-            ),
+            child: profile.isMe
+                ? FilledButton.icon(
+                    onPressed: () => context.push('/reels/new'),
+                    icon: const Icon(Icons.add),
+                    label: Text(l.newReel),
+                  )
+                : _following
+                ? OutlinedButton(onPressed: _busy ? null : _toggle, child: Text(l.followingButton))
+                : FilledButton(onPressed: _busy ? null : _toggle, child: Text(l.follow)),
           ),
         ],
       ),

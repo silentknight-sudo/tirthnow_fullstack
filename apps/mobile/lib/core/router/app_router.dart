@@ -176,6 +176,14 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(path: 'saved', builder: (_, _) => const ReelsScreen(saved: true)),
           GoRoute(path: 'new', builder: (_, _) => const ReelComposerScreen()),
           GoRoute(path: 'mine', builder: (_, _) => const MyReelsScreen()),
+          GoRoute(
+            path: 'creator',
+            builder: (_, st) => MyReelsScreen(userId: st.uri.queryParameters['id']),
+          ),
+          GoRoute(
+            path: 'tag',
+            builder: (_, st) => ReelsScreen(hashtag: st.uri.queryParameters['t'] ?? 'braj'),
+          ),
         ],
       ),
       GoRoute(path: '/weather', builder: (_, _) => const WeatherScreen()),

@@ -13,11 +13,21 @@ import '../../../core/widgets/common.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../catalog/data/catalog_repository.dart';
 import '../data/reels_repository.dart';
+import 'reel_player.dart';
+import 'reel_video_editor.dart';
 import 'video_source/video_source.dart';
 
 const maxReelSeconds = 90;
 const maxReelBytes = 100 * 1024 * 1024;
 const suggestedTags = ['radheradhe', 'vrindavan', 'aarti', 'braj', 'darshan', 'parikrama'];
+
+/// MIME type the API expects for a picked video.
+String videoMimeOf(XFile file) {
+  final name = file.name.toLowerCase();
+  if (name.endsWith('.mov')) return 'video/quicktime';
+  if (name.endsWith('.webm') || file.mimeType == 'video/webm') return 'video/webm';
+  return 'video/mp4';
+}
 
 /// Instagram-style composer: pick or record a video, preview it, write a
 /// caption with hashtags, tag a temple, choose a cover and share.
@@ -36,10 +46,13 @@ class _ReelComposerScreenState extends ConsumerState<ReelComposerScreen> {
   String? _templeId;
   double? _progress;
   String? _error;
+  ReelEditsDto _edits = noEdits;
+  ReelPlayback? _playback;
 
   @override
   void dispose() {
     _caption.dispose();
+    _playback?.detach();
     unawaited(_video?.dispose());
     super.dispose();
   }
@@ -69,13 +82,33 @@ class _ReelComposerScreenState extends ConsumerState<ReelComposerScreen> {
       return;
     }
     await controller.setLooping(true);
+    _playback?.detach();
+    _edits = noEdits;
+    final playback = ReelPlayback(controller, _edits);
+    if (controller.value.isInitialized) await playback.attach();
     await controller.play();
     setState(() {
       _file = file;
       _video = controller;
+      _playback = playback;
       _error = null;
     });
     await old?.dispose();
+    // Straight into the editor, like Instagram.
+    if (mounted && controller.value.isInitialized) await _openEditor();
+  }
+
+  Future<void> _openEditor() async {
+    final v = _video;
+    if (v == null || !v.value.isInitialized) return;
+    _playback?.detach();
+    final result = await openReelVideoEditor(context, v, _edits);
+    if (!mounted) return;
+    if (result != null) _edits = result;
+    final playback = ReelPlayback(v, _edits);
+    await playback.attach();
+    await v.play();
+    setState(() => _playback = playback);
   }
 
   Future<void> _pickCover() async {
@@ -112,11 +145,12 @@ class _ReelComposerScreenState extends ConsumerState<ReelComposerScreen> {
           .read(reelsRepositoryProvider)
           .post(
             video: await file.readAsBytes(),
-            videoMime: file.name.toLowerCase().endsWith('.mov') ? 'video/quicktime' : 'video/mp4',
+            videoMime: videoMimeOf(file),
             cover: _cover,
             caption: caption.isEmpty ? null : caption,
             hashtags: hashtagsIn(caption),
             templeId: _templeId,
+            edits: _edits,
             onProgress: (f) {
               if (mounted) setState(() => _progress = f);
             },
@@ -228,15 +262,7 @@ class _ReelComposerScreenState extends ConsumerState<ReelComposerScreen> {
                       height: 234,
                       color: Colors.black,
                       child: v != null && v.value.isInitialized
-                          ? FittedBox(
-                              fit: BoxFit.cover,
-                              clipBehavior: Clip.hardEdge,
-                              child: SizedBox(
-                                width: v.value.size.width,
-                                height: v.value.size.height,
-                                child: VideoPlayer(v),
-                              ),
-                            )
+                          ? EditedVideo(controller: v, edits: _edits)
                           : const Center(
                               child: Icon(Icons.movie_outlined, color: Colors.white54, size: 40),
                             ),
@@ -276,6 +302,14 @@ class _ReelComposerScreenState extends ConsumerState<ReelComposerScreen> {
               ],
             ),
             const Divider(height: 28),
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: const Icon(Icons.movie_edit, color: TnColors.navy),
+              title: Text(l.editVideo),
+              subtitle: Text(l.editVideoHint),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: uploading || v == null || !v.value.isInitialized ? null : _openEditor,
+            ),
             ListTile(
               contentPadding: EdgeInsets.zero,
               leading: const Icon(Icons.temple_hindu_outlined, color: TnColors.navy),

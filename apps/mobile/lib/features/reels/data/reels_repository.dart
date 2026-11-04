@@ -13,9 +13,37 @@ class ReelsRepository {
 
   final ApiClient _api;
 
-  Future<ReelPageResponse> feed({bool saved = false}) async => ReelPageResponse.fromJson(
-    await _api.getJson(saved ? '/reels/saved' : '/reels/feed', query: {'limit': 20}),
+  Future<ReelPageResponse> feed(FeedKey key) async => ReelPageResponse.fromJson(
+    await _api.getJson(
+      key.saved ? '/reels/saved' : '/reels/feed',
+      query: {
+        'limit': key.hashtag == null ? 20 : 50,
+        if (key.following) 'following': true,
+        'hashtag': ?key.hashtag,
+      },
+    ),
   );
+
+  Future<void> follow(String userId, {required bool on}) =>
+      on ? _api.post('/users/$userId/follow') : _api.delete('/users/$userId/follow');
+
+  Future<void> report(String reelId, String reason) => _api.post(
+    '/reports',
+    body: CreateReportDto(targetType: 'reel', targetId: reelId, reasonCode: reason).toJson(),
+  );
+
+  Future<List<CommentResponse>> comments(String reelId) async => (await _api.getList(
+    '/reels/$reelId/comments',
+    query: {'limit': 50},
+  )).map(CommentResponse.fromJson).toList();
+
+  Future<void> comment(String reelId, String body, {String? parentId}) => _api.post(
+    '/reels/$reelId/comments',
+    body: CreateCommentDto(body: body, parentId: parentId).toJson(),
+  );
+
+  Future<void> deleteComment(String reelId, String id) =>
+      _api.delete('/reels/$reelId/comments/$id');
 
   Future<CreatorPageResponse> byUser(String userId) async => CreatorPageResponse.fromJson(
     await _api.getJson('/users/$userId/reels', query: {'limit': 50}),
@@ -30,6 +58,7 @@ class ReelsRepository {
     String? caption,
     List<String> hashtags = const [],
     String? templeId,
+    ReelEditsDto? edits,
     void Function(double fraction)? onProgress,
   }) async {
     final videoId = await uploadMedia(
@@ -57,6 +86,7 @@ class ReelsRepository {
         caption: caption,
         hashtags: hashtags,
         templeId: templeId,
+        edits: edits,
       ).toJson(),
     );
     return ReelResponse.fromJson(asJson(res));
@@ -69,6 +99,7 @@ class ReelsRepository {
     required List<String> hashtags,
     required String? templeId,
     Uint8List? cover,
+    ReelEditsDto? edits,
   }) async {
     final coverId = cover == null
         ? null
@@ -80,6 +111,7 @@ class ReelsRepository {
         'hashtags': hashtags,
         'templeId': templeId,
         'thumbnailMediaId': ?coverId,
+        if (edits != null) 'edits': edits.toJson(),
       },
     );
     return ReelResponse.fromJson(asJson(res));
@@ -92,8 +124,25 @@ final reelsRepositoryProvider = Provider<ReelsRepository>(
   (ref) => ReelsRepository(ref.watch(apiClientProvider)),
 );
 
-final reelsFeedProvider = FutureProvider.family<ReelPageResponse, bool>(
-  (ref, saved) => ref.watch(reelsRepositoryProvider).feed(saved: saved),
+/// Which feed: For you, Following, Saved, or one hashtag.
+typedef FeedKey = ({bool saved, bool following, String? hashtag});
+
+const FeedKey forYouFeed = (saved: false, following: false, hashtag: null);
+const FeedKey followingFeed = (saved: false, following: true, hashtag: null);
+const FeedKey savedFeed = (saved: true, following: false, hashtag: null);
+FeedKey hashtagFeed(String tag) => (saved: false, following: false, hashtag: tag);
+
+final reelsFeedProvider = FutureProvider.family<ReelPageResponse, FeedKey>(
+  (ref, key) => ref.watch(reelsRepositoryProvider).feed(key),
+);
+
+/// Any creator's page: profile, follow state and reels.
+final creatorProvider = FutureProvider.family<CreatorPageResponse, String>(
+  (ref, userId) => ref.watch(reelsRepositoryProvider).byUser(userId),
+);
+
+final reelCommentsProvider = FutureProvider.family<List<CommentResponse>, String>(
+  (ref, reelId) => ref.watch(reelsRepositoryProvider).comments(reelId),
 );
 
 /// The signed-in user's reels (including ones still processing).

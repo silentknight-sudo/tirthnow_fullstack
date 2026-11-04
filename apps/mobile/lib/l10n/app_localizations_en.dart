@@ -777,4 +777,141 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reelSaved => 'Reel updated';
+
+  @override
+  String get editVideo => 'Edit video';
+
+  @override
+  String get editVideoHint => 'Trim, filters, speed, text, sound';
+
+  @override
+  String get reset => 'Reset';
+
+  @override
+  String get trim => 'Trim';
+
+  @override
+  String get filters => 'Filters';
+
+  @override
+  String get speed => 'Speed';
+
+  @override
+  String get text => 'Text';
+
+  @override
+  String get sound => 'Sound';
+
+  @override
+  String get trimHint => 'Drag the ends to choose the part to share';
+
+  @override
+  String get addText => 'Add text';
+
+  @override
+  String get textHint => 'Drag text to move it · tap to edit';
+
+  @override
+  String get originalSound => 'Original sound';
+
+  @override
+  String get typeSomething => 'Type something…';
+
+  @override
+  String get textPlain => 'Plain';
+
+  @override
+  String get textBox => 'Box';
+
+  @override
+  String get textOutline => 'Outline';
+
+  @override
+  String get filter_none => 'Normal';
+
+  @override
+  String get filter_warm => 'Warm';
+
+  @override
+  String get filter_cool => 'Cool';
+
+  @override
+  String get filter_vivid => 'Vivid';
+
+  @override
+  String get filter_mono => 'Mono';
+
+  @override
+  String get filter_sepia => 'Sepia';
+
+  @override
+  String get filter_fade => 'Fade';
+
+  @override
+  String get filter_saffron => 'Saffron';
+
+  @override
+  String get followingEmpty => 'Follow creators to see their reels here';
+
+  @override
+  String get follow => 'Follow';
+
+  @override
+  String get followingButton => 'Following';
+
+  @override
+  String get viewProfile => 'View profile';
+
+  @override
+  String get report => 'Report';
+
+  @override
+  String get reportWhy => 'Why are you reporting this reel?';
+
+  @override
+  String get reportSpam => 'Spam';
+
+  @override
+  String get reportNudity => 'Nudity or sexual content';
+
+  @override
+  String get reportHate => 'Hate speech';
+
+  @override
+  String get reportViolence => 'Violence';
+
+  @override
+  String get reportHarassment => 'Bullying or harassment';
+
+  @override
+  String get reportMisinformation => 'False information';
+
+  @override
+  String get reportScam => 'Scam or fraud';
+
+  @override
+  String get reportOther => 'Something else';
+
+  @override
+  String get reportThanks => 'Thanks — our team will review it';
+
+  @override
+  String get share => 'Share';
+
+  @override
+  String get noCommentsYet => 'No comments yet. Start the conversation.';
+
+  @override
+  String get commentPosted => 'Comment posted — it appears once approved';
+
+  @override
+  String get reply => 'Reply';
+
+  @override
+  String get justNow => 'now';
+
+  @override
+  String replyingTo(String name) {
+    return 'Replying to $name';
+  }
 }
