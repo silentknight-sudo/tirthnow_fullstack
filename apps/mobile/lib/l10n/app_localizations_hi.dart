@@ -914,4 +914,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String replyingTo(String name) {
     return '$name को जवाब';
   }
+
+  @override
+  String get originalAudio => 'मूल ऑडियो';
 }

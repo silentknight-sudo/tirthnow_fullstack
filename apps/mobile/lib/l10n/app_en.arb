@@ -383,5 +383,6 @@
         "type": "String"
       }
     }
-  }
+  },
+  "originalAudio": "Original audio"
 }

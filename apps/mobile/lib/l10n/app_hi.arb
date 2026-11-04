@@ -287,5 +287,6 @@
   "commentPosted": "टिप्पणी भेजी गई — स्वीकृति के बाद दिखेगी",
   "reply": "जवाब दें",
   "justNow": "अभी",
-  "replyingTo": "{name} को जवाब"
+  "replyingTo": "{name} को जवाब",
+  "originalAudio": "मूल ऑडियो"
 }

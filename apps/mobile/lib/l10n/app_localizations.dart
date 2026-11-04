@@ -1820,6 +1820,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Replying to {name}'**
   String replyingTo(String name);
+
+  /// No description provided for @originalAudio.
+  ///
+  /// In en, this message translates to:
+  /// **'Original audio'**
+  String get originalAudio;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

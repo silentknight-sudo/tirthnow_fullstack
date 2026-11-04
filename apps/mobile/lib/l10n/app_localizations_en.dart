@@ -914,4 +914,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String replyingTo(String name) {
     return 'Replying to $name';
   }
+
+  @override
+  String get originalAudio => 'Original audio';
 }

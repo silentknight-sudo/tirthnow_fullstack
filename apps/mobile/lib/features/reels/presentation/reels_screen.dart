@@ -219,7 +219,7 @@ class _ReelPage extends ConsumerStatefulWidget {
   ConsumerState<_ReelPage> createState() => _ReelPageState();
 }
 
-class _ReelPageState extends ConsumerState<_ReelPage> with SingleTickerProviderStateMixin {
+class _ReelPageState extends ConsumerState<_ReelPage> with TickerProviderStateMixin {
   VideoPlayerController? _video;
   ReelPlayback? _playback;
   late ReelResponse _reel = widget.reel;
@@ -229,6 +229,7 @@ class _ReelPageState extends ConsumerState<_ReelPage> with SingleTickerProviderS
   late bool _followingCreator = widget.reel.followingCreator;
   bool _expanded = false;
   bool _viewed = false;
+  late final _disc = AnimationController(vsync: this, duration: const Duration(seconds: 5));
   late final _heart = AnimationController(vsync: this, duration: const Duration(milliseconds: 700));
 
   ReelEditsDto get _edits => _reel.edits ?? noEdits;
@@ -290,6 +291,7 @@ class _ReelPageState extends ConsumerState<_ReelPage> with SingleTickerProviderS
       ?..removeListener(_tick)
       ..dispose();
     _heart.dispose();
+    _disc.dispose();
     super.dispose();
   }
 
@@ -468,6 +470,13 @@ class _ReelPageState extends ConsumerState<_ReelPage> with SingleTickerProviderS
     final v = _video;
     final mine = ref.watch(sessionProvider).user?.id == r.creator.id;
     final ready = v != null && v.value.isInitialized;
+    final top = MediaQuery.of(context).padding.top;
+    final muted = widget.muted || _edits.muted;
+    if (ready && v.value.isPlaying) {
+      if (!_disc.isAnimating) unawaited(_disc.repeat());
+    } else if (_disc.isAnimating) {
+      _disc.stop();
+    }
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -494,15 +503,70 @@ class _ReelPageState extends ConsumerState<_ReelPage> with SingleTickerProviderS
                         ),
                       )
                     else
-                      const ColoredBox(color: TnColors.night),
+                      const DecoratedBox(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [TnColors.night, Color(0xFF2A1A40)],
+                          ),
+                        ),
+                      ),
                     ReelOverlays(overlays: _edits.overlays),
+                    if (r.playbackUrl != null && widget.active)
+                      const Center(
+                        child: SizedBox(
+                          width: 34,
+                          height: 34,
+                          child: CircularProgressIndicator(strokeWidth: 2.5, color: Colors.white70),
+                        ),
+                      ),
                   ],
                 ),
         ),
-        if (ready && !v.value.isPlaying)
-          const IgnorePointer(
-            child: Center(child: Icon(Icons.play_arrow_rounded, color: Colors.white70, size: 80)),
+        // Readability scrims, top and bottom.
+        IgnorePointer(
+          child: Column(
+            children: [
+              Container(
+                height: top + 110,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Color(0x8C000000), Colors.transparent],
+                  ),
+                ),
+              ),
+              const Spacer(),
+              Container(
+                height: 340,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Colors.transparent, Color(0x66000000), Color(0xD9000000)],
+                    stops: [0, 0.45, 1],
+                  ),
+                ),
+              ),
+            ],
           ),
+        ),
+        IgnorePointer(
+          child: Center(
+            child: AnimatedOpacity(
+              opacity: ready && !v.value.isPlaying ? 1 : 0,
+              duration: const Duration(milliseconds: 180),
+              child: Container(
+                width: 74,
+                height: 74,
+                decoration: const BoxDecoration(color: Color(0x59000000), shape: BoxShape.circle),
+                child: const Icon(Icons.play_arrow_rounded, color: Colors.white, size: 52),
+              ),
+            ),
+          ),
+        ),
         // Double-tap heart.
         IgnorePointer(
           child: Center(
@@ -516,11 +580,18 @@ class _ReelPageState extends ConsumerState<_ReelPage> with SingleTickerProviderS
                   opacity: t < 0.7 ? 1 : (1 - t) / 0.3,
                   child: Transform.scale(
                     scale: scale,
-                    child: const Icon(
-                      Icons.favorite,
-                      color: Colors.white,
-                      size: 110,
-                      shadows: [Shadow(blurRadius: 20, color: Colors.black38)],
+                    child: ShaderMask(
+                      shaderCallback: (b) => const LinearGradient(
+                        colors: [Color(0xFFFF3040), TnColors.saffron],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ).createShader(b),
+                      child: const Icon(
+                        Icons.favorite,
+                        color: Colors.white,
+                        size: 116,
+                        shadows: [Shadow(blurRadius: 24, color: Colors.black38)],
+                      ),
                     ),
                   ),
                 );
@@ -528,27 +599,20 @@ class _ReelPageState extends ConsumerState<_ReelPage> with SingleTickerProviderS
             ),
           ),
         ),
-        const IgnorePointer(
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment(0, 0.2),
-                end: Alignment.bottomCenter,
-                colors: [Colors.transparent, Color(0xB3000000)],
-              ),
-            ),
-          ),
-        ),
         Positioned(
           right: 12,
-          top: MediaQuery.of(context).padding.top + 60,
+          top: top + 58,
           child: GestureDetector(
             onTap: widget.onMute,
-            child: CircleAvatar(
-              radius: 16,
-              backgroundColor: Colors.black38,
+            child: Container(
+              padding: const EdgeInsets.all(7),
+              decoration: BoxDecoration(
+                color: const Color(0x40000000),
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.white24),
+              ),
               child: Icon(
-                widget.muted || _edits.muted ? Icons.volume_off_rounded : Icons.volume_up_rounded,
+                muted ? Icons.volume_off_rounded : Icons.volume_up_rounded,
                 color: Colors.white,
                 size: 18,
               ),
@@ -557,8 +621,8 @@ class _ReelPageState extends ConsumerState<_ReelPage> with SingleTickerProviderS
         ),
         Positioned(
           left: 14,
-          right: 76,
-          bottom: 24,
+          right: 72,
+          bottom: 22,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -569,16 +633,18 @@ class _ReelPageState extends ConsumerState<_ReelPage> with SingleTickerProviderS
                     onTap: _openCreator,
                     child: Row(
                       children: [
-                        _Avatar(creator: r.creator, radius: 16),
-                        const SizedBox(width: 8),
+                        _RingAvatar(creator: r.creator),
+                        const SizedBox(width: 9),
                         ConstrainedBox(
-                          constraints: const BoxConstraints(maxWidth: 160),
+                          constraints: const BoxConstraints(maxWidth: 150),
                           child: Text(
                             r.creator.displayName,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
                               color: Colors.white,
-                              fontWeight: FontWeight.w700,
+                              fontWeight: FontWeight.w800,
+                              fontSize: 15,
+                              shadows: [Shadow(blurRadius: 6, color: Colors.black54)],
                             ),
                           ),
                         ),
@@ -589,17 +655,22 @@ class _ReelPageState extends ConsumerState<_ReelPage> with SingleTickerProviderS
                     const SizedBox(width: 10),
                     GestureDetector(
                       onTap: _follow,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
                         decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white70),
-                          borderRadius: BorderRadius.circular(8),
+                          color: _followingCreator ? const Color(0x33FFFFFF) : Colors.transparent,
+                          border: Border.all(
+                            color: _followingCreator ? Colors.transparent : Colors.white,
+                            width: 1.2,
+                          ),
+                          borderRadius: BorderRadius.circular(9),
                         ),
                         child: Text(
                           _followingCreator ? l.followingButton : l.follow,
                           style: const TextStyle(
                             color: Colors.white,
-                            fontSize: 12,
+                            fontSize: 12.5,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -608,35 +679,65 @@ class _ReelPageState extends ConsumerState<_ReelPage> with SingleTickerProviderS
                   ],
                 ],
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 10),
               if (r.caption != null)
                 GestureDetector(
                   onTap: () => setState(() => _expanded = !_expanded),
-                  child: _Caption(
-                    text: r.caption!,
-                    expanded: _expanded,
-                    onTag: (t) => context.push('/reels/tag?t=${Uri.encodeComponent(t)}'),
+                  child: AnimatedSize(
+                    duration: const Duration(milliseconds: 200),
+                    alignment: Alignment.topLeft,
+                    child: _Caption(
+                      text: r.caption!,
+                      expanded: _expanded,
+                      onTag: (t) => context.push('/reels/tag?t=${Uri.encodeComponent(t)}'),
+                    ),
                   ),
                 ),
-              if (r.templeName != null) ...[
-                const SizedBox(height: 6),
-                GestureDetector(
-                  onTap: r.templeId == null ? null : () => context.push('/temples/${r.templeId}'),
-                  child: Pill(r.templeName!, color: TnColors.accentSoft, icon: Icons.temple_hindu),
-                ),
-              ],
+              const SizedBox(height: 10),
+              Wrap(
+                spacing: 8,
+                runSpacing: 6,
+                children: [
+                  if (r.templeName != null)
+                    _GlassChip(
+                      icon: Icons.location_on_rounded,
+                      label: r.templeName!,
+                      iconColor: TnColors.saffron,
+                      onTap: r.templeId == null
+                          ? null
+                          : () => context.push('/temples/${r.templeId}'),
+                    ),
+                  _GlassChip(icon: Icons.play_arrow_rounded, label: compactCount(r.viewCount)),
+                ],
+              ),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  const Icon(Icons.graphic_eq_rounded, color: Colors.white, size: 15),
+                  const SizedBox(width: 6),
+                  Flexible(
+                    child: Text(
+                      '${l.originalAudio} · ${r.creator.displayName}',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(color: Colors.white, fontSize: 12.5),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
         Positioned(
-          right: 4,
-          bottom: 20,
+          right: 6,
+          bottom: 18,
           child: Column(
             children: [
               _Action(
-                icon: _liked ? Icons.favorite : Icons.favorite_border,
+                icon: _liked ? Icons.favorite_rounded : Icons.favorite_border_rounded,
                 label: compactCount(_likes),
                 color: _liked ? const Color(0xFFFF3040) : Colors.white,
+                pop: _liked,
                 onTap: () => _setLiked(!_liked),
               ),
               _Action(
@@ -645,15 +746,16 @@ class _ReelPageState extends ConsumerState<_ReelPage> with SingleTickerProviderS
                 onTap: () => showReelComments(context, r.id),
               ),
               _Action(
-                icon: Icons.send_outlined,
+                icon: Icons.send_rounded,
                 label: l.share,
                 onTap: () => SharePlus.instance.share(
                   ShareParams(text: '${r.caption ?? 'TirthNow'}\n— ${r.creator.displayName}'),
                 ),
               ),
               _Action(
-                icon: _savedByMe ? Icons.bookmark : Icons.bookmark_border,
+                icon: _savedByMe ? Icons.bookmark_rounded : Icons.bookmark_border_rounded,
                 label: '',
+                pop: _savedByMe,
                 onTap: () {
                   if (!requireSignedIn(context, ref)) return;
                   setState(() => _savedByMe = !_savedByMe);
@@ -661,22 +763,26 @@ class _ReelPageState extends ConsumerState<_ReelPage> with SingleTickerProviderS
                 },
               ),
               _Action(
-                icon: Icons.more_horiz,
+                icon: Icons.more_horiz_rounded,
                 label: '',
                 onTap: () => _more(mine: mine),
               ),
-              const SizedBox(height: 6),
+              const SizedBox(height: 8),
               GestureDetector(
                 onTap: _openCreator,
-                child: Container(
-                  padding: const EdgeInsets.all(1.5),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.white, width: 1.5),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(6),
-                    child: SizedBox(width: 26, height: 26, child: _Avatar(creator: r.creator)),
+                child: RotationTransition(
+                  turns: _disc,
+                  child: Container(
+                    width: 34,
+                    height: 34,
+                    padding: const EdgeInsets.all(6),
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: SweepGradient(
+                        colors: [Color(0xFF222222), Color(0xFF555555), Color(0xFF222222)],
+                      ),
+                    ),
+                    child: ClipOval(child: _Avatar(creator: r.creator)),
                   ),
                 ),
               ),
@@ -690,9 +796,9 @@ class _ReelPageState extends ConsumerState<_ReelPage> with SingleTickerProviderS
             bottom: 0,
             child: LinearProgressIndicator(
               value: _playback!.progress,
-              minHeight: 2,
+              minHeight: 2.5,
               backgroundColor: Colors.white24,
-              color: Colors.white,
+              color: TnColors.saffron,
             ),
           ),
       ],
@@ -777,12 +883,81 @@ class _Avatar extends StatelessWidget {
   }
 }
 
+/// Creator avatar with an Instagram-style gradient ring.
+class _RingAvatar extends StatelessWidget {
+  const _RingAvatar({required this.creator});
+
+  final CreatorResponse creator;
+
+  @override
+  Widget build(BuildContext context) => Container(
+    padding: const EdgeInsets.all(2),
+    decoration: const BoxDecoration(
+      shape: BoxShape.circle,
+      gradient: LinearGradient(
+        colors: [TnColors.saffron, Color(0xFFE1306C), Color(0xFF8E24AA)],
+        begin: Alignment.bottomLeft,
+        end: Alignment.topRight,
+      ),
+    ),
+    child: Container(
+      padding: const EdgeInsets.all(1.5),
+      decoration: const BoxDecoration(color: Colors.black, shape: BoxShape.circle),
+      child: _Avatar(creator: creator, radius: 16),
+    ),
+  );
+}
+
+/// Frosted chip for temple tag and views.
+class _GlassChip extends StatelessWidget {
+  const _GlassChip({required this.icon, required this.label, this.iconColor, this.onTap});
+
+  final IconData icon;
+  final String label;
+  final Color? iconColor;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) => GestureDetector(
+    onTap: onTap,
+    child: Container(
+      padding: const EdgeInsets.fromLTRB(8, 4, 10, 4),
+      decoration: BoxDecoration(
+        color: const Color(0x2EFFFFFF),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0x33FFFFFF)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 14, color: iconColor ?? Colors.white),
+          const SizedBox(width: 4),
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 170),
+            child: Text(
+              label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
 class _Action extends StatelessWidget {
   const _Action({
     required this.icon,
     required this.label,
     required this.onTap,
     this.color = Colors.white,
+    this.pop = false,
   });
 
   final IconData icon;
@@ -790,24 +965,40 @@ class _Action extends StatelessWidget {
   final VoidCallback onTap;
   final Color color;
 
+  /// Bounces once when this turns on (like, save).
+  final bool pop;
+
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 2),
+    padding: const EdgeInsets.symmetric(vertical: 3),
     child: Column(
       children: [
         IconButton(
-          icon: Icon(
-            icon,
-            color: color,
-            size: 28,
-            shadows: const [Shadow(blurRadius: 8, color: Colors.black45)],
+          visualDensity: VisualDensity.compact,
+          icon: TweenAnimationBuilder<double>(
+            key: ValueKey(pop),
+            tween: Tween(begin: pop ? 0.6 : 1, end: 1),
+            duration: const Duration(milliseconds: 350),
+            curve: Curves.elasticOut,
+            builder: (_, s, child) => Transform.scale(scale: s, child: child),
+            child: Icon(
+              icon,
+              color: color,
+              size: 30,
+              shadows: const [Shadow(blurRadius: 10, color: Colors.black54)],
+            ),
           ),
           onPressed: onTap,
         ),
         if (label.isNotEmpty)
           Text(
             label,
-            style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w600),
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 12,
+              fontWeight: FontWeight.w700,
+              shadows: [Shadow(blurRadius: 6, color: Colors.black54)],
+            ),
           ),
       ],
     ),
