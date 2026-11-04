@@ -1,3 +1,5 @@
+import { type ServerResponse } from 'node:http';
+import { join } from 'node:path';
 import { RequestMethod } from '@nestjs/common';
 import { type NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, type OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
@@ -35,6 +37,14 @@ export function configureApp(app: NestExpressApplication, config: AppConfig): vo
       // SOS share links sent by SMS stay short: /s/<token>.
       { path: 's/:shareToken', method: RequestMethod.GET },
     ],
+  });
+  // Demo reel videos shipped with the repo (seeded "adiyogi" creator).
+  app.useStaticAssets(join(__dirname, '..', 'assets', 'demo-reels'), {
+    prefix: '/demo-media/',
+    maxAge: '7d',
+    setHeaders: (res: ServerResponse) => {
+      res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+    },
   });
   app.useWebSocketAdapter(new RedisIoAdapter(app, config));
   app.useGlobalPipes(createValidationPipe());

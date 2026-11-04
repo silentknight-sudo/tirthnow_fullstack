@@ -240,7 +240,7 @@ class _Tile extends StatelessWidget {
               children: [
                 const Icon(Icons.play_arrow_rounded, color: Colors.white, size: 16),
                 Text(
-                  '${reel.viewCount}',
+                  compactCount(reel.viewCount),
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 12,

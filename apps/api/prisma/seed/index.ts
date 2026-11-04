@@ -557,6 +557,114 @@ async function seedDemoUser(): Promise<void> {
   });
 }
 
+/** Demo creator "adiyogi" with four 20-second Hindi reels (assets/demo-reels). */
+const DEMO_REELS = [
+  {
+    key: 'banke-bihari',
+    temple: 'banke-bihari',
+    caption: 'बाँके बिहारी जी की गलियों से एक झलक 🙏 #radheradhe #vrindavan #bankebihari #darshan',
+    hashtags: ['radheradhe', 'vrindavan', 'bankebihari', 'darshan'],
+    likes: 1240,
+    views: 18400,
+  },
+  {
+    key: 'prem-mandir',
+    temple: 'prem-mandir',
+    caption: 'प्रेम मंदिर की शाम ✨ रोशनी, संगमरमर और भक्ति #premmandir #vrindavan #braj',
+    hashtags: ['premmandir', 'vrindavan', 'braj'],
+    likes: 2310,
+    views: 30200,
+  },
+  {
+    key: 'yamuna-aarti',
+    temple: null,
+    caption: 'यमुना किनारे की शाम 🪔 आरती, नाव और दीपदान #yamuna #aarti #vrindavan #ghat',
+    hashtags: ['yamuna', 'aarti', 'vrindavan', 'ghat'],
+    likes: 980,
+    views: 12650,
+  },
+  {
+    key: 'braj-yatra',
+    temple: 'iskcon-krishna-balaram-mandir',
+    caption:
+      'ब्रज की यात्रा — परिक्रमा, कीर्तन और होली के रंग 🌸 #braj #govardhan #iskcon #holi #parikrama',
+    hashtags: ['braj', 'govardhan', 'iskcon', 'holi', 'parikrama'],
+    likes: 1675,
+    views: 21900,
+  },
+] as const;
+
+async function seedDemoCreator(): Promise<void> {
+  const userId = sid('user:adiyogi');
+  const user = {
+    firebaseUid: 'demo-adiyogi',
+    phoneE164: '+919999900010',
+    isGuest: false,
+    status: 'active' as const,
+  };
+  await prisma.user.upsert({
+    where: { id: userId },
+    create: { id: userId, ...user },
+    update: user,
+  });
+  await prisma.userProfile.upsert({
+    where: { userId },
+    create: {
+      userId,
+      displayName: 'adiyogi',
+      preferredLang: 'hi',
+      homeCityId: sid('city:vrindavan'),
+    },
+    update: { displayName: 'adiyogi' },
+  });
+  await grantRoles(userId, [{ key: 'user' }]);
+  const base = (process.env.API_PUBLIC_URL ?? 'http://localhost:4000').replace(/\/$/, '');
+  const now = Date.now();
+  for (const [i, r] of DEMO_REELS.entries()) {
+    const videoId = sid(`media:demo-reel:${r.key}`);
+    const media = {
+      ownerUserId: userId,
+      kind: 'video' as const,
+      storageKey: `demo-reels/${r.key}.mp4`,
+      mimeType: 'video/mp4',
+      width: 1080,
+      height: 1920,
+      durationMs: 20_000,
+      status: 'ready' as const,
+    };
+    await prisma.mediaAsset.upsert({
+      where: { id: videoId },
+      create: { id: videoId, ...media },
+      update: media,
+    });
+    const id = sid(`reel:adiyogi:${r.key}`);
+    const reel = {
+      userId,
+      videoMediaId: videoId,
+      caption: r.caption,
+      hashtags: [...r.hashtags],
+      cityId: sid('city:vrindavan'),
+      templeId: r.temple ? sid(`temple:${r.temple}`) : null,
+      durationMs: 20_000,
+      playbackUrl: `${base}/demo-media/${r.key}.mp4`,
+      posterUrl: `${base}/demo-media/${r.key}.jpg`,
+      status: 'published' as const,
+      moderationStatus: 'approved' as const,
+      likeCount: r.likes,
+      viewCount: r.views,
+      score: 100 - i,
+      createdAt: new Date(now - (i + 1) * 3_600_000),
+    };
+    await prisma.reel.upsert({ where: { id }, create: { id, ...reel }, update: reel });
+  }
+  // The demo yatri follows adiyogi, so the Following tab has reels.
+  await prisma.follow.upsert({
+    where: { followerId_followeeId: { followerId: sid('user:demo'), followeeId: userId } },
+    create: { followerId: sid('user:demo'), followeeId: userId },
+    update: {},
+  });
+}
+
 async function main(): Promise<void> {
   if (process.env.NODE_ENV === 'production' && process.env.SEED_ALLOW_PRODUCTION !== 'true') {
     throw new Error(
@@ -578,6 +686,7 @@ async function main(): Promise<void> {
   await seedTransportAndFoodVendor(adminId, vendorPassword);
   await seedPlatform();
   await seedDemoUser();
+  await seedDemoCreator();
 
   const counts = {
     cities: await prisma.city.count(),
@@ -588,6 +697,7 @@ async function main(): Promise<void> {
     vehicles: await prisma.vehicle.count(),
     menuItems: await prisma.menuItem.count(),
     users: await prisma.user.count(),
+    reels: await prisma.reel.count(),
   };
   console.log('Seed complete', counts);
   console.log(`
