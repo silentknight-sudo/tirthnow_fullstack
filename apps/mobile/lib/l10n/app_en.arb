@@ -296,5 +296,40 @@
   "splashSub": "India's spiritual journey app",
   "scan": "Scan",
   "myTrips": "My Trips",
-  "aiGuide": "AI Guide"
+  "aiGuide": "AI Guide",
+  "newReel": "New reel",
+  "recordVideo": "Record video",
+  "chooseFromGallery": "Choose from gallery",
+  "reelComposerHint": "Share a darshan, aarti or parikrama moment (up to 90 seconds).",
+  "writeCaption": "Write a caption… use #hashtags",
+  "tagTemple": "Tag a temple",
+  "noTemple": "No temple",
+  "cover": "Cover",
+  "chooseCover": "Choose cover",
+  "changeVideo": "Change video",
+  "shareReel": "Share",
+  "uploadingReel": "Uploading {percent}%",
+  "reelProcessing": "Posted! Your reel will appear in the feed once it has processed.",
+  "myReels": "My reels",
+  "reelsCount": "Reels",
+  "followers": "Followers",
+  "following": "Following",
+  "editReel": "Edit reel",
+  "deleteReel": "Delete reel",
+  "deleteReelConfirm": "Delete this reel? This cannot be undone.",
+  "reelStatus_processing": "Processing",
+  "reelStatus_removed": "Removed",
+  "reelStatus_pending": "Under review",
+  "videoTooLong": "Please pick a video of 90 seconds or less.",
+  "videoTooBig": "This video is too large (max 100 MB).",
+  "forYou": "For you",
+  "noReelsYet": "No reels yet. Share your first darshan moment!",
+  "reelSaved": "Reel updated",
+  "@uploadingReel": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  }
 }

@@ -21,6 +21,8 @@ import '../../features/home/presentation/home_screen.dart';
 import '../../features/notifications/presentation/notifications_screen.dart';
 import '../../features/profile/presentation/contacts_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
+import '../../features/reels/presentation/my_reels_screen.dart';
+import '../../features/reels/presentation/reel_composer_screen.dart';
 import '../../features/reels/presentation/reels_screen.dart';
 import '../../features/safety/presentation/sos_screen.dart';
 import '../../features/travel/presentation/weather_screen.dart';
@@ -44,6 +46,7 @@ class _SessionListenable extends ChangeNotifier {
 final appRouterProvider = Provider<GoRouter>((ref) {
   final refresh = _SessionListenable(ref);
   ref.onDispose(refresh.dispose);
+  String? afterSplash;
   return GoRouter(
     initialLocation: '/',
     refreshListenable: refresh,
@@ -51,12 +54,19 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       final s = ref.read(sessionProvider);
       final atLogin = state.matchedLocation == '/login';
       if (s.restoring || ref.read(_splashHoldProvider).isLoading) {
-        return state.matchedLocation == '/splash' ? null : '/splash';
+        if (state.matchedLocation == '/splash') return null;
+        // Remember a deep link so it opens after the splash.
+        afterSplash = state.uri.toString();
+        return '/splash';
       }
       // SOS must always be reachable, signed in or not.
       if (!s.signedIn && state.matchedLocation == '/sos') return null;
       if (!s.signedIn) return atLogin ? null : '/login';
-      if (atLogin || state.matchedLocation == '/splash') return '/';
+      if (atLogin || state.matchedLocation == '/splash') {
+        final target = afterSplash;
+        afterSplash = null;
+        return target != null && target != '/login' ? target : '/';
+      }
       return null;
     },
     routes: [
@@ -162,7 +172,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/reels',
         builder: (_, _) => const ReelsScreen(),
-        routes: [GoRoute(path: 'saved', builder: (_, _) => const ReelsScreen(saved: true))],
+        routes: [
+          GoRoute(path: 'saved', builder: (_, _) => const ReelsScreen(saved: true)),
+          GoRoute(path: 'new', builder: (_, _) => const ReelComposerScreen()),
+          GoRoute(path: 'mine', builder: (_, _) => const MyReelsScreen()),
+        ],
       ),
       GoRoute(path: '/weather', builder: (_, _) => const WeatherScreen()),
     ],

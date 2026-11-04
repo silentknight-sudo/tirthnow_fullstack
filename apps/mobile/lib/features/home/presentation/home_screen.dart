@@ -99,7 +99,7 @@ class _Header extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(16, 12, 8, 4),
       child: Row(
         children: [
-          Image.asset('assets/images/logo.png', height: 44),
+          Image.asset('assets/images/logo.png', height: 36),
           const SizedBox(width: 8),
           Expanded(
             child: Column(
@@ -118,7 +118,7 @@ class _Header extends StatelessWidget {
                       ),
                     ],
                   ),
-                  style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800, height: 1.1),
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800, height: 1.1),
                 ),
                 Text(l.tagline, style: const TextStyle(color: TnColors.muted, fontSize: 13)),
               ],
@@ -232,7 +232,7 @@ class _GlanceCards extends ConsumerWidget {
         : temples.reduce((a, b) => b.crowdLevel > a.crowdLevel ? b : a);
 
     return SizedBox(
-      height: 158,
+      height: 132,
       child: ListView(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.fromLTRB(16, 14, 16, 4),
@@ -245,11 +245,11 @@ class _GlanceCards extends ConsumerWidget {
               children: [
                 Row(
                   children: [
-                    const Icon(Icons.wb_sunny_rounded, color: TnColors.saffron, size: 30),
+                    const Icon(Icons.wb_sunny_rounded, color: TnColors.saffron, size: 24),
                     const SizedBox(width: 8),
                     Text(
                       weather == null ? '—' : '${weather.now.tempC.round()}°C',
-                      style: const TextStyle(fontSize: 21, fontWeight: FontWeight.w700),
+                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
                     ),
                   ],
                 ),
@@ -281,7 +281,7 @@ class _GlanceCards extends ConsumerWidget {
                 const SizedBox(height: 8),
                 Text(
                   busiest == null ? '—' : crowdLabel(context, busiest.crowdLevel),
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
                 ),
                 Text(
                   busiest?.name ?? '',
@@ -331,7 +331,7 @@ class _GlanceCards extends ConsumerWidget {
                 const SizedBox(height: 8),
                 Text(
                   l.templeCount(temples.length),
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
                 ),
                 Text(l.planner, style: const TextStyle(color: TnColors.muted, fontSize: 11)),
                 const Spacer(),
@@ -362,8 +362,8 @@ class _GlanceCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(18),
         onTap: onTap,
         child: Container(
-          width: 122,
-          padding: const EdgeInsets.all(12),
+          width: 108,
+          padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(18),
             border: Border.all(color: TnColors.line),
@@ -468,7 +468,7 @@ class _SectionHeader extends StatelessWidget {
         Expanded(
           child: Text(
             title,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: TnColors.ink),
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: TnColors.ink),
           ),
         ),
         if (action != null)
@@ -519,13 +519,6 @@ class _QuickAccess extends StatelessWidget {
         const Color(0xFFEAF7EE),
       ),
       (
-        Icons.celebration_rounded,
-        l.experiences,
-        '/book/experiences',
-        const Color(0xFFBE185D),
-        const Color(0xFFFDEDF4),
-      ),
-      (
         Icons.receipt_long_rounded,
         l.myBookings,
         '/book/orders',
@@ -539,30 +532,23 @@ class _QuickAccess extends StatelessWidget {
         const Color(0xFF7C3AED),
         const Color(0xFFF3EEFF),
       ),
-      (
-        Icons.wb_sunny_rounded,
-        l.weather,
-        '/weather',
-        const Color(0xFF0E7490),
-        const Color(0xFFE7F6F8),
-      ),
       (Icons.sos_rounded, l.sosTitle, '/sos', TnColors.sos, const Color(0xFFFDECEA)),
     ];
     return GridView.count(
-      crossAxisCount: 5,
+      crossAxisCount: 4,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.symmetric(horizontal: 12),
       mainAxisSpacing: 8,
-      crossAxisSpacing: 6,
-      childAspectRatio: 0.78,
+      crossAxisSpacing: 8,
+      childAspectRatio: 1.05,
       children: [
         for (final (icon, label, path, color, tint) in items)
           Material(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(14),
             child: InkWell(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(14),
               onTap: () => path == '/temples' ? context.go(path) : context.push(path),
               child: Container(
                 decoration: BoxDecoration(
@@ -574,18 +560,18 @@ class _QuickAccess extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      width: 42,
-                      height: 42,
+                      width: 34,
+                      height: 34,
                       decoration: BoxDecoration(color: tint, shape: BoxShape.circle),
-                      child: Icon(icon, color: color, size: 24),
+                      child: Icon(icon, color: color, size: 19),
                     ),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 4),
                     Text(
                       label,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
+                      style: const TextStyle(fontSize: 10.5, fontWeight: FontWeight.w500),
                     ),
                   ],
                 ),
@@ -613,7 +599,7 @@ class _PlannerBanner extends StatelessWidget {
         child: InkWell(
           onTap: () => context.push('/guide/planner'),
           child: AspectRatio(
-            aspectRatio: 2.4,
+            aspectRatio: 2.8,
             child: Stack(
               fit: StackFit.expand,
               children: [
@@ -634,7 +620,7 @@ class _PlannerBanner extends StatelessWidget {
                           Text(
                             l.tripPlannerTitle,
                             style: const TextStyle(
-                              fontSize: 19,
+                              fontSize: 16,
                               fontWeight: FontWeight.w800,
                               color: TnColors.navy,
                             ),
@@ -683,7 +669,7 @@ class _PopularTemples extends ConsumerWidget {
       for (final c in ref.watch(citiesProvider).value ?? const <CityResponse>[]) c.id: c.name,
     };
     return SizedBox(
-      height: 218,
+      height: 190,
       child: temples.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (_, _) => const SizedBox.shrink(),
@@ -693,8 +679,8 @@ class _PopularTemples extends ConsumerWidget {
           itemCount: list.length.clamp(0, 10),
           separatorBuilder: (_, _) => const SizedBox(width: 12),
           itemBuilder: (_, i) => SizedBox(
-            width: 152,
-            child: TempleCard(temple: list[i], city: cities[list[i].cityId], imageHeight: 108),
+            width: 132,
+            child: TempleCard(temple: list[i], city: cities[list[i].cityId], imageHeight: 88),
           ),
         ),
       ),

@@ -5505,6 +5505,36 @@ class UpdateProfileDto {
 }
 
 @immutable
+class UpdateReelDto {
+  const UpdateReelDto({this.caption, this.hashtags, this.templeId, this.thumbnailMediaId});
+
+  factory UpdateReelDto.fromJson(Map<String, dynamic> json) => UpdateReelDto(
+    caption: json['caption'] == null ? null : json['caption'] as String,
+    hashtags: json['hashtags'] == null
+        ? null
+        : (json['hashtags'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+    templeId: json['templeId'] == null ? null : json['templeId'] as String,
+    thumbnailMediaId: json['thumbnailMediaId'] == null ? null : json['thumbnailMediaId'] as String,
+  );
+
+  final String? caption;
+  final List<String>? hashtags;
+
+  /// null removes the tag
+  final String? templeId;
+
+  /// New uploaded reel_thumbnail (cover)
+  final String? thumbnailMediaId;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'caption': ?caption,
+    'hashtags': ?hashtags,
+    'templeId': ?templeId,
+    'thumbnailMediaId': ?thumbnailMediaId,
+  };
+}
+
+@immutable
 class UpdateRestaurantDto {
   const UpdateRestaurantDto({
     this.acceptsOrders,

@@ -691,4 +691,90 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get aiGuide => 'AI गाइड';
+
+  @override
+  String get newReel => 'नई रील';
+
+  @override
+  String get recordVideo => 'वीडियो रिकॉर्ड करें';
+
+  @override
+  String get chooseFromGallery => 'गैलरी से चुनें';
+
+  @override
+  String get reelComposerHint => 'दर्शन, आरती या परिक्रमा का पल साझा करें (90 सेकंड तक)।';
+
+  @override
+  String get writeCaption => 'कैप्शन लिखें… #हैशटैग जोड़ें';
+
+  @override
+  String get tagTemple => 'मंदिर टैग करें';
+
+  @override
+  String get noTemple => 'कोई मंदिर नहीं';
+
+  @override
+  String get cover => 'कवर';
+
+  @override
+  String get chooseCover => 'कवर चुनें';
+
+  @override
+  String get changeVideo => 'वीडियो बदलें';
+
+  @override
+  String get shareReel => 'साझा करें';
+
+  @override
+  String uploadingReel(int percent) {
+    return 'अपलोड हो रहा है $percent%';
+  }
+
+  @override
+  String get reelProcessing => 'पोस्ट हो गई! प्रोसेस होते ही आपकी रील फ़ीड में दिखेगी।';
+
+  @override
+  String get myReels => 'मेरी रील्स';
+
+  @override
+  String get reelsCount => 'रील्स';
+
+  @override
+  String get followers => 'फ़ॉलोअर्स';
+
+  @override
+  String get following => 'फ़ॉलोइंग';
+
+  @override
+  String get editReel => 'रील संपादित करें';
+
+  @override
+  String get deleteReel => 'रील हटाएँ';
+
+  @override
+  String get deleteReelConfirm => 'यह रील हटाएँ? इसे वापस नहीं लाया जा सकता।';
+
+  @override
+  String get reelStatus_processing => 'प्रोसेस हो रही है';
+
+  @override
+  String get reelStatus_removed => 'हटाई गई';
+
+  @override
+  String get reelStatus_pending => 'समीक्षा में';
+
+  @override
+  String get videoTooLong => 'कृपया 90 सेकंड या उससे छोटा वीडियो चुनें।';
+
+  @override
+  String get videoTooBig => 'यह वीडियो बहुत बड़ा है (अधिकतम 100 MB)।';
+
+  @override
+  String get forYou => 'आपके लिए';
+
+  @override
+  String get noReelsYet => 'अभी कोई रील नहीं। अपना पहला दर्शन पल साझा करें!';
+
+  @override
+  String get reelSaved => 'रील अपडेट हो गई';
 }

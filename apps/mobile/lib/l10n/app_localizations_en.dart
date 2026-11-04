@@ -691,4 +691,90 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aiGuide => 'AI Guide';
+
+  @override
+  String get newReel => 'New reel';
+
+  @override
+  String get recordVideo => 'Record video';
+
+  @override
+  String get chooseFromGallery => 'Choose from gallery';
+
+  @override
+  String get reelComposerHint => 'Share a darshan, aarti or parikrama moment (up to 90 seconds).';
+
+  @override
+  String get writeCaption => 'Write a caption… use #hashtags';
+
+  @override
+  String get tagTemple => 'Tag a temple';
+
+  @override
+  String get noTemple => 'No temple';
+
+  @override
+  String get cover => 'Cover';
+
+  @override
+  String get chooseCover => 'Choose cover';
+
+  @override
+  String get changeVideo => 'Change video';
+
+  @override
+  String get shareReel => 'Share';
+
+  @override
+  String uploadingReel(int percent) {
+    return 'Uploading $percent%';
+  }
+
+  @override
+  String get reelProcessing => 'Posted! Your reel will appear in the feed once it has processed.';
+
+  @override
+  String get myReels => 'My reels';
+
+  @override
+  String get reelsCount => 'Reels';
+
+  @override
+  String get followers => 'Followers';
+
+  @override
+  String get following => 'Following';
+
+  @override
+  String get editReel => 'Edit reel';
+
+  @override
+  String get deleteReel => 'Delete reel';
+
+  @override
+  String get deleteReelConfirm => 'Delete this reel? This cannot be undone.';
+
+  @override
+  String get reelStatus_processing => 'Processing';
+
+  @override
+  String get reelStatus_removed => 'Removed';
+
+  @override
+  String get reelStatus_pending => 'Under review';
+
+  @override
+  String get videoTooLong => 'Please pick a video of 90 seconds or less.';
+
+  @override
+  String get videoTooBig => 'This video is too large (max 100 MB).';
+
+  @override
+  String get forYou => 'For you';
+
+  @override
+  String get noReelsYet => 'No reels yet. Share your first darshan moment!';
+
+  @override
+  String get reelSaved => 'Reel updated';
 }

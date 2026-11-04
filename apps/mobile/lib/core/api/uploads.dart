@@ -13,6 +13,7 @@ Future<String> uploadMedia(
   required String mimeType,
   required Uint8List bytes,
   Dio? http,
+  void Function(double fraction)? onProgress,
 }) async {
   final presign = asJson(
     await api.post(
@@ -32,6 +33,9 @@ Future<String> uploadMedia(
       url,
       data: Stream.fromIterable([bytes]),
       options: Options(headers: {...headers, Headers.contentLengthHeader: bytes.length}),
+      onSendProgress: onProgress == null
+          ? null
+          : (sent, total) => onProgress(total > 0 ? sent / total : 0),
     );
   } on DioException catch (e) {
     throw ApiException.fromDio(e);

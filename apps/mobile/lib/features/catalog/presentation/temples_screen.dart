@@ -98,7 +98,7 @@ class _TemplesScreenState extends ConsumerState<TemplesScreen> {
                       crossAxisCount: 2,
                       mainAxisSpacing: 14,
                       crossAxisSpacing: 12,
-                      mainAxisExtent: 222,
+                      mainAxisExtent: 198,
                     ),
                     itemCount: shown.length,
                     itemBuilder: (_, i) =>
@@ -116,7 +116,7 @@ class _TemplesScreenState extends ConsumerState<TemplesScreen> {
 
 /// Photo card with a crowd badge, used in the temples grid and on home.
 class TempleCard extends StatelessWidget {
-  const TempleCard({super.key, required this.temple, this.city, this.imageHeight = 120});
+  const TempleCard({super.key, required this.temple, this.city, this.imageHeight = 100});
 
   final TempleSummaryResponse temple;
   final String? city;
@@ -173,7 +173,7 @@ class TempleCard extends StatelessWidget {
                 temple.name,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 14, height: 1.2),
+                style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13, height: 1.2),
               ),
             ),
             if (city != null)

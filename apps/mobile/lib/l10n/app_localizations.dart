@@ -1382,6 +1382,174 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'AI Guide'**
   String get aiGuide;
+
+  /// No description provided for @newReel.
+  ///
+  /// In en, this message translates to:
+  /// **'New reel'**
+  String get newReel;
+
+  /// No description provided for @recordVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Record video'**
+  String get recordVideo;
+
+  /// No description provided for @chooseFromGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose from gallery'**
+  String get chooseFromGallery;
+
+  /// No description provided for @reelComposerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Share a darshan, aarti or parikrama moment (up to 90 seconds).'**
+  String get reelComposerHint;
+
+  /// No description provided for @writeCaption.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a caption… use #hashtags'**
+  String get writeCaption;
+
+  /// No description provided for @tagTemple.
+  ///
+  /// In en, this message translates to:
+  /// **'Tag a temple'**
+  String get tagTemple;
+
+  /// No description provided for @noTemple.
+  ///
+  /// In en, this message translates to:
+  /// **'No temple'**
+  String get noTemple;
+
+  /// No description provided for @cover.
+  ///
+  /// In en, this message translates to:
+  /// **'Cover'**
+  String get cover;
+
+  /// No description provided for @chooseCover.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose cover'**
+  String get chooseCover;
+
+  /// No description provided for @changeVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Change video'**
+  String get changeVideo;
+
+  /// No description provided for @shareReel.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get shareReel;
+
+  /// No description provided for @uploadingReel.
+  ///
+  /// In en, this message translates to:
+  /// **'Uploading {percent}%'**
+  String uploadingReel(int percent);
+
+  /// No description provided for @reelProcessing.
+  ///
+  /// In en, this message translates to:
+  /// **'Posted! Your reel will appear in the feed once it has processed.'**
+  String get reelProcessing;
+
+  /// No description provided for @myReels.
+  ///
+  /// In en, this message translates to:
+  /// **'My reels'**
+  String get myReels;
+
+  /// No description provided for @reelsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Reels'**
+  String get reelsCount;
+
+  /// No description provided for @followers.
+  ///
+  /// In en, this message translates to:
+  /// **'Followers'**
+  String get followers;
+
+  /// No description provided for @following.
+  ///
+  /// In en, this message translates to:
+  /// **'Following'**
+  String get following;
+
+  /// No description provided for @editReel.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit reel'**
+  String get editReel;
+
+  /// No description provided for @deleteReel.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete reel'**
+  String get deleteReel;
+
+  /// No description provided for @deleteReelConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this reel? This cannot be undone.'**
+  String get deleteReelConfirm;
+
+  /// No description provided for @reelStatus_processing.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing'**
+  String get reelStatus_processing;
+
+  /// No description provided for @reelStatus_removed.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed'**
+  String get reelStatus_removed;
+
+  /// No description provided for @reelStatus_pending.
+  ///
+  /// In en, this message translates to:
+  /// **'Under review'**
+  String get reelStatus_pending;
+
+  /// No description provided for @videoTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Please pick a video of 90 seconds or less.'**
+  String get videoTooLong;
+
+  /// No description provided for @videoTooBig.
+  ///
+  /// In en, this message translates to:
+  /// **'This video is too large (max 100 MB).'**
+  String get videoTooBig;
+
+  /// No description provided for @forYou.
+  ///
+  /// In en, this message translates to:
+  /// **'For you'**
+  String get forYou;
+
+  /// No description provided for @noReelsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No reels yet. Share your first darshan moment!'**
+  String get noReelsYet;
+
+  /// No description provided for @reelSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Reel updated'**
+  String get reelSaved;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

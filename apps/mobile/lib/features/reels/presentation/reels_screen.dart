@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:video_player/video_player.dart';
 
@@ -7,16 +8,13 @@ import '../../../core/api/api_models.dart';
 import '../../../core/providers.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/widgets/common.dart';
+import '../../auth/data/session_controller.dart';
 import '../../bookings/presentation/checkout_flow.dart';
+import '../data/reels_repository.dart';
+import 'reel_edit_sheet.dart';
 
-final reelsFeedProvider = FutureProvider.family<ReelPageResponse, bool>((ref, saved) async {
-  final api = ref.watch(apiClientProvider);
-  return ReelPageResponse.fromJson(
-    await api.getJson(saved ? '/reels/saved' : '/reels/feed', query: {'limit': 20}),
-  );
-});
-
-/// Vertical, full-screen bhakti reels with like, save, share and comments.
+/// Vertical, full-screen bhakti reels with like, save, share and comments,
+/// plus buttons to post a new reel and open your own reels.
 class ReelsScreen extends ConsumerWidget {
   const ReelsScreen({super.key, this.saved = false});
 
@@ -32,31 +30,86 @@ class ReelsScreen extends ConsumerWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.white,
-        title: Text(saved ? l.saved : l.reels, style: const TextStyle(color: Colors.white)),
+        title: Text(
+          saved ? l.saved : l.reels,
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800),
+        ),
+        actions: [
+          if (!saved) ...[
+            IconButton(
+              tooltip: l.newReel,
+              icon: const Icon(Icons.add_box_outlined, size: 28),
+              onPressed: () {
+                if (requireSignedIn(context, ref)) context.push('/reels/new');
+              },
+            ),
+            IconButton(
+              tooltip: l.myReels,
+              icon: const Icon(Icons.account_circle_outlined, size: 28),
+              onPressed: () {
+                if (requireSignedIn(context, ref)) context.push('/reels/mine');
+              },
+            ),
+          ],
+        ],
       ),
       body: AsyncView(
         value: feed,
         onRetry: () => ref.invalidate(reelsFeedProvider(saved)),
         builder: (page) => page.data.isEmpty
-            ? const DefaultTextStyle(
-                style: TextStyle(color: Colors.white70),
-                child: EmptyState(icon: Icons.play_circle_outline),
+            ? Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(32),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.play_circle_outline, color: Colors.white54, size: 56),
+                      const SizedBox(height: 12),
+                      Text(
+                        l.noReelsYet,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(color: Colors.white70),
+                      ),
+                      if (!saved) ...[
+                        const SizedBox(height: 16),
+                        FilledButton.icon(
+                          onPressed: () {
+                            if (requireSignedIn(context, ref)) context.push('/reels/new');
+                          },
+                          icon: const Icon(Icons.add),
+                          label: Text(l.newReel),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
               )
-            : PageView.builder(
-                scrollDirection: Axis.vertical,
-                itemCount: page.data.length,
-                itemBuilder: (_, i) => _ReelPage(reel: page.data[i], saved: saved),
-              ),
+            : ReelPager(reels: page.data),
       ),
     );
   }
 }
 
+/// Swipeable reels, used by the feed and by "My reels".
+class ReelPager extends StatelessWidget {
+  const ReelPager({super.key, required this.reels, this.initialIndex = 0});
+
+  final List<ReelResponse> reels;
+  final int initialIndex;
+
+  @override
+  Widget build(BuildContext context) => PageView.builder(
+    controller: PageController(initialPage: initialIndex),
+    scrollDirection: Axis.vertical,
+    itemCount: reels.length,
+    itemBuilder: (_, i) => _ReelPage(reel: reels[i]),
+  );
+}
+
 class _ReelPage extends ConsumerStatefulWidget {
-  const _ReelPage({required this.reel, required this.saved});
+  const _ReelPage({required this.reel});
 
   final ReelResponse reel;
-  final bool saved;
 
   @override
   ConsumerState<_ReelPage> createState() => _ReelPageState();
@@ -64,6 +117,7 @@ class _ReelPage extends ConsumerStatefulWidget {
 
 class _ReelPageState extends ConsumerState<_ReelPage> {
   VideoPlayerController? _video;
+  late ReelResponse _reel = widget.reel;
   late bool _liked = widget.reel.likedByMe;
   late bool _savedByMe = widget.reel.savedByMe;
   late num _likes = widget.reel.likeCount;
@@ -104,10 +158,68 @@ class _ReelPageState extends ConsumerState<_ReelPage> {
     }
   }
 
+  Future<void> _more() async {
+    final l = context.l10n;
+    final choice = await showModalBottomSheet<String>(
+      context: context,
+      useRootNavigator: true,
+      showDragHandle: true,
+      builder: (ctx) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.edit_outlined),
+              title: Text(l.editReel),
+              onTap: () => Navigator.pop(ctx, 'edit'),
+            ),
+            ListTile(
+              leading: const Icon(Icons.delete_outline, color: TnColors.sos),
+              title: Text(l.deleteReel, style: const TextStyle(color: TnColors.sos)),
+              onTap: () => Navigator.pop(ctx, 'delete'),
+            ),
+          ],
+        ),
+      ),
+    );
+    if (!mounted || choice == null) return;
+    if (choice == 'edit') {
+      final updated = await showReelEditSheet(context, _reel);
+      if (updated != null && mounted) setState(() => _reel = updated);
+      return;
+    }
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(l.deleteReel),
+        content: Text(l.deleteReelConfirm),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(l.cancel)),
+          FilledButton(
+            style: FilledButton.styleFrom(backgroundColor: TnColors.sos),
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(l.delete),
+          ),
+        ],
+      ),
+    );
+    if (ok != true || !mounted) return;
+    try {
+      await ref.read(reelsRepositoryProvider).delete(_reel.id);
+      ref
+        ..invalidate(myReelsProvider)
+        ..invalidate(reelsFeedProvider);
+      if (mounted) Navigator.of(context).maybePop();
+    } on Object catch (e) {
+      if (mounted) showSnack(context, errorText(context, e));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final r = widget.reel;
+    final r = _reel;
     final v = _video;
+    final mine = ref.watch(sessionProvider).user?.id == r.creator.id;
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -148,13 +260,35 @@ class _ReelPageState extends ConsumerState<_ReelPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                r.creator.displayName,
-                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+              Row(
+                children: [
+                  CircleAvatar(
+                    radius: 16,
+                    backgroundColor: TnColors.saffron,
+                    child: Text(
+                      r.creator.displayName.isEmpty ? '🙏' : r.creator.displayName[0],
+                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    r.creator.displayName,
+                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+                  ),
+                ],
               ),
-              if (r.caption != null) Text(r.caption!, style: const TextStyle(color: Colors.white)),
-              if (r.templeName != null)
+              const SizedBox(height: 8),
+              if (r.caption != null)
+                Text(
+                  r.caption!,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(color: Colors.white),
+                ),
+              if (r.templeName != null) ...[
+                const SizedBox(height: 6),
                 Pill(r.templeName!, color: TnColors.accentSoft, icon: Icons.temple_hindu),
+              ],
             ],
           ),
         ),
@@ -197,8 +331,9 @@ class _ReelPageState extends ConsumerState<_ReelPage> {
               _Action(
                 icon: Icons.share_outlined,
                 label: '',
-                onTap: () => SharePlus.instance.share(ShareParams(text: r.caption ?? 'Tirth Now')),
+                onTap: () => SharePlus.instance.share(ShareParams(text: r.caption ?? 'TirthNow')),
               ),
+              if (mine) _Action(icon: Icons.more_horiz, label: '', onTap: _more),
             ],
           ),
         ),
@@ -222,11 +357,11 @@ class _Action extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 6),
+    padding: const EdgeInsets.symmetric(vertical: 4),
     child: Column(
       children: [
         IconButton(
-          icon: Icon(icon, color: color, size: 30),
+          icon: Icon(icon, color: color, size: 28),
           onPressed: onTap,
         ),
         if (label.isNotEmpty)
