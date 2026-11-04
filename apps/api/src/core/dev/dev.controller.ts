@@ -113,6 +113,8 @@ export class DevController {
     const obj = this.mockStorage.get(bucket, key);
     if (!obj) throw AppException.notFound();
     res.setHeader('Content-Type', obj.contentType);
+    // Apps on another origin (web preview) embed these like a CDN's media.
+    res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
     res.send(obj.body);
   }
 }

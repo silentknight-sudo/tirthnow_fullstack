@@ -43,5 +43,7 @@ export function mimeMatches(declared: string, sniffed: string | null): boolean {
   if (declared === sniffed) return true;
   if (declared === 'text/markdown' && sniffed === 'text/plain') return true;
   if (declared === 'audio/mp4' && sniffed === 'video/mp4') return true;
+  // WebM (EBML) looks the same for audio and video.
+  if (declared === 'video/webm' && sniffed === 'audio/webm') return true;
   return false;
 }

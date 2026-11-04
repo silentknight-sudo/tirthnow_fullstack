@@ -491,6 +491,35 @@ describe('reviews, reels and moderation', () => {
       .expect(400);
   });
 
+  it('stores video edits, validates them, and flags creators the viewer follows', async () => {
+    const reel = await postReel(alice.token);
+    const edits = {
+      trimStartMs: 1500,
+      trimEndMs: 12000,
+      filter: 'warm',
+      speed: 1.5,
+      muted: false,
+      overlays: [{ text: 'Radhe Radhe', x: 0.5, y: 0.2, color: '#FFFFFF', size: 28, style: 'box' }],
+    };
+    const res = await t.http
+      .patch(`/v1/reels/${reel.id}`)
+      .set(...bearer(alice.token))
+      .send({ edits })
+      .expect(200);
+    expect(res.body.edits).toEqual(edits);
+    await t.http
+      .patch(`/v1/reels/${reel.id}`)
+      .set(...bearer(alice.token))
+      .send({ edits: { ...edits, speed: 3, filter: 'neon' } })
+      .expect(400);
+    await t.http
+      .post(`/v1/users/${alice.userId}/follow`)
+      .set(...bearer(bob.token))
+      .expect(200);
+    const seen = await t.http.get(`/v1/reels/${reel.id}`).set(...bearer(bob.token));
+    expect(seen.body.followingCreator).toBe(true);
+  });
+
   it('finishes transcoding by signed webhook and keeps flagged captions out of the feed', async () => {
     video.holdAssets = true;
     const reel = await postReel(alice.token);

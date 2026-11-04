@@ -9,7 +9,9 @@ import {
   IsInt,
   IsOptional,
   IsString,
+  IsNumber,
   IsUUID,
+  ValidateNested,
   Matches,
   Max,
   MaxLength,
@@ -25,6 +27,69 @@ import {
 } from '@prisma/client';
 import { CursorQueryDto } from '../../../core/http';
 import { LocalizedQueryDto } from '../../../core/i18n';
+
+export const REEL_FILTERS = [
+  'none',
+  'warm',
+  'cool',
+  'vivid',
+  'mono',
+  'sepia',
+  'fade',
+  'saffron',
+] as const;
+export const REEL_SPEEDS = [0.5, 1, 1.5, 2] as const;
+
+/** Text drawn over the video; x and y are fractions of the frame (0–1). */
+export class ReelOverlayDto {
+  @ApiProperty({ maxLength: 120 }) @IsString() @MinLength(1) @MaxLength(120) text!: string;
+  @ApiProperty({ minimum: 0, maximum: 1 }) @IsNumber() @Min(0) @Max(1) x!: number;
+  @ApiProperty({ minimum: 0, maximum: 1 }) @IsNumber() @Min(0) @Max(1) y!: number;
+  @ApiProperty({ example: '#FFFFFF' })
+  @IsString()
+  @Matches(/^#[0-9A-Fa-f]{6}$/)
+  color!: string;
+  @ApiProperty({ minimum: 12, maximum: 64 }) @IsInt() @Min(12) @Max(64) size!: number;
+  @ApiProperty({ enum: ['plain', 'box', 'outline'] })
+  @IsIn(['plain', 'box', 'outline'])
+  style!: 'plain' | 'box' | 'outline';
+}
+
+/**
+ * Non-destructive edits, applied by the player: the uploaded video is kept
+ * as is and the app trims, filters, speeds up and overlays text on playback.
+ */
+export class ReelEditsDto {
+  @ApiProperty({ minimum: 0 }) @IsInt() @Min(0) trimStartMs!: number;
+  @ApiPropertyOptional({
+    nullable: true,
+    type: Number,
+    minimum: 1,
+    description: 'null = to the end',
+  })
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  trimEndMs?: number | null;
+  @ApiProperty({ enum: REEL_FILTERS }) @IsIn(REEL_FILTERS) filter!: (typeof REEL_FILTERS)[number];
+  @ApiProperty({ enum: REEL_SPEEDS, type: Number })
+  @IsIn(REEL_SPEEDS)
+  speed!: (typeof REEL_SPEEDS)[number];
+  @ApiProperty() @IsBoolean() muted!: boolean;
+  @ApiProperty({ type: [ReelOverlayDto] })
+  @IsArray()
+  @ArrayMaxSize(10)
+  @ValidateNested({ each: true })
+  @Type(() => ReelOverlayDto)
+  overlays!: ReelOverlayDto[];
+}
+
+const EditsField = () => (target: object, key: string) => {
+  ApiPropertyOptional({ type: ReelEditsDto })(target, key);
+  IsOptional()(target, key);
+  ValidateNested()(target, key);
+  Type(() => ReelEditsDto)(target, key);
+};
 
 export class CreateReelDto {
   @ApiProperty({ format: 'uuid', description: 'Uploaded reel_video' })
@@ -48,6 +113,7 @@ export class CreateReelDto {
   hashtags?: string[];
   @ApiPropertyOptional({ format: 'uuid' }) @IsOptional() @IsUUID() cityId?: string;
   @ApiPropertyOptional({ format: 'uuid' }) @IsOptional() @IsUUID() templeId?: string;
+  @EditsField() edits?: ReelEditsDto;
 }
 
 /** Owner edits after posting; omitted fields stay as they are. */
@@ -77,6 +143,7 @@ export class UpdateReelDto {
   @IsOptional()
   @IsUUID()
   thumbnailMediaId?: string;
+  @EditsField() edits?: ReelEditsDto;
 }
 
 const toBool = ({ value }: { value: unknown }) =>
@@ -189,6 +256,8 @@ export class ReelResponse {
   @ApiProperty() viewCount!: number;
   @ApiProperty() likedByMe!: boolean;
   @ApiProperty() savedByMe!: boolean;
+  @ApiProperty({ description: 'The viewer follows the creator' }) followingCreator!: boolean;
+  @ApiProperty({ nullable: true, type: ReelEditsDto }) edits!: ReelEditsDto | null;
   @ApiProperty() createdAt!: string;
 }
 

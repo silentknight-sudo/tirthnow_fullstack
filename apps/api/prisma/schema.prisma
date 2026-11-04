@@ -1346,6 +1346,8 @@ model Reel {
   videoProviderId  String?          @unique @map("video_provider_id")
   playbackUrl      String?          @map("playback_url")
   posterUrl        String?          @map("poster_url")
+  /// Non-destructive edits (trim, filter, speed, mute, text) applied on playback.
+  edits            Json?
   status           ReelStatus       @default(processing)
   moderationStatus ModerationStatus @default(pending) @map("moderation_status")
   likeCount        Int              @default(0) @map("like_count")

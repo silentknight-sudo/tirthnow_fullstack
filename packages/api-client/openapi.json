@@ -1448,6 +1448,9 @@
             "format": "uuid",
             "type": "string"
           },
+          "edits": {
+            "$ref": "#/components/schemas/ReelEditsDto"
+          },
           "hashtags": {
             "example": [
               "vrindavan",
@@ -3675,6 +3678,103 @@
         ],
         "type": "object"
       },
+      "ReelEditsDto": {
+        "properties": {
+          "filter": {
+            "enum": [
+              "none",
+              "warm",
+              "cool",
+              "vivid",
+              "mono",
+              "sepia",
+              "fade",
+              "saffron"
+            ],
+            "type": "string"
+          },
+          "muted": {
+            "type": "boolean"
+          },
+          "overlays": {
+            "items": {
+              "$ref": "#/components/schemas/ReelOverlayDto"
+            },
+            "type": "array"
+          },
+          "speed": {
+            "enum": [
+              0.5,
+              1,
+              1.5,
+              2
+            ],
+            "type": "number"
+          },
+          "trimEndMs": {
+            "description": "null = to the end",
+            "minimum": 1,
+            "nullable": true,
+            "type": "number"
+          },
+          "trimStartMs": {
+            "minimum": 0,
+            "type": "number"
+          }
+        },
+        "required": [
+          "trimStartMs",
+          "filter",
+          "speed",
+          "muted",
+          "overlays"
+        ],
+        "type": "object"
+      },
+      "ReelOverlayDto": {
+        "properties": {
+          "color": {
+            "example": "#FFFFFF",
+            "type": "string"
+          },
+          "size": {
+            "maximum": 64,
+            "minimum": 12,
+            "type": "number"
+          },
+          "style": {
+            "enum": [
+              "plain",
+              "box",
+              "outline"
+            ],
+            "type": "string"
+          },
+          "text": {
+            "maxLength": 120,
+            "type": "string"
+          },
+          "x": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "y": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number"
+          }
+        },
+        "required": [
+          "text",
+          "x",
+          "y",
+          "color",
+          "size",
+          "style"
+        ],
+        "type": "object"
+      },
       "ReelPageResponse": {
         "properties": {
           "data": {
@@ -3716,6 +3816,19 @@
           "durationMs": {
             "nullable": true,
             "type": "number"
+          },
+          "edits": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ReelEditsDto"
+              }
+            ],
+            "nullable": true,
+            "type": "object"
+          },
+          "followingCreator": {
+            "description": "The viewer follows the creator",
+            "type": "boolean"
           },
           "hashtags": {
             "items": {
@@ -3795,6 +3908,8 @@
           "viewCount",
           "likedByMe",
           "savedByMe",
+          "followingCreator",
+          "edits",
           "createdAt"
         ],
         "type": "object"
@@ -5285,6 +5400,9 @@
           "caption": {
             "maxLength": 2200,
             "type": "string"
+          },
+          "edits": {
+            "$ref": "#/components/schemas/ReelEditsDto"
           },
           "hashtags": {
             "items": {

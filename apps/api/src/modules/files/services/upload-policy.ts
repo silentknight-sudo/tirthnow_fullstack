@@ -25,7 +25,7 @@ export const STAFF_PURPOSES: ReadonlySet<UploadPurpose> = new Set([
 ]);
 
 const IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/heic'];
-const VIDEO_TYPES = ['video/mp4', 'video/quicktime'];
+const VIDEO_TYPES = ['video/mp4', 'video/quicktime', 'video/webm'];
 const DOC_TYPES = ['application/pdf', 'image/jpeg', 'image/png'];
 const KNOWLEDGE_TYPES = ['application/pdf', 'text/plain', 'text/markdown'];
 const AUDIO_TYPES = [
@@ -106,6 +106,7 @@ const EXTENSIONS: Record<string, string> = {
   'image/heic': 'heic',
   'video/mp4': 'mp4',
   'video/quicktime': 'mov',
+  'video/webm': 'webm',
   'application/pdf': 'pdf',
   'text/plain': 'txt',
   'text/markdown': 'md',

@@ -3517,6 +3517,7 @@ export interface components {
       caption?: string;
       /** Format: uuid */
       cityId?: string;
+      edits?: components['schemas']['ReelEditsDto'];
       /**
        * @example [
        *       "vrindavan",
@@ -4227,6 +4228,27 @@ export interface components {
     ReasonDto: {
       reason: string;
     };
+    ReelEditsDto: {
+      /** @enum {string} */
+      filter: 'none' | 'warm' | 'cool' | 'vivid' | 'mono' | 'sepia' | 'fade' | 'saffron';
+      muted: boolean;
+      overlays: components['schemas']['ReelOverlayDto'][];
+      /** @enum {number} */
+      speed: 0.5 | 1 | 1.5 | 2;
+      /** @description null = to the end */
+      trimEndMs?: number | null;
+      trimStartMs: number;
+    };
+    ReelOverlayDto: {
+      /** @example #FFFFFF */
+      color: string;
+      size: number;
+      /** @enum {string} */
+      style: 'plain' | 'box' | 'outline';
+      text: string;
+      x: number;
+      y: number;
+    };
     ReelPageResponse: {
       data: components['schemas']['ReelResponse'][];
       nextCursor: string | null;
@@ -4238,6 +4260,9 @@ export interface components {
       createdAt: string;
       creator: components['schemas']['CreatorResponse'];
       durationMs: number | null;
+      edits: components['schemas']['ReelEditsDto'] | null;
+      /** @description The viewer follows the creator */
+      followingCreator: boolean;
       hashtags: string[];
       id: string;
       likeCount: number;
@@ -4726,6 +4751,7 @@ export interface components {
     };
     UpdateReelDto: {
       caption?: string;
+      edits?: components['schemas']['ReelEditsDto'];
       hashtags?: string[];
       /**
        * Format: uuid

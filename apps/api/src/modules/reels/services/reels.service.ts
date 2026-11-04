@@ -22,6 +22,7 @@ import { FilesFacade } from '../../files';
 import { IdentityFacade, type PublicProfile } from '../../identity';
 import {
   type CreateReelDto,
+  type ReelEditsDto,
   type UpdateReelDto,
   type FeedQueryDto,
   type ReelPageResponse,
@@ -96,6 +97,7 @@ export class ReelsService implements OnModuleInit {
         hashtags: normalizeHashtags(dto.hashtags, caption ?? undefined),
         cityId: dto.cityId ?? null,
         templeId: dto.templeId ?? null,
+        ...(dto.edits ? { edits: toJson(dto.edits) } : {}),
         moderationStatus: check?.flagged ? 'flagged' : 'pending',
       },
     });
@@ -318,6 +320,7 @@ export class ReelsService implements OnModuleInit {
           : {}),
         ...(dto.templeId !== undefined ? { templeId: dto.templeId } : {}),
         ...(dto.thumbnailMediaId ? { thumbnailMediaId: dto.thumbnailMediaId } : {}),
+        ...(dto.edits ? { edits: toJson(dto.edits) } : {}),
         ...(check?.flagged ? { moderationStatus: 'flagged' as const } : {}),
       },
     });
@@ -484,7 +487,8 @@ export class ReelsService implements OnModuleInit {
     if (reels.length === 0) return [];
     const ids = reels.map((r) => r.id);
     const templeIds = [...new Set(reels.flatMap((r) => (r.templeId ? [r.templeId] : [])))];
-    const [creators, likes, saves, temples] = await Promise.all([
+    const creatorIds = [...new Set(reels.map((r) => r.userId))];
+    const [creators, likes, saves, temples, follows] = await Promise.all([
       this.identity.publicProfiles(reels.map((r) => r.userId)),
       this.prisma.reelLike.findMany({
         where: { userId: viewerId, reelId: { in: ids } },
@@ -495,7 +499,12 @@ export class ReelsService implements OnModuleInit {
         select: { reelId: true },
       }),
       templeIds.length ? this.catalog.templesByIds(templeIds, lang) : Promise.resolve([]),
+      this.prisma.follow.findMany({
+        where: { followerId: viewerId, followeeId: { in: creatorIds } },
+        select: { followeeId: true },
+      }),
     ]);
+    const followed = new Set(follows.map((f) => f.followeeId));
     const liked = new Set(likes.map((l) => l.reelId));
     const savedSet = new Set(saves.map((s) => s.reelId));
     const templeNames = new Map(temples.map((t) => [t.id, t.name]));
@@ -518,10 +527,16 @@ export class ReelsService implements OnModuleInit {
       viewCount: r.viewCount,
       likedByMe: liked.has(r.id),
       savedByMe: savedSet.has(r.id),
+      followingCreator: followed.has(r.userId),
+      edits: (r.edits as ReelEditsDto | null) ?? null,
       createdAt: r.createdAt.toISOString(),
     }));
   }
 }
+
+/** DTO → Prisma JSON (drops class prototypes). */
+const toJson = (e: ReelEditsDto): Prisma.InputJsonObject =>
+  JSON.parse(JSON.stringify(e)) as Prisma.InputJsonObject;
 
 export const fallbackCreator = (id: string): PublicProfile => ({
   id,
