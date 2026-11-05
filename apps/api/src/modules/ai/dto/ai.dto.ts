@@ -46,6 +46,98 @@ export const INTERESTS = [
   'festivals',
 ] as const;
 
+const HHMM = /^([01]\d|2[0-3]):[0-5]\d$/;
+
+export class TripMemberDto {
+  @ApiProperty({ maxLength: 60 }) @IsString() @MinLength(1) @MaxLength(60) name!: string;
+  @ApiPropertyOptional({ minimum: 0, maximum: 120 })
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  @Max(120)
+  age?: number;
+  @ApiPropertyOptional({ example: '+919876543210' })
+  @IsOptional()
+  @Matches(/^\+[1-9]\d{7,14}$/)
+  phone?: string;
+  @ApiPropertyOptional({ enum: ['organiser', 'member', 'elder', 'child'] })
+  @IsOptional()
+  @IsIn(['organiser', 'member', 'elder', 'child'])
+  role?: 'organiser' | 'member' | 'elder' | 'child';
+}
+
+export class TripStayDto {
+  @ApiPropertyOptional({ format: 'uuid', description: 'A TirthNow hotel, if booked here' })
+  @IsOptional()
+  @IsUUID()
+  hotelId?: string;
+  @ApiProperty({ maxLength: 120 }) @IsString() @MinLength(1) @MaxLength(120) name!: string;
+  @ApiPropertyOptional({ description: 'Price per room per night (paise)' })
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  @Max(10_000_000)
+  nightlyPaise?: number;
+  @ApiPropertyOptional({ minimum: 1, maximum: 50, default: 1 })
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  @Max(50)
+  rooms?: number;
+  @ApiPropertyOptional({ example: '13:00' }) @IsOptional() @Matches(HHMM) checkInTime?: string;
+  @ApiPropertyOptional({ maxLength: 200 })
+  @IsOptional()
+  @IsString()
+  @MaxLength(200)
+  address?: string;
+  @ApiPropertyOptional({ maxLength: 300 }) @IsOptional() @IsString() @MaxLength(300) notes?: string;
+}
+
+export const ARRIVAL_MODES = ['train', 'bus', 'car', 'flight', 'other'] as const;
+export const LOCAL_TRANSPORT = ['e_rickshaw', 'cab', 'walk', 'bus', 'own_vehicle'] as const;
+
+export class TripTravelDto {
+  @ApiProperty({ enum: ARRIVAL_MODES })
+  @IsIn(ARRIVAL_MODES)
+  arrivalMode!: (typeof ARRIVAL_MODES)[number];
+  @ApiPropertyOptional({ maxLength: 80, example: 'New Delhi' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(80)
+  from?: string;
+  @ApiPropertyOptional({ example: '09:30', description: 'Arrival on day 1 (IST)' })
+  @IsOptional()
+  @Matches(HHMM)
+  arrivalTime?: string;
+  @ApiPropertyOptional({ example: '18:00', description: 'Departure on the last day (IST)' })
+  @IsOptional()
+  @Matches(HHMM)
+  departureTime?: string;
+  @ApiPropertyOptional({ enum: LOCAL_TRANSPORT })
+  @IsOptional()
+  @IsIn(LOCAL_TRANSPORT)
+  localTransport?: (typeof LOCAL_TRANSPORT)[number];
+  @ApiPropertyOptional({ maxLength: 200, example: 'Taj Express 12280, coach B2' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(200)
+  details?: string;
+}
+
+export class CustomStopDto {
+  @ApiProperty({ minimum: 0, maximum: 6 }) @IsInt() @Min(0) @Max(6) dayIndex!: number;
+  @ApiPropertyOptional({ example: '10:00' }) @IsOptional() @Matches(HHMM) time?: string;
+  @ApiProperty({ maxLength: 120 }) @IsString() @MinLength(1) @MaxLength(120) title!: string;
+  @ApiPropertyOptional({ maxLength: 300 }) @IsOptional() @IsString() @MaxLength(300) note?: string;
+  @ApiPropertyOptional({ format: 'uuid' }) @IsOptional() @IsUUID() templeId?: string;
+  @ApiPropertyOptional({ minimum: 15, maximum: 600, default: 60 })
+  @IsOptional()
+  @IsInt()
+  @Min(15)
+  @Max(600)
+  durationMin?: number;
+}
+
 export class CreateItineraryDto {
   @ApiProperty({ example: '2026-11-01' }) @Matches(/^\d{4}-\d{2}-\d{2}$/) startDate!: string;
   @ApiProperty({ minimum: 1, maximum: 7 }) @IsInt() @Min(1) @Max(7) days!: number;
@@ -55,7 +147,7 @@ export class CreateItineraryDto {
   @Min(0)
   @Max(100_000_000)
   budgetPaise?: number;
-  @ApiPropertyOptional({ default: 1 }) @IsOptional() @IsInt() @Min(1) @Max(20) partySize?: number;
+  @ApiPropertyOptional({ default: 1 }) @IsOptional() @IsInt() @Min(1) @Max(50) partySize?: number;
   @ApiPropertyOptional({ type: [String], example: ['vrindavan', 'mathura'] })
   @IsOptional()
   @IsArray()
@@ -77,6 +169,48 @@ export class CreateItineraryDto {
   @IsIn(['relaxed', 'normal', 'packed'])
   pace?: 'relaxed' | 'normal' | 'packed';
   @ApiPropertyOptional({ enum: ['en', 'hi'] }) @IsOptional() @IsIn(['en', 'hi']) lang?: 'en' | 'hi';
+  @ApiPropertyOptional({
+    enum: ['ai', 'custom'],
+    default: 'ai',
+    description: 'custom = only your own stops',
+  })
+  @IsOptional()
+  @IsIn(['ai', 'custom'])
+  mode?: 'ai' | 'custom';
+  @ApiPropertyOptional({ enum: ['solo', 'family', 'group'] })
+  @IsOptional()
+  @IsIn(['solo', 'family', 'group'])
+  tripType?: 'solo' | 'family' | 'group';
+  @ApiPropertyOptional({ maxLength: 60 })
+  @IsOptional()
+  @IsString()
+  @MaxLength(60)
+  groupName?: string;
+  @ApiPropertyOptional({ type: [TripMemberDto] })
+  @IsOptional()
+  @IsArray()
+  @ArrayMaxSize(50)
+  @ValidateNested({ each: true })
+  @Type(() => TripMemberDto)
+  members?: TripMemberDto[];
+  @ApiPropertyOptional({ type: TripStayDto })
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => TripStayDto)
+  stay?: TripStayDto;
+  @ApiPropertyOptional({ type: TripTravelDto })
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => TripTravelDto)
+  travel?: TripTravelDto;
+  @ApiPropertyOptional({ type: [CustomStopDto] })
+  @IsOptional()
+  @IsArray()
+  @ArrayMaxSize(60)
+  @ValidateNested({ each: true })
+  @Type(() => CustomStopDto)
+  customStops?: CustomStopDto[];
+  @ApiPropertyOptional({ maxLength: 500 }) @IsOptional() @IsString() @MaxLength(500) notes?: string;
 }
 
 export class UpdateItineraryDto {

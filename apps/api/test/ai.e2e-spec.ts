@@ -349,6 +349,113 @@ describe('AI guide', () => {
       .expect(400);
   });
 
+  it('plans group trips with stay, travel and custom stops, and a custom-only plan', async () => {
+    const start = addDays(istDate(new Date()), 12);
+    const callsBefore = llm.calls.length;
+    const group = {
+      startDate: start,
+      days: 2,
+      tripType: 'group',
+      groupName: 'Sharma parivar yatra',
+      members: [
+        { name: 'Ramesh Sharma', age: 52, phone: '+919876500001', role: 'organiser' },
+        { name: 'Sita Sharma', age: 74, role: 'elder' },
+        { name: 'Anu', age: 9, role: 'child' },
+      ],
+      stay: { name: 'Braj Residency', nightlyPaise: 250_000, rooms: 2, checkInTime: '12:30' },
+      travel: {
+        arrivalMode: 'train',
+        from: 'New Delhi',
+        arrivalTime: '09:15',
+        departureTime: '18:45',
+        localTransport: 'e_rickshaw',
+        details: 'Taj Express, coach B2',
+      },
+      customStops: [{ dayIndex: 1, time: '11:00', title: 'Lassi at Loi Bazaar', durationMin: 45 }],
+    };
+    const ai = await t.http
+      .post('/v1/ai/itineraries')
+      .set(...bearer(user.token))
+      .send(group)
+      .expect(201);
+    expect(ai.body).toMatchObject({ title: 'Sharma parivar yatra', partySize: 3 });
+    expect(ai.body.trip).toMatchObject({
+      tripType: 'group',
+      members: group.members,
+      stay: group.stay,
+      travel: group.travel,
+      mode: 'ai',
+    });
+    const d0 = ai.body.dayList[0].items as { kind: string; title: string; startsAt: string }[];
+    expect(d0.find((i) => i.kind === 'travel')?.startsAt).toBe(
+      new Date(`${start}T03:45:00.000Z`).toISOString(),
+    );
+    expect(d0.find((i) => i.kind === 'stay')?.title).toBe('Check in: Braj Residency');
+    const d1 = ai.body.dayList[1].items as { kind: string; title: string; startsAt: string }[];
+    expect(d1.map((i) => i.title)).toEqual(
+      expect.arrayContaining(['Lassi at Loi Bazaar', 'Depart for home']),
+    );
+    expect(d1.map((i) => i.startsAt)).toEqual([...d1.map((i) => i.startsAt)].sort());
+    // Stay cost = 2 rooms x 1 night.
+    expect(ai.body.estimatedCostPaise).toBe(2 * 2 * 3 * 25_000 + 2 * 250_000);
+
+    // Shared links hide members' phone numbers.
+    const share = await t.http
+      .post(`/v1/ai/itineraries/${ai.body.id as string}/share`)
+      .set(...bearer(user.token))
+      .expect(200);
+    const shared = await t.http
+      .get(`/v1/ai/itineraries/shared/${share.body.token as string}`)
+      .expect(200);
+    expect(shared.body.trip.members[0].phone).toBeUndefined();
+
+    const custom = await t.http
+      .post('/v1/ai/itineraries')
+      .set(...bearer(user.token))
+      .send({ ...group, mode: 'custom', groupName: undefined })
+      .expect(201);
+    expect(custom.body.generatedBy).toBe('custom');
+    expect(custom.body.trip.mode).toBe('custom');
+    expect(
+      (custom.body.dayList as { items: { kind: string }[] }[])
+        .flatMap((d) => d.items)
+        .some((i) => i.kind === 'aarti'),
+    ).toBe(false);
+    expect(custom.body.dayList[1].items.map((i: { title: string }) => i.title)).toEqual([
+      'Lassi at Loi Bazaar',
+      'Depart for home',
+    ]);
+    // Only the AI plan called the model.
+    expect(
+      llm.calls.slice(callsBefore).filter((c) => c.system.startsWith('[task:plan]')),
+    ).toHaveLength(1);
+
+    const pdf = await t.http
+      .get(`/v1/ai/itineraries/${ai.body.id as string}/pdf`)
+      .set(...bearer(user.token))
+      .buffer(true)
+      .parse((r, cb) => {
+        const chunks: Buffer[] = [];
+        r.on('data', (c: Buffer) => chunks.push(c));
+        r.on('end', () => {
+          cb(null, Buffer.concat(chunks));
+        });
+      })
+      .expect(200);
+    expect((pdf.body as Buffer).subarray(0, 5).toString()).toBe('%PDF-');
+
+    await t.http
+      .post('/v1/ai/itineraries')
+      .set(...bearer(user.token))
+      .send({ ...group, customStops: [{ dayIndex: 5, title: 'Too late' }] })
+      .expect(400);
+    await t.http
+      .post('/v1/ai/itineraries')
+      .set(...bearer(user.token))
+      .send({ ...group, members: [{ name: 'X', phone: '12345' }] })
+      .expect(400);
+  });
+
   it('falls back to a schedule-only plan when the model output is invalid', async () => {
     const original = llm.complete.bind(llm);
     const spy = jest.spyOn(llm, 'complete').mockImplementation(async (req) => {

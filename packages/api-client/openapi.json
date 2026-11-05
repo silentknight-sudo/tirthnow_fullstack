@@ -1205,10 +1205,20 @@
             },
             "type": "array"
           },
+          "customStops": {
+            "items": {
+              "$ref": "#/components/schemas/CustomStopDto"
+            },
+            "type": "array"
+          },
           "days": {
             "maximum": 7,
             "minimum": 1,
             "type": "number"
+          },
+          "groupName": {
+            "maxLength": 60,
+            "type": "string"
           },
           "interests": {
             "items": {
@@ -1232,6 +1242,25 @@
             ],
             "type": "string"
           },
+          "members": {
+            "items": {
+              "$ref": "#/components/schemas/TripMemberDto"
+            },
+            "type": "array"
+          },
+          "mode": {
+            "default": "ai",
+            "description": "custom = only your own stops",
+            "enum": [
+              "ai",
+              "custom"
+            ],
+            "type": "string"
+          },
+          "notes": {
+            "maxLength": 500,
+            "type": "string"
+          },
           "pace": {
             "default": "normal",
             "enum": [
@@ -1247,6 +1276,20 @@
           },
           "startDate": {
             "example": "2026-11-01",
+            "type": "string"
+          },
+          "stay": {
+            "$ref": "#/components/schemas/TripStayDto"
+          },
+          "travel": {
+            "$ref": "#/components/schemas/TripTravelDto"
+          },
+          "tripType": {
+            "enum": [
+              "solo",
+              "family",
+              "group"
+            ],
             "type": "string"
           }
         },
@@ -1938,6 +1981,42 @@
           "id",
           "displayName",
           "avatarUrl"
+        ],
+        "type": "object"
+      },
+      "CustomStopDto": {
+        "properties": {
+          "dayIndex": {
+            "maximum": 6,
+            "minimum": 0,
+            "type": "number"
+          },
+          "durationMin": {
+            "default": 60,
+            "maximum": 600,
+            "minimum": 15,
+            "type": "number"
+          },
+          "note": {
+            "maxLength": 300,
+            "type": "string"
+          },
+          "templeId": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "time": {
+            "example": "10:00",
+            "type": "string"
+          },
+          "title": {
+            "maxLength": 120,
+            "type": "string"
+          }
+        },
+        "required": [
+          "dayIndex",
+          "title"
         ],
         "type": "object"
       },
@@ -4908,6 +4987,123 @@
         "required": [
           "lat",
           "lng"
+        ],
+        "type": "object"
+      },
+      "TripMemberDto": {
+        "properties": {
+          "age": {
+            "maximum": 120,
+            "minimum": 0,
+            "type": "number"
+          },
+          "name": {
+            "maxLength": 60,
+            "type": "string"
+          },
+          "phone": {
+            "example": "+919876543210",
+            "type": "string"
+          },
+          "role": {
+            "enum": [
+              "organiser",
+              "member",
+              "elder",
+              "child"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "type": "object"
+      },
+      "TripStayDto": {
+        "properties": {
+          "address": {
+            "maxLength": 200,
+            "type": "string"
+          },
+          "checkInTime": {
+            "example": "13:00",
+            "type": "string"
+          },
+          "hotelId": {
+            "description": "A TirthNow hotel, if booked here",
+            "format": "uuid",
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 120,
+            "type": "string"
+          },
+          "nightlyPaise": {
+            "description": "Price per room per night (paise)",
+            "type": "number"
+          },
+          "notes": {
+            "maxLength": 300,
+            "type": "string"
+          },
+          "rooms": {
+            "default": 1,
+            "maximum": 50,
+            "minimum": 1,
+            "type": "number"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "type": "object"
+      },
+      "TripTravelDto": {
+        "properties": {
+          "arrivalMode": {
+            "enum": [
+              "train",
+              "bus",
+              "car",
+              "flight",
+              "other"
+            ],
+            "type": "string"
+          },
+          "arrivalTime": {
+            "description": "Arrival on day 1 (IST)",
+            "example": "09:30",
+            "type": "string"
+          },
+          "departureTime": {
+            "description": "Departure on the last day (IST)",
+            "example": "18:00",
+            "type": "string"
+          },
+          "details": {
+            "example": "Taj Express 12280, coach B2",
+            "maxLength": 200,
+            "type": "string"
+          },
+          "from": {
+            "example": "New Delhi",
+            "maxLength": 80,
+            "type": "string"
+          },
+          "localTransport": {
+            "enum": [
+              "e_rickshaw",
+              "cab",
+              "walk",
+              "bus",
+              "own_vehicle"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "arrivalMode"
         ],
         "type": "object"
       },

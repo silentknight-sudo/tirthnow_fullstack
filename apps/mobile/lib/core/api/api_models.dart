@@ -1263,12 +1263,20 @@ class CreateItineraryDto {
     this.accessibility,
     this.budgetPaise,
     this.cities,
+    this.customStops,
     required this.days,
+    this.groupName,
     this.interests,
     this.lang,
+    this.members,
+    this.mode,
+    this.notes,
     this.pace,
     this.partySize,
     required this.startDate,
+    this.stay,
+    this.travel,
+    this.tripType,
   });
 
   factory CreateItineraryDto.fromJson(Map<String, dynamic> json) => CreateItineraryDto(
@@ -1279,14 +1287,30 @@ class CreateItineraryDto {
     cities: json['cities'] == null
         ? null
         : (json['cities'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+    customStops: json['customStops'] == null
+        ? null
+        : (json['customStops'] as List<dynamic>)
+              .map((dynamic x) => CustomStopDto.fromJson(_map(x)))
+              .toList(),
     days: json['days'] as num,
+    groupName: json['groupName'] == null ? null : json['groupName'] as String,
     interests: json['interests'] == null
         ? null
         : (json['interests'] as List<dynamic>).map((dynamic x) => x as String).toList(),
     lang: json['lang'] == null ? null : json['lang'] as String,
+    members: json['members'] == null
+        ? null
+        : (json['members'] as List<dynamic>)
+              .map((dynamic x) => TripMemberDto.fromJson(_map(x)))
+              .toList(),
+    mode: json['mode'] == null ? null : json['mode'] as String,
+    notes: json['notes'] == null ? null : json['notes'] as String,
     pace: json['pace'] == null ? null : json['pace'] as String,
     partySize: json['partySize'] == null ? null : json['partySize'] as num,
     startDate: json['startDate'] as String,
+    stay: json['stay'] == null ? null : TripStayDto.fromJson(_map(json['stay'])),
+    travel: json['travel'] == null ? null : TripTravelDto.fromJson(_map(json['travel'])),
+    tripType: json['tripType'] == null ? null : json['tripType'] as String,
   );
 
   final AccessibilityDto? accessibility;
@@ -1294,29 +1318,49 @@ class CreateItineraryDto {
   /// Total budget (paise)
   final num? budgetPaise;
   final List<String>? cities;
+  final List<CustomStopDto>? customStops;
   final num days;
+  final String? groupName;
 
   /// One of: aarti, temples, parikrama, ghats, food, shopping, festivals.
   final List<String>? interests;
 
   /// One of: en, hi.
   final String? lang;
+  final List<TripMemberDto>? members;
+
+  /// custom = only your own stops One of: ai, custom.
+  final String? mode;
+  final String? notes;
 
   /// One of: relaxed, normal, packed.
   final String? pace;
   final num? partySize;
   final String startDate;
+  final TripStayDto? stay;
+  final TripTravelDto? travel;
+
+  /// One of: solo, family, group.
+  final String? tripType;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
     'accessibility': ?accessibility?.toJson(),
     'budgetPaise': ?budgetPaise,
     'cities': ?cities,
+    'customStops': ?customStops?.map((x) => x.toJson()).toList(),
     'days': days,
+    'groupName': ?groupName,
     'interests': ?interests,
     'lang': ?lang,
+    'members': ?members?.map((x) => x.toJson()).toList(),
+    'mode': ?mode,
+    'notes': ?notes,
     'pace': ?pace,
     'partySize': ?partySize,
     'startDate': startDate,
+    'stay': ?stay?.toJson(),
+    'travel': ?travel?.toJson(),
+    'tripType': ?tripType,
   };
 }
 
@@ -2024,6 +2068,43 @@ class CreatorResponse {
     'avatarUrl': ?avatarUrl,
     'displayName': displayName,
     'id': id,
+  };
+}
+
+@immutable
+class CustomStopDto {
+  const CustomStopDto({
+    required this.dayIndex,
+    this.durationMin,
+    this.note,
+    this.templeId,
+    this.time,
+    required this.title,
+  });
+
+  factory CustomStopDto.fromJson(Map<String, dynamic> json) => CustomStopDto(
+    dayIndex: json['dayIndex'] as num,
+    durationMin: json['durationMin'] == null ? null : json['durationMin'] as num,
+    note: json['note'] == null ? null : json['note'] as String,
+    templeId: json['templeId'] == null ? null : json['templeId'] as String,
+    time: json['time'] == null ? null : json['time'] as String,
+    title: json['title'] as String,
+  );
+
+  final num dayIndex;
+  final num? durationMin;
+  final String? note;
+  final String? templeId;
+  final String? time;
+  final String title;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'dayIndex': dayIndex,
+    'durationMin': ?durationMin,
+    'note': ?note,
+    'templeId': ?templeId,
+    'time': ?time,
+    'title': title,
   };
 }
 
@@ -4983,6 +5064,121 @@ class TriggerSosDto {
     'batteryPct': ?batteryPct,
     'lat': lat,
     'lng': lng,
+  };
+}
+
+@immutable
+class TripMemberDto {
+  const TripMemberDto({this.age, required this.name, this.phone, this.role});
+
+  factory TripMemberDto.fromJson(Map<String, dynamic> json) => TripMemberDto(
+    age: json['age'] == null ? null : json['age'] as num,
+    name: json['name'] as String,
+    phone: json['phone'] == null ? null : json['phone'] as String,
+    role: json['role'] == null ? null : json['role'] as String,
+  );
+
+  final num? age;
+  final String name;
+  final String? phone;
+
+  /// One of: organiser, member, elder, child.
+  final String? role;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'age': ?age,
+    'name': name,
+    'phone': ?phone,
+    'role': ?role,
+  };
+}
+
+@immutable
+class TripStayDto {
+  const TripStayDto({
+    this.address,
+    this.checkInTime,
+    this.hotelId,
+    required this.name,
+    this.nightlyPaise,
+    this.notes,
+    this.rooms,
+  });
+
+  factory TripStayDto.fromJson(Map<String, dynamic> json) => TripStayDto(
+    address: json['address'] == null ? null : json['address'] as String,
+    checkInTime: json['checkInTime'] == null ? null : json['checkInTime'] as String,
+    hotelId: json['hotelId'] == null ? null : json['hotelId'] as String,
+    name: json['name'] as String,
+    nightlyPaise: json['nightlyPaise'] == null ? null : json['nightlyPaise'] as num,
+    notes: json['notes'] == null ? null : json['notes'] as String,
+    rooms: json['rooms'] == null ? null : json['rooms'] as num,
+  );
+
+  final String? address;
+  final String? checkInTime;
+
+  /// A TirthNow hotel, if booked here
+  final String? hotelId;
+  final String name;
+
+  /// Price per room per night (paise)
+  final num? nightlyPaise;
+  final String? notes;
+  final num? rooms;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'address': ?address,
+    'checkInTime': ?checkInTime,
+    'hotelId': ?hotelId,
+    'name': name,
+    'nightlyPaise': ?nightlyPaise,
+    'notes': ?notes,
+    'rooms': ?rooms,
+  };
+}
+
+@immutable
+class TripTravelDto {
+  const TripTravelDto({
+    required this.arrivalMode,
+    this.arrivalTime,
+    this.departureTime,
+    this.details,
+    this.from,
+    this.localTransport,
+  });
+
+  factory TripTravelDto.fromJson(Map<String, dynamic> json) => TripTravelDto(
+    arrivalMode: json['arrivalMode'] as String,
+    arrivalTime: json['arrivalTime'] == null ? null : json['arrivalTime'] as String,
+    departureTime: json['departureTime'] == null ? null : json['departureTime'] as String,
+    details: json['details'] == null ? null : json['details'] as String,
+    from: json['from'] == null ? null : json['from'] as String,
+    localTransport: json['localTransport'] == null ? null : json['localTransport'] as String,
+  );
+
+  /// One of: train, bus, car, flight, other.
+  final String arrivalMode;
+
+  /// Arrival on day 1 (IST)
+  final String? arrivalTime;
+
+  /// Departure on the last day (IST)
+  final String? departureTime;
+  final String? details;
+  final String? from;
+
+  /// One of: e_rickshaw, cab, walk, bus, own_vehicle.
+  final String? localTransport;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'arrivalMode': arrivalMode,
+    'arrivalTime': ?arrivalTime,
+    'departureTime': ?departureTime,
+    'details': ?details,
+    'from': ?from,
+    'localTransport': ?localTransport,
   };
 }
 

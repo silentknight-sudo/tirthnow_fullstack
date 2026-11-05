@@ -3427,12 +3427,22 @@ export interface components {
        *     ]
        */
       cities?: string[];
+      customStops?: components['schemas']['CustomStopDto'][];
       days: number;
+      groupName?: string;
       interests?: (
         'aarti' | 'temples' | 'parikrama' | 'ghats' | 'food' | 'shopping' | 'festivals'
       )[];
       /** @enum {string} */
       lang?: 'en' | 'hi';
+      members?: components['schemas']['TripMemberDto'][];
+      /**
+       * @description custom = only your own stops
+       * @default ai
+       * @enum {string}
+       */
+      mode: 'ai' | 'custom';
+      notes?: string;
       /**
        * @default normal
        * @enum {string}
@@ -3442,6 +3452,10 @@ export interface components {
       partySize: number;
       /** @example 2026-11-01 */
       startDate: string;
+      stay?: components['schemas']['TripStayDto'];
+      travel?: components['schemas']['TripTravelDto'];
+      /** @enum {string} */
+      tripType?: 'solo' | 'family' | 'group';
     };
     CreateKnowledgeDocumentDto: {
       /** Format: uuid */
@@ -3705,6 +3719,17 @@ export interface components {
       avatarUrl: string | null;
       displayName: string;
       id: string;
+    };
+    CustomStopDto: {
+      dayIndex: number;
+      /** @default 60 */
+      durationMin: number;
+      note?: string;
+      /** Format: uuid */
+      templeId?: string;
+      /** @example 10:00 */
+      time?: string;
+      title: string;
     };
     DeviceInfoDto: {
       /** @example 1.0.0+12 */
@@ -4548,6 +4573,50 @@ export interface components {
       lat: number;
       /** @example 77.6996 */
       lng: number;
+    };
+    TripMemberDto: {
+      age?: number;
+      name: string;
+      /** @example +919876543210 */
+      phone?: string;
+      /** @enum {string} */
+      role?: 'organiser' | 'member' | 'elder' | 'child';
+    };
+    TripStayDto: {
+      address?: string;
+      /** @example 13:00 */
+      checkInTime?: string;
+      /**
+       * Format: uuid
+       * @description A TirthNow hotel, if booked here
+       */
+      hotelId?: string;
+      name: string;
+      /** @description Price per room per night (paise) */
+      nightlyPaise?: number;
+      notes?: string;
+      /** @default 1 */
+      rooms: number;
+    };
+    TripTravelDto: {
+      /** @enum {string} */
+      arrivalMode: 'train' | 'bus' | 'car' | 'flight' | 'other';
+      /**
+       * @description Arrival on day 1 (IST)
+       * @example 09:30
+       */
+      arrivalTime?: string;
+      /**
+       * @description Departure on the last day (IST)
+       * @example 18:00
+       */
+      departureTime?: string;
+      /** @example Taj Express 12280, coach B2 */
+      details?: string;
+      /** @example New Delhi */
+      from?: string;
+      /** @enum {string} */
+      localTransport?: 'e_rickshaw' | 'cab' | 'walk' | 'bus' | 'own_vehicle';
     };
     UpdateAartiScheduleDto: {
       /** @default 15 */

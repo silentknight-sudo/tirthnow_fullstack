@@ -1,8 +1,7 @@
 import { randomBytes } from 'node:crypto';
 import { Inject, Injectable } from '@nestjs/common';
-import { type Itinerary, type ItineraryDay, type ItineraryItem } from '@prisma/client';
+import { type Itinerary, type ItineraryDay, type ItineraryItem, type Prisma } from '@prisma/client';
 import { type ItineraryPlan, type Lang } from '@tirth-now/shared-types';
-import PDFDocument from 'pdfkit';
 import { type AuthPrincipal } from '../../../core/auth';
 import { APP_CONFIG, type AppConfig } from '../../../core/config';
 import {
@@ -17,6 +16,7 @@ import { t } from '../../../core/i18n';
 import { PrismaService } from '../../../core/prisma';
 import { dbDate, fromDbDate } from '../../../core/time';
 import { type CreateItineraryDto, type UpdateItineraryDto } from '../dto/ai.dto';
+import { renderItineraryPdf } from './itinerary-pdf';
 import { type ScheduledDay } from './planner.service';
 
 type Full = Itinerary & { dayList: (ItineraryDay & { items: ItineraryItem[] })[] };
@@ -26,6 +26,32 @@ const INCLUDE = {
     include: { items: { orderBy: { seq: 'asc' as const } } },
   },
 };
+
+export interface TripInfo {
+  tripType: 'solo' | 'family' | 'group';
+  groupName: string | null;
+  members: { name: string; age?: number; phone?: string; role?: string }[];
+  stay: {
+    hotelId?: string;
+    name: string;
+    nightlyPaise?: number;
+    rooms?: number;
+    checkInTime?: string;
+    address?: string;
+    notes?: string;
+  } | null;
+  travel: {
+    arrivalMode: string;
+    from?: string;
+    arrivalTime?: string;
+    departureTime?: string;
+    localTransport?: string;
+    details?: string;
+  } | null;
+  notes: string | null;
+  pace: string;
+  mode: 'ai' | 'custom';
+}
 
 export interface ItineraryResponse {
   id: string;
@@ -38,6 +64,7 @@ export interface ItineraryResponse {
   estimatedCostPaise: number;
   shareUrl: string | null;
   generatedBy: string | null;
+  trip: TripInfo;
   dayList: {
     dayIndex: number;
     date: string;
@@ -91,6 +118,17 @@ export class ItinerariesService {
             pace: dto.pace ?? 'normal',
             accessibility: definedFields(dto.accessibility),
             lang,
+            mode: dto.mode ?? 'ai',
+            trip: JSON.parse(
+              JSON.stringify({
+                tripType: dto.tripType ?? (dto.members?.length ? 'group' : 'solo'),
+                groupName: dto.groupName ?? null,
+                members: dto.members ?? [],
+                stay: dto.stay ?? null,
+                travel: dto.travel ?? null,
+                notes: dto.notes ?? null,
+              }),
+            ) as Prisma.InputJsonObject,
           },
           model,
           rawLlmOutput: raw === null ? undefined : { text: raw },
@@ -202,62 +240,17 @@ export class ItinerariesService {
         })
       : null;
     if (!it) throw AppException.notFound('This itinerary link is not valid');
-    // Shared copies hide the owner's budget.
-    return { ...this.response(it, lang), budgetPaise: null };
+    // Shared copies hide the owner's budget and members' phone numbers.
+    const r = this.response(it, lang);
+    return {
+      ...r,
+      budgetPaise: null,
+      trip: { ...r.trip, members: r.trip.members.map(({ phone: _phone, ...m }) => m) },
+    };
   }
 
   async pdf(user: AuthPrincipal, id: string, lang: Lang): Promise<Buffer> {
-    const r = this.response(await this.owned(user, id), lang);
-    const doc = new PDFDocument({ size: 'A4', margin: 48, info: { Title: r.title } });
-    const chunks: Buffer[] = [];
-    doc.on('data', (c: Buffer) => chunks.push(c));
-    const done = new Promise<Buffer>((resolve) =>
-      doc.on('end', () => {
-        resolve(Buffer.concat(chunks));
-      }),
-    );
-    const time = (iso: string | null) =>
-      iso
-        ? new Date(iso).toLocaleTimeString('en-IN', {
-            timeZone: 'Asia/Kolkata',
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false,
-          })
-        : '';
-    doc.fontSize(20).text(r.title).moveDown(0.3);
-    doc
-      .fontSize(10)
-      .fillColor('#555')
-      .text(
-        `${r.startDate} · ${String(r.days)} day(s) · party of ${String(r.partySize)} · est. ₹${String(Math.round(r.estimatedCostPaise / 100))}`,
-      )
-      .fillColor('#000')
-      .moveDown();
-    for (const d of r.dayList) {
-      doc.fontSize(14).text(`Day ${String(d.dayIndex + 1)} — ${d.date}`);
-      if (d.note) doc.fontSize(10).fillColor('#555').text(d.note).fillColor('#000');
-      doc.moveDown(0.3);
-      for (const item of d.items) {
-        doc.fontSize(11).text(`${time(item.startsAt)}  ${item.title}`, { continued: false });
-        const extra = [
-          item.travelDurationMin ? `~${String(item.travelDurationMin)} min travel` : null,
-          item.note,
-        ]
-          .filter(Boolean)
-          .join(' · ');
-        if (extra) doc.fontSize(9).fillColor('#666').text(`        ${extra}`).fillColor('#000');
-      }
-      doc.moveDown();
-    }
-    doc
-      .fontSize(8)
-      .fillColor('#888')
-      .text(
-        'Aarti times come from temple schedules and can change on festival days. Please confirm locally.',
-      );
-    doc.end();
-    return done;
+    return renderItineraryPdf(this.response(await this.owned(user, id), lang), lang);
   }
 
   private shareUrl(token: string): string {
@@ -311,7 +304,23 @@ export class ItinerariesService {
         .reduce((s, i) => s + (i.estCostPaise ?? 0), 0),
       shareUrl: it.shareToken ? this.shareUrl(it.shareToken) : null,
       generatedBy: it.model,
+      trip: tripOf(it.preferences),
       dayList,
     };
   }
+}
+
+function tripOf(prefs: unknown): TripInfo {
+  const p = (prefs && typeof prefs === 'object' ? prefs : {}) as Record<string, unknown>;
+  const raw = (p.trip && typeof p.trip === 'object' ? p.trip : {}) as Partial<TripInfo>;
+  return {
+    tripType: raw.tripType ?? 'solo',
+    groupName: raw.groupName ?? null,
+    members: Array.isArray(raw.members) ? raw.members : [],
+    stay: raw.stay ?? null,
+    travel: raw.travel ?? null,
+    notes: raw.notes ?? null,
+    pace: typeof p.pace === 'string' ? p.pace : 'normal',
+    mode: p.mode === 'custom' ? 'custom' : 'ai',
+  };
 }

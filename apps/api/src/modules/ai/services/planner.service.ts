@@ -73,6 +73,34 @@ export class PlannerService {
     if (!isIsoDate(dto.startDate) || dto.startDate < today || dto.startDate > addDays(today, 365)) {
       throw AppException.badRequest('startDate must be a date within the next year');
     }
+    if (dto.customStops?.some((c) => c.dayIndex >= dto.days))
+      throw AppException.badRequest('A custom stop falls outside the trip days');
+    const party = dto.members?.length
+      ? Math.max(dto.members.length, dto.partySize ?? 1)
+      : dto.partySize;
+    dto.partySize = party ?? 1;
+    if (dto.mode === 'custom') {
+      // Your own plan: no model call, no quota.
+      const city = await this.firstCity(dto);
+      const empty: ScheduledDay[] = Array.from({ length: dto.days }, (_, i) => ({
+        dayIndex: i,
+        date: addDays(dto.startDate, i),
+        cityId: city.id,
+        note: null,
+        items: [],
+      }));
+      const title =
+        dto.groupName?.trim() || (lang === 'hi' ? `${city.name} यात्रा` : `${city.name} yatra`);
+      return this.itineraries.save(
+        user,
+        dto,
+        lang,
+        { title, days: [] },
+        await this.withTripExtras(empty, dto, lang),
+        'custom',
+        null,
+      );
+    }
     await this.quota.consume(user);
     const days = await this.candidates(dto, lang);
     const title = `${days
@@ -151,15 +179,139 @@ export class PlannerService {
       model = 'fallback';
     }
     await this.quota.record(user.userId, usage);
+    if (dto.groupName?.trim()) plan = { ...plan, title: dto.groupName.trim() };
     return this.itineraries.save(
       user,
       dto,
       lang,
       plan,
-      scheduleDays(plan, days, dto.pace ?? 'normal'),
+      await this.withTripExtras(scheduleDays(plan, days, dto.pace ?? 'normal'), dto, lang),
       model,
       raw,
     );
+  }
+
+  private async firstCity(dto: CreateItineraryDto) {
+    const all = await this.catalog.citySlugs();
+    const slug = dto.cities?.[0] ?? 'vrindavan';
+    const city = all.find((c) => c.slug === slug);
+    if (!city)
+      throw AppException.badRequest(
+        `Unknown city; choose from ${all.map((c) => c.slug).join(', ')}`,
+      );
+    return city;
+  }
+
+  /**
+   * Adds the group's own stops, arrival and departure, and hotel check-in to
+   * the scheduled days, then re-sorts each day by time. Aarti times are
+   * never touched: they still come only from the database.
+   */
+  private async withTripExtras(
+    days: ScheduledDay[],
+    dto: CreateItineraryDto,
+    lang: Lang,
+  ): Promise<ScheduledDay[]> {
+    const hi = lang === 'hi';
+    const hm = (v: string) => v.split(':').map(Number) as [number, number];
+    const at = (date: string, time: string, min: number) => {
+      const [h, m] = hm(time);
+      const s = istToUtc(date, h, m);
+      return {
+        startsAt: s.toISOString(),
+        endsAt: new Date(s.getTime() + min * 60_000).toISOString(),
+      };
+    };
+    const blank = {
+      templeId: null,
+      aartiScheduleId: null,
+      lat: null,
+      lng: null,
+      travelDistanceM: null,
+      travelDurationMin: null,
+      costPaise: 0,
+      note: null,
+    };
+    const templeIds = (dto.customStops ?? []).flatMap((c) => (c.templeId ? [c.templeId] : []));
+    const temples = templeIds.length ? await this.catalog.templesByIds(templeIds, lang) : [];
+    const mode: Record<string, string> = hi
+      ? { train: 'ट्रेन', bus: 'बस', car: 'कार', flight: 'फ़्लाइट', other: 'यात्रा' }
+      : { train: 'train', bus: 'bus', car: 'car', flight: 'flight', other: 'travel' };
+    return days.map((d, i) => {
+      const extra: ScheduledItem[] = [];
+      const last = i === days.length - 1;
+      const tr = dto.travel;
+      if (tr && i === 0) {
+        const how = mode[tr.arrivalMode] ?? tr.arrivalMode;
+        extra.push({
+          ...blank,
+          ref: 'arrival',
+          dayIndex: d.dayIndex,
+          kind: 'travel',
+          title: hi
+            ? `आगमन (${how}${tr.from ? `, ${tr.from} से` : ''})`
+            : `Arrive by ${how}${tr.from ? ` from ${tr.from}` : ''}`,
+          ...at(d.date, tr.arrivalTime ?? '08:00', 30),
+          durationMin: 30,
+          note: tr.details ?? null,
+        });
+      }
+      if (dto.stay && i === 0) {
+        const nights = Math.max(1, days.length - 1);
+        const rooms = dto.stay.rooms ?? 1;
+        extra.push({
+          ...blank,
+          ref: 'stay',
+          dayIndex: d.dayIndex,
+          kind: 'stay',
+          title: hi ? `होटल चेक-इन: ${dto.stay.name}` : `Check in: ${dto.stay.name}`,
+          ...at(d.date, dto.stay.checkInTime ?? '12:00', 30),
+          durationMin: 30,
+          costPaise: (dto.stay.nightlyPaise ?? 0) * rooms * nights,
+          note:
+            [
+              hi ? `${rooms} कमरे · ${nights} रात` : `${rooms} room(s) · ${nights} night(s)`,
+              dto.stay.address,
+              dto.stay.notes,
+            ]
+              .filter(Boolean)
+              .join(' · ') || null,
+        });
+      }
+      for (const c of (dto.customStops ?? []).filter((x) => x.dayIndex === d.dayIndex)) {
+        const t = c.templeId ? temples.find((x) => x.id === c.templeId) : undefined;
+        const len = c.durationMin ?? 60;
+        const time = c.time ?? '10:00';
+        extra.push({
+          ...blank,
+          ref: `custom-${extra.length}`,
+          dayIndex: d.dayIndex,
+          kind: t ? 'temple' : 'custom',
+          title: c.title,
+          templeId: t?.id ?? null,
+          lat: t?.lat ?? null,
+          lng: t?.lng ?? null,
+          ...at(d.date, time, len),
+          durationMin: len,
+          note: c.note ?? null,
+        });
+      }
+      if (tr?.departureTime && last) {
+        extra.push({
+          ...blank,
+          ref: 'departure',
+          dayIndex: d.dayIndex,
+          kind: 'travel',
+          title: hi ? 'वापसी की यात्रा' : 'Depart for home',
+          ...at(d.date, tr.departureTime, 30),
+          durationMin: 30,
+        });
+      }
+      const items = [...d.items, ...extra].sort((a, b) =>
+        (a.startsAt ?? '').localeCompare(b.startsAt ?? ''),
+      );
+      return { ...d, items };
+    });
   }
 
   /** Database-driven options per day; the model may only choose among these. */
