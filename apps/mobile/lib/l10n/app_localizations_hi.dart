@@ -917,4 +917,317 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get originalAudio => 'मूल ऑडियो';
+
+  @override
+  String get aartiDisclaimer =>
+      'आरती और दर्शन के समय मंदिर की सूची से हैं; त्योहारों पर बदल सकते हैं।';
+
+  @override
+  String get addMember => 'सदस्य जोड़ें';
+
+  @override
+  String get addMembersFirst => 'अपने समूह का कम से कम एक सदस्य जोड़ें';
+
+  @override
+  String get addStop => 'पड़ाव जोड़ें';
+
+  @override
+  String get address => 'पता';
+
+  @override
+  String get age => 'आयु';
+
+  @override
+  String get arrivalTime => 'आगमन (पहला दिन)';
+
+  @override
+  String get arrivingBy => 'आगमन का साधन';
+
+  @override
+  String get checkInTime => 'चेक-इन समय';
+
+  @override
+  String get cities => 'शहर';
+
+  @override
+  String get createAiPlan => 'AI योजना बनाएँ';
+
+  @override
+  String get createCustomPlan => 'मेरी योजना बनाएँ';
+
+  @override
+  String get customEmpty => 'हर दिन के लिए अपने पड़ाव जोड़ें: मंदिर, भोजन, ख़रीदारी, कुछ भी।';
+
+  @override
+  String get customNeedsStops =>
+      'अपनी योजना के लिए कम से कम एक पड़ाव, ठहरना या यात्रा विवरण जोड़ें';
+
+  @override
+  String get departureTime => 'वापसी (अंतिम दिन)';
+
+  @override
+  String get editMember => 'सदस्य बदलें';
+
+  @override
+  String get estCost => 'अनुमानित ख़र्च';
+
+  @override
+  String get gettingAround => 'स्थानीय साधन';
+
+  @override
+  String get groupName => 'समूह का नाम';
+
+  @override
+  String get groupNameHint => 'जैसे शर्मा परिवार यात्रा';
+
+  @override
+  String get interest_aarti => 'आरती';
+
+  @override
+  String get interest_festivals => 'त्योहार';
+
+  @override
+  String get interest_food => 'भोजन';
+
+  @override
+  String get interest_ghats => 'घाट';
+
+  @override
+  String get interest_parikrama => 'परिक्रमा';
+
+  @override
+  String get interest_shopping => 'ख़रीदारी';
+
+  @override
+  String get interest_temples => 'मंदिर';
+
+  @override
+  String get interests => 'रुचियाँ';
+
+  @override
+  String get invalidAge => '0 से 120 के बीच आयु लिखें';
+
+  @override
+  String get invalidPhone => '10 अंकों का मोबाइल नंबर लिखें';
+
+  @override
+  String get modeAi => 'AI योजना';
+
+  @override
+  String get modeCustom => 'अपनी योजना';
+
+  @override
+  String get modeAiHint =>
+      'हम असली आरती समय, आराम और यात्रा के अनुसार हर दिन बनाते हैं, फिर आपके पड़ाव जोड़ते हैं।';
+
+  @override
+  String get modeCustomHint => 'सिर्फ़ जो आप जोड़ें: आपके पड़ाव, ठहरना और यात्रा, सुंदर रूप में।';
+
+  @override
+  String get noteOptional => 'नोट (वैकल्पिक)';
+
+  @override
+  String get notesForGroup => 'समूह के लिए नोट्स';
+
+  @override
+  String get notesHint => 'साथ ले जाने का सामान, मिलने की जगह, पहनावा…';
+
+  @override
+  String get ownStay => 'या अपना ठहरना';
+
+  @override
+  String get ownStayHint => 'धर्मशाला, आश्रम या होटल का नाम';
+
+  @override
+  String get ownStopsHint => 'वैकल्पिक: ज़रूरी जगहें जोड़ें; हम उन्हें योजना में शामिल करेंगे।';
+
+  @override
+  String get phoneOptional => 'फ़ोन (वैकल्पिक)';
+
+  @override
+  String get pickHotel => 'TirthNow पर ठहरना चुनें';
+
+  @override
+  String get pilgrims => 'यात्री';
+
+  @override
+  String get planAnother => 'बदलें या नई यात्रा बनाएँ';
+
+  @override
+  String get planYourYatra => 'अपनी यात्रा प्लान करें';
+
+  @override
+  String get plannerHeroHint =>
+      'अकेले, परिवार या पूरा समूह: ठहरना, यात्रा और दर्शन एक ही योजना में।';
+
+  @override
+  String get planningStyle => 'योजना का तरीका';
+
+  @override
+  String get pricePerNight => 'कीमत / कमरा / रात';
+
+  @override
+  String get required => 'ज़रूरी';
+
+  @override
+  String get role_child => 'बच्चा';
+
+  @override
+  String get role_elder => 'बुज़ुर्ग';
+
+  @override
+  String get role_member => 'सदस्य';
+
+  @override
+  String get role_organiser => 'आयोजक';
+
+  @override
+  String get stay => 'ठहरना';
+
+  @override
+  String get stayOff => 'योजना में ठहरना नहीं जोड़ा जाएगा।';
+
+  @override
+  String get stopTitle => 'क्या';
+
+  @override
+  String get stopTitleHint => 'जैसे लोई बाज़ार में लस्सी';
+
+  @override
+  String get templeOptional => 'मंदिर (वैकल्पिक)';
+
+  @override
+  String get ticketDetails => 'टिकट विवरण';
+
+  @override
+  String get ticketDetailsHint => 'ट्रेन नंबर, PNR, कोच…';
+
+  @override
+  String get time => 'समय';
+
+  @override
+  String get travelDetails => 'यात्रा';
+
+  @override
+  String get travelOff => 'आगमन या वापसी नहीं जोड़ी जाएगी।';
+
+  @override
+  String get travel_bus => 'बस';
+
+  @override
+  String get travel_cab => 'कैब';
+
+  @override
+  String get travel_car => 'कार';
+
+  @override
+  String get travel_e_rickshaw => 'ई-रिक्शा';
+
+  @override
+  String get travel_flight => 'फ़्लाइट';
+
+  @override
+  String get travel_own_vehicle => 'अपना वाहन';
+
+  @override
+  String get travel_train => 'ट्रेन';
+
+  @override
+  String get travel_walk => 'पैदल';
+
+  @override
+  String get travellingFrom => 'कहाँ से';
+
+  @override
+  String get tripFamily => 'परिवार';
+
+  @override
+  String get tripGroup => 'समूह';
+
+  @override
+  String get tripSolo => 'अकेले';
+
+  @override
+  String get whenWhere => 'कब और कहाँ';
+
+  @override
+  String get whoIsTravelling => 'कौन जा रहा है';
+
+  @override
+  String get yatraGroup => 'यात्रा समूह';
+
+  @override
+  String get yourItinerary => 'आपका कार्यक्रम';
+
+  @override
+  String get yourOwnStops => 'आपके अपने पड़ाव';
+
+  @override
+  String get yourYatra => 'आपकी यात्रा';
+
+  @override
+  String ageYears(int age) {
+    return '$age वर्ष';
+  }
+
+  @override
+  String membersCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count सदस्य',
+      one: '1 सदस्य',
+      zero: 'अभी कोई सदस्य नहीं',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get night => 'रात';
+
+  @override
+  String get reelsFromBraj => 'ब्रज की रील्स';
+
+  @override
+  String get goodMorning => 'सुप्रभात · आज के दर्शन की योजना बनाएँ';
+
+  @override
+  String get goodAfternoon => 'शुभ दोपहर · आराम करें, फिर संध्या आरती';
+
+  @override
+  String get goodEvening => 'शुभ संध्या · संध्या आरती का समय';
+
+  @override
+  String get radheRadhe => 'राधे राधे';
+
+  @override
+  String get slide1Title => 'रात में प्रेम मंदिर';
+
+  @override
+  String get slide1Sub => 'रोशनी, संगमरमर और संगीतमय फव्वारा';
+
+  @override
+  String get slide2Title => 'परिवार या समूह की यात्रा प्लान करें';
+
+  @override
+  String get slide2Sub => 'सदस्य, ठहरना, यात्रा और सुंदर PDF';
+
+  @override
+  String get slide3Title => 'ब्रज की रील्स देखें';
+
+  @override
+  String get slide3Sub => 'दर्शन, आरती और यात्रा के पल';
+
+  @override
+  String get explore => 'देखें';
+
+  @override
+  String get planGroupYatra => 'समूह यात्रा प्लान करें';
+
+  @override
+  String get planGroupYatraSub =>
+      'अपना समूह, ठहरना और यात्रा जोड़ें। असली आरती समय के साथ दिन-प्रतिदिन की योजना पाएँ।';
+
+  @override
+  String get featMembers => 'सदस्य';
 }

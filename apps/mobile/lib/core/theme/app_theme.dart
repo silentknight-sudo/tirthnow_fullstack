@@ -106,6 +106,14 @@ abstract final class TnTheme {
       chipTheme: base.chipTheme.copyWith(
         backgroundColor: TnColors.card,
         selectedColor: TnColors.navy,
+        checkmarkColor: Colors.white,
+        // Readable on both states: ink on white, white on navy.
+        labelStyle: TextStyle(
+          color: WidgetStateColor.resolveWith(
+            (states) => states.contains(WidgetState.selected) ? Colors.white : TnColors.ink,
+          ),
+          fontWeight: FontWeight.w600,
+        ),
         side: const BorderSide(color: TnColors.line),
         shape: const StadiumBorder(),
       ),

@@ -1826,6 +1826,600 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Original audio'**
   String get originalAudio;
+
+  /// No description provided for @aartiDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Aarti and darshan times come from temple schedules and can change on festival days.'**
+  String get aartiDisclaimer;
+
+  /// No description provided for @addMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Add member'**
+  String get addMember;
+
+  /// No description provided for @addMembersFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least one member of your group'**
+  String get addMembersFirst;
+
+  /// No description provided for @addStop.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a stop'**
+  String get addStop;
+
+  /// No description provided for @address.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get address;
+
+  /// No description provided for @age.
+  ///
+  /// In en, this message translates to:
+  /// **'Age'**
+  String get age;
+
+  /// No description provided for @arrivalTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrival (day 1)'**
+  String get arrivalTime;
+
+  /// No description provided for @arrivingBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Arriving by'**
+  String get arrivingBy;
+
+  /// No description provided for @checkInTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Check-in time'**
+  String get checkInTime;
+
+  /// No description provided for @cities.
+  ///
+  /// In en, this message translates to:
+  /// **'Cities'**
+  String get cities;
+
+  /// No description provided for @createAiPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Create AI plan'**
+  String get createAiPlan;
+
+  /// No description provided for @createCustomPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Create my plan'**
+  String get createCustomPlan;
+
+  /// No description provided for @customEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your own stops for each day: temples, meals, shopping, anything.'**
+  String get customEmpty;
+
+  /// No description provided for @customNeedsStops.
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least one stop, a stay or travel details for a custom plan'**
+  String get customNeedsStops;
+
+  /// No description provided for @departureTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Departure (last day)'**
+  String get departureTime;
+
+  /// No description provided for @editMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit member'**
+  String get editMember;
+
+  /// No description provided for @estCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Est. cost'**
+  String get estCost;
+
+  /// No description provided for @gettingAround.
+  ///
+  /// In en, this message translates to:
+  /// **'Getting around'**
+  String get gettingAround;
+
+  /// No description provided for @groupName.
+  ///
+  /// In en, this message translates to:
+  /// **'Group name'**
+  String get groupName;
+
+  /// No description provided for @groupNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Sharma parivar yatra'**
+  String get groupNameHint;
+
+  /// No description provided for @interest_aarti.
+  ///
+  /// In en, this message translates to:
+  /// **'Aarti'**
+  String get interest_aarti;
+
+  /// No description provided for @interest_festivals.
+  ///
+  /// In en, this message translates to:
+  /// **'Festivals'**
+  String get interest_festivals;
+
+  /// No description provided for @interest_food.
+  ///
+  /// In en, this message translates to:
+  /// **'Food'**
+  String get interest_food;
+
+  /// No description provided for @interest_ghats.
+  ///
+  /// In en, this message translates to:
+  /// **'Ghats'**
+  String get interest_ghats;
+
+  /// No description provided for @interest_parikrama.
+  ///
+  /// In en, this message translates to:
+  /// **'Parikrama'**
+  String get interest_parikrama;
+
+  /// No description provided for @interest_shopping.
+  ///
+  /// In en, this message translates to:
+  /// **'Shopping'**
+  String get interest_shopping;
+
+  /// No description provided for @interest_temples.
+  ///
+  /// In en, this message translates to:
+  /// **'Temples'**
+  String get interest_temples;
+
+  /// No description provided for @interests.
+  ///
+  /// In en, this message translates to:
+  /// **'Interests'**
+  String get interests;
+
+  /// No description provided for @invalidAge.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter an age from 0 to 120'**
+  String get invalidAge;
+
+  /// No description provided for @invalidPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a 10-digit mobile number'**
+  String get invalidPhone;
+
+  /// No description provided for @modeAi.
+  ///
+  /// In en, this message translates to:
+  /// **'AI plan'**
+  String get modeAi;
+
+  /// No description provided for @modeCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom plan'**
+  String get modeCustom;
+
+  /// No description provided for @modeAiHint.
+  ///
+  /// In en, this message translates to:
+  /// **'We build each day around real aarti times, rest and travel, then add your own stops.'**
+  String get modeAiHint;
+
+  /// No description provided for @modeCustomHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Only what you add: your stops, stay and travel, nicely laid out.'**
+  String get modeCustomHint;
+
+  /// No description provided for @noteOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Note (optional)'**
+  String get noteOptional;
+
+  /// No description provided for @notesForGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes for the group'**
+  String get notesForGroup;
+
+  /// No description provided for @notesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Things to carry, meeting point, dress code…'**
+  String get notesHint;
+
+  /// No description provided for @ownStay.
+  ///
+  /// In en, this message translates to:
+  /// **'Or your own stay'**
+  String get ownStay;
+
+  /// No description provided for @ownStayHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Dharamshala, ashram or hotel name'**
+  String get ownStayHint;
+
+  /// No description provided for @ownStopsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional: add places you must visit; we fit them into the plan.'**
+  String get ownStopsHint;
+
+  /// No description provided for @phoneOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone (optional)'**
+  String get phoneOptional;
+
+  /// No description provided for @pickHotel.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a TirthNow stay'**
+  String get pickHotel;
+
+  /// No description provided for @pilgrims.
+  ///
+  /// In en, this message translates to:
+  /// **'Pilgrims'**
+  String get pilgrims;
+
+  /// No description provided for @planAnother.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit or plan another trip'**
+  String get planAnother;
+
+  /// No description provided for @planYourYatra.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan your yatra'**
+  String get planYourYatra;
+
+  /// No description provided for @plannerHeroHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Solo, family or a whole group: stays, travel and darshan in one plan.'**
+  String get plannerHeroHint;
+
+  /// No description provided for @planningStyle.
+  ///
+  /// In en, this message translates to:
+  /// **'Planning style'**
+  String get planningStyle;
+
+  /// No description provided for @pricePerNight.
+  ///
+  /// In en, this message translates to:
+  /// **'Price / room / night'**
+  String get pricePerNight;
+
+  /// No description provided for @required.
+  ///
+  /// In en, this message translates to:
+  /// **'Required'**
+  String get required;
+
+  /// No description provided for @role_child.
+  ///
+  /// In en, this message translates to:
+  /// **'Child'**
+  String get role_child;
+
+  /// No description provided for @role_elder.
+  ///
+  /// In en, this message translates to:
+  /// **'Elder'**
+  String get role_elder;
+
+  /// No description provided for @role_member.
+  ///
+  /// In en, this message translates to:
+  /// **'Member'**
+  String get role_member;
+
+  /// No description provided for @role_organiser.
+  ///
+  /// In en, this message translates to:
+  /// **'Organiser'**
+  String get role_organiser;
+
+  /// No description provided for @stay.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay'**
+  String get stay;
+
+  /// No description provided for @stayOff.
+  ///
+  /// In en, this message translates to:
+  /// **'We won\'t add a stay to the plan.'**
+  String get stayOff;
+
+  /// No description provided for @stopTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What'**
+  String get stopTitle;
+
+  /// No description provided for @stopTitleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Lassi at Loi Bazaar'**
+  String get stopTitleHint;
+
+  /// No description provided for @templeOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Temple (optional)'**
+  String get templeOptional;
+
+  /// No description provided for @ticketDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket details'**
+  String get ticketDetails;
+
+  /// No description provided for @ticketDetailsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Train no., PNR, coach…'**
+  String get ticketDetailsHint;
+
+  /// No description provided for @time.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get time;
+
+  /// No description provided for @travelDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Travel'**
+  String get travelDetails;
+
+  /// No description provided for @travelOff.
+  ///
+  /// In en, this message translates to:
+  /// **'We won\'t add arrival or departure.'**
+  String get travelOff;
+
+  /// No description provided for @travel_bus.
+  ///
+  /// In en, this message translates to:
+  /// **'Bus'**
+  String get travel_bus;
+
+  /// No description provided for @travel_cab.
+  ///
+  /// In en, this message translates to:
+  /// **'Cab'**
+  String get travel_cab;
+
+  /// No description provided for @travel_car.
+  ///
+  /// In en, this message translates to:
+  /// **'Car'**
+  String get travel_car;
+
+  /// No description provided for @travel_e_rickshaw.
+  ///
+  /// In en, this message translates to:
+  /// **'E-rickshaw'**
+  String get travel_e_rickshaw;
+
+  /// No description provided for @travel_flight.
+  ///
+  /// In en, this message translates to:
+  /// **'Flight'**
+  String get travel_flight;
+
+  /// No description provided for @travel_own_vehicle.
+  ///
+  /// In en, this message translates to:
+  /// **'Own vehicle'**
+  String get travel_own_vehicle;
+
+  /// No description provided for @travel_train.
+  ///
+  /// In en, this message translates to:
+  /// **'Train'**
+  String get travel_train;
+
+  /// No description provided for @travel_walk.
+  ///
+  /// In en, this message translates to:
+  /// **'On foot'**
+  String get travel_walk;
+
+  /// No description provided for @travellingFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'Travelling from'**
+  String get travellingFrom;
+
+  /// No description provided for @tripFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Family'**
+  String get tripFamily;
+
+  /// No description provided for @tripGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Group'**
+  String get tripGroup;
+
+  /// No description provided for @tripSolo.
+  ///
+  /// In en, this message translates to:
+  /// **'Solo'**
+  String get tripSolo;
+
+  /// No description provided for @whenWhere.
+  ///
+  /// In en, this message translates to:
+  /// **'When & where'**
+  String get whenWhere;
+
+  /// No description provided for @whoIsTravelling.
+  ///
+  /// In en, this message translates to:
+  /// **'Who\'s travelling'**
+  String get whoIsTravelling;
+
+  /// No description provided for @yatraGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Yatra group'**
+  String get yatraGroup;
+
+  /// No description provided for @yourItinerary.
+  ///
+  /// In en, this message translates to:
+  /// **'Your itinerary'**
+  String get yourItinerary;
+
+  /// No description provided for @yourOwnStops.
+  ///
+  /// In en, this message translates to:
+  /// **'Your own stops'**
+  String get yourOwnStops;
+
+  /// No description provided for @yourYatra.
+  ///
+  /// In en, this message translates to:
+  /// **'Your yatra'**
+  String get yourYatra;
+
+  /// No description provided for @ageYears.
+  ///
+  /// In en, this message translates to:
+  /// **'{age} yrs'**
+  String ageYears(int age);
+
+  /// No description provided for @membersCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No members yet} =1{1 member} other{{count} members}}'**
+  String membersCount(int count);
+
+  /// No description provided for @night.
+  ///
+  /// In en, this message translates to:
+  /// **'night'**
+  String get night;
+
+  /// No description provided for @reelsFromBraj.
+  ///
+  /// In en, this message translates to:
+  /// **'Reels from Braj'**
+  String get reelsFromBraj;
+
+  /// No description provided for @goodMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Good morning · plan your darshan'**
+  String get goodMorning;
+
+  /// No description provided for @goodAfternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Good afternoon · rest, then evening aarti'**
+  String get goodAfternoon;
+
+  /// No description provided for @goodEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Good evening · time for sandhya aarti'**
+  String get goodEvening;
+
+  /// No description provided for @radheRadhe.
+  ///
+  /// In en, this message translates to:
+  /// **'Radhe Radhe'**
+  String get radheRadhe;
+
+  /// No description provided for @slide1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Prem Mandir by night'**
+  String get slide1Title;
+
+  /// No description provided for @slide1Sub.
+  ///
+  /// In en, this message translates to:
+  /// **'Lights, marble and the musical fountain'**
+  String get slide1Sub;
+
+  /// No description provided for @slide2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan a family or group yatra'**
+  String get slide2Title;
+
+  /// No description provided for @slide2Sub.
+  ///
+  /// In en, this message translates to:
+  /// **'Members, stays, travel and a beautiful PDF'**
+  String get slide2Sub;
+
+  /// No description provided for @slide3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch reels from Braj'**
+  String get slide3Title;
+
+  /// No description provided for @slide3Sub.
+  ///
+  /// In en, this message translates to:
+  /// **'Darshan, aarti and yatra moments'**
+  String get slide3Sub;
+
+  /// No description provided for @explore.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore'**
+  String get explore;
+
+  /// No description provided for @planGroupYatra.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan a group yatra'**
+  String get planGroupYatra;
+
+  /// No description provided for @planGroupYatraSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your group, stay and travel. Get a day-by-day plan around real aarti times.'**
+  String get planGroupYatraSub;
+
+  /// No description provided for @featMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Members'**
+  String get featMembers;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

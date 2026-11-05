@@ -917,4 +917,317 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get originalAudio => 'Original audio';
+
+  @override
+  String get aartiDisclaimer =>
+      'Aarti and darshan times come from temple schedules and can change on festival days.';
+
+  @override
+  String get addMember => 'Add member';
+
+  @override
+  String get addMembersFirst => 'Add at least one member of your group';
+
+  @override
+  String get addStop => 'Add a stop';
+
+  @override
+  String get address => 'Address';
+
+  @override
+  String get age => 'Age';
+
+  @override
+  String get arrivalTime => 'Arrival (day 1)';
+
+  @override
+  String get arrivingBy => 'Arriving by';
+
+  @override
+  String get checkInTime => 'Check-in time';
+
+  @override
+  String get cities => 'Cities';
+
+  @override
+  String get createAiPlan => 'Create AI plan';
+
+  @override
+  String get createCustomPlan => 'Create my plan';
+
+  @override
+  String get customEmpty => 'Add your own stops for each day: temples, meals, shopping, anything.';
+
+  @override
+  String get customNeedsStops =>
+      'Add at least one stop, a stay or travel details for a custom plan';
+
+  @override
+  String get departureTime => 'Departure (last day)';
+
+  @override
+  String get editMember => 'Edit member';
+
+  @override
+  String get estCost => 'Est. cost';
+
+  @override
+  String get gettingAround => 'Getting around';
+
+  @override
+  String get groupName => 'Group name';
+
+  @override
+  String get groupNameHint => 'e.g. Sharma parivar yatra';
+
+  @override
+  String get interest_aarti => 'Aarti';
+
+  @override
+  String get interest_festivals => 'Festivals';
+
+  @override
+  String get interest_food => 'Food';
+
+  @override
+  String get interest_ghats => 'Ghats';
+
+  @override
+  String get interest_parikrama => 'Parikrama';
+
+  @override
+  String get interest_shopping => 'Shopping';
+
+  @override
+  String get interest_temples => 'Temples';
+
+  @override
+  String get interests => 'Interests';
+
+  @override
+  String get invalidAge => 'Enter an age from 0 to 120';
+
+  @override
+  String get invalidPhone => 'Enter a 10-digit mobile number';
+
+  @override
+  String get modeAi => 'AI plan';
+
+  @override
+  String get modeCustom => 'Custom plan';
+
+  @override
+  String get modeAiHint =>
+      'We build each day around real aarti times, rest and travel, then add your own stops.';
+
+  @override
+  String get modeCustomHint => 'Only what you add: your stops, stay and travel, nicely laid out.';
+
+  @override
+  String get noteOptional => 'Note (optional)';
+
+  @override
+  String get notesForGroup => 'Notes for the group';
+
+  @override
+  String get notesHint => 'Things to carry, meeting point, dress code…';
+
+  @override
+  String get ownStay => 'Or your own stay';
+
+  @override
+  String get ownStayHint => 'Dharamshala, ashram or hotel name';
+
+  @override
+  String get ownStopsHint => 'Optional: add places you must visit; we fit them into the plan.';
+
+  @override
+  String get phoneOptional => 'Phone (optional)';
+
+  @override
+  String get pickHotel => 'Pick a TirthNow stay';
+
+  @override
+  String get pilgrims => 'Pilgrims';
+
+  @override
+  String get planAnother => 'Edit or plan another trip';
+
+  @override
+  String get planYourYatra => 'Plan your yatra';
+
+  @override
+  String get plannerHeroHint =>
+      'Solo, family or a whole group: stays, travel and darshan in one plan.';
+
+  @override
+  String get planningStyle => 'Planning style';
+
+  @override
+  String get pricePerNight => 'Price / room / night';
+
+  @override
+  String get required => 'Required';
+
+  @override
+  String get role_child => 'Child';
+
+  @override
+  String get role_elder => 'Elder';
+
+  @override
+  String get role_member => 'Member';
+
+  @override
+  String get role_organiser => 'Organiser';
+
+  @override
+  String get stay => 'Stay';
+
+  @override
+  String get stayOff => 'We won\'t add a stay to the plan.';
+
+  @override
+  String get stopTitle => 'What';
+
+  @override
+  String get stopTitleHint => 'e.g. Lassi at Loi Bazaar';
+
+  @override
+  String get templeOptional => 'Temple (optional)';
+
+  @override
+  String get ticketDetails => 'Ticket details';
+
+  @override
+  String get ticketDetailsHint => 'Train no., PNR, coach…';
+
+  @override
+  String get time => 'Time';
+
+  @override
+  String get travelDetails => 'Travel';
+
+  @override
+  String get travelOff => 'We won\'t add arrival or departure.';
+
+  @override
+  String get travel_bus => 'Bus';
+
+  @override
+  String get travel_cab => 'Cab';
+
+  @override
+  String get travel_car => 'Car';
+
+  @override
+  String get travel_e_rickshaw => 'E-rickshaw';
+
+  @override
+  String get travel_flight => 'Flight';
+
+  @override
+  String get travel_own_vehicle => 'Own vehicle';
+
+  @override
+  String get travel_train => 'Train';
+
+  @override
+  String get travel_walk => 'On foot';
+
+  @override
+  String get travellingFrom => 'Travelling from';
+
+  @override
+  String get tripFamily => 'Family';
+
+  @override
+  String get tripGroup => 'Group';
+
+  @override
+  String get tripSolo => 'Solo';
+
+  @override
+  String get whenWhere => 'When & where';
+
+  @override
+  String get whoIsTravelling => 'Who\'s travelling';
+
+  @override
+  String get yatraGroup => 'Yatra group';
+
+  @override
+  String get yourItinerary => 'Your itinerary';
+
+  @override
+  String get yourOwnStops => 'Your own stops';
+
+  @override
+  String get yourYatra => 'Your yatra';
+
+  @override
+  String ageYears(int age) {
+    return '$age yrs';
+  }
+
+  @override
+  String membersCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count members',
+      one: '1 member',
+      zero: 'No members yet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get night => 'night';
+
+  @override
+  String get reelsFromBraj => 'Reels from Braj';
+
+  @override
+  String get goodMorning => 'Good morning · plan your darshan';
+
+  @override
+  String get goodAfternoon => 'Good afternoon · rest, then evening aarti';
+
+  @override
+  String get goodEvening => 'Good evening · time for sandhya aarti';
+
+  @override
+  String get radheRadhe => 'Radhe Radhe';
+
+  @override
+  String get slide1Title => 'Prem Mandir by night';
+
+  @override
+  String get slide1Sub => 'Lights, marble and the musical fountain';
+
+  @override
+  String get slide2Title => 'Plan a family or group yatra';
+
+  @override
+  String get slide2Sub => 'Members, stays, travel and a beautiful PDF';
+
+  @override
+  String get slide3Title => 'Watch reels from Braj';
+
+  @override
+  String get slide3Sub => 'Darshan, aarti and yatra moments';
+
+  @override
+  String get explore => 'Explore';
+
+  @override
+  String get planGroupYatra => 'Plan a group yatra';
+
+  @override
+  String get planGroupYatraSub =>
+      'Add your group, stay and travel. Get a day-by-day plan around real aarti times.';
+
+  @override
+  String get featMembers => 'Members';
 }

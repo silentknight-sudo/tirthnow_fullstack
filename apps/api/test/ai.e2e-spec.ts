@@ -391,13 +391,19 @@ describe('AI guide', () => {
       new Date(`${start}T03:45:00.000Z`).toISOString(),
     );
     expect(d0.find((i) => i.kind === 'stay')?.title).toBe('Check in: Braj Residency');
+    // Nothing is scheduled before the train arrives.
+    expect(d0[0]?.kind).toBe('travel');
     const d1 = ai.body.dayList[1].items as { kind: string; title: string; startsAt: string }[];
     expect(d1.map((i) => i.title)).toEqual(
       expect.arrayContaining(['Lassi at Loi Bazaar', 'Depart for home']),
     );
     expect(d1.map((i) => i.startsAt)).toEqual([...d1.map((i) => i.startsAt)].sort());
-    // Stay cost = 2 rooms x 1 night.
-    expect(ai.body.estimatedCostPaise).toBe(2 * 2 * 3 * 25_000 + 2 * 250_000);
+    // Stay cost = 2 rooms x 1 night, plus meals that fit between arrival and departure.
+    const cost = (ai.body.dayList as { items: { estCostPaise: number | null }[] }[])
+      .flatMap((d) => d.items)
+      .reduce((sum, i) => sum + (i.estCostPaise ?? 0), 0);
+    expect(ai.body.estimatedCostPaise).toBe(cost);
+    expect(d0.find((i) => i.kind === 'stay')).toMatchObject({ estCostPaise: 2 * 250_000 });
 
     // Shared links hide members' phone numbers.
     const share = await t.http

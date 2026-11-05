@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -6,9 +8,10 @@ import '../../../core/api/api_models.dart';
 import '../../../core/format/formatters.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/widgets/common.dart';
-import '../../../core/widgets/place_images.dart';
+import '../../auth/data/session_controller.dart';
 import '../../catalog/data/catalog_repository.dart';
 import '../../catalog/presentation/temples_screen.dart' show TempleCard, crowdLabel;
+import '../../reels/data/reels_repository.dart';
 
 /// Home: guide search, at-a-glance cards (weather, crowd, next aarti, darshan),
 /// quick access grid, trip planner banner, popular temples and festivals.
@@ -25,7 +28,8 @@ class HomeScreen extends ConsumerWidget {
         ..invalidate(upcomingAartiProvider)
         ..invalidate(festivalsProvider)
         ..invalidate(weatherProvider)
-        ..invalidate(templesProvider);
+        ..invalidate(templesProvider)
+        ..invalidate(reelsFeedProvider(forYouFeed));
       await ref.read(upcomingAartiProvider.future);
     }
 
@@ -38,12 +42,20 @@ class HomeScreen extends ConsumerWidget {
             padding: const EdgeInsets.only(bottom: 110),
             children: [
               const _Header(),
+              const _Greeting(),
               const _GuideSearch(),
+              const _HeroCarousel(),
               const _GlanceCards(),
               _SectionHeader(l.quickAccess),
               const _QuickAccess(),
               const SizedBox(height: 8),
-              const _PlannerBanner(),
+              const _GroupYatraCard(),
+              _SectionHeader(
+                l.reelsFromBraj,
+                action: l.viewAll,
+                onAction: () => context.push('/reels'),
+              ),
+              const _ReelsStrip(),
               _SectionHeader(
                 l.popularTemples,
                 action: l.viewAll,
@@ -583,82 +595,6 @@ class _QuickAccess extends StatelessWidget {
   }
 }
 
-class _PlannerBanner extends StatelessWidget {
-  const _PlannerBanner();
-
-  @override
-  Widget build(BuildContext context) {
-    final l = context.l10n;
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
-      child: Material(
-        borderRadius: BorderRadius.circular(20),
-        clipBehavior: Clip.antiAlias,
-        elevation: 2,
-        shadowColor: const Color(0x331C3C6B),
-        child: InkWell(
-          onTap: () => context.push('/guide/planner'),
-          child: AspectRatio(
-            aspectRatio: 2.8,
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                Image.asset(
-                  plannerBannerImage,
-                  fit: BoxFit.cover,
-                  alignment: Alignment.centerRight,
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          const Icon(Icons.auto_awesome, color: TnColors.navy, size: 20),
-                          const SizedBox(width: 6),
-                          Text(
-                            l.tripPlannerTitle,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w800,
-                              color: TnColors.navy,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 4),
-                      SizedBox(
-                        width: 190,
-                        child: Text(
-                          l.tripPlannerBody,
-                          style: const TextStyle(color: TnColors.ink, fontSize: 13),
-                        ),
-                      ),
-                      const Spacer(),
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        child: FilledButton(
-                          onPressed: () => context.push('/guide/planner'),
-                          style: FilledButton.styleFrom(
-                            minimumSize: const Size(0, 38),
-                            padding: const EdgeInsets.symmetric(horizontal: 18),
-                          ),
-                          child: Text(l.planTrip),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class _PopularTemples extends ConsumerWidget {
   const _PopularTemples();
 
@@ -761,6 +697,367 @@ class _TrustStrip extends StatelessWidget {
               ),
             ),
         ],
+      ),
+    );
+  }
+}
+
+/// "Radhe Radhe, Ramesh 🙏" with a time-of-day line.
+class _Greeting extends ConsumerWidget {
+  const _Greeting();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = context.l10n;
+    final name = ref.watch(sessionProvider).user?.displayName;
+    final h = toIst(DateTime.now().toUtc()).hour;
+    final part = h < 12 ? l.goodMorning : (h < 17 ? l.goodAfternoon : l.goodEvening);
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 6, 16, 2),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            name == null || name.isEmpty
+                ? l.radheRadhe
+                : '${l.radheRadhe}, ${name.split(' ').first}',
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: TnColors.ink),
+          ),
+          Text(part, style: const TextStyle(color: TnColors.muted, fontSize: 13)),
+        ],
+      ),
+    );
+  }
+}
+
+class _Slide {
+  const _Slide(this.image, this.title, this.subtitle, this.route);
+  final String image;
+  final String title;
+  final String subtitle;
+  final String route;
+}
+
+/// Auto-advancing photo carousel with soft gradient, title and a CTA.
+class _HeroCarousel extends StatefulWidget {
+  const _HeroCarousel();
+
+  @override
+  State<_HeroCarousel> createState() => _HeroCarouselState();
+}
+
+class _HeroCarouselState extends State<_HeroCarousel> {
+  final _pages = PageController(viewportFraction: 0.92);
+  Timer? _timer;
+  int _index = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(const Duration(seconds: 5), (_) {
+      if (!_pages.hasClients) return;
+      unawaited(
+        _pages.animateToPage(
+          (_index + 1) % 3,
+          duration: const Duration(milliseconds: 600),
+          curve: Curves.easeInOutCubic,
+        ),
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _pages.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final slides = [
+      _Slide('assets/images/canva/prem-mandir.jpg', l.slide1Title, l.slide1Sub, '/temples'),
+      _Slide('assets/images/canva/planner.jpg', l.slide2Title, l.slide2Sub, '/guide/planner'),
+      _Slide('assets/images/canva/radha-kund.jpg', l.slide3Title, l.slide3Sub, '/reels'),
+    ];
+    return Column(
+      children: [
+        SizedBox(
+          height: 168,
+          child: PageView.builder(
+            controller: _pages,
+            itemCount: slides.length,
+            onPageChanged: (i) => setState(() => _index = i),
+            itemBuilder: (_, i) {
+              final s = slides[i];
+              return GestureDetector(
+                onTap: () => context.push(s.route),
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: const [
+                      BoxShadow(color: Color(0x261C3C6B), blurRadius: 14, offset: Offset(0, 6)),
+                    ],
+                  ),
+                  clipBehavior: Clip.antiAlias,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Image.asset(s.image, fit: BoxFit.cover),
+                      const DecoratedBox(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            colors: [Color(0xD90C1A30), Color(0x330C1A30)],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 16,
+                        top: 16,
+                        right: 110,
+                        bottom: 14,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              s.title,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 19,
+                                fontWeight: FontWeight.w800,
+                                height: 1.15,
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              s.subtitle,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(color: Colors.white70, fontSize: 12.5),
+                            ),
+                            const Spacer(),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                              decoration: BoxDecoration(
+                                color: TnColors.saffron,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    l.explore,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 12.5,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  const Icon(
+                                    Icons.arrow_forward_rounded,
+                                    color: Colors.white,
+                                    size: 15,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        const SizedBox(height: 6),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            for (var i = 0; i < slides.length; i++)
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 250),
+                margin: const EdgeInsets.symmetric(horizontal: 3),
+                width: i == _index ? 18 : 6,
+                height: 6,
+                decoration: BoxDecoration(
+                  color: i == _index ? TnColors.saffron : TnColors.line,
+                  borderRadius: BorderRadius.circular(3),
+                ),
+              ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+/// Planner entry point that shows what the planner can do for a group.
+class _GroupYatraCard extends StatelessWidget {
+  const _GroupYatraCard();
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    Widget feat(IconData icon, String label) => Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(9),
+          decoration: const BoxDecoration(color: Color(0x26FFFFFF), shape: BoxShape.circle),
+          child: Icon(icon, color: Colors.white, size: 19),
+        ),
+        const SizedBox(height: 5),
+        Text(label, style: const TextStyle(color: Colors.white, fontSize: 11)),
+      ],
+    );
+    return GestureDetector(
+      onTap: () => context.push('/guide/planner'),
+      child: Container(
+        margin: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(22),
+          gradient: const LinearGradient(
+            colors: [TnColors.navy, Color(0xFF6A3FA0), TnColors.saffron],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          boxShadow: const [
+            BoxShadow(color: Color(0x401C3C6B), blurRadius: 16, offset: Offset(0, 8)),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Icon(Icons.auto_awesome, color: Colors.white, size: 20),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    l.planGroupYatra,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ),
+                const Icon(Icons.arrow_forward_rounded, color: Colors.white),
+              ],
+            ),
+            const SizedBox(height: 4),
+            Text(
+              l.planGroupYatraSub,
+              style: const TextStyle(color: Colors.white70, fontSize: 12.5),
+            ),
+            const SizedBox(height: 14),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                feat(Icons.groups_rounded, l.featMembers),
+                feat(Icons.hotel_rounded, l.stay),
+                feat(Icons.train_rounded, l.travelDetails),
+                feat(Icons.picture_as_pdf_rounded, 'PDF'),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Horizontal strip of reel covers; tap opens the reels feed.
+class _ReelsStrip extends ConsumerWidget {
+  const _ReelsStrip();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final reels = ref.watch(reelsFeedProvider(forYouFeed)).value?.data ?? const <ReelResponse>[];
+    if (reels.isEmpty) return const SizedBox.shrink();
+    return SizedBox(
+      height: 196,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        itemCount: reels.length.clamp(0, 10),
+        separatorBuilder: (_, _) => const SizedBox(width: 10),
+        itemBuilder: (_, i) {
+          final r = reels[i];
+          return GestureDetector(
+            onTap: () => context.push('/reels'),
+            child: Container(
+              width: 112,
+              decoration: BoxDecoration(
+                color: TnColors.night,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  if (r.posterUrl != null)
+                    Image.network(
+                      r.posterUrl!,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, _, _) => const SizedBox.shrink(),
+                    ),
+                  const DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment(0, 0.2),
+                        end: Alignment.bottomCenter,
+                        colors: [Colors.transparent, Color(0xCC000000)],
+                      ),
+                    ),
+                  ),
+                  const Positioned(
+                    top: 8,
+                    right: 8,
+                    child: Icon(Icons.play_circle_fill_rounded, color: Colors.white, size: 22),
+                  ),
+                  Positioned(
+                    left: 8,
+                    right: 8,
+                    bottom: 8,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '@${r.creator.displayName}',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 12,
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            const Icon(Icons.favorite_rounded, color: Colors.white70, size: 12),
+                            const SizedBox(width: 3),
+                            Text(
+                              '${r.likeCount >= 1000 ? '${(r.likeCount / 1000).toStringAsFixed(1)}K' : r.likeCount}',
+                              style: const TextStyle(color: Colors.white70, fontSize: 11),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }

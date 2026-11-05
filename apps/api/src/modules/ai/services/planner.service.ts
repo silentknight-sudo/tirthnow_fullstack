@@ -307,7 +307,15 @@ export class PlannerService {
           durationMin: 30,
         });
       }
-      const items = [...d.items, ...extra].sort((a, b) =>
+      // Nothing before the group arrives on day 1 or after it leaves on the last day.
+      const arriveAt = tr && i === 0 ? at(d.date, tr.arrivalTime ?? '08:00', 30).endsAt : null;
+      const leaveAt = tr?.departureTime && last ? at(d.date, tr.departureTime, 0).startsAt : null;
+      const planned = d.items.filter(
+        (it) =>
+          (!arriveAt || (it.startsAt ?? '') >= arriveAt) &&
+          (!leaveAt || (it.endsAt ?? it.startsAt ?? '') <= leaveAt),
+      );
+      const items = [...planned, ...extra].sort((a, b) =>
         (a.startsAt ?? '').localeCompare(b.startsAt ?? ''),
       );
       return { ...d, items };
