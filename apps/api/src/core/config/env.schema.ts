@@ -32,7 +32,9 @@ export const envSchema = z
     PROCESS_ROLE: z.enum(['api', 'worker', 'all']).default('all'),
     API_PORT: z.coerce.number().int().positive().default(4000),
     WORKER_PORT: z.coerce.number().int().positive().default(4100),
-    API_PUBLIC_URL: z.string().url().default('http://localhost:4000'),
+    /** Public origin of this API. On Render it falls back to RENDER_EXTERNAL_URL. */
+    API_PUBLIC_URL: z.string().url().optional(),
+    RENDER_EXTERNAL_URL: z.string().url().optional(),
     LOG_LEVEL: z
       .enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent'])
       .default('info'),

@@ -131,7 +131,10 @@ export function loadConfig(source: NodeJS.ProcessEnv): AppConfig {
     processRole: e.PROCESS_ROLE,
     port: e.API_PORT,
     workerPort: e.WORKER_PORT,
-    publicUrl: e.API_PUBLIC_URL,
+    publicUrl: (e.API_PUBLIC_URL ?? e.RENDER_EXTERNAL_URL ?? 'http://localhost:4000').replace(
+      /\/$/,
+      '',
+    ),
     logLevel: e.LOG_LEVEL,
     corsOrigins: e.CORS_ORIGINS,
     trustProxy: e.TRUST_PROXY,

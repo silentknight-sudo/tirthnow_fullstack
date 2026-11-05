@@ -618,7 +618,6 @@ async function seedDemoCreator(): Promise<void> {
     update: { displayName: 'adiyogi' },
   });
   await grantRoles(userId, [{ key: 'user' }]);
-  const base = (process.env.API_PUBLIC_URL ?? 'http://localhost:4000').replace(/\/$/, '');
   const now = Date.now();
   for (const [i, r] of DEMO_REELS.entries()) {
     const videoId = sid(`media:demo-reel:${r.key}`);
@@ -646,8 +645,8 @@ async function seedDemoCreator(): Promise<void> {
       cityId: sid('city:vrindavan'),
       templeId: r.temple ? sid(`temple:${r.temple}`) : null,
       durationMs: 20_000,
-      playbackUrl: `${base}/demo-media/${r.key}.mp4`,
-      posterUrl: `${base}/demo-media/${r.key}.jpg`,
+      playbackUrl: `/demo-media/${r.key}.mp4`,
+      posterUrl: `/demo-media/${r.key}.jpg`,
       status: 'published' as const,
       moderationStatus: 'approved' as const,
       likeCount: r.likes,

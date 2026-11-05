@@ -6,6 +6,7 @@ import { type Lang } from '@tirth-now/shared-types';
 import { type Job, type Queue } from 'bullmq';
 import { type AuthPrincipal, hasAnyRole } from '../../../core/auth';
 import { CacheService } from '../../../core/cache';
+import { APP_CONFIG, type AppConfig } from '../../../core/config';
 import { AppException } from '../../../core/http';
 import { MaintenanceRegistry } from '../../../core/maintenance';
 import { PrismaService } from '../../../core/prisma';
@@ -59,7 +60,13 @@ export class ReelsService implements OnModuleInit {
     @Inject(VIDEO_PROVIDER) private readonly video: VideoProvider,
     @Inject(MODERATION_PROVIDER) private readonly moderator: ModerationProvider,
     @InjectQueue(QUEUES.media) private readonly mediaQueue: Queue,
+    @Inject(APP_CONFIG) private readonly config: AppConfig,
   ) {}
+
+  /** Media stored as a path (e.g. seeded /demo-media/…) is served by this API. */
+  private absolute(url: string | null): string | null {
+    return url?.startsWith('/') ? `${this.config.publicUrl}${url}` : url;
+  }
 
   onModuleInit(): void {
     this.files.registerMediaHandler(TRANSCODE_JOB, (job: Job) =>
@@ -518,8 +525,8 @@ export class ReelsService implements OnModuleInit {
       templeName: r.templeId ? (templeNames.get(r.templeId) ?? null) : null,
       status: r.status,
       moderationStatus: r.moderationStatus,
-      playbackUrl: r.playbackUrl,
-      posterUrl: r.posterUrl,
+      playbackUrl: this.absolute(r.playbackUrl),
+      posterUrl: this.absolute(r.posterUrl),
       durationMs: r.durationMs,
       likeCount: r.likeCount,
       commentCount: r.commentCount,
