@@ -23,7 +23,8 @@ sign in with any number.
    - `CORS_ORIGINS`: the website origin(s), comma-separated, e.g.
      `https://tirthnow.vercel.app`. The Android app does not need CORS.
 4. Wait for the first deploy. The start command applies migrations and runs the
-   idempotent seed (temples, aarti schedules, hotels…), then starts the API.
+   idempotent seed (temples, aarti schedules, hotels…) in the background while the
+   API starts, so the port opens immediately.
 5. Check `https://<service>.onrender.com/healthz` → `{"status":"ok"}`. API docs are at
    `/docs`.
 

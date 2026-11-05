@@ -23,7 +23,9 @@ services:
     region: singapore
     healthCheckPath: /healthz
     buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm --filter "@tirth-now/api..." build
-    startCommand: pnpm --filter @tirth-now/api db:deploy && pnpm --filter @tirth-now/api db:seed && node apps/api/dist/main.js
+    # Migrations must finish first; the idempotent seed then runs in the background
+    # so the API binds its port right away (Render times out after ~15 min otherwise).
+    startCommand: pnpm --filter @tirth-now/api db:deploy && { (pnpm --filter @tirth-now/api db:seed || echo "seed failed") & node apps/api/dist/main.js; }
     envVars:
       - key: NODE_VERSION
         value: '22'
