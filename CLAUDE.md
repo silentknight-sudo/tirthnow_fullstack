@@ -124,6 +124,7 @@ Do not use plain `prisma migrate dev` to create migrations (it will offer to dro
 
 - `trips` module: start/end trip (push + in-app `trip_started` / `trip_ended`), history, `/t/:token` tracking link (outside `/v1`), family groups with join codes. Location is stored only while the traveller shares it, and a group sees it only if the member also consented for that group.
 - App: My Trips (`/trips`), Family (`/trips/family`), Aarti lyrics + audio (`assets/aarti`, `/aarti`), Pooja Items (`/pooja`), People (`/people`, demo pilgrims always carry a DEMO badge), Edit profile (`/account/edit`). Bottom bar: Home · AI Guide · Reels · My Trips · Profile (QR scan removed; photo scan stays in the Guide).
+- Yatra Journey (`/journey`): the website's journey tool in Flutter; data in `apps/mobile/assets/journey/journey.json`, regenerated from `apps/website/lib/journey*.ts` with `npx tsx apps/mobile/tool/export_journey.ts`. Voice guide uses the phone's own TTS (`flutter_tts`).
 - AI Guide voice: tap or hold the mic, spoken replies after voice questions, play/pause/stop, and `POST /v1/ai/voice/translate` to hear answers in Hindi or English.
 
 ## How the vendor portal fits (Phase 4)

@@ -1505,4 +1505,61 @@ class AppLocalizationsEn extends AppLocalizations {
   String familyInvite(String name, String code) {
     return 'Join our TirthNow family group \"$name\" to follow our pilgrimage 🙏 Open TirthNow → My Trips → Family tracking → Join with code: $code';
   }
+
+  @override
+  String get yatraJourney => 'Yatra Journey';
+
+  @override
+  String get yatraJourneySub =>
+      'Ride a Braj yatra stop by stop with a voice guide, fares and darshan tips';
+
+  @override
+  String get rideYatraJourney => 'Ride the Yatra Journey';
+
+  @override
+  String get journeyStop => 'Stop';
+
+  @override
+  String get journeyKm => 'km';
+
+  @override
+  String get journeyFare => 'Fare (est.)';
+
+  @override
+  String get journeySpeed => 'Speed';
+
+  @override
+  String get journeyPrev => 'Previous stop';
+
+  @override
+  String get journeyNext => 'Next stop';
+
+  @override
+  String get journeyStart => 'Start journey';
+
+  @override
+  String get journeyContinue => 'Continue';
+
+  @override
+  String get journeyRestart => 'Ride again';
+
+  @override
+  String get voiceGuide => 'Voice guide';
+
+  @override
+  String get pilgrimTips => 'Pilgrim tips';
+
+  @override
+  String get journeyNote =>
+      'Illustrative map, not to scale. Distances and fares are sample estimates; check live darshan timings on each temple page.';
+
+  @override
+  String visitMins(int mins) {
+    return '~$mins min visit';
+  }
+
+  @override
+  String nextStopIn(String km) {
+    return 'Next stop $km km';
+  }
 }

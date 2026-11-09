@@ -2942,6 +2942,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Join our TirthNow family group \"{name}\" to follow our pilgrimage 🙏 Open TirthNow → My Trips → Family tracking → Join with code: {code}'**
   String familyInvite(String name, String code);
+
+  /// No description provided for @yatraJourney.
+  ///
+  /// In en, this message translates to:
+  /// **'Yatra Journey'**
+  String get yatraJourney;
+
+  /// No description provided for @yatraJourneySub.
+  ///
+  /// In en, this message translates to:
+  /// **'Ride a Braj yatra stop by stop with a voice guide, fares and darshan tips'**
+  String get yatraJourneySub;
+
+  /// No description provided for @rideYatraJourney.
+  ///
+  /// In en, this message translates to:
+  /// **'Ride the Yatra Journey'**
+  String get rideYatraJourney;
+
+  /// No description provided for @journeyStop.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop'**
+  String get journeyStop;
+
+  /// No description provided for @journeyKm.
+  ///
+  /// In en, this message translates to:
+  /// **'km'**
+  String get journeyKm;
+
+  /// No description provided for @journeyFare.
+  ///
+  /// In en, this message translates to:
+  /// **'Fare (est.)'**
+  String get journeyFare;
+
+  /// No description provided for @journeySpeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed'**
+  String get journeySpeed;
+
+  /// No description provided for @journeyPrev.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous stop'**
+  String get journeyPrev;
+
+  /// No description provided for @journeyNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next stop'**
+  String get journeyNext;
+
+  /// No description provided for @journeyStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start journey'**
+  String get journeyStart;
+
+  /// No description provided for @journeyContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get journeyContinue;
+
+  /// No description provided for @journeyRestart.
+  ///
+  /// In en, this message translates to:
+  /// **'Ride again'**
+  String get journeyRestart;
+
+  /// No description provided for @voiceGuide.
+  ///
+  /// In en, this message translates to:
+  /// **'Voice guide'**
+  String get voiceGuide;
+
+  /// No description provided for @pilgrimTips.
+  ///
+  /// In en, this message translates to:
+  /// **'Pilgrim tips'**
+  String get pilgrimTips;
+
+  /// No description provided for @journeyNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Illustrative map, not to scale. Distances and fares are sample estimates; check live darshan timings on each temple page.'**
+  String get journeyNote;
+
+  /// No description provided for @visitMins.
+  ///
+  /// In en, this message translates to:
+  /// **'~{mins} min visit'**
+  String visitMins(int mins);
+
+  /// No description provided for @nextStopIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Next stop {km} km'**
+  String nextStopIn(String km);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

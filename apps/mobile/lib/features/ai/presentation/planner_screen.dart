@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -712,49 +713,88 @@ class _PlannerHero extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = context.l10n;
     return ClipRRect(
-      borderRadius: BorderRadius.circular(20),
-      child: Stack(
-        children: [
-          Image.asset(
-            'assets/images/canva/planner.jpg',
-            height: 150,
-            width: double.infinity,
-            fit: BoxFit.cover,
-          ),
-          Container(
-            height: 150,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xE61C3C6B), Color(0x661C3C6B)],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
+      borderRadius: BorderRadius.circular(22),
+      child: AspectRatio(
+        aspectRatio: 2,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            // Krishna ji with his flute in Vrindavan (Canva).
+            Image.asset(
+              'assets/images/canva/krishna-planner.jpg',
+              fit: BoxFit.cover,
+              alignment: Alignment.centerRight,
+            ),
+            const DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0xE61C3C6B), Color(0x991C3C6B), Color(0x001C3C6B)],
+                  stops: [0, 0.38, 0.62],
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                ),
               ),
             ),
-          ),
-          Positioned(
-            left: 18,
-            top: 22,
-            right: 120,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  l.planYourYatra,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 22,
-                    fontWeight: FontWeight.w800,
+            Positioned(
+              left: 16,
+              top: 16,
+              bottom: 14,
+              right: 150,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l.planYourYatra,
+                    style: const TextStyle(
+                      fontFamily: 'Cormorant',
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w700,
+                      height: 1.05,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  l.plannerHeroHint,
-                  style: const TextStyle(color: Colors.white70, fontSize: 13, height: 1.3),
-                ),
-              ],
+                  const SizedBox(height: 4),
+                  Text(
+                    l.plannerHeroHint,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(color: Colors.white70, fontSize: 11.5, height: 1.3),
+                  ),
+                  const Spacer(),
+                  GestureDetector(
+                    onTap: () => context.push('/journey'),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: TnColors.saffron,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text('🛺', style: TextStyle(fontSize: 13)),
+                          const SizedBox(width: 5),
+                          Flexible(
+                            child: Text(
+                              l.rideYatraJourney,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 11.5,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

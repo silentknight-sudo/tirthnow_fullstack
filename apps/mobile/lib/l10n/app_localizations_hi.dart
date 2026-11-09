@@ -1504,4 +1504,61 @@ class AppLocalizationsHi extends AppLocalizations {
   String familyInvite(String name, String code) {
     return 'हमारी तीर्थयात्रा देखने के लिए TirthNow परिवार समूह \"$name\" से जुड़ें 🙏 TirthNow खोलें → मेरी यात्राएँ → परिवार ट्रैकिंग → कोड से जुड़ें: $code';
   }
+
+  @override
+  String get yatraJourney => 'यात्रा जर्नी';
+
+  @override
+  String get yatraJourneySub =>
+      'वॉइस गाइड, किराया और दर्शन सुझावों के साथ ब्रज यात्रा पड़ाव-दर-पड़ाव';
+
+  @override
+  String get rideYatraJourney => 'यात्रा जर्नी पर चलें';
+
+  @override
+  String get journeyStop => 'पड़ाव';
+
+  @override
+  String get journeyKm => 'किमी';
+
+  @override
+  String get journeyFare => 'किराया (अनुमान)';
+
+  @override
+  String get journeySpeed => 'गति';
+
+  @override
+  String get journeyPrev => 'पिछला पड़ाव';
+
+  @override
+  String get journeyNext => 'अगला पड़ाव';
+
+  @override
+  String get journeyStart => 'यात्रा शुरू करें';
+
+  @override
+  String get journeyContinue => 'जारी रखें';
+
+  @override
+  String get journeyRestart => 'फिर से चलें';
+
+  @override
+  String get voiceGuide => 'वॉइस गाइड';
+
+  @override
+  String get pilgrimTips => 'यात्री सुझाव';
+
+  @override
+  String get journeyNote =>
+      'चित्रात्मक नक्शा, पैमाने पर नहीं। दूरी और किराया नमूना अनुमान हैं; दर्शन का समय हर मंदिर के पेज पर देखें।';
+
+  @override
+  String visitMins(int mins) {
+    return 'लगभग $mins मिनट';
+  }
+
+  @override
+  String nextStopIn(String km) {
+    return 'अगला पड़ाव $km किमी';
+  }
 }

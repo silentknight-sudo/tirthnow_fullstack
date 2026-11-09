@@ -51,6 +51,7 @@ class HomeScreen extends ConsumerWidget {
               const _QuickAccess(),
               const SizedBox(height: 8),
               const _GroupYatraCard(),
+              const _JourneyCard(),
               _SectionHeader(
                 l.reelsFromBraj,
                 action: l.viewAll,
@@ -1162,6 +1163,90 @@ class _ReelsStrip extends ConsumerWidget {
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+/// Entry to the Yatra Journey: ride a yatra stop by stop with a voice guide.
+class _JourneyCard extends StatelessWidget {
+  const _JourneyCard();
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    return GestureDetector(
+      onTap: () => context.push('/journey'),
+      child: Container(
+        margin: const EdgeInsets.fromLTRB(16, 10, 16, 0),
+        height: 112,
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(22),
+          boxShadow: const [
+            BoxShadow(color: Color(0x261C3C6B), blurRadius: 14, offset: Offset(0, 6)),
+          ],
+        ),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.asset(
+              'assets/images/canva/krishna-planner.jpg',
+              fit: BoxFit.cover,
+              alignment: Alignment.centerRight,
+            ),
+            const DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0xF20C1A30), Color(0x990C1A30), Color(0x000C1A30)],
+                  stops: [0, 0.45, 0.7],
+                ),
+              ),
+            ),
+            Positioned(
+              left: 16,
+              top: 14,
+              right: 140,
+              bottom: 12,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l.yatraJourney,
+                    style: const TextStyle(
+                      fontFamily: 'Cormorant',
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    l.yatraJourneySub,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(color: Colors.white70, fontSize: 11.5, height: 1.25),
+                  ),
+                  const Spacer(),
+                  Row(
+                    children: [
+                      const Text('🛺 🛕 🪔', style: TextStyle(fontSize: 13)),
+                      const SizedBox(width: 8),
+                      Text(
+                        '${l.journeyStart} →',
+                        style: const TextStyle(
+                          color: TnColors.accentSoft,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

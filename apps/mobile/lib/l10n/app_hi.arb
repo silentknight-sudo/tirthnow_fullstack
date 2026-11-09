@@ -474,5 +474,22 @@
   "fromPlace": "कहाँ से: {place}",
   "lastUpdated": "अपडेट {time}",
   "startedAt": "शुरू: {time}",
-  "familyInvite": "हमारी तीर्थयात्रा देखने के लिए TirthNow परिवार समूह \"{name}\" से जुड़ें 🙏 TirthNow खोलें → मेरी यात्राएँ → परिवार ट्रैकिंग → कोड से जुड़ें: {code}"
+  "familyInvite": "हमारी तीर्थयात्रा देखने के लिए TirthNow परिवार समूह \"{name}\" से जुड़ें 🙏 TirthNow खोलें → मेरी यात्राएँ → परिवार ट्रैकिंग → कोड से जुड़ें: {code}",
+  "yatraJourney": "यात्रा जर्नी",
+  "yatraJourneySub": "वॉइस गाइड, किराया और दर्शन सुझावों के साथ ब्रज यात्रा पड़ाव-दर-पड़ाव",
+  "rideYatraJourney": "यात्रा जर्नी पर चलें",
+  "journeyStop": "पड़ाव",
+  "journeyKm": "किमी",
+  "journeyFare": "किराया (अनुमान)",
+  "journeySpeed": "गति",
+  "journeyPrev": "पिछला पड़ाव",
+  "journeyNext": "अगला पड़ाव",
+  "journeyStart": "यात्रा शुरू करें",
+  "journeyContinue": "जारी रखें",
+  "journeyRestart": "फिर से चलें",
+  "voiceGuide": "वॉइस गाइड",
+  "pilgrimTips": "यात्री सुझाव",
+  "journeyNote": "चित्रात्मक नक्शा, पैमाने पर नहीं। दूरी और किराया नमूना अनुमान हैं; दर्शन का समय हर मंदिर के पेज पर देखें।",
+  "visitMins": "लगभग {mins} मिनट",
+  "nextStopIn": "अगला पड़ाव {km} किमी"
 }

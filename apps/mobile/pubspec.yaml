@@ -17,6 +17,7 @@ dependencies:
     sdk: flutter
   flutter_riverpod: ^3.4.3
   flutter_secure_storage: ^11.2.0
+  flutter_tts: ^4.2.5
   geolocator: ^14.1.1
   go_router: ^18.1.0
   hive_ce: ^2.22.0
@@ -45,6 +46,7 @@ flutter:
     - assets/images/demo-people/
     - assets/images/pooja/
     - assets/aarti/
+    - assets/journey/
   fonts:
     - family: Cormorant
       fonts:

@@ -20,6 +20,7 @@ import '../../features/content/presentation/aarti_screen.dart';
 import '../../features/content/presentation/people_screen.dart';
 import '../../features/content/presentation/pooja_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
+import '../../features/journey/presentation/journey_screen.dart';
 import '../../features/notifications/presentation/notifications_screen.dart';
 import '../../features/profile/presentation/contacts_screen.dart';
 import '../../features/profile/presentation/edit_profile_screen.dart';
@@ -201,6 +202,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         ],
       ),
       GoRoute(path: '/pooja', builder: (_, _) => const PoojaItemsScreen()),
+      GoRoute(path: '/journey', builder: (_, _) => const JourneyScreen()),
       GoRoute(path: '/people', builder: (_, _) => const PeopleScreen()),
       GoRoute(
         path: '/trips',

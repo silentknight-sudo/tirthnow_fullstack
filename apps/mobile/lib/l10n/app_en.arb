@@ -622,5 +622,36 @@
         "type": "String"
       }
     }
+  },
+  "yatraJourney": "Yatra Journey",
+  "yatraJourneySub": "Ride a Braj yatra stop by stop with a voice guide, fares and darshan tips",
+  "rideYatraJourney": "Ride the Yatra Journey",
+  "journeyStop": "Stop",
+  "journeyKm": "km",
+  "journeyFare": "Fare (est.)",
+  "journeySpeed": "Speed",
+  "journeyPrev": "Previous stop",
+  "journeyNext": "Next stop",
+  "journeyStart": "Start journey",
+  "journeyContinue": "Continue",
+  "journeyRestart": "Ride again",
+  "voiceGuide": "Voice guide",
+  "pilgrimTips": "Pilgrim tips",
+  "journeyNote": "Illustrative map, not to scale. Distances and fares are sample estimates; check live darshan timings on each temple page.",
+  "visitMins": "~{mins} min visit",
+  "@visitMins": {
+    "placeholders": {
+      "mins": {
+        "type": "int"
+      }
+    }
+  },
+  "nextStopIn": "Next stop {km} km",
+  "@nextStopIn": {
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
   }
 }

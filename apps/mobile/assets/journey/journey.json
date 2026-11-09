@@ -1,0 +1,626 @@
+{
+ "vehicles": [
+  {
+   "id": "erickshaw",
+   "name": "E-Rickshaw",
+   "icon": "🛺",
+   "kmh": 14,
+   "seatPaise": 1000,
+   "perKmPaise": 1500
+  },
+  {
+   "id": "auto",
+   "name": "Auto",
+   "icon": "🛺",
+   "kmh": 20,
+   "seatPaise": 2000,
+   "perKmPaise": 2000
+  },
+  {
+   "id": "cab",
+   "name": "Cab",
+   "icon": "🚕",
+   "kmh": 26,
+   "seatPaise": 0,
+   "perKmPaise": 2500
+  },
+  {
+   "id": "walk",
+   "name": "On foot",
+   "icon": "🚶",
+   "kmh": 4,
+   "seatPaise": 0,
+   "perKmPaise": 0
+  }
+ ],
+ "yatras": [
+  {
+   "id": "vrindavan",
+   "name": "Vrindavan Darshan Yatra",
+   "hiName": "वृन्दावन दर्शन यात्रा",
+   "area": "Vrindavan",
+   "stops": [
+    {
+     "id": "vrn-station",
+     "name": "Vrindavan Railway Station",
+     "hiName": "वृन्दावन रेलवे स्टेशन",
+     "kind": "Station",
+     "x": 170,
+     "y": 560,
+     "visitMins": 10,
+     "hours": "Open 24×7",
+     "difficulty": "Easy",
+     "about": "Small terminal station on the Mathura–Vrindavan line, a short ride from the temple lanes.",
+     "highlights": [
+      "E-rickshaws wait just outside the exit",
+      "Prepaid fares shown in the app",
+      "Cloakroom details in the app"
+     ],
+     "tips": [
+      "Agree the fare before you sit, or book in the app",
+      "Carry a small bag — temple lanes are narrow",
+      "Keep water; mornings get hot from April"
+     ],
+     "kmFromPrev": 0
+    },
+    {
+     "id": "banke-bihari",
+     "name": "Shri Banke Bihari Mandir",
+     "hiName": "श्री बांके बिहारी मंदिर",
+     "kind": "Temple",
+     "x": 470,
+     "y": 300,
+     "visitMins": 45,
+     "hours": "Changes by season — live timings in app",
+     "difficulty": "Moderate",
+     "about": "Vrindavan’s most visited temple, where the curtain is drawn every few minutes during darshan.",
+     "highlights": [
+      "Curtain (parda) darshan tradition",
+      "Phoolon wali Holi celebrations",
+      "Old-town lanes around the temple"
+     ],
+     "tips": [
+      "Weekends and festivals are very crowded",
+      "Footwear stands near the entry lanes",
+      "Keep phones and bags secure"
+     ],
+     "kmFromPrev": 3.2
+    },
+    {
+     "id": "nidhivan",
+     "name": "Nidhivan",
+     "hiName": "निधिवन",
+     "kind": "Garden",
+     "x": 560,
+     "y": 210,
+     "visitMins": 30,
+     "hours": "Daytime only — closes before dark",
+     "difficulty": "Easy",
+     "about": "A sacred grove of twisted tulsi trees linked to the Raas Leela; visitors leave before nightfall.",
+     "highlights": [
+      "Rang Mahal shrine",
+      "Tulsi grove with intertwined trees",
+      "Swami Haridas samadhi"
+     ],
+     "tips": [
+      "Watch out for monkeys — keep spectacles and phones tucked away",
+      "Guides are available at the gate"
+     ],
+     "kmFromPrev": 0.6
+    },
+    {
+     "id": "radha-raman",
+     "name": "Shri Radha Raman Mandir",
+     "hiName": "श्री राधा रमण मंदिर",
+     "kind": "Temple",
+     "x": 650,
+     "y": 320,
+     "visitMins": 30,
+     "hours": "Changes by season — live timings in app",
+     "difficulty": "Easy",
+     "about": "One of the seven major Goswami temples of Vrindavan, known for its self-manifested deity.",
+     "highlights": [
+      "Gaudiya Vaishnava heritage",
+      "Intimate courtyard darshan",
+      "Close to Nidhivan on foot"
+     ],
+     "tips": [
+      "Combine with Nidhivan on foot",
+      "Quieter in the late morning"
+     ],
+     "kmFromPrev": 0.7
+    },
+    {
+     "id": "keshi-ghat",
+     "name": "Keshi Ghat",
+     "hiName": "केशी घाट",
+     "kind": "Ghat",
+     "x": 770,
+     "y": 170,
+     "visitMins": 40,
+     "hours": "Open all day · evening Yamuna aarti",
+     "difficulty": "Easy",
+     "about": "The best-known ghat on the Yamuna in Vrindavan, with red sandstone pavilions and boat rides.",
+     "highlights": [
+      "Evening Yamuna aarti",
+      "Boat rides at sunset",
+      "Historic sandstone architecture"
+     ],
+     "tips": [
+      "Agree boat fares in advance",
+      "Steps can be slippery near the water"
+     ],
+     "kmFromPrev": 1.4
+    },
+    {
+     "id": "iskcon",
+     "name": "ISKCON Krishna Balaram Mandir",
+     "hiName": "इस्कॉन कृष्ण बलराम मंदिर",
+     "kind": "Temple",
+     "x": 640,
+     "y": 520,
+     "visitMins": 45,
+     "hours": "Changes by season — live timings in app",
+     "difficulty": "Easy",
+     "about": "The ISKCON temple on Raman Reti, with kirtan through the day and a large guesthouse.",
+     "highlights": [
+      "Kirtan and aartis through the day",
+      "Samadhi of Srila Prabhupada",
+      "Govinda’s restaurant nearby"
+     ],
+     "tips": [
+      "Bags and phones may need to be deposited",
+      "Good stop for a sattvic meal"
+     ],
+     "kmFromPrev": 3
+    },
+    {
+     "id": "prem-mandir",
+     "name": "Prem Mandir",
+     "hiName": "प्रेम मंदिर",
+     "kind": "Temple",
+     "x": 810,
+     "y": 600,
+     "visitMins": 60,
+     "hours": "Changes by season — live timings in app",
+     "difficulty": "Easy",
+     "about": "A white marble temple with large gardens, famous for its colour-changing evening lights.",
+     "highlights": [
+      "Illuminated temple after sunset",
+      "Leela tableaux in the gardens",
+      "Musical fountain show"
+     ],
+     "tips": [
+      "Reach before sunset to see the lights come on",
+      "Wide paths — easy for elders and wheelchairs"
+     ],
+     "kmFromPrev": 1.2
+    }
+   ]
+  },
+  {
+   "id": "mathura",
+   "name": "Mathura Janmabhoomi Yatra",
+   "hiName": "मथुरा जन्मभूमि यात्रा",
+   "area": "Mathura",
+   "stops": [
+    {
+     "id": "mathura-jn",
+     "name": "Mathura Junction",
+     "hiName": "मथुरा जंक्शन",
+     "kind": "Station",
+     "x": 200,
+     "y": 520,
+     "visitMins": 10,
+     "hours": "Open 24×7",
+     "difficulty": "Easy",
+     "about": "The main railway junction for Braj, with trains from Delhi, Agra and beyond.",
+     "highlights": [
+      "Prepaid auto and e-rickshaw stands",
+      "Cloakroom on the platform",
+      "Connections to Vrindavan"
+     ],
+     "tips": [
+      "Book your onward ride in the app before you arrive",
+      "Mornings are the coolest time to travel"
+     ],
+     "kmFromPrev": 0
+    },
+    {
+     "id": "janmabhoomi",
+     "name": "Shri Krishna Janmabhoomi",
+     "hiName": "श्री कृष्ण जन्मभूमि",
+     "kind": "Temple",
+     "x": 460,
+     "y": 330,
+     "visitMins": 60,
+     "hours": "Changes by season — live timings in app",
+     "difficulty": "Moderate",
+     "about": "The temple complex revered as the birthplace of Shri Krishna, the heart of Mathura.",
+     "highlights": [
+      "Garbh Griha shrine",
+      "Bhagavata Bhawan",
+      "Janmashtami celebrations"
+     ],
+     "tips": [
+      "Strict security — phones, bags and pens are not allowed inside",
+      "Lockers are available near the entry"
+     ],
+     "kmFromPrev": 2.5
+    },
+    {
+     "id": "dwarkadhish",
+     "name": "Dwarkadhish Temple",
+     "hiName": "द्वारकाधीश मंदिर",
+     "kind": "Temple",
+     "x": 640,
+     "y": 250,
+     "visitMins": 40,
+     "hours": "Changes by season — live timings in app",
+     "difficulty": "Easy",
+     "about": "A 19th-century temple in the old city, known for its carved façade and swing festivals.",
+     "highlights": [
+      "Painted ceilings and carvings",
+      "Jhula (swing) festival in Shravan",
+      "Old-city bazaar around it"
+     ],
+     "tips": [
+      "Walk from here to Vishram Ghat",
+      "Bazaar lanes are busy in the evening"
+     ],
+     "kmFromPrev": 2
+    },
+    {
+     "id": "vishram-ghat",
+     "name": "Vishram Ghat",
+     "hiName": "विश्राम घाट",
+     "kind": "Ghat",
+     "x": 790,
+     "y": 330,
+     "visitMins": 45,
+     "hours": "Open all day · evening Yamuna aarti",
+     "difficulty": "Easy",
+     "about": "The principal ghat of Mathura on the Yamuna, where the evening aarti draws large crowds.",
+     "highlights": [
+      "Evening Yamuna aarti",
+      "Boat rides along the ghats",
+      "Deep-daan (lamp offering)"
+     ],
+     "tips": [
+      "Arrive early for a good spot at aarti",
+      "Agree boat fares in advance"
+     ],
+     "kmFromPrev": 0.5
+    }
+   ]
+  },
+  {
+   "id": "govardhan",
+   "name": "Govardhan Parikrama",
+   "hiName": "गोवर्धन परिक्रमा",
+   "area": "Govardhan",
+   "stops": [
+    {
+     "id": "daan-ghati",
+     "name": "Daan Ghati Mandir",
+     "hiName": "दान घाटी मंदिर",
+     "kind": "Temple",
+     "x": 500,
+     "y": 600,
+     "visitMins": 30,
+     "hours": "Changes by season — live timings in app",
+     "difficulty": "Easy",
+     "about": "The traditional starting point of the Govardhan parikrama, with a temple to Giriraj ji.",
+     "highlights": [
+      "Milk abhishek of Giriraj ji",
+      "Start of the 21 km path",
+      "Shops for parikrama supplies"
+     ],
+     "tips": [
+      "Start early in the morning in summer",
+      "Walk barefoot only if you are used to it"
+     ],
+     "kmFromPrev": 0
+    },
+    {
+     "id": "radha-kund",
+     "name": "Radha Kund & Shyam Kund",
+     "hiName": "राधा कुंड और श्याम कुंड",
+     "kind": "Kund",
+     "x": 230,
+     "y": 320,
+     "visitMins": 45,
+     "hours": "Open all day",
+     "difficulty": "Moderate",
+     "about": "Two sacred ponds side by side, among the holiest places on the parikrama.",
+     "highlights": [
+      "Midnight snan on Ahoi Ashtami",
+      "Many small temples around the kunds",
+      "Rest points with shade"
+     ],
+     "tips": [
+      "Rest here before the next stretch",
+      "Carry water and some fruit"
+     ],
+     "kmFromPrev": 7.5
+    },
+    {
+     "id": "kusum-sarovar",
+     "name": "Kusum Sarovar",
+     "hiName": "कुसुम सरोवर",
+     "kind": "Kund",
+     "x": 380,
+     "y": 140,
+     "visitMins": 30,
+     "hours": "Open all day",
+     "difficulty": "Easy",
+     "about": "A sandstone tank with chhatris built in the 18th century, one of the most beautiful spots on the route.",
+     "highlights": [
+      "Sandstone chhatris and steps",
+      "Sunset views",
+      "Quiet spot to rest"
+     ],
+     "tips": [
+      "Good photo stop",
+      "Steps down to the water are steep"
+     ],
+     "kmFromPrev": 3.5
+    },
+    {
+     "id": "mukharvind",
+     "name": "Jatipura Mukharvind",
+     "hiName": "जतीपुरा मुखारविंद",
+     "kind": "Temple",
+     "x": 760,
+     "y": 230,
+     "visitMins": 30,
+     "hours": "Changes by season — live timings in app",
+     "difficulty": "Moderate",
+     "about": "The place revered as the face (mukharvind) of Giriraj ji on the southern side of the hill.",
+     "highlights": [
+      "Milk abhishek",
+      "Pushtimarg heritage",
+      "Busy on Guru Purnima"
+     ],
+     "tips": [
+      "Crowded on Purnima and Sundays",
+      "E-rickshaws available for elders"
+     ],
+     "kmFromPrev": 5
+    },
+    {
+     "id": "puchhri",
+     "name": "Puchhri ka Lautha",
+     "hiName": "पूँछरी का लौठा",
+     "kind": "Temple",
+     "x": 820,
+     "y": 520,
+     "visitMins": 20,
+     "hours": "Changes by season — live timings in app",
+     "difficulty": "Easy",
+     "about": "A small shrine at the tail end of the hill, said to record each pilgrim’s parikrama.",
+     "highlights": [
+      "Traditional stop to “register” the parikrama",
+      "Last stretch back to Daan Ghati"
+     ],
+     "tips": [
+      "Last stretch — pace yourself",
+      "Rest points mapped in the app"
+     ],
+     "kmFromPrev": 2.5
+    }
+   ]
+  }
+ ],
+ "stopHi": {
+  "vrn-station": {
+   "about": "मथुरा–वृन्दावन लाइन का छोटा स्टेशन, जहाँ से मंदिरों की गलियाँ कुछ ही दूरी पर हैं।",
+   "highlights": [
+    "बाहर निकलते ही ई-रिक्शा मिलते हैं",
+    "प्रीपेड किराया ऐप में दिखता है",
+    "क्लोकरूम की जानकारी ऐप में"
+   ],
+   "tips": [
+    "बैठने से पहले किराया तय कर लें, या ऐप से बुक करें",
+    "छोटा बैग रखें — मंदिर की गलियाँ संकरी हैं",
+    "पानी साथ रखें; अप्रैल से सुबह भी गर्मी होती है"
+   ],
+   "hours": "24×7 खुला"
+  },
+  "banke-bihari": {
+   "about": "वृन्दावन का सबसे अधिक दर्शन किया जाने वाला मंदिर, जहाँ दर्शन के समय हर कुछ मिनट में पर्दा डाला जाता है।",
+   "highlights": [
+    "पर्दा दर्शन की परंपरा",
+    "फूलों वाली होली का उत्सव",
+    "मंदिर के आस-पास की पुरानी गलियाँ"
+   ],
+   "tips": [
+    "सप्ताहांत और त्योहारों पर बहुत भीड़ होती है",
+    "जूते-चप्पल रखने के स्टैंड प्रवेश की गलियों के पास हैं",
+    "फ़ोन और बैग सँभाल कर रखें"
+   ],
+   "hours": "मौसम के अनुसार बदलता है — आज का समय ऐप में"
+  },
+  "nidhivan": {
+   "about": "रास लीला से जुड़ा पवित्र वन, जहाँ तुलसी के पेड़ आपस में लिपटे हैं; दर्शनार्थी अँधेरा होने से पहले लौट जाते हैं।",
+   "highlights": [
+    "रंग महल",
+    "आपस में लिपटे तुलसी के पेड़",
+    "स्वामी हरिदास जी की समाधि"
+   ],
+   "tips": [
+    "बंदरों से सावधान — चश्मा और फ़ोन सँभाल कर रखें",
+    "गेट पर गाइड मिल जाते हैं"
+   ],
+   "hours": "केवल दिन में — अँधेरा होने से पहले बंद"
+  },
+  "radha-raman": {
+   "about": "वृन्दावन के सात प्रमुख गोस्वामी मंदिरों में से एक, जो अपने स्वयं प्रकट विग्रह के लिए प्रसिद्ध है।",
+   "highlights": [
+    "गौड़ीय वैष्णव परंपरा",
+    "शांत आँगन में दर्शन",
+    "निधिवन से पैदल दूरी पर"
+   ],
+   "tips": [
+    "निधिवन के साथ पैदल जोड़ लें",
+    "देर सुबह भीड़ कम रहती है"
+   ],
+   "hours": "मौसम के अनुसार बदलता है — आज का समय ऐप में"
+  },
+  "keshi-ghat": {
+   "about": "वृन्दावन में यमुना का सबसे प्रसिद्ध घाट, लाल बलुआ पत्थर के मंडपों और नौका विहार के लिए जाना जाता है।",
+   "highlights": [
+    "संध्या यमुना आरती",
+    "सूर्यास्त के समय नौका विहार",
+    "ऐतिहासिक बलुआ पत्थर की वास्तुकला"
+   ],
+   "tips": [
+    "नाव का किराया पहले तय कर लें",
+    "पानी के पास की सीढ़ियाँ फिसलन भरी हो सकती हैं"
+   ],
+   "hours": "पूरे दिन खुला · संध्या यमुना आरती"
+  },
+  "iskcon": {
+   "about": "रमण रेती पर स्थित इस्कॉन मंदिर, जहाँ पूरे दिन कीर्तन होता है और बड़ा अतिथि गृह भी है।",
+   "highlights": [
+    "पूरे दिन कीर्तन और आरती",
+    "श्रील प्रभुपाद की समाधि",
+    "पास में गोविंदा रेस्टोरेंट"
+   ],
+   "tips": [
+    "बैग और फ़ोन जमा कराने पड़ सकते हैं",
+    "सात्विक भोजन के लिए अच्छा पड़ाव"
+   ],
+   "hours": "मौसम के अनुसार बदलता है — आज का समय ऐप में"
+  },
+  "prem-mandir": {
+   "about": "सफ़ेद संगमरमर का भव्य मंदिर और बड़े बगीचे, शाम को रंग बदलती रोशनी के लिए प्रसिद्ध।",
+   "highlights": [
+    "सूर्यास्त के बाद जगमगाता मंदिर",
+    "बगीचों में लीला की झाँकियाँ",
+    "संगीतमय फ़व्वारा"
+   ],
+   "tips": [
+    "रोशनी जलते देखने के लिए सूर्यास्त से पहले पहुँचें",
+    "चौड़े रास्ते — बुज़ुर्गों और व्हीलचेयर के लिए आसान"
+   ],
+   "hours": "मौसम के अनुसार बदलता है — आज का समय ऐप में"
+  },
+  "mathura-jn": {
+   "about": "ब्रज का मुख्य रेलवे जंक्शन, जहाँ दिल्ली, आगरा और आगे से ट्रेनें आती हैं।",
+   "highlights": [
+    "प्रीपेड ऑटो और ई-रिक्शा स्टैंड",
+    "प्लेटफ़ॉर्म पर क्लोकरूम",
+    "वृन्दावन के लिए सवारी"
+   ],
+   "tips": [
+    "पहुँचने से पहले ऐप में अगली सवारी बुक कर लें",
+    "सुबह यात्रा का सबसे ठंडा समय है"
+   ],
+   "hours": "24×7 खुला"
+  },
+  "janmabhoomi": {
+   "about": "श्री कृष्ण की जन्मस्थली के रूप में पूजित मंदिर परिसर, मथुरा का हृदय।",
+   "highlights": [
+    "गर्भ गृह",
+    "भागवत भवन",
+    "जन्माष्टमी उत्सव"
+   ],
+   "tips": [
+    "कड़ी सुरक्षा — फ़ोन, बैग और पेन अंदर नहीं ले जा सकते",
+    "प्रवेश के पास लॉकर उपलब्ध हैं"
+   ],
+   "hours": "मौसम के अनुसार बदलता है — आज का समय ऐप में"
+  },
+  "dwarkadhish": {
+   "about": "पुराने शहर में उन्नीसवीं सदी का मंदिर, नक्काशीदार अग्रभाग और झूला उत्सव के लिए प्रसिद्ध।",
+   "highlights": [
+    "रंगीन छतें और नक्काशी",
+    "सावन में झूला उत्सव",
+    "आस-पास पुराने शहर का बाज़ार"
+   ],
+   "tips": [
+    "यहाँ से विश्राम घाट पैदल जाएँ",
+    "शाम को बाज़ार की गलियों में भीड़ रहती है"
+   ],
+   "hours": "मौसम के अनुसार बदलता है — आज का समय ऐप में"
+  },
+  "vishram-ghat": {
+   "about": "यमुना पर मथुरा का प्रमुख घाट, जहाँ संध्या आरती में बड़ी भीड़ जुटती है।",
+   "highlights": [
+    "संध्या यमुना आरती",
+    "घाटों के साथ नौका विहार",
+    "दीप-दान"
+   ],
+   "tips": [
+    "आरती में अच्छी जगह के लिए जल्दी पहुँचें",
+    "नाव का किराया पहले तय कर लें"
+   ],
+   "hours": "पूरे दिन खुला · संध्या यमुना आरती"
+  },
+  "daan-ghati": {
+   "about": "गोवर्धन परिक्रमा का पारंपरिक आरंभ स्थल, जहाँ गिरिराज जी का मंदिर है।",
+   "highlights": [
+    "गिरिराज जी का दुग्ध अभिषेक",
+    "21 किलोमीटर परिक्रमा की शुरुआत",
+    "परिक्रमा के सामान की दुकानें"
+   ],
+   "tips": [
+    "गर्मियों में सुबह जल्दी शुरू करें",
+    "नंगे पैर तभी चलें जब आदत हो"
+   ],
+   "hours": "मौसम के अनुसार बदलता है — आज का समय ऐप में"
+  },
+  "radha-kund": {
+   "about": "दो पवित्र कुंड साथ-साथ, परिक्रमा के सबसे पवित्र स्थानों में से एक।",
+   "highlights": [
+    "अहोई अष्टमी पर मध्यरात्रि स्नान",
+    "कुंडों के चारों ओर छोटे मंदिर",
+    "छाया वाले विश्राम स्थल"
+   ],
+   "tips": [
+    "अगले हिस्से से पहले यहाँ आराम करें",
+    "पानी और कुछ फल साथ रखें"
+   ],
+   "hours": "पूरे दिन खुला"
+  },
+  "kusum-sarovar": {
+   "about": "अठारहवीं सदी में बना बलुआ पत्थर का सरोवर और छतरियाँ, परिक्रमा मार्ग के सबसे सुंदर स्थानों में से एक।",
+   "highlights": [
+    "बलुआ पत्थर की छतरियाँ और सीढ़ियाँ",
+    "सूर्यास्त का दृश्य",
+    "आराम के लिए शांत जगह"
+   ],
+   "tips": [
+    "फ़ोटो के लिए अच्छा पड़ाव",
+    "पानी तक की सीढ़ियाँ खड़ी हैं"
+   ],
+   "hours": "पूरे दिन खुला"
+  },
+  "mukharvind": {
+   "about": "पहाड़ी के दक्षिणी ओर वह स्थान जो गिरिराज जी का मुखारविंद माना जाता है।",
+   "highlights": [
+    "दुग्ध अभिषेक",
+    "पुष्टिमार्ग परंपरा",
+    "गुरु पूर्णिमा पर भारी भीड़"
+   ],
+   "tips": [
+    "पूर्णिमा और रविवार को भीड़ रहती है",
+    "बुज़ुर्गों के लिए ई-रिक्शा उपलब्ध"
+   ],
+   "hours": "मौसम के अनुसार बदलता है — आज का समय ऐप में"
+  },
+  "puchhri": {
+   "about": "पहाड़ी के पूँछ वाले छोर पर छोटा मंदिर, जहाँ माना जाता है कि हर यात्री की परिक्रमा दर्ज होती है।",
+   "highlights": [
+    "परिक्रमा “दर्ज” कराने का पारंपरिक पड़ाव",
+    "दान घाटी तक लौटने का अंतिम हिस्सा"
+   ],
+   "tips": [
+    "अंतिम हिस्सा — अपनी गति बनाए रखें",
+    "विश्राम स्थल ऐप में दिखते हैं"
+   ],
+   "hours": "मौसम के अनुसार बदलता है — आज का समय ऐप में"
+  }
+ }
+}
