@@ -568,7 +568,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get happeningNow => 'Happening now';
 
   @override
-  String get tagline => 'Your Braj yatra companion';
+  String get tagline => 'Your tirth companion';
 
   @override
   String get askGuide => 'Ask Braj Guide anything…';

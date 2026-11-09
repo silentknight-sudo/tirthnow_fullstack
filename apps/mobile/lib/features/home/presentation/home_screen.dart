@@ -1028,10 +1028,12 @@ class _GroupYatraCard extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(22),
-          gradient: const LinearGradient(
-            colors: [TnColors.navy, Color(0xFF6A3FA0), TnColors.saffron],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+          // Photo banner (Canva) with a dark fade so the text stays readable.
+          image: const DecorationImage(
+            image: AssetImage('assets/images/canva/planner.jpg'),
+            fit: BoxFit.cover,
+            alignment: Alignment.centerRight,
+            colorFilter: ColorFilter.mode(Color(0x8C0C1A30), BlendMode.srcATop),
           ),
           boxShadow: const [
             BoxShadow(color: Color(0x401C3C6B), blurRadius: 16, offset: Offset(0, 8)),

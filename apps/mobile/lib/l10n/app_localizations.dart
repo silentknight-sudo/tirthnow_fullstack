@@ -1140,7 +1140,7 @@ abstract class AppLocalizations {
   /// No description provided for @tagline.
   ///
   /// In en, this message translates to:
-  /// **'Your Braj yatra companion'**
+  /// **'Your tirth companion'**
   String get tagline;
 
   /// No description provided for @askGuide.

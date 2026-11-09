@@ -568,7 +568,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get happeningNow => 'अभी चल रही है';
 
   @override
-  String get tagline => 'आपकी ब्रज यात्रा का साथी';
+  String get tagline => 'आपका तीर्थ साथी';
 
   @override
   String get askGuide => 'ब्रज गाइड से कुछ भी पूछें…';
