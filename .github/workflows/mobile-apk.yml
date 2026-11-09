@@ -3,6 +3,8 @@ name: Mobile APK
 # Builds an installable Android APK and attaches it to the run as a download.
 # The APK is signed with the debug key (fine for sideloading and testing, not
 # for Google Play) and uses the mock sign-in (OTP 123456) and test checkout.
+# The universal APK is also published to the `app-latest` GitHub release as
+# `tirthnow.apk`, which the website's "Download the app" buttons link to.
 on:
   push:
     paths: ['apps/mobile/**', '.github/workflows/mobile-apk.yml']
@@ -13,7 +15,7 @@ on:
         required: false
 
 permissions:
-  contents: read
+  contents: write # publish the APK to the app-latest release
 
 jobs:
   apk:
@@ -44,3 +46,12 @@ jobs:
           name: tirth-now-apk
           path: apps/mobile/build/app/outputs/flutter-apk/*.apk
           retention-days: 30
+      - name: Publish to the app-latest release (website download link)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp build/app/outputs/flutter-apk/app-release.apk tirthnow.apk
+          gh release view app-latest >/dev/null 2>&1 || gh release create app-latest \
+            --title "TirthNow app (latest build)" --latest \
+            --notes "Latest Android build of the TirthNow app. Test build: debug-signed, demo sign-in (OTP 123456)."
+          gh release upload app-latest tirthnow.apk --clobber

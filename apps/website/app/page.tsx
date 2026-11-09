@@ -20,6 +20,7 @@ import {
   Showcase,
   Stats,
 } from '@/components/Sections';
+import { AppFeatures, DownloadFab } from '@/components/AppFeatures';
 import { LiveDarshan, YatraPackages } from '@/components/Yatra';
 
 export default function Home() {
@@ -34,6 +35,7 @@ export default function Home() {
       <main className={lang === 'hi' ? 'hi' : undefined}>
         <Hero c={c} />
         <Showcase c={c} />
+        <AppFeatures lang={lang} />
         <Journey c={c} />
         <YatraPackages lang={lang} />
         <Aarti c={c} />
@@ -49,6 +51,7 @@ export default function Home() {
         <Download c={c} />
       </main>
       <Footer c={c} />
+      <DownloadFab lang={lang} />
     </MotionConfig>
   );
 }

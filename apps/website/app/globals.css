@@ -2516,3 +2516,232 @@ section {
     display: none;
   }
 }
+
+/* ---------- Everything in the app ---------- */
+.appf {
+  background: linear-gradient(180deg, var(--paper), #fff8ee);
+}
+.appf-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin: 0 auto 28px;
+}
+.appf-tabs button {
+  border: 1.5px solid var(--line);
+  background: #fff;
+  color: var(--navy);
+  padding: 8px 16px;
+  border-radius: 999px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.appf-tabs button.on {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: #fff;
+}
+.appf-body {
+  display: grid;
+  grid-template-columns: minmax(260px, 380px) 1fr;
+  gap: 28px;
+  max-width: 1120px;
+  margin: 0 auto;
+  align-items: start;
+}
+.appf-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+  max-height: 640px;
+  overflow: auto;
+  padding-right: 4px;
+}
+.appf-list button {
+  width: 100%;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  text-align: left;
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: 16px;
+  padding: 12px 14px;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    transform 0.2s;
+}
+.appf-list button:hover {
+  transform: translateX(3px);
+}
+.appf-list button.on {
+  border-color: var(--saffron);
+  box-shadow: 0 10px 24px -14px rgba(224, 122, 46, 0.7);
+}
+.appf-list .ic {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+.appf-list b {
+  display: block;
+  color: var(--navy);
+  font-size: 0.98rem;
+}
+.appf-list small {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+.appf-card {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  padding: 28px;
+  box-shadow: 0 30px 60px -40px rgba(12, 26, 48, 0.45);
+}
+.appf-phone {
+  width: 250px;
+}
+.appf-copy h3 {
+  font-family: var(--display, serif);
+  font-size: 1.9rem;
+  color: var(--navy);
+  margin: 8px 0;
+}
+.appf-copy p {
+  color: var(--muted);
+  font-size: 1.02rem;
+}
+.appf-copy ul {
+  padding-left: 18px;
+  margin: 12px 0 20px;
+  color: var(--ink, #14233d);
+}
+.appf-copy li {
+  margin: 4px 0;
+}
+.appf-ic {
+  font-size: 2rem;
+}
+.appf-cta {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.appf-strip {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  padding: 36px 8px 8px;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+.device.mini {
+  width: 92px;
+  padding: 4px;
+  border-radius: 16px;
+  border: 0;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.device.mini img {
+  border-radius: 12px;
+}
+.device.mini:hover {
+  transform: translateY(-6px);
+}
+@media (max-width: 860px) {
+  .appf-body {
+    grid-template-columns: 1fr;
+  }
+  .appf-list {
+    max-height: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 78%;
+    overflow-x: auto;
+  }
+  .appf-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+  }
+  .appf-copy ul {
+    text-align: left;
+    display: inline-block;
+  }
+  .appf-cta {
+    justify-content: center;
+  }
+}
+
+/* ---------- download buttons ---------- */
+.apk {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 28px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, var(--saffron), var(--accent));
+  color: #fff;
+  text-decoration: none;
+  text-align: left;
+  box-shadow: 0 18px 36px -18px rgba(224, 122, 46, 0.9);
+  margin-bottom: 18px;
+  transition: transform 0.2s;
+}
+.apk:hover {
+  transform: translateY(-2px);
+}
+.apk-ic {
+  font-size: 1.8rem;
+}
+.apk small {
+  display: block;
+  font-size: 0.75rem;
+  opacity: 0.85;
+}
+.apk strong {
+  font-size: 1.25rem;
+}
+a.store {
+  text-decoration: none;
+}
+.apk-note {
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.dl-fab {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 60;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: var(--navy);
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 14px 30px -12px rgba(12, 26, 48, 0.7);
+}
+.dl-fab:hover {
+  background: var(--saffron);
+}

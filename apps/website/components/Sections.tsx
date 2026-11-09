@@ -12,6 +12,7 @@ import {
 import { useEffect, useRef, useState } from 'react';
 import type { Content, Lang } from '@/lib/content';
 import { Icon } from './Icon';
+import { APK_URL, APPSTORE_URL, PLAY_URL } from '@/lib/download';
 import { CountUp, Reveal, SectionHead } from './motion';
 
 /* ---------- Nav ---------- */
@@ -37,6 +38,7 @@ export function Nav({ c, lang, setLang }: { c: Content; lang: Lang; setLang: (l:
       </a>
       <nav className="links">
         <a href="#yatra">{lang === 'hi' ? 'यात्रा' : 'Yatra'}</a>
+        <a href="#app">{lang === 'hi' ? 'ऐप' : 'App'}</a>
         <a href="#features">{c.nav.features}</a>
         <a href="#guide">{c.nav.guide}</a>
         <a href="#safety">{c.nav.safety}</a>
@@ -740,18 +742,43 @@ export function Download({ c }: { c: Content }) {
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end end'] });
   const rotate = useTransform(scrollYProgress, [0, 1], [-90, 0]);
   const scale = useTransform(scrollYProgress, [0, 1], [0.5, 1]);
+  const stores = [
+    { label: c.download.android, url: PLAY_URL, icon: '▶' },
+    { label: c.download.ios, url: APPSTORE_URL, icon: '' },
+  ];
   return (
     <section className="download" id="download" ref={ref}>
       <motion.img src="/logo.png" alt="" width={180} height={180} style={{ rotate, scale }} />
       <SectionHead kicker="" title={c.download.title} sub={c.download.sub} />
+      <a className="apk" href={APK_URL}>
+        <span className="apk-ic" aria-hidden>
+          ⬇
+        </span>
+        <span>
+          <small>{c.download.apkSmall}</small>
+          <strong>{c.download.apk}</strong>
+        </span>
+      </a>
       <div className="stores">
-        {[c.download.android, c.download.ios].map((s) => (
-          <div key={s} className="store">
-            <small>{c.download.soon}</small>
-            <strong>{s}</strong>
-          </div>
-        ))}
+        {stores.map((s) =>
+          s.url ? (
+            <a key={s.label} className="store" href={s.url}>
+              <small>{c.download.getIt}</small>
+              <strong>
+                {s.icon} {s.label}
+              </strong>
+            </a>
+          ) : (
+            <div key={s.label} className="store">
+              <small>{c.download.soon}</small>
+              <strong>
+                {s.icon} {s.label}
+              </strong>
+            </div>
+          ),
+        )}
       </div>
+      <p className="apk-note">{c.download.note}</p>
     </section>
   );
 }

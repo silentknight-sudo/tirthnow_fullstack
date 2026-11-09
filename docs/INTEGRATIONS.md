@@ -93,3 +93,11 @@ Webhooks with an invalid signature are rejected with 401 `WEBHOOK_SIGNATURE_INVA
 nothing is stored. Delivery-report webhooks for MSG91 and WhatsApp are planned for Phase 6.
 
 Raw bodies are preserved for these routes (Nest `rawBody: true`).
+
+## Website app downloads
+
+| Env | Used by | Notes |
+|---|---|---|
+| `NEXT_PUBLIC_APK_URL` | apps/website | "Download the app" link. Default: `…/releases/latest/download/tirthnow.apk`, published by `.github/workflows/mobile-apk.yml`. The repository must be public for visitors to download it, or point this at another host. |
+| `NEXT_PUBLIC_PLAY_URL` | apps/website | Google Play listing; the button shows "Coming soon" while empty. |
+| `NEXT_PUBLIC_APPSTORE_URL` | apps/website | App Store listing; "Coming soon" while empty. |

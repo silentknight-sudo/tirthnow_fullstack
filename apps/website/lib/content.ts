@@ -93,7 +93,17 @@ export interface Content {
     cta: string;
   };
   faq: { kicker: string; title: string; items: { q: string; a: string }[] };
-  download: { title: string; sub: string; android: string; ios: string; soon: string };
+  download: {
+    title: string;
+    sub: string;
+    android: string;
+    ios: string;
+    soon: string;
+    getIt: string;
+    apk: string;
+    apkSmall: string;
+    note: string;
+  };
   footer: { tagline: string; rights: string; made: string };
 }
 
@@ -386,10 +396,14 @@ const en: Content = {
   },
   download: {
     title: 'Begin your yatra with Tirth Now',
-    sub: 'The app is coming soon to Android and iPhone.',
+    sub: 'Aarti, darshan, stays, family tracking and reels — all in one app. Download it for Android today.',
     android: 'Google Play',
     ios: 'App Store',
     soon: 'Coming soon',
+    getIt: 'Get it on',
+    apk: 'Download for Android',
+    apkSmall: 'Free · APK',
+    note: 'Opening the APK on your phone? Allow “Install from this source” when Android asks.',
   },
   footer: {
     tagline: 'A calm companion for every pilgrim in Braj.',
@@ -687,10 +701,14 @@ const hi: Content = {
   },
   download: {
     title: 'तीर्थ नाउ के साथ यात्रा शुरू करें',
-    sub: 'ऐप जल्द ही Android और iPhone पर।',
+    sub: 'आरती, दर्शन, ठहरना, परिवार ट्रैकिंग और रील्स — सब एक ऐप में। आज ही Android पर डाउनलोड करें।',
     android: 'Google Play',
     ios: 'App Store',
     soon: 'जल्द आ रहा है',
+    getIt: 'यहाँ से पाएँ',
+    apk: 'Android के लिए डाउनलोड करें',
+    apkSmall: 'मुफ़्त · APK',
+    note: 'फ़ोन पर APK खोलते समय Android पूछे तो “इस स्रोत से इंस्टॉल” की अनुमति दें।',
   },
   footer: {
     tagline: 'ब्रज के हर यात्री का शांत साथी।',
