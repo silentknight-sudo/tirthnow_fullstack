@@ -34,11 +34,30 @@ class _GuideScreenState extends ConsumerState<GuideScreen> {
   final _streamCitations = <Citation>[];
   bool _busy = false;
   bool _recording = false;
+  bool _speaking = false;
+  bool _paused = false;
+  bool _autoSpeak = true;
+  bool _lastWasVoice = false;
+  String? _voiceLang;
   StreamSubscription<GuideEvent>? _sub;
+  StreamSubscription<PlayerState>? _playerSub;
+
+  @override
+  void initState() {
+    super.initState();
+    _playerSub = _player.onPlayerStateChanged.listen((s) {
+      if (!mounted) return;
+      setState(() {
+        _speaking = s == PlayerState.playing || s == PlayerState.paused;
+        _paused = s == PlayerState.paused;
+      });
+    });
+  }
 
   @override
   void dispose() {
     _sub?.cancel();
+    _playerSub?.cancel();
     _input.dispose();
     _scroll.dispose();
     unawaited(_recorder.dispose());
@@ -101,10 +120,14 @@ class _GuideScreenState extends ConsumerState<GuideScreen> {
           );
       await done.future;
       if (_streaming.isNotEmpty) {
+        final answer = _streaming;
         _messages.add(
-          ChatMessage(role: 'assistant', content: _streaming, citations: List.of(_streamCitations)),
+          ChatMessage(role: 'assistant', content: answer, citations: List.of(_streamCitations)),
         );
+        // Spoken reply after a voice question (or always, if chosen).
+        if (_autoSpeak && _lastWasVoice) unawaited(_speak(answer));
       }
+      _lastWasVoice = false;
     } on Object catch (e) {
       if (mounted) showSnack(context, errorText(context, e));
     } finally {
@@ -123,15 +146,47 @@ class _GuideScreenState extends ConsumerState<GuideScreen> {
 
   Future<void> _speak(String text) async {
     try {
-      final url = await _ai.speak(text, ref.read(localeProvider).languageCode);
+      final lang = _voiceLang ?? ref.read(localeProvider).languageCode;
+      setState(() => _speaking = true);
+      // Voice translation: hear the answer in the chosen language.
+      final spoken = await _ai.translate(text, lang);
+      final url = await _ai.speak(spoken, lang);
       await _player.play(UrlSource(url));
     } on Object catch (e) {
-      if (mounted) showSnack(context, errorText(context, e));
+      if (mounted) {
+        setState(() => _speaking = false);
+        showSnack(context, errorText(context, e));
+      }
+    }
+  }
+
+  Future<void> _togglePlayback() async {
+    if (_paused) {
+      await _player.resume();
+    } else {
+      await _player.pause();
+    }
+  }
+
+  Future<void> _stopSpeaking() async {
+    await _player.stop();
+    if (mounted) setState(() => _speaking = false);
+  }
+
+  Future<void> _toggleMic() async {
+    if (_recording) {
+      await _stopRecording();
+    } else {
+      await _startRecording();
     }
   }
 
   Future<void> _startRecording() async {
-    if (!await _recorder.hasPermission()) return;
+    if (!await _recorder.hasPermission()) {
+      if (mounted) showSnack(context, context.l10n.micPermission);
+      return;
+    }
+    await _player.stop();
     await _recorder.start(const RecordConfig(encoder: AudioEncoder.opus), path: '');
     setState(() => _recording = true);
   }
@@ -145,6 +200,7 @@ class _GuideScreenState extends ConsumerState<GuideScreen> {
       await _ensureSession();
       final bytes = await XFile(path).readAsBytes();
       final text = await _ai.transcribe(bytes, 'audio/webm');
+      _lastWasVoice = true;
       await _send(text);
     } on Object catch (e) {
       if (mounted) showSnack(context, errorText(context, e));
@@ -163,6 +219,36 @@ class _GuideScreenState extends ConsumerState<GuideScreen> {
       appBar: AppBar(
         title: Text(l.guideTitle),
         actions: [
+          PopupMenuButton<String>(
+            tooltip: l.voiceSettings,
+            icon: Icon(_autoSpeak ? Icons.record_voice_over_rounded : Icons.voice_over_off_rounded),
+            onSelected: (v) => setState(() {
+              if (v == 'auto') {
+                _autoSpeak = !_autoSpeak;
+              } else {
+                _voiceLang = v == 'app' ? null : v;
+              }
+            }),
+            itemBuilder: (_) => [
+              CheckedPopupMenuItem(value: 'auto', checked: _autoSpeak, child: Text(l.voiceReplies)),
+              const PopupMenuDivider(),
+              CheckedPopupMenuItem(
+                value: 'app',
+                checked: _voiceLang == null,
+                child: Text(l.voiceLangApp),
+              ),
+              CheckedPopupMenuItem(
+                value: 'hi',
+                checked: _voiceLang == 'hi',
+                child: const Text('हिन्दी'),
+              ),
+              CheckedPopupMenuItem(
+                value: 'en',
+                checked: _voiceLang == 'en',
+                child: const Text('English'),
+              ),
+            ],
+          ),
           IconButton(
             tooltip: l.sosTitle,
             icon: const Icon(Icons.sos, color: TnColors.sos),
@@ -219,6 +305,44 @@ class _GuideScreenState extends ConsumerState<GuideScreen> {
               ],
             ),
           ),
+          if (_recording || _speaking)
+            Container(
+              margin: const EdgeInsets.fromLTRB(12, 0, 12, 6),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: BoxDecoration(
+                color: _recording ? const Color(0xFFFDECEA) : const Color(0xFFFFF3E4),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Row(
+                children: [
+                  _Pulse(color: _recording ? TnColors.sos : TnColors.saffron),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      _recording ? l.listening : (_paused ? l.speakingPaused : l.speaking),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: _recording ? TnColors.sos : TnColors.accent,
+                      ),
+                    ),
+                  ),
+                  if (_recording)
+                    TextButton(onPressed: _stopRecording, child: Text(l.stopListening))
+                  else ...[
+                    IconButton(
+                      tooltip: _paused ? l.play : l.pause,
+                      icon: Icon(_paused ? Icons.play_arrow_rounded : Icons.pause_rounded),
+                      onPressed: _togglePlayback,
+                    ),
+                    IconButton(
+                      tooltip: l.stop,
+                      icon: const Icon(Icons.stop_rounded),
+                      onPressed: _stopSpeaking,
+                    ),
+                  ],
+                ],
+              ),
+            ),
           SafeArea(
             top: false,
             child: Padding(
@@ -238,6 +362,7 @@ class _GuideScreenState extends ConsumerState<GuideScreen> {
                   ),
                   const SizedBox(width: 6),
                   GestureDetector(
+                    onTap: _toggleMic,
                     onLongPressStart: (_) => _startRecording(),
                     onLongPressEnd: (_) => _stopRecording(),
                     child: Tooltip(
@@ -324,4 +449,30 @@ class _Bubble extends StatelessWidget {
       ),
     );
   }
+}
+
+/// Pulsing dot for the listening / speaking states.
+class _Pulse extends StatefulWidget {
+  const _Pulse({required this.color});
+  final Color color;
+
+  @override
+  State<_Pulse> createState() => _PulseState();
+}
+
+class _PulseState extends State<_Pulse> with SingleTickerProviderStateMixin {
+  late final _c = AnimationController(vsync: this, duration: const Duration(milliseconds: 900))
+    ..repeat(reverse: true);
+
+  @override
+  void dispose() {
+    _c.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => FadeTransition(
+    opacity: Tween<double>(begin: 0.35, end: 1).animate(_c),
+    child: Icon(Icons.graphic_eq_rounded, color: widget.color),
+  );
 }

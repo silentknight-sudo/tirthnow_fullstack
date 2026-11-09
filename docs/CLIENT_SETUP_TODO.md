@@ -61,3 +61,10 @@ open-source Piper voice `hi_IN-priyamvada-medium`. That voice's training data is
 licensed **CC BY-NC-SA 4.0 (non-commercial)**. Before a commercial launch,
 re-record the voice-overs with a voice artist or a licensed commercial TTS
 (e.g. Google Cloud or Azure Hindi voices), or remove these demo reels.
+
+## Aarti content and demo data (client brief, Nov 2026)
+
+- **Aarti lyrics** (`apps/mobile/assets/aarti/aartis.json`): traditional texts of *Aarti Kunj Bihari Ki*, *Om Jai Jagdish Hare* and the *Hare Krishna Mahamantra*. Please have each temple confirm the version they sing and which aartis to add.
+- **Aarti audio**: currently a recitation with the same free, non-commercial Hindi voice as the demo reels plus a generated drone. Replace with licensed recordings (ideally from the temples) before launch.
+- **Demo pilgrims** (Live Crowd card, People screen): AI-generated sample faces, always labelled DEMO. Remove or replace with real, consented users before launch.
+- **Live crowd counts** shown on Home are sample numbers derived from the temple crowd level until a real footfall source is connected.

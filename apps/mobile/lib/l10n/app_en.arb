@@ -497,5 +497,130 @@
   "explore": "Explore",
   "planGroupYatra": "Plan a group yatra",
   "planGroupYatraSub": "Add your group, stay and travel. Get a day-by-day plan around real aarti times.",
-  "featMembers": "Members"
+  "featMembers": "Members",
+  "aartiAudioNote": "Recitation audio (demo voice). Lyrics are traditional.",
+  "aartiIntro": "Read the full aarti and listen along, temple by temple.",
+  "aartiTitle": "Aarti",
+  "changePhoto": "Change photo",
+  "createFamilyGroup": "Create family group",
+  "createGroup": "Create group",
+  "createProfile": "Create Profile",
+  "creatorsToFollow": "Creators to follow",
+  "deleteGroup": "Delete group",
+  "deleteGroupConfirm": "This removes the group for everyone. Continue?",
+  "demo": "DEMO",
+  "demoPeopleNote": "Sample profiles for the demo. They are not real visitors.",
+  "editProfile": "Your profile",
+  "endTrip": "End trip",
+  "endTripConfirm": "Mark this pilgrimage as completed? Location sharing will stop.",
+  "enterYourName": "Please enter your name",
+  "familyNameHint": "e.g. Sharma parivar",
+  "familyPrivacy": "Only people you invite with the code can join. Your location is visible only while you are on a trip AND you have turned sharing on for this group. You can stop at any time.",
+  "familyTracking": "Family tracking",
+  "familyTrackingSub": "Let family at home follow your trip, with your permission",
+  "invite": "Invite",
+  "inviteFamilyHint": "Share the join code with family so they can follow your trip.",
+  "joinCode": "Join code",
+  "joinFamilyGroup": "Join a family group",
+  "joinWithCode": "Join with code",
+  "joinedGroup": "You joined the group. Turn on sharing if you want them to see you.",
+  "leaveGroup": "Leave group",
+  "leaveGroupConfirm": "Leave this family group?",
+  "listening": "Listening… speak now",
+  "liveLyricsAudio": "Live · Lyrics · Audio",
+  "lyricsAudio": "Lyrics + audio",
+  "micPermission": "Allow microphone access to ask by voice",
+  "myBookingsSub": "Stays, food, cabs and experiences you booked",
+  "myTrip": "My Trip",
+  "noActiveTrip": "No trip in progress",
+  "noFamilyGroups": "No family groups yet. Create one or join with a code.",
+  "noPastTrips": "Your completed trips will appear here.",
+  "notOnTrip": "Not on a trip",
+  "ok": "OK",
+  "onTrip": "ON TRIP",
+  "onTripNotSharing": "Location not shared",
+  "openInMaps": "Open in Maps",
+  "pause": "Pause",
+  "people": "People",
+  "pilgrimsInBraj": "Pilgrims in Braj",
+  "play": "Play",
+  "poojaAarti": "Aarti",
+  "poojaAll": "All",
+  "poojaDeity": "Thakur ji",
+  "poojaIntro": "Essentials for darshan and pooja in Braj.",
+  "poojaItems": "Pooja Items",
+  "poojaOffering": "Offerings",
+  "poojaSoon": "Ordering from local shops is coming soon.",
+  "poojaTilak": "Tilak & mala",
+  "profilePublicNote": "Your name and photo appear on your reels and comments.",
+  "profileSaved": "Profile saved",
+  "repeat": "Repeat",
+  "replay": "Replay",
+  "shareConsent": "Only family you choose can see it. Stop any time.",
+  "shareLiveLocation": "Share live location with family",
+  "shareWhatsApp": "WhatsApp",
+  "shareWithGroup": "Share my trip location",
+  "shareWithGroupSub": "Visible to this group only while you are on a trip",
+  "sharingOn": "Sharing live location",
+  "sharingPaused": "Location sharing paused",
+  "speaking": "Speaking the answer…",
+  "speakingPaused": "Paused",
+  "startPilgrimage": "Start your pilgrimage",
+  "startPilgrimageSub": "We'll notify you, and your family can follow along if you allow it.",
+  "startTrip": "Start trip",
+  "stop": "Stop",
+  "stopListening": "Done",
+  "textSize": "Text size",
+  "tripEndedMsg": "Your pilgrimage has been completed. Thank you for travelling with TirthNow!",
+  "tripHistory": "Trip history",
+  "tripInProgress": "Trip In Progress",
+  "tripStartedMsg": "Your TirthNow pilgrimage has started. We wish you a safe and blessed journey!",
+  "tripTitleHint": "Trip name (e.g. Vrindavan yatra)",
+  "uploadReel": "Upload a reel",
+  "voiceLangApp": "Speak in app language",
+  "voiceReplies": "Spoken replies",
+  "voiceSettings": "Voice",
+  "atPlace": "At {place}",
+  "@atPlace": {
+    "placeholders": {
+      "place": {
+        "type": "String"
+      }
+    }
+  },
+  "fromPlace": "From: {place}",
+  "@fromPlace": {
+    "placeholders": {
+      "place": {
+        "type": "String"
+      }
+    }
+  },
+  "lastUpdated": "Updated {time}",
+  "@lastUpdated": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "startedAt": "Started: {time}",
+  "@startedAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "familyInvite": "Join our TirthNow family group \"{name}\" to follow our pilgrimage 🙏 Open TirthNow → My Trips → Family tracking → Join with code: {code}",
+  "@familyInvite": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "code": {
+        "type": "String"
+      }
+    }
+  }
 }

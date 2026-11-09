@@ -551,6 +551,26 @@ describe('AI guide', () => {
       .expect(400);
   });
 
+  it('translates answers for voice playback, skipping text already in the target language', async () => {
+    const hi = await t.http
+      .post('/v1/ai/voice/translate')
+      .set(...bearer(user.token))
+      .send({ text: 'Evening aarti is at 18:30.', to: 'hi' })
+      .expect(200);
+    expect(hi.body).toEqual({ text: '[hi] Evening aarti is at 18:30.', lang: 'hi' });
+    const same = await t.http
+      .post('/v1/ai/voice/translate')
+      .set(...bearer(user.token))
+      .send({ text: 'Evening aarti is at 18:30.', to: 'en' })
+      .expect(200);
+    expect(same.body).toEqual({ text: 'Evening aarti is at 18:30.', lang: 'en' });
+    await t.http
+      .post('/v1/ai/voice/translate')
+      .set(...bearer(user.token))
+      .send({ text: 'x', to: 'fr' })
+      .expect(400);
+  });
+
   it('indexes PDFs and syncs temple pages from the catalog', async () => {
     await t.prisma.temple.update({
       where: { id: fx.bankeBihari },

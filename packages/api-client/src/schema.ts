@@ -1167,6 +1167,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/v1/ai/voice/translate': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Translate an answer into the listening language before speaking it */
+    post: operations['AiController_translate'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/v1/auth/firebase': {
     parameters: {
       query?: never;
@@ -4816,6 +4833,19 @@ export interface components {
        */
       mediaId: string;
     };
+    TranslateDto: {
+      text: string;
+      /**
+       * @description Target language
+       * @enum {string}
+       */
+      to: 'en' | 'hi';
+    };
+    TranslateResponse: {
+      /** @enum {string} */
+      lang: 'en' | 'hi';
+      text: string;
+    };
     TriggerSosDto: {
       /** @example 12 */
       accuracyM?: number;
@@ -7222,6 +7252,29 @@ export interface operations {
           [name: string]: unknown;
         };
         content?: never;
+      };
+    };
+  };
+  AiController_translate: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TranslateDto'];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TranslateResponse'];
+        };
       };
     };
   };

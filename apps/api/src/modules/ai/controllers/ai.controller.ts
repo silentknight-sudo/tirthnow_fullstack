@@ -12,7 +12,7 @@ import {
   Query,
   StreamableFile,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { type Lang } from '@tirth-now/shared-types';
 import { type AuthPrincipal, CurrentUser, NoGuests, Public } from '../../../core/auth';
 import { CursorQueryDto } from '../../../core/http';
@@ -22,6 +22,8 @@ import {
   LandmarkDto,
   SpeakDto,
   TranscribeDto,
+  TranslateDto,
+  TranslateResponse,
   UpdateItineraryDto,
 } from '../dto/ai.dto';
 import { ItinerariesService } from '../services/itineraries.service';
@@ -118,6 +120,17 @@ export class AiController {
   @HttpCode(200)
   speak(@CurrentUser() u: AuthPrincipal, @Body() dto: SpeakDto, @ReqLang() lang: Lang) {
     return this.media.speak(u, dto, lang);
+  }
+
+  @Post('voice/translate')
+  @HttpCode(200)
+  @ApiOperation({ summary: 'Translate an answer into the listening language before speaking it' })
+  @ApiOkResponse({ type: TranslateResponse })
+  translate(
+    @CurrentUser() u: AuthPrincipal,
+    @Body() dto: TranslateDto,
+  ): Promise<TranslateResponse> {
+    return this.media.translate(u, dto);
   }
 
   @Post('landmark')

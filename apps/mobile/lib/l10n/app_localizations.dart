@@ -2420,6 +2420,528 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Members'**
   String get featMembers;
+
+  /// No description provided for @aartiAudioNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Recitation audio (demo voice). Lyrics are traditional.'**
+  String get aartiAudioNote;
+
+  /// No description provided for @aartiIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Read the full aarti and listen along, temple by temple.'**
+  String get aartiIntro;
+
+  /// No description provided for @aartiTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Aarti'**
+  String get aartiTitle;
+
+  /// No description provided for @changePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Change photo'**
+  String get changePhoto;
+
+  /// No description provided for @createFamilyGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Create family group'**
+  String get createFamilyGroup;
+
+  /// No description provided for @createGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Create group'**
+  String get createGroup;
+
+  /// No description provided for @createProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Profile'**
+  String get createProfile;
+
+  /// No description provided for @creatorsToFollow.
+  ///
+  /// In en, this message translates to:
+  /// **'Creators to follow'**
+  String get creatorsToFollow;
+
+  /// No description provided for @deleteGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete group'**
+  String get deleteGroup;
+
+  /// No description provided for @deleteGroupConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'This removes the group for everyone. Continue?'**
+  String get deleteGroupConfirm;
+
+  /// No description provided for @demo.
+  ///
+  /// In en, this message translates to:
+  /// **'DEMO'**
+  String get demo;
+
+  /// No description provided for @demoPeopleNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Sample profiles for the demo. They are not real visitors.'**
+  String get demoPeopleNote;
+
+  /// No description provided for @editProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile'**
+  String get editProfile;
+
+  /// No description provided for @endTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'End trip'**
+  String get endTrip;
+
+  /// No description provided for @endTripConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark this pilgrimage as completed? Location sharing will stop.'**
+  String get endTripConfirm;
+
+  /// No description provided for @enterYourName.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your name'**
+  String get enterYourName;
+
+  /// No description provided for @familyNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Sharma parivar'**
+  String get familyNameHint;
+
+  /// No description provided for @familyPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Only people you invite with the code can join. Your location is visible only while you are on a trip AND you have turned sharing on for this group. You can stop at any time.'**
+  String get familyPrivacy;
+
+  /// No description provided for @familyTracking.
+  ///
+  /// In en, this message translates to:
+  /// **'Family tracking'**
+  String get familyTracking;
+
+  /// No description provided for @familyTrackingSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Let family at home follow your trip, with your permission'**
+  String get familyTrackingSub;
+
+  /// No description provided for @invite.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite'**
+  String get invite;
+
+  /// No description provided for @inviteFamilyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Share the join code with family so they can follow your trip.'**
+  String get inviteFamilyHint;
+
+  /// No description provided for @joinCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Join code'**
+  String get joinCode;
+
+  /// No description provided for @joinFamilyGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Join a family group'**
+  String get joinFamilyGroup;
+
+  /// No description provided for @joinWithCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Join with code'**
+  String get joinWithCode;
+
+  /// No description provided for @joinedGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'You joined the group. Turn on sharing if you want them to see you.'**
+  String get joinedGroup;
+
+  /// No description provided for @leaveGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave group'**
+  String get leaveGroup;
+
+  /// No description provided for @leaveGroupConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave this family group?'**
+  String get leaveGroupConfirm;
+
+  /// No description provided for @listening.
+  ///
+  /// In en, this message translates to:
+  /// **'Listening… speak now'**
+  String get listening;
+
+  /// No description provided for @liveLyricsAudio.
+  ///
+  /// In en, this message translates to:
+  /// **'Live · Lyrics · Audio'**
+  String get liveLyricsAudio;
+
+  /// No description provided for @lyricsAudio.
+  ///
+  /// In en, this message translates to:
+  /// **'Lyrics + audio'**
+  String get lyricsAudio;
+
+  /// No description provided for @micPermission.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow microphone access to ask by voice'**
+  String get micPermission;
+
+  /// No description provided for @myBookingsSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Stays, food, cabs and experiences you booked'**
+  String get myBookingsSub;
+
+  /// No description provided for @myTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'My Trip'**
+  String get myTrip;
+
+  /// No description provided for @noActiveTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'No trip in progress'**
+  String get noActiveTrip;
+
+  /// No description provided for @noFamilyGroups.
+  ///
+  /// In en, this message translates to:
+  /// **'No family groups yet. Create one or join with a code.'**
+  String get noFamilyGroups;
+
+  /// No description provided for @noPastTrips.
+  ///
+  /// In en, this message translates to:
+  /// **'Your completed trips will appear here.'**
+  String get noPastTrips;
+
+  /// No description provided for @notOnTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'Not on a trip'**
+  String get notOnTrip;
+
+  /// No description provided for @ok.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get ok;
+
+  /// No description provided for @onTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'ON TRIP'**
+  String get onTrip;
+
+  /// No description provided for @onTripNotSharing.
+  ///
+  /// In en, this message translates to:
+  /// **'Location not shared'**
+  String get onTripNotSharing;
+
+  /// No description provided for @openInMaps.
+  ///
+  /// In en, this message translates to:
+  /// **'Open in Maps'**
+  String get openInMaps;
+
+  /// No description provided for @pause.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause'**
+  String get pause;
+
+  /// No description provided for @people.
+  ///
+  /// In en, this message translates to:
+  /// **'People'**
+  String get people;
+
+  /// No description provided for @pilgrimsInBraj.
+  ///
+  /// In en, this message translates to:
+  /// **'Pilgrims in Braj'**
+  String get pilgrimsInBraj;
+
+  /// No description provided for @play.
+  ///
+  /// In en, this message translates to:
+  /// **'Play'**
+  String get play;
+
+  /// No description provided for @poojaAarti.
+  ///
+  /// In en, this message translates to:
+  /// **'Aarti'**
+  String get poojaAarti;
+
+  /// No description provided for @poojaAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get poojaAll;
+
+  /// No description provided for @poojaDeity.
+  ///
+  /// In en, this message translates to:
+  /// **'Thakur ji'**
+  String get poojaDeity;
+
+  /// No description provided for @poojaIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Essentials for darshan and pooja in Braj.'**
+  String get poojaIntro;
+
+  /// No description provided for @poojaItems.
+  ///
+  /// In en, this message translates to:
+  /// **'Pooja Items'**
+  String get poojaItems;
+
+  /// No description provided for @poojaOffering.
+  ///
+  /// In en, this message translates to:
+  /// **'Offerings'**
+  String get poojaOffering;
+
+  /// No description provided for @poojaSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Ordering from local shops is coming soon.'**
+  String get poojaSoon;
+
+  /// No description provided for @poojaTilak.
+  ///
+  /// In en, this message translates to:
+  /// **'Tilak & mala'**
+  String get poojaTilak;
+
+  /// No description provided for @profilePublicNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Your name and photo appear on your reels and comments.'**
+  String get profilePublicNote;
+
+  /// No description provided for @profileSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile saved'**
+  String get profileSaved;
+
+  /// No description provided for @repeat.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat'**
+  String get repeat;
+
+  /// No description provided for @replay.
+  ///
+  /// In en, this message translates to:
+  /// **'Replay'**
+  String get replay;
+
+  /// No description provided for @shareConsent.
+  ///
+  /// In en, this message translates to:
+  /// **'Only family you choose can see it. Stop any time.'**
+  String get shareConsent;
+
+  /// No description provided for @shareLiveLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Share live location with family'**
+  String get shareLiveLocation;
+
+  /// No description provided for @shareWhatsApp.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp'**
+  String get shareWhatsApp;
+
+  /// No description provided for @shareWithGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Share my trip location'**
+  String get shareWithGroup;
+
+  /// No description provided for @shareWithGroupSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Visible to this group only while you are on a trip'**
+  String get shareWithGroupSub;
+
+  /// No description provided for @sharingOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sharing live location'**
+  String get sharingOn;
+
+  /// No description provided for @sharingPaused.
+  ///
+  /// In en, this message translates to:
+  /// **'Location sharing paused'**
+  String get sharingPaused;
+
+  /// No description provided for @speaking.
+  ///
+  /// In en, this message translates to:
+  /// **'Speaking the answer…'**
+  String get speaking;
+
+  /// No description provided for @speakingPaused.
+  ///
+  /// In en, this message translates to:
+  /// **'Paused'**
+  String get speakingPaused;
+
+  /// No description provided for @startPilgrimage.
+  ///
+  /// In en, this message translates to:
+  /// **'Start your pilgrimage'**
+  String get startPilgrimage;
+
+  /// No description provided for @startPilgrimageSub.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll notify you, and your family can follow along if you allow it.'**
+  String get startPilgrimageSub;
+
+  /// No description provided for @startTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'Start trip'**
+  String get startTrip;
+
+  /// No description provided for @stop.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop'**
+  String get stop;
+
+  /// No description provided for @stopListening.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get stopListening;
+
+  /// No description provided for @textSize.
+  ///
+  /// In en, this message translates to:
+  /// **'Text size'**
+  String get textSize;
+
+  /// No description provided for @tripEndedMsg.
+  ///
+  /// In en, this message translates to:
+  /// **'Your pilgrimage has been completed. Thank you for travelling with TirthNow!'**
+  String get tripEndedMsg;
+
+  /// No description provided for @tripHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip history'**
+  String get tripHistory;
+
+  /// No description provided for @tripInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip In Progress'**
+  String get tripInProgress;
+
+  /// No description provided for @tripStartedMsg.
+  ///
+  /// In en, this message translates to:
+  /// **'Your TirthNow pilgrimage has started. We wish you a safe and blessed journey!'**
+  String get tripStartedMsg;
+
+  /// No description provided for @tripTitleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip name (e.g. Vrindavan yatra)'**
+  String get tripTitleHint;
+
+  /// No description provided for @uploadReel.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload a reel'**
+  String get uploadReel;
+
+  /// No description provided for @voiceLangApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Speak in app language'**
+  String get voiceLangApp;
+
+  /// No description provided for @voiceReplies.
+  ///
+  /// In en, this message translates to:
+  /// **'Spoken replies'**
+  String get voiceReplies;
+
+  /// No description provided for @voiceSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Voice'**
+  String get voiceSettings;
+
+  /// No description provided for @atPlace.
+  ///
+  /// In en, this message translates to:
+  /// **'At {place}'**
+  String atPlace(String place);
+
+  /// No description provided for @fromPlace.
+  ///
+  /// In en, this message translates to:
+  /// **'From: {place}'**
+  String fromPlace(String place);
+
+  /// No description provided for @lastUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated {time}'**
+  String lastUpdated(String time);
+
+  /// No description provided for @startedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Started: {time}'**
+  String startedAt(String time);
+
+  /// No description provided for @familyInvite.
+  ///
+  /// In en, this message translates to:
+  /// **'Join our TirthNow family group \"{name}\" to follow our pilgrimage 🙏 Open TirthNow → My Trips → Family tracking → Join with code: {code}'**
+  String familyInvite(String name, String code);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

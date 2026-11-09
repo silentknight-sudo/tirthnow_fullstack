@@ -71,6 +71,9 @@ export class MockLlmAdapter implements LlmProvider {
         return this.text(req, `Earlier the traveller asked about: ${user.slice(0, 200)}`);
       case 'plan':
         return this.json(req, mockPlan(user));
+      case 'translate':
+        // No real translation offline: mark the text so tests and demos can see the step ran.
+        return this.text(req, `${/Hindi/.test(req.system) ? '[hi]' : '[en]'} ${user}`);
       default:
         return this.chat(req, user);
     }

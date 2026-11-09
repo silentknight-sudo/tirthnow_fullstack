@@ -235,6 +235,17 @@ export class SpeakDto {
   @ApiPropertyOptional({ enum: ['en', 'hi'] }) @IsOptional() @IsIn(['en', 'hi']) lang?: 'en' | 'hi';
 }
 
+export class TranslateDto {
+  @ApiProperty({ maxLength: 2000 }) @IsString() @MinLength(1) @MaxLength(2000) text!: string;
+  @ApiProperty({ enum: ['en', 'hi'], description: 'Target language' }) @IsIn(['en', 'hi']) to!:
+    'en' | 'hi';
+}
+
+export class TranslateResponse {
+  @ApiProperty() text!: string;
+  @ApiProperty({ enum: ['en', 'hi'] }) lang!: 'en' | 'hi';
+}
+
 export class LandmarkDto {
   @ApiProperty({ format: 'uuid', description: 'landmark_photo upload' }) @IsUUID() mediaId!: string;
   @ApiPropertyOptional() @IsOptional() @IsLatitude() lat?: number;

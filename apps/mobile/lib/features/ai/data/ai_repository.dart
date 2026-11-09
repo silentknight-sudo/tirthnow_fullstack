@@ -118,6 +118,16 @@ class AiRepository {
           )['url']
           as String;
 
+  /// Translate an answer into the listening language before it is spoken.
+  Future<String> translate(String text, String to) async =>
+      asJson(
+            await _api.post(
+              '/ai/voice/translate',
+              body: TranslateDto(text: text, to: to).toJson(),
+            ),
+          )['text']
+          as String;
+
   Future<String> transcribe(Uint8List audio, String mimeType) async {
     final id = await uploadMedia(_api, purpose: 'voice_note', mimeType: mimeType, bytes: audio);
     return asJson(

@@ -1230,4 +1230,279 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get featMembers => 'Members';
+
+  @override
+  String get aartiAudioNote => 'Recitation audio (demo voice). Lyrics are traditional.';
+
+  @override
+  String get aartiIntro => 'Read the full aarti and listen along, temple by temple.';
+
+  @override
+  String get aartiTitle => 'Aarti';
+
+  @override
+  String get changePhoto => 'Change photo';
+
+  @override
+  String get createFamilyGroup => 'Create family group';
+
+  @override
+  String get createGroup => 'Create group';
+
+  @override
+  String get createProfile => 'Create Profile';
+
+  @override
+  String get creatorsToFollow => 'Creators to follow';
+
+  @override
+  String get deleteGroup => 'Delete group';
+
+  @override
+  String get deleteGroupConfirm => 'This removes the group for everyone. Continue?';
+
+  @override
+  String get demo => 'DEMO';
+
+  @override
+  String get demoPeopleNote => 'Sample profiles for the demo. They are not real visitors.';
+
+  @override
+  String get editProfile => 'Your profile';
+
+  @override
+  String get endTrip => 'End trip';
+
+  @override
+  String get endTripConfirm => 'Mark this pilgrimage as completed? Location sharing will stop.';
+
+  @override
+  String get enterYourName => 'Please enter your name';
+
+  @override
+  String get familyNameHint => 'e.g. Sharma parivar';
+
+  @override
+  String get familyPrivacy =>
+      'Only people you invite with the code can join. Your location is visible only while you are on a trip AND you have turned sharing on for this group. You can stop at any time.';
+
+  @override
+  String get familyTracking => 'Family tracking';
+
+  @override
+  String get familyTrackingSub => 'Let family at home follow your trip, with your permission';
+
+  @override
+  String get invite => 'Invite';
+
+  @override
+  String get inviteFamilyHint => 'Share the join code with family so they can follow your trip.';
+
+  @override
+  String get joinCode => 'Join code';
+
+  @override
+  String get joinFamilyGroup => 'Join a family group';
+
+  @override
+  String get joinWithCode => 'Join with code';
+
+  @override
+  String get joinedGroup => 'You joined the group. Turn on sharing if you want them to see you.';
+
+  @override
+  String get leaveGroup => 'Leave group';
+
+  @override
+  String get leaveGroupConfirm => 'Leave this family group?';
+
+  @override
+  String get listening => 'Listening… speak now';
+
+  @override
+  String get liveLyricsAudio => 'Live · Lyrics · Audio';
+
+  @override
+  String get lyricsAudio => 'Lyrics + audio';
+
+  @override
+  String get micPermission => 'Allow microphone access to ask by voice';
+
+  @override
+  String get myBookingsSub => 'Stays, food, cabs and experiences you booked';
+
+  @override
+  String get myTrip => 'My Trip';
+
+  @override
+  String get noActiveTrip => 'No trip in progress';
+
+  @override
+  String get noFamilyGroups => 'No family groups yet. Create one or join with a code.';
+
+  @override
+  String get noPastTrips => 'Your completed trips will appear here.';
+
+  @override
+  String get notOnTrip => 'Not on a trip';
+
+  @override
+  String get ok => 'OK';
+
+  @override
+  String get onTrip => 'ON TRIP';
+
+  @override
+  String get onTripNotSharing => 'Location not shared';
+
+  @override
+  String get openInMaps => 'Open in Maps';
+
+  @override
+  String get pause => 'Pause';
+
+  @override
+  String get people => 'People';
+
+  @override
+  String get pilgrimsInBraj => 'Pilgrims in Braj';
+
+  @override
+  String get play => 'Play';
+
+  @override
+  String get poojaAarti => 'Aarti';
+
+  @override
+  String get poojaAll => 'All';
+
+  @override
+  String get poojaDeity => 'Thakur ji';
+
+  @override
+  String get poojaIntro => 'Essentials for darshan and pooja in Braj.';
+
+  @override
+  String get poojaItems => 'Pooja Items';
+
+  @override
+  String get poojaOffering => 'Offerings';
+
+  @override
+  String get poojaSoon => 'Ordering from local shops is coming soon.';
+
+  @override
+  String get poojaTilak => 'Tilak & mala';
+
+  @override
+  String get profilePublicNote => 'Your name and photo appear on your reels and comments.';
+
+  @override
+  String get profileSaved => 'Profile saved';
+
+  @override
+  String get repeat => 'Repeat';
+
+  @override
+  String get replay => 'Replay';
+
+  @override
+  String get shareConsent => 'Only family you choose can see it. Stop any time.';
+
+  @override
+  String get shareLiveLocation => 'Share live location with family';
+
+  @override
+  String get shareWhatsApp => 'WhatsApp';
+
+  @override
+  String get shareWithGroup => 'Share my trip location';
+
+  @override
+  String get shareWithGroupSub => 'Visible to this group only while you are on a trip';
+
+  @override
+  String get sharingOn => 'Sharing live location';
+
+  @override
+  String get sharingPaused => 'Location sharing paused';
+
+  @override
+  String get speaking => 'Speaking the answer…';
+
+  @override
+  String get speakingPaused => 'Paused';
+
+  @override
+  String get startPilgrimage => 'Start your pilgrimage';
+
+  @override
+  String get startPilgrimageSub =>
+      'We\'ll notify you, and your family can follow along if you allow it.';
+
+  @override
+  String get startTrip => 'Start trip';
+
+  @override
+  String get stop => 'Stop';
+
+  @override
+  String get stopListening => 'Done';
+
+  @override
+  String get textSize => 'Text size';
+
+  @override
+  String get tripEndedMsg =>
+      'Your pilgrimage has been completed. Thank you for travelling with TirthNow!';
+
+  @override
+  String get tripHistory => 'Trip history';
+
+  @override
+  String get tripInProgress => 'Trip In Progress';
+
+  @override
+  String get tripStartedMsg =>
+      'Your TirthNow pilgrimage has started. We wish you a safe and blessed journey!';
+
+  @override
+  String get tripTitleHint => 'Trip name (e.g. Vrindavan yatra)';
+
+  @override
+  String get uploadReel => 'Upload a reel';
+
+  @override
+  String get voiceLangApp => 'Speak in app language';
+
+  @override
+  String get voiceReplies => 'Spoken replies';
+
+  @override
+  String get voiceSettings => 'Voice';
+
+  @override
+  String atPlace(String place) {
+    return 'At $place';
+  }
+
+  @override
+  String fromPlace(String place) {
+    return 'From: $place';
+  }
+
+  @override
+  String lastUpdated(String time) {
+    return 'Updated $time';
+  }
+
+  @override
+  String startedAt(String time) {
+    return 'Started: $time';
+  }
+
+  @override
+  String familyInvite(String name, String code) {
+    return 'Join our TirthNow family group \"$name\" to follow our pilgrimage 🙏 Open TirthNow → My Trips → Family tracking → Join with code: $code';
+  }
 }

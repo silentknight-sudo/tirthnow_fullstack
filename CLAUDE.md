@@ -35,7 +35,7 @@ docs/                 Architecture, data model, API, integrations, ADRs
 ## API module map
 
 identity · catalog · files · vendors · inventory · orders · payments · reviews ·
-reels · ai · safety · notifications · weather · transit · realtime · admin —
+reels · ai · safety · notifications · weather · transit · trips · realtime · admin —
 plus `core/` (config, prisma, logging, http, auth, idempotency, queue, cache,
 providers). Ownership table: `docs/ARCHITECTURE.md` §2.
 
@@ -119,6 +119,12 @@ Do not use plain `prisma migrate dev` to create migrations (it will offer to dro
 
 - API demo on Render via `render.yaml` (Blueprint; all resources in one region). Guide: `docs/DEPLOY_RENDER.md`.
 - Client-facing status docs: `docs/PROGRESS_BRIEF.pdf`, `docs/PROJECT_STATUS.pdf`, `docs/CLIENT_REQUIREMENTS.pdf`.
+
+## Trips, family tracking and content (client brief, Nov 2026)
+
+- `trips` module: start/end trip (push + in-app `trip_started` / `trip_ended`), history, `/t/:token` tracking link (outside `/v1`), family groups with join codes. Location is stored only while the traveller shares it, and a group sees it only if the member also consented for that group.
+- App: My Trips (`/trips`), Family (`/trips/family`), Aarti lyrics + audio (`assets/aarti`, `/aarti`), Pooja Items (`/pooja`), People (`/people`, demo pilgrims always carry a DEMO badge), Edit profile (`/account/edit`). Bottom bar: Home · AI Guide · Reels · My Trips · Profile (QR scan removed; photo scan stays in the Guide).
+- AI Guide voice: tap or hold the mic, spoken replies after voice questions, play/pause/stop, and `POST /v1/ai/voice/translate` to hear answers in Hindi or English.
 
 ## How the vendor portal fits (Phase 4)
 

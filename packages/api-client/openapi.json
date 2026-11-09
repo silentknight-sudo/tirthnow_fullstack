@@ -5196,6 +5196,46 @@
         ],
         "type": "object"
       },
+      "TranslateDto": {
+        "properties": {
+          "text": {
+            "maxLength": 2000,
+            "type": "string"
+          },
+          "to": {
+            "description": "Target language",
+            "enum": [
+              "en",
+              "hi"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "text",
+          "to"
+        ],
+        "type": "object"
+      },
+      "TranslateResponse": {
+        "properties": {
+          "lang": {
+            "enum": [
+              "en",
+              "hi"
+            ],
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "text",
+          "lang"
+        ],
+        "type": "object"
+      },
       "TriggerSosDto": {
         "properties": {
           "accuracyM": {
@@ -9825,6 +9865,43 @@
             "bearer": []
           }
         ],
+        "tags": [
+          "ai"
+        ]
+      }
+    },
+    "/v1/ai/voice/translate": {
+      "post": {
+        "operationId": "AiController_translate",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TranslateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TranslateResponse"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Translate an answer into the listening language before speaking it",
         "tags": [
           "ai"
         ]

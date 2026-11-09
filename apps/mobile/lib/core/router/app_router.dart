@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/ai/presentation/guide_screen.dart';
-import '../../features/ai/presentation/identify.dart';
 import '../../features/ai/presentation/planner_screen.dart';
 import '../../features/auth/data/session_controller.dart';
 import '../../features/auth/presentation/login_screen.dart';
@@ -17,15 +16,20 @@ import '../../features/bookings/presentation/hotels_screens.dart';
 import '../../features/bookings/presentation/orders_screens.dart';
 import '../../features/catalog/presentation/temple_detail_screen.dart';
 import '../../features/catalog/presentation/temples_screen.dart';
+import '../../features/content/presentation/aarti_screen.dart';
+import '../../features/content/presentation/people_screen.dart';
+import '../../features/content/presentation/pooja_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
 import '../../features/notifications/presentation/notifications_screen.dart';
 import '../../features/profile/presentation/contacts_screen.dart';
+import '../../features/profile/presentation/edit_profile_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/reels/presentation/my_reels_screen.dart';
 import '../../features/reels/presentation/reel_composer_screen.dart';
 import '../../features/reels/presentation/reels_screen.dart';
 import '../../features/safety/presentation/sos_screen.dart';
-import '../../features/travel/presentation/weather_screen.dart';
+import '../../features/trips/presentation/family_screen.dart';
+import '../../features/trips/presentation/trips_screen.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
 
@@ -186,7 +190,24 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           ),
         ],
       ),
-      GoRoute(path: '/weather', builder: (_, _) => const WeatherScreen()),
+      GoRoute(
+        path: '/aarti',
+        builder: (_, _) => const AartiListScreen(),
+        routes: [
+          GoRoute(
+            path: ':id',
+            builder: (_, s) => AartiDetailScreen(id: s.pathParameters['id']!),
+          ),
+        ],
+      ),
+      GoRoute(path: '/pooja', builder: (_, _) => const PoojaItemsScreen()),
+      GoRoute(path: '/people', builder: (_, _) => const PeopleScreen()),
+      GoRoute(
+        path: '/trips',
+        builder: (_, _) => const TripsScreen(),
+        routes: [GoRoute(path: 'family', builder: (_, _) => const FamilyScreen())],
+      ),
+      GoRoute(path: '/account/edit', builder: (_, _) => const EditProfileScreen()),
     ],
   );
 });
@@ -286,12 +307,11 @@ class _Shell extends StatelessWidget {
               onPressed: () => context.push('/sos'),
               child: const Text('SOS', style: TextStyle(fontWeight: FontWeight.w800)),
             ),
-      // Home · AI Guide · Scan (camera) · My Trips · Profile. Temples and Book
+      // Home · AI Guide · Reels · My Trips · Profile. Temples and Book
       // stay as branches, reached from Home's quick access.
       bottomNavigationBar: _BottomBar(
         index: switch (shell.currentIndex) {
           3 => 1,
-          2 => 3,
           4 => 4,
           _ => 0,
         },
@@ -302,9 +322,9 @@ class _Shell extends StatelessWidget {
             case 1:
               shell.goBranch(3, initialLocation: shell.currentIndex == 3);
             case 2:
-              unawaited(identifyTempleFromCamera(context));
+              unawaited(context.push('/reels'));
             case 3:
-              context.go('/book/orders');
+              unawaited(context.push('/trips'));
             default:
               shell.goBranch(4, initialLocation: shell.currentIndex == 4);
           }
@@ -312,7 +332,7 @@ class _Shell extends StatelessWidget {
         items: [
           (Icons.home_outlined, Icons.home_rounded, l.navHome),
           (Icons.smart_toy_outlined, Icons.smart_toy_rounded, l.aiGuide),
-          (Icons.qr_code_scanner_rounded, Icons.qr_code_scanner_rounded, l.scan),
+          (Icons.slow_motion_video_rounded, Icons.slow_motion_video_rounded, l.reels),
           (Icons.luggage_outlined, Icons.luggage, l.myTrips),
           (Icons.person_outline_rounded, Icons.person_rounded, l.navProfile),
         ],

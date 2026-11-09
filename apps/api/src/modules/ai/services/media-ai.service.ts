@@ -6,6 +6,8 @@ import { CacheService } from '../../../core/cache';
 import { haversineKm } from '../../../core/geo';
 import { tokens } from '../../../core/i18n';
 import {
+  LLM_PROVIDER,
+  type LlmProvider,
   STT_PROVIDER,
   type SpeechToTextProvider,
   TTS_PROVIDER,
@@ -15,7 +17,13 @@ import {
 } from '../../../core/providers';
 import { CatalogFacade } from '../../catalog';
 import { FilesFacade } from '../../files';
-import { type LandmarkDto, type SpeakDto, type TranscribeDto } from '../dto/ai.dto';
+import {
+  type LandmarkDto,
+  type SpeakDto,
+  type TranscribeDto,
+  type TranslateDto,
+  type TranslateResponse,
+} from '../dto/ai.dto';
 import { QuotaService } from './quota.service';
 
 const TTS_CACHE_S = 30 * 86_400;
@@ -38,7 +46,28 @@ export class MediaAiService {
     @Inject(STT_PROVIDER) private readonly stt: SpeechToTextProvider,
     @Inject(TTS_PROVIDER) private readonly tts: TextToSpeechProvider,
     @Inject(VISION_PROVIDER) private readonly vision: VisionProvider,
+    @Inject(LLM_PROVIDER) private readonly llm: LlmProvider,
   ) {}
+
+  /** Translate a guide answer before it is spoken (voice translation). */
+  async translate(user: AuthPrincipal, dto: TranslateDto): Promise<TranslateResponse> {
+    const text = dto.text.trim();
+    const already = dto.to === 'hi' ? /[ऀ-ॿ]/.test(text) : !/[ऀ-ॿ]/.test(text);
+    if (already) return { text, lang: dto.to };
+    const key = `tr:${dto.to}:${createHash('sha256').update(text).digest('hex')}`;
+    const cached = await this.cache.get<string>(key);
+    if (cached) return { text: cached, lang: dto.to };
+    await this.quota.consume(user);
+    const res = await this.llm.complete({
+      tier: 'cheap',
+      system: `[task:translate]\nTranslate the user's text into ${dto.to === 'hi' ? 'Hindi (Devanagari script)' : 'English'} for a pilgrim listening by voice. Keep temple names, times and numbers exactly as given. Reply with the translation only.`,
+      messages: [{ role: 'user', text }],
+      maxTokens: 1500,
+    });
+    const out = res.text.trim() || text;
+    await this.cache.set(key, out, TTS_CACHE_S);
+    return { text: out, lang: dto.to };
+  }
 
   async transcribe(
     user: AuthPrincipal,

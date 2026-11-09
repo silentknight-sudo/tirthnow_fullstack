@@ -42,6 +42,9 @@ flutter:
   assets:
     - assets/images/
     - assets/images/canva/
+    - assets/images/demo-people/
+    - assets/images/pooja/
+    - assets/aarti/
   fonts:
     - family: Cormorant
       fonts:

@@ -1230,4 +1230,278 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get featMembers => 'सदस्य';
+
+  @override
+  String get aartiAudioNote => 'पाठ ऑडियो (डेमो आवाज़)। बोल पारंपरिक हैं।';
+
+  @override
+  String get aartiIntro => 'मंदिर के अनुसार पूरी आरती पढ़ें और साथ में सुनें।';
+
+  @override
+  String get aartiTitle => 'आरती';
+
+  @override
+  String get changePhoto => 'फ़ोटो बदलें';
+
+  @override
+  String get createFamilyGroup => 'परिवार समूह बनाएँ';
+
+  @override
+  String get createGroup => 'समूह बनाएँ';
+
+  @override
+  String get createProfile => 'प्रोफ़ाइल बनाएँ';
+
+  @override
+  String get creatorsToFollow => 'फ़ॉलो करने के लिए क्रिएटर';
+
+  @override
+  String get deleteGroup => 'समूह हटाएँ';
+
+  @override
+  String get deleteGroupConfirm => 'यह सभी के लिए समूह हटा देगा। जारी रखें?';
+
+  @override
+  String get demo => 'डेमो';
+
+  @override
+  String get demoPeopleNote => 'डेमो के लिए नमूना प्रोफ़ाइल। ये असली यात्री नहीं हैं।';
+
+  @override
+  String get editProfile => 'आपकी प्रोफ़ाइल';
+
+  @override
+  String get endTrip => 'यात्रा समाप्त करें';
+
+  @override
+  String get endTripConfirm => 'इस यात्रा को पूरा मानें? लोकेशन शेयर करना बंद हो जाएगा।';
+
+  @override
+  String get enterYourName => 'कृपया अपना नाम लिखें';
+
+  @override
+  String get familyNameHint => 'जैसे शर्मा परिवार';
+
+  @override
+  String get familyPrivacy =>
+      'केवल वही लोग जुड़ सकते हैं जिन्हें आप कोड देते हैं। आपकी लोकेशन तभी दिखती है जब आप यात्रा पर हों और इस समूह के लिए शेयर करना चालू हो। आप कभी भी बंद कर सकते हैं।';
+
+  @override
+  String get familyTracking => 'परिवार ट्रैकिंग';
+
+  @override
+  String get familyTrackingSub => 'आपकी अनुमति से घर पर परिवार आपकी यात्रा देख सके';
+
+  @override
+  String get invite => 'आमंत्रित करें';
+
+  @override
+  String get inviteFamilyHint => 'परिवार के साथ जॉइन कोड शेयर करें ताकि वे आपकी यात्रा देख सकें।';
+
+  @override
+  String get joinCode => 'जॉइन कोड';
+
+  @override
+  String get joinFamilyGroup => 'परिवार समूह से जुड़ें';
+
+  @override
+  String get joinWithCode => 'कोड से जुड़ें';
+
+  @override
+  String get joinedGroup => 'आप समूह से जुड़ गए। चाहें तो शेयर करना चालू करें।';
+
+  @override
+  String get leaveGroup => 'समूह छोड़ें';
+
+  @override
+  String get leaveGroupConfirm => 'इस परिवार समूह को छोड़ें?';
+
+  @override
+  String get listening => 'सुन रहे हैं… अब बोलें';
+
+  @override
+  String get liveLyricsAudio => 'लाइव · बोल · ऑडियो';
+
+  @override
+  String get lyricsAudio => 'बोल + ऑडियो';
+
+  @override
+  String get micPermission => 'आवाज़ से पूछने के लिए माइक्रोफ़ोन की अनुमति दें';
+
+  @override
+  String get myBookingsSub => 'आपकी बुक की गई जगहें, भोजन, कैब और अनुभव';
+
+  @override
+  String get myTrip => 'मेरी यात्रा';
+
+  @override
+  String get noActiveTrip => 'कोई यात्रा जारी नहीं';
+
+  @override
+  String get noFamilyGroups => 'अभी कोई परिवार समूह नहीं। एक बनाएँ या कोड से जुड़ें।';
+
+  @override
+  String get noPastTrips => 'आपकी पूरी की गई यात्राएँ यहाँ दिखेंगी।';
+
+  @override
+  String get notOnTrip => 'यात्रा पर नहीं';
+
+  @override
+  String get ok => 'ठीक है';
+
+  @override
+  String get onTrip => 'यात्रा पर';
+
+  @override
+  String get onTripNotSharing => 'लोकेशन शेयर नहीं';
+
+  @override
+  String get openInMaps => 'मैप में खोलें';
+
+  @override
+  String get pause => 'रोकें';
+
+  @override
+  String get people => 'लोग';
+
+  @override
+  String get pilgrimsInBraj => 'ब्रज में यात्री';
+
+  @override
+  String get play => 'चलाएँ';
+
+  @override
+  String get poojaAarti => 'आरती';
+
+  @override
+  String get poojaAll => 'सभी';
+
+  @override
+  String get poojaDeity => 'ठाकुर जी';
+
+  @override
+  String get poojaIntro => 'ब्रज में दर्शन और पूजा का ज़रूरी सामान।';
+
+  @override
+  String get poojaItems => 'पूजा सामग्री';
+
+  @override
+  String get poojaOffering => 'भोग व अर्पण';
+
+  @override
+  String get poojaSoon => 'स्थानीय दुकानों से ऑर्डर जल्द आ रहा है।';
+
+  @override
+  String get poojaTilak => 'तिलक व माला';
+
+  @override
+  String get profilePublicNote => 'आपका नाम और फ़ोटो आपकी रील्स और टिप्पणियों पर दिखते हैं।';
+
+  @override
+  String get profileSaved => 'प्रोफ़ाइल सहेजी गई';
+
+  @override
+  String get repeat => 'दोहराएँ';
+
+  @override
+  String get replay => 'फिर से चलाएँ';
+
+  @override
+  String get shareConsent => 'केवल आपके चुने परिवार वाले देख सकते हैं। कभी भी बंद करें।';
+
+  @override
+  String get shareLiveLocation => 'परिवार के साथ लाइव लोकेशन शेयर करें';
+
+  @override
+  String get shareWhatsApp => 'व्हाट्सऐप';
+
+  @override
+  String get shareWithGroup => 'मेरी यात्रा की लोकेशन शेयर करें';
+
+  @override
+  String get shareWithGroupSub => 'केवल यात्रा के दौरान इस समूह को दिखेगी';
+
+  @override
+  String get sharingOn => 'लाइव लोकेशन शेयर हो रही है';
+
+  @override
+  String get sharingPaused => 'लोकेशन शेयर करना रुका है';
+
+  @override
+  String get speaking => 'उत्तर बोल रहे हैं…';
+
+  @override
+  String get speakingPaused => 'रुका हुआ';
+
+  @override
+  String get startPilgrimage => 'अपनी यात्रा शुरू करें';
+
+  @override
+  String get startPilgrimageSub => 'हम आपको सूचित करेंगे, और आपकी अनुमति से परिवार साथ बना रहेगा।';
+
+  @override
+  String get startTrip => 'यात्रा शुरू करें';
+
+  @override
+  String get stop => 'बंद करें';
+
+  @override
+  String get stopListening => 'हो गया';
+
+  @override
+  String get textSize => 'अक्षर का आकार';
+
+  @override
+  String get tripEndedMsg =>
+      'आपकी तीर्थयात्रा पूरी हो गई है। TirthNow के साथ यात्रा करने के लिए धन्यवाद!';
+
+  @override
+  String get tripHistory => 'यात्रा इतिहास';
+
+  @override
+  String get tripInProgress => 'यात्रा जारी है';
+
+  @override
+  String get tripStartedMsg =>
+      'आपकी TirthNow तीर्थयात्रा शुरू हो गई है। आपकी यात्रा सुरक्षित और मंगलमय हो!';
+
+  @override
+  String get tripTitleHint => 'यात्रा का नाम (जैसे वृंदावन यात्रा)';
+
+  @override
+  String get uploadReel => 'रील अपलोड करें';
+
+  @override
+  String get voiceLangApp => 'ऐप की भाषा में बोलें';
+
+  @override
+  String get voiceReplies => 'बोलकर उत्तर';
+
+  @override
+  String get voiceSettings => 'आवाज़';
+
+  @override
+  String atPlace(String place) {
+    return '$place पर';
+  }
+
+  @override
+  String fromPlace(String place) {
+    return 'कहाँ से: $place';
+  }
+
+  @override
+  String lastUpdated(String time) {
+    return 'अपडेट $time';
+  }
+
+  @override
+  String startedAt(String time) {
+    return 'शुरू: $time';
+  }
+
+  @override
+  String familyInvite(String name, String code) {
+    return 'हमारी तीर्थयात्रा देखने के लिए TirthNow परिवार समूह \"$name\" से जुड़ें 🙏 TirthNow खोलें → मेरी यात्राएँ → परिवार ट्रैकिंग → कोड से जुड़ें: $code';
+  }
 }
