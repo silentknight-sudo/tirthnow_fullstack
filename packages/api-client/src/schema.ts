@@ -1417,6 +1417,72 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/v1/family/groups': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['FamilyController_mine'];
+    put?: never;
+    post: operations['FamilyController_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/v1/family/groups/{id}/me': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    /** Leave the group (the owner leaving deletes it) */
+    delete: operations['FamilyController_leave'];
+    options?: never;
+    head?: never;
+    /** My consent: may this group see my live trip location? */
+    patch: operations['FamilyController_sharing'];
+    trace?: never;
+  };
+  '/v1/family/groups/{id}/members/{userId}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete: operations['FamilyController_remove'];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/v1/family/groups/join': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['FamilyController_join'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/v1/festivals': {
     parameters: {
       query?: never;
@@ -2241,6 +2307,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/v1/t/{token}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Shared trip and permitted live location (JSON, or HTML for browsers) */
+    get: operations['TripShareController_view'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/v1/temples': {
     parameters: {
       query?: never;
@@ -2316,6 +2399,109 @@ export interface paths {
       cookie?: never;
     };
     get: operations['TransitController_stations'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/v1/trips': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Trip history, newest first */
+    get: operations['TripsController_history'];
+    put?: never;
+    /** Start a pilgrimage (sends the trip-start notification) */
+    post: operations['TripsController_start'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/v1/trips/{id}/end': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** End a pilgrimage (sends the trip-end notification, stops sharing) */
+    post: operations['TripsController_end'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/v1/trips/{id}/location': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Live location update (stored only while sharing is on) */
+    post: operations['TripsController_location'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/v1/trips/{id}/share': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Create a tracking link and a WhatsApp-ready message */
+    post: operations['TripsController_share'];
+    /** Stop the tracking link */
+    delete: operations['TripsController_unshare'];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/v1/trips/{id}/sharing': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /** Start or pause live location sharing for this trip */
+    patch: operations['TripsController_sharing'];
+    trace?: never;
+  };
+  '/v1/trips/active': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['TripsController_active'];
     put?: never;
     post?: never;
     delete?: never;
@@ -3383,6 +3569,10 @@ export interface components {
       sortOrder?: number;
       title: components['schemas']['I18nTextDto'];
     };
+    CreateFamilyGroupDto: {
+      /** @example Sharma parivar */
+      name: string;
+    };
     CreateFestivalDto: {
       /** Format: uuid */
       cityId?: string;
@@ -3828,6 +4018,31 @@ export interface components {
       swiggy?: string;
       zomato?: string;
     };
+    FamilyGroupResponse: {
+      id: string;
+      isOwner: boolean;
+      joinCode: string;
+      members: components['schemas']['FamilyMemberResponse'][];
+      name: string;
+    };
+    FamilyMemberResponse: {
+      avatarUrl: string | null;
+      isMe: boolean;
+      isOwner: boolean;
+      lat: number | null;
+      lng: number | null;
+      locationAt: string | null;
+      name: string;
+      /** @description This member allows the group to see their location */
+      sharing: boolean;
+      /** @description Active trip, if any */
+      trip: components['schemas']['MemberTripResponse'] | null;
+      userId: string;
+    };
+    FamilySharingDto: {
+      /** @description Consent: may this group see my live trip location? */
+      sharing: boolean;
+    };
     FestivalResponse: {
       cityId: string | null;
       crowdAdvisory: string | null;
@@ -3945,6 +4160,10 @@ export interface components {
       /** @example +919876543210 */
       phoneE164?: string;
     };
+    JoinFamilyGroupDto: {
+      /** @example K7P2QX */
+      code: string;
+    };
     KycDocumentResponse: {
       /** @enum {string} */
       docType: 'pan' | 'gst' | 'aadhaar' | 'fssai' | 'trade_license' | 'rc' | 'permit' | 'other';
@@ -3988,6 +4207,12 @@ export interface components {
         [key: string]: string;
       };
       width?: number | null;
+    };
+    MemberTripResponse: {
+      fromPlace: string | null;
+      id: string;
+      startedAt: string;
+      title: string;
     };
     MenuItemResponse: {
       category: string;
@@ -4432,6 +4657,20 @@ export interface components {
       trail: Record<string, never>[];
       updatedAt: string;
     };
+    SharedTripResponse: {
+      endedAt: string | null;
+      fromPlace: string | null;
+      lat: number | null;
+      lng: number | null;
+      locationAt: string | null;
+      name: string;
+      /** @description Location is shown only while the traveller shares it */
+      sharing: boolean;
+      startedAt: string;
+      /** @enum {string} */
+      status: 'active' | 'ended';
+      title: string;
+    };
     SlotResponse: {
       booked: number;
       capacity: number;
@@ -4481,6 +4720,19 @@ export interface components {
       permissions: string[];
       /** Format: uuid */
       userId: string;
+    };
+    StartTripDto: {
+      /** @example Delhi */
+      fromPlace?: string;
+      /**
+       * Format: uuid
+       * @description A saved itinerary this trip follows
+       */
+      itineraryId?: string;
+      /** @description Start sharing live location with family right away */
+      shareLocation?: boolean;
+      /** @example Vrindavan yatra */
+      title?: string;
     };
     StationResponse: {
       city: string;
@@ -4574,6 +4826,14 @@ export interface components {
       /** @example 77.6996 */
       lng: number;
     };
+    TripLocationDto: {
+      /** @example 12 */
+      accuracyM?: number;
+      /** @example 27.5806 */
+      lat: number;
+      /** @example 77.6996 */
+      lng: number;
+    };
     TripMemberDto: {
       age?: number;
       name: string;
@@ -4581,6 +4841,35 @@ export interface components {
       phone?: string;
       /** @enum {string} */
       role?: 'organiser' | 'member' | 'elder' | 'child';
+    };
+    TripPageResponse: {
+      data: components['schemas']['TripResponse'][];
+      nextCursor: string | null;
+    };
+    TripResponse: {
+      endedAt: string | null;
+      fromPlace: string | null;
+      id: string;
+      itineraryId: string | null;
+      lastLat: number | null;
+      lastLng: number | null;
+      lastLocationAt: string | null;
+      /** @description Tracking link, if created */
+      shareUrl: string | null;
+      sharingLocation: boolean;
+      startedAt: string;
+      /** @enum {string} */
+      status: 'active' | 'ended';
+      title: string;
+    };
+    TripShareResponse: {
+      /** @description Ready-made text for WhatsApp or SMS */
+      message: string;
+      shareUrl: string;
+    };
+    TripSharingDto: {
+      /** @description true = share live location, false = pause */
+      sharing: boolean;
     };
     TripStayDto: {
       address?: string;
@@ -4971,6 +5260,10 @@ export interface components {
         | 'aarti_reminder'
         | 'sos_alert'
         | 'sos_resolved'
+        | 'trip_started'
+        | 'trip_ended'
+        | 'family_trip_started'
+        | 'family_trip_ended'
         | 'broadcast'
         | 'emergency_broadcast';
       title?: components['schemas']['I18nTextDto'];
@@ -7360,6 +7653,137 @@ export interface operations {
       };
     };
   };
+  FamilyController_mine: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['FamilyGroupResponse'][];
+        };
+      };
+    };
+  };
+  FamilyController_create: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateFamilyGroupDto'];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['FamilyGroupResponse'];
+        };
+      };
+    };
+  };
+  FamilyController_leave: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  FamilyController_sharing: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['FamilySharingDto'];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['FamilyGroupResponse'];
+        };
+      };
+    };
+  };
+  FamilyController_remove: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+        userId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['FamilyGroupResponse'];
+        };
+      };
+    };
+  };
+  FamilyController_join: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['JoinFamilyGroupDto'];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['FamilyGroupResponse'];
+        };
+      };
+    };
+  };
   CatalogController_festivals: {
     parameters: {
       query?: {
@@ -8793,6 +9217,27 @@ export interface operations {
       };
     };
   };
+  TripShareController_view: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        token: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['SharedTripResponse'];
+        };
+      };
+    };
+  };
   CatalogController_temples: {
     parameters: {
       query?: {
@@ -8910,6 +9355,180 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['StationResponse'][];
+        };
+      };
+    };
+  };
+  TripsController_history: {
+    parameters: {
+      query?: {
+        /** @description Opaque cursor from the previous page */
+        cursor?: string;
+        limit?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TripPageResponse'];
+        };
+      };
+    };
+  };
+  TripsController_start: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['StartTripDto'];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TripResponse'];
+        };
+      };
+    };
+  };
+  TripsController_end: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TripResponse'];
+        };
+      };
+    };
+  };
+  TripsController_location: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TripLocationDto'];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  TripsController_share: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TripShareResponse'];
+        };
+      };
+    };
+  };
+  TripsController_unshare: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  TripsController_sharing: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TripSharingDto'];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TripResponse'];
+        };
+      };
+    };
+  };
+  TripsController_active: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TripResponse'];
         };
       };
     };

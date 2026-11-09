@@ -19,6 +19,7 @@ import { RealtimeModule } from './modules/realtime';
 import { ReelsModule } from './modules/reels';
 import { ReviewsModule } from './modules/reviews';
 import { SafetyModule } from './modules/safety';
+import { TripsModule } from './modules/trips';
 import { TransitModule } from './modules/transit';
 import { VendorsModule } from './modules/vendors';
 import { WeatherModule } from './modules/weather';
@@ -51,6 +52,7 @@ export class AppModule {
         RealtimeModule.forRoot(config),
         WeatherModule,
         TransitModule,
+        TripsModule,
         ...(config.isProduction ? [] : [DevModule]),
       ],
     };

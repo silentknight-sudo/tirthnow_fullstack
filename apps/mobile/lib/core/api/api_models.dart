@@ -23,25 +23,24 @@ class AartiInstanceResponse {
   });
 
   factory AartiInstanceResponse.fromJson(Map<String, dynamic> json) => AartiInstanceResponse(
-    date: json['date'] as String,
-    endsAt: json['endsAt'] as String,
-    isLiveStreamed: json['isLiveStreamed'] as bool,
-    kind: json['kind'] as String,
-    localTime: json['localTime'] as String,
-    name: json['name'] as String,
-    scheduleId: json['scheduleId'] as String,
-    startsAt: json['startsAt'] as String,
-    streamUrl: json['streamUrl'] == null ? null : json['streamUrl'] as String,
-    templeId: json['templeId'] as String,
-    templeName: json['templeName'] == null ? null : json['templeName'] as String,
-  );
+        date: json['date'] as String,
+        endsAt: json['endsAt'] as String,
+        isLiveStreamed: json['isLiveStreamed'] as bool,
+        kind: json['kind'] as String,
+        localTime: json['localTime'] as String,
+        name: json['name'] as String,
+        scheduleId: json['scheduleId'] as String,
+        startsAt: json['startsAt'] as String,
+        streamUrl: json['streamUrl'] == null ? null : json['streamUrl'] as String,
+        templeId: json['templeId'] as String,
+        templeName: json['templeName'] == null ? null : json['templeName'] as String,
+      );
 
   /// IST date
   final String date;
   final String endsAt;
   final bool isLiveStreamed;
   final String kind;
-
   /// IST wall-clock time
   final String localTime;
   final String name;
@@ -52,18 +51,18 @@ class AartiInstanceResponse {
   final String? templeName;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'date': date,
-    'endsAt': endsAt,
-    'isLiveStreamed': isLiveStreamed,
-    'kind': kind,
-    'localTime': localTime,
-    'name': name,
-    'scheduleId': scheduleId,
-    'startsAt': startsAt,
-    'streamUrl': ?streamUrl,
-    'templeId': templeId,
-    'templeName': ?templeName,
-  };
+        'date': date,
+        'endsAt': endsAt,
+        'isLiveStreamed': isLiveStreamed,
+        'kind': kind,
+        'localTime': localTime,
+        'name': name,
+        'scheduleId': scheduleId,
+        'startsAt': startsAt,
+        'streamUrl': ?streamUrl,
+        'templeId': templeId,
+        'templeName': ?templeName,
+      };
 }
 
 @immutable
@@ -80,15 +79,15 @@ class AartiReminderResponse {
   });
 
   factory AartiReminderResponse.fromJson(Map<String, dynamic> json) => AartiReminderResponse(
-    aartiName: json['aartiName'] as String,
-    aartiScheduleId: json['aartiScheduleId'] as String,
-    id: json['id'] as String,
-    minutesBefore: json['minutesBefore'] as num,
-    nextAartiAt: json['nextAartiAt'] == null ? null : json['nextAartiAt'] as String,
-    nextReminderAt: json['nextReminderAt'] == null ? null : json['nextReminderAt'] as String,
-    templeId: json['templeId'] as String,
-    templeName: json['templeName'] as String,
-  );
+        aartiName: json['aartiName'] as String,
+        aartiScheduleId: json['aartiScheduleId'] as String,
+        id: json['id'] as String,
+        minutesBefore: json['minutesBefore'] as num,
+        nextAartiAt: json['nextAartiAt'] == null ? null : json['nextAartiAt'] as String,
+        nextReminderAt: json['nextReminderAt'] == null ? null : json['nextReminderAt'] as String,
+        templeId: json['templeId'] as String,
+        templeName: json['templeName'] as String,
+      );
 
   final String aartiName;
   final String aartiScheduleId;
@@ -100,27 +99,32 @@ class AartiReminderResponse {
   final String templeName;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'aartiName': aartiName,
-    'aartiScheduleId': aartiScheduleId,
-    'id': id,
-    'minutesBefore': minutesBefore,
-    'nextAartiAt': ?nextAartiAt,
-    'nextReminderAt': ?nextReminderAt,
-    'templeId': templeId,
-    'templeName': templeName,
-  };
+        'aartiName': aartiName,
+        'aartiScheduleId': aartiScheduleId,
+        'id': id,
+        'minutesBefore': minutesBefore,
+        'nextAartiAt': ?nextAartiAt,
+        'nextReminderAt': ?nextReminderAt,
+        'templeId': templeId,
+        'templeName': templeName,
+      };
 }
 
 @immutable
 class AccessibilityDto {
-  const AccessibilityDto({this.avoidStairs, this.elderly, this.lowWalking, this.wheelchair});
+  const AccessibilityDto({
+    this.avoidStairs,
+    this.elderly,
+    this.lowWalking,
+    this.wheelchair,
+  });
 
   factory AccessibilityDto.fromJson(Map<String, dynamic> json) => AccessibilityDto(
-    avoidStairs: json['avoidStairs'] == null ? null : json['avoidStairs'] as bool,
-    elderly: json['elderly'] == null ? null : json['elderly'] as bool,
-    lowWalking: json['lowWalking'] == null ? null : json['lowWalking'] as bool,
-    wheelchair: json['wheelchair'] == null ? null : json['wheelchair'] as bool,
-  );
+        avoidStairs: json['avoidStairs'] == null ? null : json['avoidStairs'] as bool,
+        elderly: json['elderly'] == null ? null : json['elderly'] as bool,
+        lowWalking: json['lowWalking'] == null ? null : json['lowWalking'] as bool,
+        wheelchair: json['wheelchair'] == null ? null : json['wheelchair'] as bool,
+      );
 
   final bool? avoidStairs;
   final bool? elderly;
@@ -128,11 +132,11 @@ class AccessibilityDto {
   final bool? wheelchair;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'avoidStairs': ?avoidStairs,
-    'elderly': ?elderly,
-    'lowWalking': ?lowWalking,
-    'wheelchair': ?wheelchair,
-  };
+        'avoidStairs': ?avoidStairs,
+        'elderly': ?elderly,
+        'lowWalking': ?lowWalking,
+        'wheelchair': ?wheelchair,
+      };
 }
 
 @immutable
@@ -144,49 +148,64 @@ class AddBankAccountDto {
   });
 
   factory AddBankAccountDto.fromJson(Map<String, dynamic> json) => AddBankAccountDto(
-    accountHolder: json['accountHolder'] as String,
-    accountNumber: json['accountNumber'] as String,
-    ifsc: json['ifsc'] as String,
-  );
+        accountHolder: json['accountHolder'] as String,
+        accountNumber: json['accountNumber'] as String,
+        ifsc: json['ifsc'] as String,
+      );
 
   final String accountHolder;
   final String accountNumber;
   final String ifsc;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'accountHolder': accountHolder,
-    'accountNumber': accountNumber,
-    'ifsc': ifsc,
-  };
+        'accountHolder': accountHolder,
+        'accountNumber': accountNumber,
+        'ifsc': ifsc,
+      };
 }
 
 @immutable
 class AddKycDocumentDto {
-  const AddKycDocumentDto({required this.docType, required this.mediaId});
+  const AddKycDocumentDto({
+    required this.docType,
+    required this.mediaId,
+  });
 
-  factory AddKycDocumentDto.fromJson(Map<String, dynamic> json) =>
-      AddKycDocumentDto(docType: json['docType'] as String, mediaId: json['mediaId'] as String);
+  factory AddKycDocumentDto.fromJson(Map<String, dynamic> json) => AddKycDocumentDto(
+        docType: json['docType'] as String,
+        mediaId: json['mediaId'] as String,
+      );
 
   /// One of: pan, gst, aadhaar, fssai, trade_license, rc, permit, other.
   final String docType;
-
   /// Ready upload with purpose kyc_document
   final String mediaId;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{'docType': docType, 'mediaId': mediaId};
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'docType': docType,
+        'mediaId': mediaId,
+      };
 }
 
 @immutable
 class AdminRefundDto {
-  const AdminRefundDto({required this.amountPaise, required this.reason});
+  const AdminRefundDto({
+    required this.amountPaise,
+    required this.reason,
+  });
 
-  factory AdminRefundDto.fromJson(Map<String, dynamic> json) =>
-      AdminRefundDto(amountPaise: json['amountPaise'] as num, reason: json['reason'] as String);
+  factory AdminRefundDto.fromJson(Map<String, dynamic> json) => AdminRefundDto(
+        amountPaise: json['amountPaise'] as num,
+        reason: json['reason'] as String,
+      );
 
   final num amountPaise;
   final String reason;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{'amountPaise': amountPaise, 'reason': reason};
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'amountPaise': amountPaise,
+        'reason': reason,
+      };
 }
 
 @immutable
@@ -201,17 +220,16 @@ class AuthResultResponse {
   });
 
   factory AuthResultResponse.fromJson(Map<String, dynamic> json) => AuthResultResponse(
-    accessToken: json['accessToken'] as String,
-    accessTokenExpiresAt: json['accessTokenExpiresAt'] as String,
-    deviceId: json['deviceId'] == null ? null : json['deviceId'] as String,
-    refreshToken: json['refreshToken'] as String,
-    refreshTokenExpiresAt: json['refreshTokenExpiresAt'] as String,
-    user: AuthUserResponse.fromJson(_map(json['user'])),
-  );
+        accessToken: json['accessToken'] as String,
+        accessTokenExpiresAt: json['accessTokenExpiresAt'] as String,
+        deviceId: json['deviceId'] == null ? null : json['deviceId'] as String,
+        refreshToken: json['refreshToken'] as String,
+        refreshTokenExpiresAt: json['refreshTokenExpiresAt'] as String,
+        user: AuthUserResponse.fromJson(_map(json['user'])),
+      );
 
   final String accessToken;
   final String accessTokenExpiresAt;
-
   /// Registered device id
   final String? deviceId;
   final String refreshToken;
@@ -219,13 +237,13 @@ class AuthResultResponse {
   final AuthUserResponse user;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'accessToken': accessToken,
-    'accessTokenExpiresAt': accessTokenExpiresAt,
-    'deviceId': ?deviceId,
-    'refreshToken': refreshToken,
-    'refreshTokenExpiresAt': refreshTokenExpiresAt,
-    'user': user.toJson(),
-  };
+        'accessToken': accessToken,
+        'accessTokenExpiresAt': accessTokenExpiresAt,
+        'deviceId': ?deviceId,
+        'refreshToken': refreshToken,
+        'refreshTokenExpiresAt': refreshTokenExpiresAt,
+        'user': user.toJson(),
+      };
 }
 
 @immutable
@@ -241,34 +259,33 @@ class AuthUserResponse {
   });
 
   factory AuthUserResponse.fromJson(Map<String, dynamic> json) => AuthUserResponse(
-    displayName: json['displayName'] == null ? null : json['displayName'] as String,
-    email: json['email'] == null ? null : json['email'] as String,
-    id: json['id'] as String,
-    isGuest: json['isGuest'] as bool,
-    phoneE164: json['phoneE164'] == null ? null : json['phoneE164'] as String,
-    roles: (json['roles'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-    vendorIds: (json['vendorIds'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-  );
+        displayName: json['displayName'] == null ? null : json['displayName'] as String,
+        email: json['email'] == null ? null : json['email'] as String,
+        id: json['id'] as String,
+        isGuest: json['isGuest'] as bool,
+        phoneE164: json['phoneE164'] == null ? null : json['phoneE164'] as String,
+        roles: (json['roles'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+        vendorIds: (json['vendorIds'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+      );
 
   final String? displayName;
   final String? email;
   final String id;
   final bool isGuest;
   final String? phoneE164;
-
   /// One of: user, vendor_owner, vendor_staff, admin, super_admin.
   final List<String> roles;
   final List<String> vendorIds;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'displayName': ?displayName,
-    'email': ?email,
-    'id': id,
-    'isGuest': isGuest,
-    'phoneE164': ?phoneE164,
-    'roles': roles,
-    'vendorIds': vendorIds,
-  };
+        'displayName': ?displayName,
+        'email': ?email,
+        'id': id,
+        'isGuest': isGuest,
+        'phoneE164': ?phoneE164,
+        'roles': roles,
+        'vendorIds': vendorIds,
+      };
 }
 
 @immutable
@@ -283,13 +300,13 @@ class BankAccountResponse {
   });
 
   factory BankAccountResponse.fromJson(Map<String, dynamic> json) => BankAccountResponse(
-    accountHolder: json['accountHolder'] as String,
-    accountLast4: json['accountLast4'] as String,
-    id: json['id'] as String,
-    ifsc: json['ifsc'] as String,
-    isPrimary: json['isPrimary'] as bool,
-    isVerified: json['isVerified'] as bool,
-  );
+        accountHolder: json['accountHolder'] as String,
+        accountLast4: json['accountLast4'] as String,
+        id: json['id'] as String,
+        ifsc: json['ifsc'] as String,
+        isPrimary: json['isPrimary'] as bool,
+        isVerified: json['isVerified'] as bool,
+      );
 
   final String accountHolder;
   final String accountLast4;
@@ -299,68 +316,75 @@ class BankAccountResponse {
   final bool isVerified;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'accountHolder': accountHolder,
-    'accountLast4': accountLast4,
-    'id': id,
-    'ifsc': ifsc,
-    'isPrimary': isPrimary,
-    'isVerified': isVerified,
-  };
+        'accountHolder': accountHolder,
+        'accountLast4': accountLast4,
+        'id': id,
+        'ifsc': ifsc,
+        'isPrimary': isPrimary,
+        'isVerified': isVerified,
+      };
 }
 
 @immutable
 class BroadcastDto {
-  const BroadcastDto({required this.body, this.city, this.emergency, required this.title});
+  const BroadcastDto({
+    required this.body,
+    this.city,
+    this.emergency,
+    required this.title,
+  });
 
   factory BroadcastDto.fromJson(Map<String, dynamic> json) => BroadcastDto(
-    body: json['body'] as String,
-    city: json['city'] == null ? null : json['city'] as String,
-    emergency: json['emergency'] == null ? null : json['emergency'] as bool,
-    title: json['title'] as String,
-  );
+        body: json['body'] as String,
+        city: json['city'] == null ? null : json['city'] as String,
+        emergency: json['emergency'] == null ? null : json['emergency'] as bool,
+        title: json['title'] as String,
+      );
 
   final String body;
-
   /// Only users whose home city is this (default: everyone)
   final String? city;
-
   /// Emergency alert: ignores marketing opt-out, high priority
   final bool? emergency;
   final String title;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'body': body,
-    'city': ?city,
-    'emergency': ?emergency,
-    'title': title,
-  };
+        'body': body,
+        'city': ?city,
+        'emergency': ?emergency,
+        'title': title,
+      };
 }
 
 @immutable
 class CabEstimateDto {
-  const CabEstimateDto({this.at, this.class_, required this.drop, required this.pickup});
+  const CabEstimateDto({
+    this.at,
+    this.class_,
+    required this.drop,
+    required this.pickup,
+  });
 
   factory CabEstimateDto.fromJson(Map<String, dynamic> json) => CabEstimateDto(
-    at: json['at'] == null ? null : json['at'] as String,
-    class_: json['class'] == null ? null : json['class'] as String,
-    drop: PointDto.fromJson(_map(json['drop'])),
-    pickup: PointDto.fromJson(_map(json['pickup'])),
-  );
+        at: json['at'] == null ? null : json['at'] as String,
+        class_: json['class'] == null ? null : json['class'] as String,
+        drop: PointDto.fromJson(_map(json['drop'])),
+        pickup: PointDto.fromJson(_map(json['pickup'])),
+      );
 
   /// Pickup time (ISO); default now
   final String? at;
-
   /// One of: auto, hatchback, sedan, suv, tempo_traveller, e_rickshaw.
   final String? class_;
   final PointDto drop;
   final PointDto pickup;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'at': ?at,
-    'class': ?class_,
-    'drop': drop.toJson(),
-    'pickup': pickup.toJson(),
-  };
+        'at': ?at,
+        'class': ?class_,
+        'drop': drop.toJson(),
+        'pickup': pickup.toJson(),
+      };
 }
 
 @immutable
@@ -377,20 +401,17 @@ class CabFareResponse {
   });
 
   factory CabFareResponse.fromJson(Map<String, dynamic> json) => CabFareResponse(
-    baseFarePaise: json['baseFarePaise'] as num,
-    class_: json['class'] as String,
-    fixedRoutes: (json['fixedRoutes'] as List<dynamic>)
-        .map((dynamic x) => FixedRouteDto.fromJson(_map(x)))
-        .toList(),
-    id: json['id'] as String,
-    minFarePaise: json['minFarePaise'] as num,
-    nightSurchargePct: json['nightSurchargePct'] as num,
-    perKmPaise: json['perKmPaise'] as num,
-    perMinPaise: json['perMinPaise'] as num,
-  );
+        baseFarePaise: json['baseFarePaise'] as num,
+        class_: json['class'] as String,
+        fixedRoutes: (json['fixedRoutes'] as List<dynamic>).map((dynamic x) => FixedRouteDto.fromJson(_map(x))).toList(),
+        id: json['id'] as String,
+        minFarePaise: json['minFarePaise'] as num,
+        nightSurchargePct: json['nightSurchargePct'] as num,
+        perKmPaise: json['perKmPaise'] as num,
+        perMinPaise: json['perMinPaise'] as num,
+      );
 
   final num baseFarePaise;
-
   /// One of: auto, hatchback, sedan, suv, tempo_traveller, e_rickshaw.
   final String class_;
   final List<FixedRouteDto> fixedRoutes;
@@ -401,27 +422,32 @@ class CabFareResponse {
   final num perMinPaise;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'baseFarePaise': baseFarePaise,
-    'class': class_,
-    'fixedRoutes': fixedRoutes.map((x) => x.toJson()).toList(),
-    'id': id,
-    'minFarePaise': minFarePaise,
-    'nightSurchargePct': nightSurchargePct,
-    'perKmPaise': perKmPaise,
-    'perMinPaise': perMinPaise,
-  };
+        'baseFarePaise': baseFarePaise,
+        'class': class_,
+        'fixedRoutes': fixedRoutes.map((x) => x.toJson()).toList(),
+        'id': id,
+        'minFarePaise': minFarePaise,
+        'nightSurchargePct': nightSurchargePct,
+        'perKmPaise': perKmPaise,
+        'perMinPaise': perMinPaise,
+      };
 }
 
 @immutable
 class CabLocationDto {
-  const CabLocationDto({this.headingDeg, required this.lat, required this.lng, this.speedKph});
+  const CabLocationDto({
+    this.headingDeg,
+    required this.lat,
+    required this.lng,
+    this.speedKph,
+  });
 
   factory CabLocationDto.fromJson(Map<String, dynamic> json) => CabLocationDto(
-    headingDeg: json['headingDeg'] == null ? null : json['headingDeg'] as num,
-    lat: json['lat'] as num,
-    lng: json['lng'] as num,
-    speedKph: json['speedKph'] == null ? null : json['speedKph'] as num,
-  );
+        headingDeg: json['headingDeg'] == null ? null : json['headingDeg'] as num,
+        lat: json['lat'] as num,
+        lng: json['lng'] as num,
+        speedKph: json['speedKph'] == null ? null : json['speedKph'] as num,
+      );
 
   final num? headingDeg;
   final num lat;
@@ -429,11 +455,11 @@ class CabLocationDto {
   final num? speedKph;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'headingDeg': ?headingDeg,
-    'lat': lat,
-    'lng': lng,
-    'speedKph': ?speedKph,
-  };
+        'headingDeg': ?headingDeg,
+        'lat': lat,
+        'lng': lng,
+        'speedKph': ?speedKph,
+      };
 }
 
 @immutable
@@ -448,35 +474,32 @@ class CabOrderDto {
   });
 
   factory CabOrderDto.fromJson(Map<String, dynamic> json) => CabOrderDto(
-    drop: PlaceDto.fromJson(_map(json['drop'])),
-    passengers: json['passengers'] == null ? null : json['passengers'] as num,
-    pickup: PlaceDto.fromJson(_map(json['pickup'])),
-    pickupAt: json['pickupAt'] as String,
-    vehicleClass: json['vehicleClass'] as String,
-    vendorId: json['vendorId'] as String,
-  );
+        drop: PlaceDto.fromJson(_map(json['drop'])),
+        passengers: json['passengers'] == null ? null : json['passengers'] as num,
+        pickup: PlaceDto.fromJson(_map(json['pickup'])),
+        pickupAt: json['pickupAt'] as String,
+        vehicleClass: json['vehicleClass'] as String,
+        vendorId: json['vendorId'] as String,
+      );
 
   final PlaceDto drop;
   final num? passengers;
   final PlaceDto pickup;
-
   /// Pickup time (ISO)
   final String pickupAt;
-
   /// One of: auto, hatchback, sedan, suv, tempo_traveller, e_rickshaw.
   final String vehicleClass;
-
   /// Vendor from the chosen estimate
   final String vendorId;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'drop': drop.toJson(),
-    'passengers': ?passengers,
-    'pickup': pickup.toJson(),
-    'pickupAt': pickupAt,
-    'vehicleClass': vehicleClass,
-    'vendorId': vendorId,
-  };
+        'drop': drop.toJson(),
+        'passengers': ?passengers,
+        'pickup': pickup.toJson(),
+        'pickupAt': pickupAt,
+        'vehicleClass': vehicleClass,
+        'vendorId': vendorId,
+      };
 }
 
 @immutable
@@ -494,16 +517,16 @@ class CabQuoteResponse {
   });
 
   factory CabQuoteResponse.fromJson(Map<String, dynamic> json) => CabQuoteResponse(
-    class_: json['class'] as String,
-    distanceM: json['distanceM'] as num,
-    durationS: json['durationS'] as num,
-    farePaise: json['farePaise'] as num,
-    fixedRoute: json['fixedRoute'] as bool,
-    nightSurchargeApplied: json['nightSurchargeApplied'] as bool,
-    seats: json['seats'] as num,
-    vendorId: json['vendorId'] as String,
-    vendorName: json['vendorName'] as String,
-  );
+        class_: json['class'] as String,
+        distanceM: json['distanceM'] as num,
+        durationS: json['durationS'] as num,
+        farePaise: json['farePaise'] as num,
+        fixedRoute: json['fixedRoute'] as bool,
+        nightSurchargeApplied: json['nightSurchargeApplied'] as bool,
+        seats: json['seats'] as num,
+        vendorId: json['vendorId'] as String,
+        vendorName: json['vendorName'] as String,
+      );
 
   /// One of: auto, hatchback, sedan, suv, tempo_traveller, e_rickshaw.
   final String class_;
@@ -517,16 +540,16 @@ class CabQuoteResponse {
   final String vendorName;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'class': class_,
-    'distanceM': distanceM,
-    'durationS': durationS,
-    'farePaise': farePaise,
-    'fixedRoute': fixedRoute,
-    'nightSurchargeApplied': nightSurchargeApplied,
-    'seats': seats,
-    'vendorId': vendorId,
-    'vendorName': vendorName,
-  };
+        'class': class_,
+        'distanceM': distanceM,
+        'durationS': durationS,
+        'farePaise': farePaise,
+        'fixedRoute': fixedRoute,
+        'nightSurchargeApplied': nightSurchargeApplied,
+        'seats': seats,
+        'vendorId': vendorId,
+        'vendorName': vendorName,
+      };
 }
 
 @immutable
@@ -542,34 +565,33 @@ class CabTrackingResponse {
   });
 
   factory CabTrackingResponse.fromJson(Map<String, dynamic> json) => CabTrackingResponse(
-    at: json['at'] == null ? null : json['at'] as String,
-    headingDeg: json['headingDeg'] == null ? null : json['headingDeg'] as num,
-    lat: json['lat'] == null ? null : json['lat'] as num,
-    lng: json['lng'] == null ? null : json['lng'] as num,
-    orderId: json['orderId'] as String,
-    room: json['room'] as String,
-    speedKph: json['speedKph'] == null ? null : json['speedKph'] as num,
-  );
+        at: json['at'] == null ? null : json['at'] as String,
+        headingDeg: json['headingDeg'] == null ? null : json['headingDeg'] as num,
+        lat: json['lat'] == null ? null : json['lat'] as num,
+        lng: json['lng'] == null ? null : json['lng'] as num,
+        orderId: json['orderId'] as String,
+        room: json['room'] as String,
+        speedKph: json['speedKph'] == null ? null : json['speedKph'] as num,
+      );
 
   final String? at;
   final num? headingDeg;
   final num? lat;
   final num? lng;
   final String orderId;
-
   /// Socket.IO room for live updates (event cab.location)
   final String room;
   final num? speedKph;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'at': ?at,
-    'headingDeg': ?headingDeg,
-    'lat': ?lat,
-    'lng': ?lng,
-    'orderId': orderId,
-    'room': room,
-    'speedKph': ?speedKph,
-  };
+        'at': ?at,
+        'headingDeg': ?headingDeg,
+        'lat': ?lat,
+        'lng': ?lng,
+        'orderId': orderId,
+        'room': room,
+        'speedKph': ?speedKph,
+      };
 }
 
 @immutable
@@ -584,13 +606,13 @@ class CalendarDayResponse {
   });
 
   factory CalendarDayResponse.fromJson(Map<String, dynamic> json) => CalendarDayResponse(
-    available: json['available'] as num,
-    booked: json['booked'] as num,
-    date: json['date'] as String,
-    pricePaise: json['pricePaise'] as num,
-    stopSell: json['stopSell'] as bool,
-    total: json['total'] as num,
-  );
+        available: json['available'] as num,
+        booked: json['booked'] as num,
+        date: json['date'] as String,
+        pricePaise: json['pricePaise'] as num,
+        stopSell: json['stopSell'] as bool,
+        total: json['total'] as num,
+      );
 
   final num available;
   final num booked;
@@ -600,31 +622,34 @@ class CalendarDayResponse {
   final num total;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'available': available,
-    'booked': booked,
-    'date': date,
-    'pricePaise': pricePaise,
-    'stopSell': stopSell,
-    'total': total,
-  };
+        'available': available,
+        'booked': booked,
+        'date': date,
+        'pricePaise': pricePaise,
+        'stopSell': stopSell,
+        'total': total,
+      };
 }
 
 @immutable
 class CancelOrderDto {
-  const CancelOrderDto({required this.reasonCode, this.reasonText});
+  const CancelOrderDto({
+    required this.reasonCode,
+    this.reasonText,
+  });
 
   factory CancelOrderDto.fromJson(Map<String, dynamic> json) => CancelOrderDto(
-    reasonCode: json['reasonCode'] as String,
-    reasonText: json['reasonText'] == null ? null : json['reasonText'] as String,
-  );
+        reasonCode: json['reasonCode'] as String,
+        reasonText: json['reasonText'] == null ? null : json['reasonText'] as String,
+      );
 
   final String reasonCode;
   final String? reasonText;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'reasonCode': reasonCode,
-    'reasonText': ?reasonText,
-  };
+        'reasonCode': reasonCode,
+        'reasonText': ?reasonText,
+      };
 }
 
 @immutable
@@ -636,25 +661,23 @@ class CancellationPolicyDto {
   });
 
   factory CancellationPolicyDto.fromJson(Map<String, dynamic> json) => CancellationPolicyDto(
-    freeUntilHoursBefore: json['freeUntilHoursBefore'] as num,
-    noShowPct: json['noShowPct'] == null ? null : json['noShowPct'] as num,
-    penaltyPctAfter: json['penaltyPctAfter'] as num,
-  );
+        freeUntilHoursBefore: json['freeUntilHoursBefore'] as num,
+        noShowPct: json['noShowPct'] == null ? null : json['noShowPct'] as num,
+        penaltyPctAfter: json['penaltyPctAfter'] as num,
+      );
 
   /// Full refund if cancelled at least this many hours before service
   final num freeUntilHoursBefore;
-
   /// Penalty % for no-shows
   final num? noShowPct;
-
   /// Penalty % after the free window
   final num penaltyPctAfter;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'freeUntilHoursBefore': freeUntilHoursBefore,
-    'noShowPct': ?noShowPct,
-    'penaltyPctAfter': penaltyPctAfter,
-  };
+        'freeUntilHoursBefore': freeUntilHoursBefore,
+        'noShowPct': ?noShowPct,
+        'penaltyPctAfter': penaltyPctAfter,
+      };
 }
 
 @immutable
@@ -666,8 +689,7 @@ class CancellationPreviewResponse {
     required this.refundPaise,
   });
 
-  factory CancellationPreviewResponse.fromJson(Map<String, dynamic> json) =>
-      CancellationPreviewResponse(
+  factory CancellationPreviewResponse.fromJson(Map<String, dynamic> json) => CancellationPreviewResponse(
         allowed: json['allowed'] as bool,
         penaltyPaise: json['penaltyPaise'] as num,
         reason: json['reason'] as String,
@@ -680,23 +702,28 @@ class CancellationPreviewResponse {
   final num refundPaise;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'allowed': allowed,
-    'penaltyPaise': penaltyPaise,
-    'reason': reason,
-    'refundPaise': refundPaise,
-  };
+        'allowed': allowed,
+        'penaltyPaise': penaltyPaise,
+        'reason': reason,
+        'refundPaise': refundPaise,
+      };
 }
 
 @immutable
 class ChatMessageDto {
-  const ChatMessageDto({required this.content});
+  const ChatMessageDto({
+    required this.content,
+  });
 
-  factory ChatMessageDto.fromJson(Map<String, dynamic> json) =>
-      ChatMessageDto(content: json['content'] as String);
+  factory ChatMessageDto.fromJson(Map<String, dynamic> json) => ChatMessageDto(
+        content: json['content'] as String,
+      );
 
   final String content;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{'content': content};
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'content': content,
+      };
 }
 
 @immutable
@@ -710,12 +737,12 @@ class CityResponse {
   });
 
   factory CityResponse.fromJson(Map<String, dynamic> json) => CityResponse(
-    id: json['id'] as String,
-    lat: json['lat'] as num,
-    lng: json['lng'] as num,
-    name: json['name'] as String,
-    slug: json['slug'] as String,
-  );
+        id: json['id'] as String,
+        lat: json['lat'] as num,
+        lng: json['lng'] as num,
+        name: json['name'] as String,
+        slug: json['slug'] as String,
+      );
 
   final String id;
   final num lat;
@@ -724,12 +751,12 @@ class CityResponse {
   final String slug;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'id': id,
-    'lat': lat,
-    'lng': lng,
-    'name': name,
-    'slug': slug,
-  };
+        'id': id,
+        'lat': lat,
+        'lng': lng,
+        'name': name,
+        'slug': slug,
+      };
 }
 
 @immutable
@@ -745,34 +772,33 @@ class CommentResponse {
   });
 
   factory CommentResponse.fromJson(Map<String, dynamic> json) => CommentResponse(
-    author: CreatorResponse.fromJson(_map(json['author'])),
-    body: json['body'] as String,
-    createdAt: json['createdAt'] as String,
-    id: json['id'] as String,
-    moderationStatus: json['moderationStatus'] as String,
-    parentId: json['parentId'] == null ? null : json['parentId'] as String,
-    reelId: json['reelId'] as String,
-  );
+        author: CreatorResponse.fromJson(_map(json['author'])),
+        body: json['body'] as String,
+        createdAt: json['createdAt'] as String,
+        id: json['id'] as String,
+        moderationStatus: json['moderationStatus'] as String,
+        parentId: json['parentId'] == null ? null : json['parentId'] as String,
+        reelId: json['reelId'] as String,
+      );
 
   final CreatorResponse author;
   final String body;
   final String createdAt;
   final String id;
-
   /// One of: pending, approved, flagged, removed.
   final String moderationStatus;
   final String? parentId;
   final String reelId;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'author': author.toJson(),
-    'body': body,
-    'createdAt': createdAt,
-    'id': id,
-    'moderationStatus': moderationStatus,
-    'parentId': ?parentId,
-    'reelId': reelId,
-  };
+        'author': author.toJson(),
+        'body': body,
+        'createdAt': createdAt,
+        'id': id,
+        'moderationStatus': moderationStatus,
+        'parentId': ?parentId,
+        'reelId': reelId,
+      };
 }
 
 @immutable
@@ -793,19 +819,19 @@ class CommissionRuleDto {
   });
 
   factory CommissionRuleDto.fromJson(Map<String, dynamic> json) => CommissionRuleDto(
-    cityId: json['cityId'] == null ? null : json['cityId'] as String,
-    effectiveFrom: json['effectiveFrom'] == null ? null : json['effectiveFrom'] as String,
-    effectiveTo: json['effectiveTo'] == null ? null : json['effectiveTo'] as String,
-    flatPaise: json['flatPaise'] == null ? null : json['flatPaise'] as num,
-    isActive: json['isActive'] == null ? null : json['isActive'] as bool,
-    maxPaise: json['maxPaise'] == null ? null : json['maxPaise'] as num,
-    minPaise: json['minPaise'] == null ? null : json['minPaise'] as num,
-    name: json['name'] as String,
-    orderType: json['orderType'] == null ? null : json['orderType'] as String,
-    percentBps: json['percentBps'] as num,
-    priority: json['priority'] == null ? null : json['priority'] as num,
-    vendorId: json['vendorId'] == null ? null : json['vendorId'] as String,
-  );
+        cityId: json['cityId'] == null ? null : json['cityId'] as String,
+        effectiveFrom: json['effectiveFrom'] == null ? null : json['effectiveFrom'] as String,
+        effectiveTo: json['effectiveTo'] == null ? null : json['effectiveTo'] as String,
+        flatPaise: json['flatPaise'] == null ? null : json['flatPaise'] as num,
+        isActive: json['isActive'] == null ? null : json['isActive'] as bool,
+        maxPaise: json['maxPaise'] == null ? null : json['maxPaise'] as num,
+        minPaise: json['minPaise'] == null ? null : json['minPaise'] as num,
+        name: json['name'] as String,
+        orderType: json['orderType'] == null ? null : json['orderType'] as String,
+        percentBps: json['percentBps'] as num,
+        priority: json['priority'] == null ? null : json['priority'] as num,
+        vendorId: json['vendorId'] == null ? null : json['vendorId'] as String,
+      );
 
   final String? cityId;
   final String? effectiveFrom;
@@ -815,29 +841,27 @@ class CommissionRuleDto {
   final num? maxPaise;
   final num? minPaise;
   final String name;
-
   /// One of: hotel, cab, food, experience, transit.
   final String? orderType;
-
   /// Basis points (1000 = 10%)
   final num percentBps;
   final num? priority;
   final String? vendorId;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'cityId': ?cityId,
-    'effectiveFrom': ?effectiveFrom,
-    'effectiveTo': ?effectiveTo,
-    'flatPaise': ?flatPaise,
-    'isActive': ?isActive,
-    'maxPaise': ?maxPaise,
-    'minPaise': ?minPaise,
-    'name': name,
-    'orderType': ?orderType,
-    'percentBps': percentBps,
-    'priority': ?priority,
-    'vendorId': ?vendorId,
-  };
+        'cityId': ?cityId,
+        'effectiveFrom': ?effectiveFrom,
+        'effectiveTo': ?effectiveTo,
+        'flatPaise': ?flatPaise,
+        'isActive': ?isActive,
+        'maxPaise': ?maxPaise,
+        'minPaise': ?minPaise,
+        'name': name,
+        'orderType': ?orderType,
+        'percentBps': percentBps,
+        'priority': ?priority,
+        'vendorId': ?vendorId,
+      };
 }
 
 @immutable
@@ -853,56 +877,56 @@ class ConfigDto {
   });
 
   factory ConfigDto.fromJson(Map<String, dynamic> json) => ConfigDto(
-    endsAt: json['endsAt'] == null ? null : json['endsAt'] as String,
-    isActive: json['isActive'] == null ? null : json['isActive'] as bool,
-    key: json['key'] as String,
-    kind: json['kind'] as String,
-    startsAt: json['startsAt'] == null ? null : json['startsAt'] as String,
-    targeting: json['targeting'] == null ? null : _map(json['targeting']),
-    value: _map(json['value']),
-  );
+        endsAt: json['endsAt'] == null ? null : json['endsAt'] as String,
+        isActive: json['isActive'] == null ? null : json['isActive'] as bool,
+        key: json['key'] as String,
+        kind: json['kind'] as String,
+        startsAt: json['startsAt'] == null ? null : json['startsAt'] as String,
+        targeting: json['targeting'] == null ? null : _map(json['targeting']),
+        value: _map(json['value']),
+      );
 
   final String? endsAt;
   final bool? isActive;
   final String key;
-
   /// One of: feature_flag, banner, setting.
   final String kind;
   final String? startsAt;
   final Map<String, dynamic>? targeting;
-
   /// Any JSON value
   final Map<String, dynamic> value;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'endsAt': ?endsAt,
-    'isActive': ?isActive,
-    'key': key,
-    'kind': kind,
-    'startsAt': ?startsAt,
-    'targeting': ?targeting,
-    'value': value,
-  };
+        'endsAt': ?endsAt,
+        'isActive': ?isActive,
+        'key': key,
+        'kind': kind,
+        'startsAt': ?startsAt,
+        'targeting': ?targeting,
+        'value': value,
+      };
 }
 
 @immutable
 class CreateAartiReminderDto {
-  const CreateAartiReminderDto({required this.aartiScheduleId, this.minutesBefore});
+  const CreateAartiReminderDto({
+    required this.aartiScheduleId,
+    this.minutesBefore,
+  });
 
   factory CreateAartiReminderDto.fromJson(Map<String, dynamic> json) => CreateAartiReminderDto(
-    aartiScheduleId: json['aartiScheduleId'] as String,
-    minutesBefore: json['minutesBefore'] == null ? null : json['minutesBefore'] as num,
-  );
+        aartiScheduleId: json['aartiScheduleId'] as String,
+        minutesBefore: json['minutesBefore'] == null ? null : json['minutesBefore'] as num,
+      );
 
   final String aartiScheduleId;
-
   /// Defaults to the preference (30)
   final num? minutesBefore;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'aartiScheduleId': aartiScheduleId,
-    'minutesBefore': ?minutesBefore,
-  };
+        'aartiScheduleId': aartiScheduleId,
+        'minutesBefore': ?minutesBefore,
+      };
 }
 
 @immutable
@@ -921,29 +945,26 @@ class CreateAartiScheduleDto {
   });
 
   factory CreateAartiScheduleDto.fromJson(Map<String, dynamic> json) => CreateAartiScheduleDto(
-    durationMin: json['durationMin'] == null ? null : json['durationMin'] as num,
-    isLiveStreamed: json['isLiveStreamed'] == null ? null : json['isLiveStreamed'] as bool,
-    kind: json['kind'] as String,
-    localTime: json['localTime'] as String,
-    name: I18nTextDto.fromJson(_map(json['name'])),
-    recurrence: json['recurrence'] == null ? null : json['recurrence'] as String,
-    season: json['season'] == null ? null : json['season'] as String,
-    streamUrl: json['streamUrl'] == null ? null : json['streamUrl'] as String,
-    validFrom: json['validFrom'] == null ? null : json['validFrom'] as String,
-    validTo: json['validTo'] == null ? null : json['validTo'] as String,
-  );
+        durationMin: json['durationMin'] == null ? null : json['durationMin'] as num,
+        isLiveStreamed: json['isLiveStreamed'] == null ? null : json['isLiveStreamed'] as bool,
+        kind: json['kind'] as String,
+        localTime: json['localTime'] as String,
+        name: I18nTextDto.fromJson(_map(json['name'])),
+        recurrence: json['recurrence'] == null ? null : json['recurrence'] as String,
+        season: json['season'] == null ? null : json['season'] as String,
+        streamUrl: json['streamUrl'] == null ? null : json['streamUrl'] as String,
+        validFrom: json['validFrom'] == null ? null : json['validFrom'] as String,
+        validTo: json['validTo'] == null ? null : json['validTo'] as String,
+      );
 
   final num? durationMin;
   final bool? isLiveStreamed;
-
   /// One of: mangla, shringar, rajbhog, utthapan, sandhya, shayan, other.
   final String kind;
-
   /// IST wall-clock HH:MM
   final String localTime;
   final I18nTextDto name;
   final String? recurrence;
-
   /// One of: all, summer, winter.
   final String? season;
   final String? streamUrl;
@@ -951,34 +972,39 @@ class CreateAartiScheduleDto {
   final String? validTo;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'durationMin': ?durationMin,
-    'isLiveStreamed': ?isLiveStreamed,
-    'kind': kind,
-    'localTime': localTime,
-    'name': name.toJson(),
-    'recurrence': ?recurrence,
-    'season': ?season,
-    'streamUrl': ?streamUrl,
-    'validFrom': ?validFrom,
-    'validTo': ?validTo,
-  };
+        'durationMin': ?durationMin,
+        'isLiveStreamed': ?isLiveStreamed,
+        'kind': kind,
+        'localTime': localTime,
+        'name': name.toJson(),
+        'recurrence': ?recurrence,
+        'season': ?season,
+        'streamUrl': ?streamUrl,
+        'validFrom': ?validFrom,
+        'validTo': ?validTo,
+      };
 }
 
 @immutable
 class CreateChatSessionDto {
-  const CreateChatSessionDto({this.city, this.lang});
+  const CreateChatSessionDto({
+    this.city,
+    this.lang,
+  });
 
   factory CreateChatSessionDto.fromJson(Map<String, dynamic> json) => CreateChatSessionDto(
-    city: json['city'] == null ? null : json['city'] as String,
-    lang: json['lang'] == null ? null : json['lang'] as String,
-  );
+        city: json['city'] == null ? null : json['city'] as String,
+        lang: json['lang'] == null ? null : json['lang'] as String,
+      );
 
   final String? city;
-
   /// One of: en, hi.
   final String? lang;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{'city': ?city, 'lang': ?lang};
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'city': ?city,
+        'lang': ?lang,
+      };
 }
 
 @immutable
@@ -992,12 +1018,12 @@ class CreateCityDto {
   });
 
   factory CreateCityDto.fromJson(Map<String, dynamic> json) => CreateCityDto(
-    lat: json['lat'] as num,
-    lng: json['lng'] as num,
-    name: I18nTextDto.fromJson(_map(json['name'])),
-    slug: json['slug'] as String,
-    sortOrder: json['sortOrder'] == null ? null : json['sortOrder'] as num,
-  );
+        lat: json['lat'] as num,
+        lng: json['lng'] as num,
+        name: I18nTextDto.fromJson(_map(json['name'])),
+        slug: json['slug'] as String,
+        sortOrder: json['sortOrder'] == null ? null : json['sortOrder'] as num,
+      );
 
   final num lat;
   final num lng;
@@ -1006,29 +1032,34 @@ class CreateCityDto {
   final num? sortOrder;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'lat': lat,
-    'lng': lng,
-    'name': name.toJson(),
-    'slug': slug,
-    'sortOrder': ?sortOrder,
-  };
+        'lat': lat,
+        'lng': lng,
+        'name': name.toJson(),
+        'slug': slug,
+        'sortOrder': ?sortOrder,
+      };
 }
 
 @immutable
 class CreateCommentDto {
-  const CreateCommentDto({required this.body, this.parentId});
+  const CreateCommentDto({
+    required this.body,
+    this.parentId,
+  });
 
   factory CreateCommentDto.fromJson(Map<String, dynamic> json) => CreateCommentDto(
-    body: json['body'] as String,
-    parentId: json['parentId'] == null ? null : json['parentId'] as String,
-  );
+        body: json['body'] as String,
+        parentId: json['parentId'] == null ? null : json['parentId'] as String,
+      );
 
   final String body;
-
   /// Reply to a top-level comment
   final String? parentId;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{'body': body, 'parentId': ?parentId};
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'body': body,
+        'parentId': ?parentId,
+      };
 }
 
 @immutable
@@ -1046,46 +1077,40 @@ class CreateExperienceDto {
   });
 
   factory CreateExperienceDto.fromJson(Map<String, dynamic> json) => CreateExperienceDto(
-    cancellationPolicy: json['cancellationPolicy'] == null
-        ? null
-        : CancellationPolicyDto.fromJson(_map(json['cancellationPolicy'])),
-    cityId: json['cityId'] as String,
-    description: json['description'] == null
-        ? null
-        : I18nTextDto.fromJson(_map(json['description'])),
-    durationMin: json['durationMin'] as num,
-    isPublished: json['isPublished'] == null ? null : json['isPublished'] as bool,
-    kind: json['kind'] as String,
-    maxGroupSize: json['maxGroupSize'] as num,
-    pricePaise: json['pricePaise'] as num,
-    title: I18nTextDto.fromJson(_map(json['title'])),
-  );
+        cancellationPolicy: json['cancellationPolicy'] == null ? null : CancellationPolicyDto.fromJson(_map(json['cancellationPolicy'])),
+        cityId: json['cityId'] as String,
+        description: json['description'] == null ? null : I18nTextDto.fromJson(_map(json['description'])),
+        durationMin: json['durationMin'] as num,
+        isPublished: json['isPublished'] == null ? null : json['isPublished'] as bool,
+        kind: json['kind'] as String,
+        maxGroupSize: json['maxGroupSize'] as num,
+        pricePaise: json['pricePaise'] as num,
+        title: I18nTextDto.fromJson(_map(json['title'])),
+      );
 
   final CancellationPolicyDto? cancellationPolicy;
   final String cityId;
   final I18nTextDto? description;
   final num durationMin;
   final bool? isPublished;
-
   /// One of: guided_tour, boat_ride, parikrama_guide, cooking, workshop, other.
   final String kind;
   final num maxGroupSize;
-
   /// Per person, paise
   final num pricePaise;
   final I18nTextDto title;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'cancellationPolicy': ?cancellationPolicy?.toJson(),
-    'cityId': cityId,
-    'description': ?description?.toJson(),
-    'durationMin': durationMin,
-    'isPublished': ?isPublished,
-    'kind': kind,
-    'maxGroupSize': maxGroupSize,
-    'pricePaise': pricePaise,
-    'title': title.toJson(),
-  };
+        'cancellationPolicy': ?cancellationPolicy?.toJson(),
+        'cityId': cityId,
+        'description': ?description?.toJson(),
+        'durationMin': durationMin,
+        'isPublished': ?isPublished,
+        'kind': kind,
+        'maxGroupSize': maxGroupSize,
+        'pricePaise': pricePaise,
+        'title': title.toJson(),
+      };
 }
 
 @immutable
@@ -1103,22 +1128,21 @@ class CreateExploreItemDto {
   });
 
   factory CreateExploreItemDto.fromJson(Map<String, dynamic> json) => CreateExploreItemDto(
-    body: json['body'] == null ? null : I18nTextDto.fromJson(_map(json['body'])),
-    cityId: json['cityId'] as String,
-    coverMediaId: json['coverMediaId'] == null ? null : json['coverMediaId'] as String,
-    isPublished: json['isPublished'] == null ? null : json['isPublished'] as bool,
-    kind: json['kind'] as String,
-    lat: json['lat'] == null ? null : json['lat'] as num,
-    lng: json['lng'] == null ? null : json['lng'] as num,
-    sortOrder: json['sortOrder'] == null ? null : json['sortOrder'] as num,
-    title: I18nTextDto.fromJson(_map(json['title'])),
-  );
+        body: json['body'] == null ? null : I18nTextDto.fromJson(_map(json['body'])),
+        cityId: json['cityId'] as String,
+        coverMediaId: json['coverMediaId'] == null ? null : json['coverMediaId'] as String,
+        isPublished: json['isPublished'] == null ? null : json['isPublished'] as bool,
+        kind: json['kind'] as String,
+        lat: json['lat'] == null ? null : json['lat'] as num,
+        lng: json['lng'] == null ? null : json['lng'] as num,
+        sortOrder: json['sortOrder'] == null ? null : json['sortOrder'] as num,
+        title: I18nTextDto.fromJson(_map(json['title'])),
+      );
 
   final I18nTextDto? body;
   final String cityId;
   final String? coverMediaId;
   final bool? isPublished;
-
   /// One of: ghat, kund, van, market, museum, food_spot, story.
   final String kind;
   final num? lat;
@@ -1127,16 +1151,33 @@ class CreateExploreItemDto {
   final I18nTextDto title;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'body': ?body?.toJson(),
-    'cityId': cityId,
-    'coverMediaId': ?coverMediaId,
-    'isPublished': ?isPublished,
-    'kind': kind,
-    'lat': ?lat,
-    'lng': ?lng,
-    'sortOrder': ?sortOrder,
-    'title': title.toJson(),
-  };
+        'body': ?body?.toJson(),
+        'cityId': cityId,
+        'coverMediaId': ?coverMediaId,
+        'isPublished': ?isPublished,
+        'kind': kind,
+        'lat': ?lat,
+        'lng': ?lng,
+        'sortOrder': ?sortOrder,
+        'title': title.toJson(),
+      };
+}
+
+@immutable
+class CreateFamilyGroupDto {
+  const CreateFamilyGroupDto({
+    required this.name,
+  });
+
+  factory CreateFamilyGroupDto.fromJson(Map<String, dynamic> json) => CreateFamilyGroupDto(
+        name: json['name'] as String,
+      );
+
+  final String name;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'name': name,
+      };
 }
 
 @immutable
@@ -1153,19 +1194,15 @@ class CreateFestivalDto {
   });
 
   factory CreateFestivalDto.fromJson(Map<String, dynamic> json) => CreateFestivalDto(
-    cityId: json['cityId'] == null ? null : json['cityId'] as String,
-    coverMediaId: json['coverMediaId'] == null ? null : json['coverMediaId'] as String,
-    crowdAdvisory: json['crowdAdvisory'] == null
-        ? null
-        : I18nTextDto.fromJson(_map(json['crowdAdvisory'])),
-    description: json['description'] == null
-        ? null
-        : I18nTextDto.fromJson(_map(json['description'])),
-    endsOn: json['endsOn'] as String,
-    name: I18nTextDto.fromJson(_map(json['name'])),
-    startsOn: json['startsOn'] as String,
-    templeId: json['templeId'] == null ? null : json['templeId'] as String,
-  );
+        cityId: json['cityId'] == null ? null : json['cityId'] as String,
+        coverMediaId: json['coverMediaId'] == null ? null : json['coverMediaId'] as String,
+        crowdAdvisory: json['crowdAdvisory'] == null ? null : I18nTextDto.fromJson(_map(json['crowdAdvisory'])),
+        description: json['description'] == null ? null : I18nTextDto.fromJson(_map(json['description'])),
+        endsOn: json['endsOn'] as String,
+        name: I18nTextDto.fromJson(_map(json['name'])),
+        startsOn: json['startsOn'] as String,
+        templeId: json['templeId'] == null ? null : json['templeId'] as String,
+      );
 
   final String? cityId;
   final String? coverMediaId;
@@ -1177,15 +1214,15 @@ class CreateFestivalDto {
   final String? templeId;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'cityId': ?cityId,
-    'coverMediaId': ?coverMediaId,
-    'crowdAdvisory': ?crowdAdvisory?.toJson(),
-    'description': ?description?.toJson(),
-    'endsOn': endsOn,
-    'name': name.toJson(),
-    'startsOn': startsOn,
-    'templeId': ?templeId,
-  };
+        'cityId': ?cityId,
+        'coverMediaId': ?coverMediaId,
+        'crowdAdvisory': ?crowdAdvisory?.toJson(),
+        'description': ?description?.toJson(),
+        'endsOn': endsOn,
+        'name': name.toJson(),
+        'startsOn': startsOn,
+        'templeId': ?templeId,
+      };
 }
 
 @immutable
@@ -1206,25 +1243,19 @@ class CreateHotelDto {
   });
 
   factory CreateHotelDto.fromJson(Map<String, dynamic> json) => CreateHotelDto(
-    address: json['address'] as String,
-    amenities: json['amenities'] == null
-        ? null
-        : (json['amenities'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-    cancellationPolicy: json['cancellationPolicy'] == null
-        ? null
-        : CancellationPolicyDto.fromJson(_map(json['cancellationPolicy'])),
-    checkinTime: json['checkinTime'] == null ? null : json['checkinTime'] as String,
-    checkoutTime: json['checkoutTime'] == null ? null : json['checkoutTime'] as String,
-    cityId: json['cityId'] as String,
-    description: json['description'] == null
-        ? null
-        : I18nTextDto.fromJson(_map(json['description'])),
-    isPublished: json['isPublished'] == null ? null : json['isPublished'] as bool,
-    lat: json['lat'] as num,
-    lng: json['lng'] as num,
-    name: I18nTextDto.fromJson(_map(json['name'])),
-    starRating: json['starRating'] == null ? null : json['starRating'] as num,
-  );
+        address: json['address'] as String,
+        amenities: json['amenities'] == null ? null : (json['amenities'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+        cancellationPolicy: json['cancellationPolicy'] == null ? null : CancellationPolicyDto.fromJson(_map(json['cancellationPolicy'])),
+        checkinTime: json['checkinTime'] == null ? null : json['checkinTime'] as String,
+        checkoutTime: json['checkoutTime'] == null ? null : json['checkoutTime'] as String,
+        cityId: json['cityId'] as String,
+        description: json['description'] == null ? null : I18nTextDto.fromJson(_map(json['description'])),
+        isPublished: json['isPublished'] == null ? null : json['isPublished'] as bool,
+        lat: json['lat'] as num,
+        lng: json['lng'] as num,
+        name: I18nTextDto.fromJson(_map(json['name'])),
+        starRating: json['starRating'] == null ? null : json['starRating'] as num,
+      );
 
   final String address;
   final List<String>? amenities;
@@ -1233,7 +1264,6 @@ class CreateHotelDto {
   final String? checkoutTime;
   final String cityId;
   final I18nTextDto? description;
-
   /// Visible to travellers (vendor must be active)
   final bool? isPublished;
   final num lat;
@@ -1242,19 +1272,19 @@ class CreateHotelDto {
   final num? starRating;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'address': address,
-    'amenities': ?amenities,
-    'cancellationPolicy': ?cancellationPolicy?.toJson(),
-    'checkinTime': ?checkinTime,
-    'checkoutTime': ?checkoutTime,
-    'cityId': cityId,
-    'description': ?description?.toJson(),
-    'isPublished': ?isPublished,
-    'lat': lat,
-    'lng': lng,
-    'name': name.toJson(),
-    'starRating': ?starRating,
-  };
+        'address': address,
+        'amenities': ?amenities,
+        'cancellationPolicy': ?cancellationPolicy?.toJson(),
+        'checkinTime': ?checkinTime,
+        'checkoutTime': ?checkoutTime,
+        'cityId': cityId,
+        'description': ?description?.toJson(),
+        'isPublished': ?isPublished,
+        'lat': lat,
+        'lng': lng,
+        'name': name.toJson(),
+        'starRating': ?starRating,
+      };
 }
 
 @immutable
@@ -1280,88 +1310,68 @@ class CreateItineraryDto {
   });
 
   factory CreateItineraryDto.fromJson(Map<String, dynamic> json) => CreateItineraryDto(
-    accessibility: json['accessibility'] == null
-        ? null
-        : AccessibilityDto.fromJson(_map(json['accessibility'])),
-    budgetPaise: json['budgetPaise'] == null ? null : json['budgetPaise'] as num,
-    cities: json['cities'] == null
-        ? null
-        : (json['cities'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-    customStops: json['customStops'] == null
-        ? null
-        : (json['customStops'] as List<dynamic>)
-              .map((dynamic x) => CustomStopDto.fromJson(_map(x)))
-              .toList(),
-    days: json['days'] as num,
-    groupName: json['groupName'] == null ? null : json['groupName'] as String,
-    interests: json['interests'] == null
-        ? null
-        : (json['interests'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-    lang: json['lang'] == null ? null : json['lang'] as String,
-    members: json['members'] == null
-        ? null
-        : (json['members'] as List<dynamic>)
-              .map((dynamic x) => TripMemberDto.fromJson(_map(x)))
-              .toList(),
-    mode: json['mode'] == null ? null : json['mode'] as String,
-    notes: json['notes'] == null ? null : json['notes'] as String,
-    pace: json['pace'] == null ? null : json['pace'] as String,
-    partySize: json['partySize'] == null ? null : json['partySize'] as num,
-    startDate: json['startDate'] as String,
-    stay: json['stay'] == null ? null : TripStayDto.fromJson(_map(json['stay'])),
-    travel: json['travel'] == null ? null : TripTravelDto.fromJson(_map(json['travel'])),
-    tripType: json['tripType'] == null ? null : json['tripType'] as String,
-  );
+        accessibility: json['accessibility'] == null ? null : AccessibilityDto.fromJson(_map(json['accessibility'])),
+        budgetPaise: json['budgetPaise'] == null ? null : json['budgetPaise'] as num,
+        cities: json['cities'] == null ? null : (json['cities'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+        customStops: json['customStops'] == null ? null : (json['customStops'] as List<dynamic>).map((dynamic x) => CustomStopDto.fromJson(_map(x))).toList(),
+        days: json['days'] as num,
+        groupName: json['groupName'] == null ? null : json['groupName'] as String,
+        interests: json['interests'] == null ? null : (json['interests'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+        lang: json['lang'] == null ? null : json['lang'] as String,
+        members: json['members'] == null ? null : (json['members'] as List<dynamic>).map((dynamic x) => TripMemberDto.fromJson(_map(x))).toList(),
+        mode: json['mode'] == null ? null : json['mode'] as String,
+        notes: json['notes'] == null ? null : json['notes'] as String,
+        pace: json['pace'] == null ? null : json['pace'] as String,
+        partySize: json['partySize'] == null ? null : json['partySize'] as num,
+        startDate: json['startDate'] as String,
+        stay: json['stay'] == null ? null : TripStayDto.fromJson(_map(json['stay'])),
+        travel: json['travel'] == null ? null : TripTravelDto.fromJson(_map(json['travel'])),
+        tripType: json['tripType'] == null ? null : json['tripType'] as String,
+      );
 
   final AccessibilityDto? accessibility;
-
   /// Total budget (paise)
   final num? budgetPaise;
   final List<String>? cities;
   final List<CustomStopDto>? customStops;
   final num days;
   final String? groupName;
-
   /// One of: aarti, temples, parikrama, ghats, food, shopping, festivals.
   final List<String>? interests;
-
   /// One of: en, hi.
   final String? lang;
   final List<TripMemberDto>? members;
-
   /// custom = only your own stops One of: ai, custom.
   final String? mode;
   final String? notes;
-
   /// One of: relaxed, normal, packed.
   final String? pace;
   final num? partySize;
   final String startDate;
   final TripStayDto? stay;
   final TripTravelDto? travel;
-
   /// One of: solo, family, group.
   final String? tripType;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'accessibility': ?accessibility?.toJson(),
-    'budgetPaise': ?budgetPaise,
-    'cities': ?cities,
-    'customStops': ?customStops?.map((x) => x.toJson()).toList(),
-    'days': days,
-    'groupName': ?groupName,
-    'interests': ?interests,
-    'lang': ?lang,
-    'members': ?members?.map((x) => x.toJson()).toList(),
-    'mode': ?mode,
-    'notes': ?notes,
-    'pace': ?pace,
-    'partySize': ?partySize,
-    'startDate': startDate,
-    'stay': ?stay?.toJson(),
-    'travel': ?travel?.toJson(),
-    'tripType': ?tripType,
-  };
+        'accessibility': ?accessibility?.toJson(),
+        'budgetPaise': ?budgetPaise,
+        'cities': ?cities,
+        'customStops': ?customStops?.map((x) => x.toJson()).toList(),
+        'days': days,
+        'groupName': ?groupName,
+        'interests': ?interests,
+        'lang': ?lang,
+        'members': ?members?.map((x) => x.toJson()).toList(),
+        'mode': ?mode,
+        'notes': ?notes,
+        'pace': ?pace,
+        'partySize': ?partySize,
+        'startDate': startDate,
+        'stay': ?stay?.toJson(),
+        'travel': ?travel?.toJson(),
+        'tripType': ?tripType,
+      };
 }
 
 @immutable
@@ -1377,8 +1387,7 @@ class CreateKnowledgeDocumentDto {
     required this.title,
   });
 
-  factory CreateKnowledgeDocumentDto.fromJson(Map<String, dynamic> json) =>
-      CreateKnowledgeDocumentDto(
+  factory CreateKnowledgeDocumentDto.fromJson(Map<String, dynamic> json) => CreateKnowledgeDocumentDto(
         cityId: json['cityId'] == null ? null : json['cityId'] as String,
         lang: json['lang'] == null ? null : json['lang'] as String,
         mediaId: json['mediaId'] == null ? null : json['mediaId'] as String,
@@ -1390,34 +1399,29 @@ class CreateKnowledgeDocumentDto {
       );
 
   final String? cityId;
-
   /// One of: en, hi.
   final String? lang;
-
   /// knowledge_document upload (sourceType=upload)
   final String? mediaId;
-
   /// Where the content came from (book, website, temple trust)
   final String? sourceRef;
-
   /// One of: text, upload.
   final String sourceType;
   final String? templeId;
-
   /// Markdown or plain text (sourceType=text)
   final String? text;
   final String title;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'cityId': ?cityId,
-    'lang': ?lang,
-    'mediaId': ?mediaId,
-    'sourceRef': ?sourceRef,
-    'sourceType': sourceType,
-    'templeId': ?templeId,
-    'text': ?text,
-    'title': title,
-  };
+        'cityId': ?cityId,
+        'lang': ?lang,
+        'mediaId': ?mediaId,
+        'sourceRef': ?sourceRef,
+        'sourceType': sourceType,
+        'templeId': ?templeId,
+        'text': ?text,
+        'title': title,
+      };
 }
 
 @immutable
@@ -1432,13 +1436,13 @@ class CreateMenuItemDto {
   });
 
   factory CreateMenuItemDto.fromJson(Map<String, dynamic> json) => CreateMenuItemDto(
-    category: json['category'] as String,
-    isAvailable: json['isAvailable'] == null ? null : json['isAvailable'] as bool,
-    isJain: json['isJain'] == null ? null : json['isJain'] as bool,
-    mediaId: json['mediaId'] == null ? null : json['mediaId'] as String,
-    name: I18nTextDto.fromJson(_map(json['name'])),
-    pricePaise: json['pricePaise'] as num,
-  );
+        category: json['category'] as String,
+        isAvailable: json['isAvailable'] == null ? null : json['isAvailable'] as bool,
+        isJain: json['isJain'] == null ? null : json['isJain'] as bool,
+        mediaId: json['mediaId'] == null ? null : json['mediaId'] as String,
+        name: I18nTextDto.fromJson(_map(json['name'])),
+        pricePaise: json['pricePaise'] as num,
+      );
 
   final String category;
   final bool? isAvailable;
@@ -1448,64 +1452,69 @@ class CreateMenuItemDto {
   final num pricePaise;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'category': category,
-    'isAvailable': ?isAvailable,
-    'isJain': ?isJain,
-    'mediaId': ?mediaId,
-    'name': name.toJson(),
-    'pricePaise': pricePaise,
-  };
+        'category': category,
+        'isAvailable': ?isAvailable,
+        'isJain': ?isJain,
+        'mediaId': ?mediaId,
+        'name': name.toJson(),
+        'pricePaise': pricePaise,
+      };
 }
 
 @immutable
 class CreateOrderDto {
-  const CreateOrderDto({this.cab, this.experience, this.food, this.hotel, required this.type});
+  const CreateOrderDto({
+    this.cab,
+    this.experience,
+    this.food,
+    this.hotel,
+    required this.type,
+  });
 
   factory CreateOrderDto.fromJson(Map<String, dynamic> json) => CreateOrderDto(
-    cab: json['cab'] == null ? null : CabOrderDto.fromJson(_map(json['cab'])),
-    experience: json['experience'] == null
-        ? null
-        : ExperienceOrderDto.fromJson(_map(json['experience'])),
-    food: json['food'] == null ? null : FoodOrderDto.fromJson(_map(json['food'])),
-    hotel: json['hotel'] == null ? null : HotelOrderDto.fromJson(_map(json['hotel'])),
-    type: json['type'] as String,
-  );
+        cab: json['cab'] == null ? null : CabOrderDto.fromJson(_map(json['cab'])),
+        experience: json['experience'] == null ? null : ExperienceOrderDto.fromJson(_map(json['experience'])),
+        food: json['food'] == null ? null : FoodOrderDto.fromJson(_map(json['food'])),
+        hotel: json['hotel'] == null ? null : HotelOrderDto.fromJson(_map(json['hotel'])),
+        type: json['type'] as String,
+      );
 
   final CabOrderDto? cab;
   final ExperienceOrderDto? experience;
   final FoodOrderDto? food;
   final HotelOrderDto? hotel;
-
   /// One of: hotel, cab, food, experience.
   final String type;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'cab': ?cab?.toJson(),
-    'experience': ?experience?.toJson(),
-    'food': ?food?.toJson(),
-    'hotel': ?hotel?.toJson(),
-    'type': type,
-  };
+        'cab': ?cab?.toJson(),
+        'experience': ?experience?.toJson(),
+        'food': ?food?.toJson(),
+        'hotel': ?hotel?.toJson(),
+        'type': type,
+      };
 }
 
 @immutable
 class CreateOrderResponse {
-  const CreateOrderResponse({required this.order, this.payment});
+  const CreateOrderResponse({
+    required this.order,
+    this.payment,
+  });
 
   factory CreateOrderResponse.fromJson(Map<String, dynamic> json) => CreateOrderResponse(
-    order: OrderResponse.fromJson(_map(json['order'])),
-    payment: json['payment'] == null ? null : PaymentIntentResponse.fromJson(_map(json['payment'])),
-  );
+        order: OrderResponse.fromJson(_map(json['order'])),
+        payment: json['payment'] == null ? null : PaymentIntentResponse.fromJson(_map(json['payment'])),
+      );
 
   final OrderResponse order;
-
   /// Null when nothing is payable
   final PaymentIntentResponse? payment;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'order': order.toJson(),
-    'payment': ?payment?.toJson(),
-  };
+        'order': order.toJson(),
+        'payment': ?payment?.toJson(),
+      };
 }
 
 @immutable
@@ -1523,19 +1532,18 @@ class CreatePoiDto {
   });
 
   factory CreatePoiDto.fromJson(Map<String, dynamic> json) => CreatePoiDto(
-    address: json['address'] == null ? null : json['address'] as String,
-    category: json['category'] as String,
-    cityId: json['cityId'] as String,
-    is24x7: json['is24x7'] == null ? null : json['is24x7'] as bool,
-    isEmergency: json['isEmergency'] == null ? null : json['isEmergency'] as bool,
-    lat: json['lat'] as num,
-    lng: json['lng'] as num,
-    name: I18nTextDto.fromJson(_map(json['name'])),
-    phoneE164: json['phoneE164'] == null ? null : json['phoneE164'] as String,
-  );
+        address: json['address'] == null ? null : json['address'] as String,
+        category: json['category'] as String,
+        cityId: json['cityId'] as String,
+        is24x7: json['is24x7'] == null ? null : json['is24x7'] as bool,
+        isEmergency: json['isEmergency'] == null ? null : json['isEmergency'] as bool,
+        lat: json['lat'] as num,
+        lng: json['lng'] as num,
+        name: I18nTextDto.fromJson(_map(json['name'])),
+        phoneE164: json['phoneE164'] == null ? null : json['phoneE164'] as String,
+      );
 
   final String? address;
-
   /// One of: hospital, police, pharmacy, atm, parking, toilet, water, ghat, other.
   final String category;
   final String cityId;
@@ -1547,16 +1555,16 @@ class CreatePoiDto {
   final String? phoneE164;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'address': ?address,
-    'category': category,
-    'cityId': cityId,
-    'is24x7': ?is24x7,
-    'isEmergency': ?isEmergency,
-    'lat': lat,
-    'lng': lng,
-    'name': name.toJson(),
-    'phoneE164': ?phoneE164,
-  };
+        'address': ?address,
+        'category': category,
+        'cityId': cityId,
+        'is24x7': ?is24x7,
+        'isEmergency': ?isEmergency,
+        'lat': lat,
+        'lng': lng,
+        'name': name.toJson(),
+        'phoneE164': ?phoneE164,
+      };
 }
 
 @immutable
@@ -1572,38 +1580,34 @@ class CreateReelDto {
   });
 
   factory CreateReelDto.fromJson(Map<String, dynamic> json) => CreateReelDto(
-    caption: json['caption'] == null ? null : json['caption'] as String,
-    cityId: json['cityId'] == null ? null : json['cityId'] as String,
-    edits: json['edits'] == null ? null : ReelEditsDto.fromJson(_map(json['edits'])),
-    hashtags: json['hashtags'] == null
-        ? null
-        : (json['hashtags'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-    templeId: json['templeId'] == null ? null : json['templeId'] as String,
-    thumbnailMediaId: json['thumbnailMediaId'] == null ? null : json['thumbnailMediaId'] as String,
-    videoMediaId: json['videoMediaId'] as String,
-  );
+        caption: json['caption'] == null ? null : json['caption'] as String,
+        cityId: json['cityId'] == null ? null : json['cityId'] as String,
+        edits: json['edits'] == null ? null : ReelEditsDto.fromJson(_map(json['edits'])),
+        hashtags: json['hashtags'] == null ? null : (json['hashtags'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+        templeId: json['templeId'] == null ? null : json['templeId'] as String,
+        thumbnailMediaId: json['thumbnailMediaId'] == null ? null : json['thumbnailMediaId'] as String,
+        videoMediaId: json['videoMediaId'] as String,
+      );
 
   final String? caption;
   final String? cityId;
   final ReelEditsDto? edits;
   final List<String>? hashtags;
   final String? templeId;
-
   /// Uploaded reel_thumbnail
   final String? thumbnailMediaId;
-
   /// Uploaded reel_video
   final String videoMediaId;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'caption': ?caption,
-    'cityId': ?cityId,
-    'edits': ?edits?.toJson(),
-    'hashtags': ?hashtags,
-    'templeId': ?templeId,
-    'thumbnailMediaId': ?thumbnailMediaId,
-    'videoMediaId': videoMediaId,
-  };
+        'caption': ?caption,
+        'cityId': ?cityId,
+        'edits': ?edits?.toJson(),
+        'hashtags': ?hashtags,
+        'templeId': ?templeId,
+        'thumbnailMediaId': ?thumbnailMediaId,
+        'videoMediaId': videoMediaId,
+      };
 }
 
 @immutable
@@ -1616,27 +1620,25 @@ class CreateReportDto {
   });
 
   factory CreateReportDto.fromJson(Map<String, dynamic> json) => CreateReportDto(
-    details: json['details'] == null ? null : json['details'] as String,
-    reasonCode: json['reasonCode'] as String,
-    targetId: json['targetId'] as String,
-    targetType: json['targetType'] as String,
-  );
+        details: json['details'] == null ? null : json['details'] as String,
+        reasonCode: json['reasonCode'] as String,
+        targetId: json['targetId'] as String,
+        targetType: json['targetType'] as String,
+      );
 
   final String? details;
-
   /// One of: spam, nudity, hate, violence, harassment, misinformation, scam, copyright, other.
   final String reasonCode;
   final String targetId;
-
   /// One of: reel, comment, review, user, vendor.
   final String targetType;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'details': ?details,
-    'reasonCode': reasonCode,
-    'targetId': targetId,
-    'targetType': targetType,
-  };
+        'details': ?details,
+        'reasonCode': reasonCode,
+        'targetId': targetId,
+        'targetType': targetType,
+      };
 }
 
 @immutable
@@ -1657,21 +1659,19 @@ class CreateRestaurantDto {
   });
 
   factory CreateRestaurantDto.fromJson(Map<String, dynamic> json) => CreateRestaurantDto(
-    acceptsOrders: json['acceptsOrders'] == null ? null : json['acceptsOrders'] as bool,
-    address: json['address'] == null ? null : json['address'] as String,
-    cityId: json['cityId'] as String,
-    externalLinks: json['externalLinks'] == null
-        ? null
-        : ExternalLinksDto.fromJson(_map(json['externalLinks'])),
-    fssaiNo: json['fssaiNo'] == null ? null : json['fssaiNo'] as String,
-    isPublished: json['isPublished'] == null ? null : json['isPublished'] as bool,
-    isPureVeg: json['isPureVeg'] == null ? null : json['isPureVeg'] as bool,
-    isSatvik: json['isSatvik'] == null ? null : json['isSatvik'] as bool,
-    lat: json['lat'] as num,
-    lng: json['lng'] as num,
-    name: I18nTextDto.fromJson(_map(json['name'])),
-    openingHours: json['openingHours'] == null ? null : _map(json['openingHours']),
-  );
+        acceptsOrders: json['acceptsOrders'] == null ? null : json['acceptsOrders'] as bool,
+        address: json['address'] == null ? null : json['address'] as String,
+        cityId: json['cityId'] as String,
+        externalLinks: json['externalLinks'] == null ? null : ExternalLinksDto.fromJson(_map(json['externalLinks'])),
+        fssaiNo: json['fssaiNo'] == null ? null : json['fssaiNo'] as String,
+        isPublished: json['isPublished'] == null ? null : json['isPublished'] as bool,
+        isPureVeg: json['isPureVeg'] == null ? null : json['isPureVeg'] as bool,
+        isSatvik: json['isSatvik'] == null ? null : json['isSatvik'] as bool,
+        lat: json['lat'] as num,
+        lng: json['lng'] as num,
+        name: I18nTextDto.fromJson(_map(json['name'])),
+        openingHours: json['openingHours'] == null ? null : _map(json['openingHours']),
+      );
 
   /// Accept in-app food orders
   final bool? acceptsOrders;
@@ -1688,19 +1688,19 @@ class CreateRestaurantDto {
   final Map<String, dynamic>? openingHours;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'acceptsOrders': ?acceptsOrders,
-    'address': ?address,
-    'cityId': cityId,
-    'externalLinks': ?externalLinks?.toJson(),
-    'fssaiNo': ?fssaiNo,
-    'isPublished': ?isPublished,
-    'isPureVeg': ?isPureVeg,
-    'isSatvik': ?isSatvik,
-    'lat': lat,
-    'lng': lng,
-    'name': name.toJson(),
-    'openingHours': ?openingHours,
-  };
+        'acceptsOrders': ?acceptsOrders,
+        'address': ?address,
+        'cityId': cityId,
+        'externalLinks': ?externalLinks?.toJson(),
+        'fssaiNo': ?fssaiNo,
+        'isPublished': ?isPublished,
+        'isPureVeg': ?isPureVeg,
+        'isSatvik': ?isSatvik,
+        'lat': lat,
+        'lng': lng,
+        'name': name.toJson(),
+        'openingHours': ?openingHours,
+      };
 }
 
 @immutable
@@ -1715,37 +1715,32 @@ class CreateReviewDto {
   });
 
   factory CreateReviewDto.fromJson(Map<String, dynamic> json) => CreateReviewDto(
-    body: json['body'] == null ? null : json['body'] as String,
-    mediaIds: json['mediaIds'] == null
-        ? null
-        : (json['mediaIds'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-    orderId: json['orderId'] == null ? null : json['orderId'] as String,
-    rating: json['rating'] as num,
-    targetId: json['targetId'] as String,
-    targetType: json['targetType'] as String,
-  );
+        body: json['body'] == null ? null : json['body'] as String,
+        mediaIds: json['mediaIds'] == null ? null : (json['mediaIds'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+        orderId: json['orderId'] == null ? null : json['orderId'] as String,
+        rating: json['rating'] as num,
+        targetId: json['targetId'] as String,
+        targetType: json['targetType'] as String,
+      );
 
   final String? body;
-
   /// Ready review_image uploads (max 6)
   final List<String>? mediaIds;
-
   /// Completed order (required for everything except temples)
   final String? orderId;
   final num rating;
   final String targetId;
-
   /// One of: hotel, restaurant, experience, vendor, temple.
   final String targetType;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'body': ?body,
-    'mediaIds': ?mediaIds,
-    'orderId': ?orderId,
-    'rating': rating,
-    'targetId': targetId,
-    'targetType': targetType,
-  };
+        'body': ?body,
+        'mediaIds': ?mediaIds,
+        'orderId': ?orderId,
+        'rating': rating,
+        'targetId': targetId,
+        'targetType': targetType,
+      };
 }
 
 @immutable
@@ -1760,20 +1755,15 @@ class CreateRoomTypeDto {
   });
 
   factory CreateRoomTypeDto.fromJson(Map<String, dynamic> json) => CreateRoomTypeDto(
-    amenities: json['amenities'] == null
-        ? null
-        : (json['amenities'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-    basePricePaise: json['basePricePaise'] as num,
-    maxGuests: json['maxGuests'] as num,
-    mediaIds: json['mediaIds'] == null
-        ? null
-        : (json['mediaIds'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-    name: I18nTextDto.fromJson(_map(json['name'])),
-    totalRooms: json['totalRooms'] as num,
-  );
+        amenities: json['amenities'] == null ? null : (json['amenities'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+        basePricePaise: json['basePricePaise'] as num,
+        maxGuests: json['maxGuests'] as num,
+        mediaIds: json['mediaIds'] == null ? null : (json['mediaIds'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+        name: I18nTextDto.fromJson(_map(json['name'])),
+        totalRooms: json['totalRooms'] as num,
+      );
 
   final List<String>? amenities;
-
   /// Default nightly price in paise
   final num basePricePaise;
   final num maxGuests;
@@ -1782,38 +1772,40 @@ class CreateRoomTypeDto {
   final num totalRooms;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'amenities': ?amenities,
-    'basePricePaise': basePricePaise,
-    'maxGuests': maxGuests,
-    'mediaIds': ?mediaIds,
-    'name': name.toJson(),
-    'totalRooms': totalRooms,
-  };
+        'amenities': ?amenities,
+        'basePricePaise': basePricePaise,
+        'maxGuests': maxGuests,
+        'mediaIds': ?mediaIds,
+        'name': name.toJson(),
+        'totalRooms': totalRooms,
+      };
 }
 
 @immutable
 class CreateSlotsDto {
-  const CreateSlotsDto({required this.capacity, required this.dates, required this.times});
+  const CreateSlotsDto({
+    required this.capacity,
+    required this.dates,
+    required this.times,
+  });
 
   factory CreateSlotsDto.fromJson(Map<String, dynamic> json) => CreateSlotsDto(
-    capacity: json['capacity'] as num,
-    dates: (json['dates'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-    times: (json['times'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-  );
+        capacity: json['capacity'] as num,
+        dates: (json['dates'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+        times: (json['times'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+      );
 
   final num capacity;
-
   /// IST dates
   final List<String> dates;
-
   /// IST start times
   final List<String> times;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'capacity': capacity,
-    'dates': dates,
-    'times': times,
-  };
+        'capacity': capacity,
+        'dates': dates,
+        'times': times,
+      };
 }
 
 @immutable
@@ -1837,28 +1829,22 @@ class CreateTempleDto {
   });
 
   factory CreateTempleDto.fromJson(Map<String, dynamic> json) => CreateTempleDto(
-    address: json['address'] == null ? null : json['address'] as String,
-    cityId: json['cityId'] as String,
-    coverMediaId: json['coverMediaId'] == null ? null : json['coverMediaId'] as String,
-    crowdLevel: json['crowdLevel'] == null ? null : json['crowdLevel'] as num,
-    description: json['description'] == null
-        ? null
-        : I18nTextDto.fromJson(_map(json['description'])),
-    dressCode: json['dressCode'] == null ? null : I18nTextDto.fromJson(_map(json['dressCode'])),
-    galleryMediaIds: json['galleryMediaIds'] == null
-        ? null
-        : (json['galleryMediaIds'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-    history: json['history'] == null ? null : I18nTextDto.fromJson(_map(json['history'])),
-    isPublished: json['isPublished'] == null ? null : json['isPublished'] as bool,
-    lat: json['lat'] as num,
-    lng: json['lng'] as num,
-    name: I18nTextDto.fromJson(_map(json['name'])),
-    openingHours: json['openingHours'] == null ? null : _map(json['openingHours']),
-    slug: json['slug'] as String,
-    tags: json['tags'] == null
-        ? null
-        : (json['tags'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-  );
+        address: json['address'] == null ? null : json['address'] as String,
+        cityId: json['cityId'] as String,
+        coverMediaId: json['coverMediaId'] == null ? null : json['coverMediaId'] as String,
+        crowdLevel: json['crowdLevel'] == null ? null : json['crowdLevel'] as num,
+        description: json['description'] == null ? null : I18nTextDto.fromJson(_map(json['description'])),
+        dressCode: json['dressCode'] == null ? null : I18nTextDto.fromJson(_map(json['dressCode'])),
+        galleryMediaIds: json['galleryMediaIds'] == null ? null : (json['galleryMediaIds'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+        history: json['history'] == null ? null : I18nTextDto.fromJson(_map(json['history'])),
+        isPublished: json['isPublished'] == null ? null : json['isPublished'] as bool,
+        lat: json['lat'] as num,
+        lng: json['lng'] as num,
+        name: I18nTextDto.fromJson(_map(json['name'])),
+        openingHours: json['openingHours'] == null ? null : _map(json['openingHours']),
+        slug: json['slug'] as String,
+        tags: json['tags'] == null ? null : (json['tags'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+      );
 
   final String? address;
   final String cityId;
@@ -1877,22 +1863,22 @@ class CreateTempleDto {
   final List<String>? tags;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'address': ?address,
-    'cityId': cityId,
-    'coverMediaId': ?coverMediaId,
-    'crowdLevel': ?crowdLevel,
-    'description': ?description?.toJson(),
-    'dressCode': ?dressCode?.toJson(),
-    'galleryMediaIds': ?galleryMediaIds,
-    'history': ?history?.toJson(),
-    'isPublished': ?isPublished,
-    'lat': lat,
-    'lng': lng,
-    'name': name.toJson(),
-    'openingHours': ?openingHours,
-    'slug': slug,
-    'tags': ?tags,
-  };
+        'address': ?address,
+        'cityId': cityId,
+        'coverMediaId': ?coverMediaId,
+        'crowdLevel': ?crowdLevel,
+        'description': ?description?.toJson(),
+        'dressCode': ?dressCode?.toJson(),
+        'galleryMediaIds': ?galleryMediaIds,
+        'history': ?history?.toJson(),
+        'isPublished': ?isPublished,
+        'lat': lat,
+        'lng': lng,
+        'name': name.toJson(),
+        'openingHours': ?openingHours,
+        'slug': slug,
+        'tags': ?tags,
+      };
 }
 
 @immutable
@@ -1909,21 +1895,20 @@ class CreateVehicleDto {
   });
 
   factory CreateVehicleDto.fromJson(Map<String, dynamic> json) => CreateVehicleDto(
-    class_: json['class'] as String,
-    driverName: json['driverName'] == null ? null : json['driverName'] as String,
-    driverPhoneE164: json['driverPhoneE164'] == null ? null : json['driverPhoneE164'] as String,
-    driverUserId: json['driverUserId'] == null ? null : json['driverUserId'] as String,
-    isActive: json['isActive'] == null ? null : json['isActive'] as bool,
-    model: json['model'] == null ? null : json['model'] as String,
-    registrationNo: json['registrationNo'] as String,
-    seats: json['seats'] as num,
-  );
+        class_: json['class'] as String,
+        driverName: json['driverName'] == null ? null : json['driverName'] as String,
+        driverPhoneE164: json['driverPhoneE164'] == null ? null : json['driverPhoneE164'] as String,
+        driverUserId: json['driverUserId'] == null ? null : json['driverUserId'] as String,
+        isActive: json['isActive'] == null ? null : json['isActive'] as bool,
+        model: json['model'] == null ? null : json['model'] as String,
+        registrationNo: json['registrationNo'] as String,
+        seats: json['seats'] as num,
+      );
 
   /// One of: auto, hatchback, sedan, suv, tempo_traveller, e_rickshaw.
   final String class_;
   final String? driverName;
   final String? driverPhoneE164;
-
   /// Driver app user, for live location
   final String? driverUserId;
   final bool? isActive;
@@ -1932,15 +1917,15 @@ class CreateVehicleDto {
   final num seats;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'class': class_,
-    'driverName': ?driverName,
-    'driverPhoneE164': ?driverPhoneE164,
-    'driverUserId': ?driverUserId,
-    'isActive': ?isActive,
-    'model': ?model,
-    'registrationNo': registrationNo,
-    'seats': seats,
-  };
+        'class': class_,
+        'driverName': ?driverName,
+        'driverPhoneE164': ?driverPhoneE164,
+        'driverUserId': ?driverUserId,
+        'isActive': ?isActive,
+        'model': ?model,
+        'registrationNo': registrationNo,
+        'seats': seats,
+      };
 }
 
 @immutable
@@ -1955,54 +1940,55 @@ class CreateVendorDto {
   });
 
   factory CreateVendorDto.fromJson(Map<String, dynamic> json) => CreateVendorDto(
-    cityId: json['cityId'] == null ? null : json['cityId'] as String,
-    displayName: json['displayName'] as String,
-    gstin: json['gstin'] == null ? null : json['gstin'] as String,
-    legalName: json['legalName'] as String,
-    pan: json['pan'] == null ? null : json['pan'] as String,
-    type: json['type'] as String,
-  );
+        cityId: json['cityId'] == null ? null : json['cityId'] as String,
+        displayName: json['displayName'] as String,
+        gstin: json['gstin'] == null ? null : json['gstin'] as String,
+        legalName: json['legalName'] as String,
+        pan: json['pan'] == null ? null : json['pan'] as String,
+        type: json['type'] as String,
+      );
 
   final String? cityId;
   final String displayName;
   final String? gstin;
   final String legalName;
   final String? pan;
-
   /// One of: hotel, cab, restaurant, experience, multi.
   final String type;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'cityId': ?cityId,
-    'displayName': displayName,
-    'gstin': ?gstin,
-    'legalName': legalName,
-    'pan': ?pan,
-    'type': type,
-  };
+        'cityId': ?cityId,
+        'displayName': displayName,
+        'gstin': ?gstin,
+        'legalName': legalName,
+        'pan': ?pan,
+        'type': type,
+      };
 }
 
 @immutable
 class CreatorPageResponse {
-  const CreatorPageResponse({required this.data, this.nextCursor, required this.profile});
+  const CreatorPageResponse({
+    required this.data,
+    this.nextCursor,
+    required this.profile,
+  });
 
   factory CreatorPageResponse.fromJson(Map<String, dynamic> json) => CreatorPageResponse(
-    data: (json['data'] as List<dynamic>)
-        .map((dynamic x) => ReelResponse.fromJson(_map(x)))
-        .toList(),
-    nextCursor: json['nextCursor'] == null ? null : json['nextCursor'] as String,
-    profile: CreatorProfileResponse.fromJson(_map(json['profile'])),
-  );
+        data: (json['data'] as List<dynamic>).map((dynamic x) => ReelResponse.fromJson(_map(x))).toList(),
+        nextCursor: json['nextCursor'] == null ? null : json['nextCursor'] as String,
+        profile: CreatorProfileResponse.fromJson(_map(json['profile'])),
+      );
 
   final List<ReelResponse> data;
   final String? nextCursor;
   final CreatorProfileResponse profile;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'data': data.map((x) => x.toJson()).toList(),
-    'nextCursor': ?nextCursor,
-    'profile': profile.toJson(),
-  };
+        'data': data.map((x) => x.toJson()).toList(),
+        'nextCursor': ?nextCursor,
+        'profile': profile.toJson(),
+      };
 }
 
 @immutable
@@ -2019,15 +2005,15 @@ class CreatorProfileResponse {
   });
 
   factory CreatorProfileResponse.fromJson(Map<String, dynamic> json) => CreatorProfileResponse(
-    avatarUrl: json['avatarUrl'] == null ? null : json['avatarUrl'] as String,
-    displayName: json['displayName'] as String,
-    followerCount: json['followerCount'] as num,
-    followingCount: json['followingCount'] as num,
-    id: json['id'] as String,
-    isFollowing: json['isFollowing'] as bool,
-    isMe: json['isMe'] as bool,
-    reelCount: json['reelCount'] as num,
-  );
+        avatarUrl: json['avatarUrl'] == null ? null : json['avatarUrl'] as String,
+        displayName: json['displayName'] as String,
+        followerCount: json['followerCount'] as num,
+        followingCount: json['followingCount'] as num,
+        id: json['id'] as String,
+        isFollowing: json['isFollowing'] as bool,
+        isMe: json['isMe'] as bool,
+        reelCount: json['reelCount'] as num,
+      );
 
   final String? avatarUrl;
   final String displayName;
@@ -2039,36 +2025,40 @@ class CreatorProfileResponse {
   final num reelCount;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'avatarUrl': ?avatarUrl,
-    'displayName': displayName,
-    'followerCount': followerCount,
-    'followingCount': followingCount,
-    'id': id,
-    'isFollowing': isFollowing,
-    'isMe': isMe,
-    'reelCount': reelCount,
-  };
+        'avatarUrl': ?avatarUrl,
+        'displayName': displayName,
+        'followerCount': followerCount,
+        'followingCount': followingCount,
+        'id': id,
+        'isFollowing': isFollowing,
+        'isMe': isMe,
+        'reelCount': reelCount,
+      };
 }
 
 @immutable
 class CreatorResponse {
-  const CreatorResponse({this.avatarUrl, required this.displayName, required this.id});
+  const CreatorResponse({
+    this.avatarUrl,
+    required this.displayName,
+    required this.id,
+  });
 
   factory CreatorResponse.fromJson(Map<String, dynamic> json) => CreatorResponse(
-    avatarUrl: json['avatarUrl'] == null ? null : json['avatarUrl'] as String,
-    displayName: json['displayName'] as String,
-    id: json['id'] as String,
-  );
+        avatarUrl: json['avatarUrl'] == null ? null : json['avatarUrl'] as String,
+        displayName: json['displayName'] as String,
+        id: json['id'] as String,
+      );
 
   final String? avatarUrl;
   final String displayName;
   final String id;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'avatarUrl': ?avatarUrl,
-    'displayName': displayName,
-    'id': id,
-  };
+        'avatarUrl': ?avatarUrl,
+        'displayName': displayName,
+        'id': id,
+      };
 }
 
 @immutable
@@ -2083,13 +2073,13 @@ class CustomStopDto {
   });
 
   factory CustomStopDto.fromJson(Map<String, dynamic> json) => CustomStopDto(
-    dayIndex: json['dayIndex'] as num,
-    durationMin: json['durationMin'] == null ? null : json['durationMin'] as num,
-    note: json['note'] == null ? null : json['note'] as String,
-    templeId: json['templeId'] == null ? null : json['templeId'] as String,
-    time: json['time'] == null ? null : json['time'] as String,
-    title: json['title'] as String,
-  );
+        dayIndex: json['dayIndex'] as num,
+        durationMin: json['durationMin'] == null ? null : json['durationMin'] as num,
+        note: json['note'] == null ? null : json['note'] as String,
+        templeId: json['templeId'] == null ? null : json['templeId'] as String,
+        time: json['time'] == null ? null : json['time'] as String,
+        title: json['title'] as String,
+      );
 
   final num dayIndex;
   final num? durationMin;
@@ -2099,13 +2089,13 @@ class CustomStopDto {
   final String title;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'dayIndex': dayIndex,
-    'durationMin': ?durationMin,
-    'note': ?note,
-    'templeId': ?templeId,
-    'time': ?time,
-    'title': title,
-  };
+        'dayIndex': dayIndex,
+        'durationMin': ?durationMin,
+        'note': ?note,
+        'templeId': ?templeId,
+        'time': ?time,
+        'title': title,
+      };
 }
 
 @immutable
@@ -2119,32 +2109,29 @@ class DeviceInfoDto {
   });
 
   factory DeviceInfoDto.fromJson(Map<String, dynamic> json) => DeviceInfoDto(
-    appVersion: json['appVersion'] == null ? null : json['appVersion'] as String,
-    deviceId: json['deviceId'] == null ? null : json['deviceId'] as String,
-    fcmToken: json['fcmToken'] == null ? null : json['fcmToken'] as String,
-    locale: json['locale'] == null ? null : json['locale'] as String,
-    platform: json['platform'] as String,
-  );
+        appVersion: json['appVersion'] == null ? null : json['appVersion'] as String,
+        deviceId: json['deviceId'] == null ? null : json['deviceId'] as String,
+        fcmToken: json['fcmToken'] == null ? null : json['fcmToken'] as String,
+        locale: json['locale'] == null ? null : json['locale'] as String,
+        platform: json['platform'] as String,
+      );
 
   final String? appVersion;
-
   /// Device id returned by a previous sign-in
   final String? deviceId;
-
   /// FCM registration token
   final String? fcmToken;
   final String? locale;
-
   /// One of: android, ios, web.
   final String platform;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'appVersion': ?appVersion,
-    'deviceId': ?deviceId,
-    'fcmToken': ?fcmToken,
-    'locale': ?locale,
-    'platform': platform,
-  };
+        'appVersion': ?appVersion,
+        'deviceId': ?deviceId,
+        'fcmToken': ?fcmToken,
+        'locale': ?locale,
+        'platform': platform,
+      };
 }
 
 @immutable
@@ -2158,28 +2145,27 @@ class DeviceResponse {
   });
 
   factory DeviceResponse.fromJson(Map<String, dynamic> json) => DeviceResponse(
-    appVersion: json['appVersion'] == null ? null : json['appVersion'] as String,
-    hasPushToken: json['hasPushToken'] as bool,
-    id: json['id'] as String,
-    lastSeenAt: json['lastSeenAt'] as String,
-    platform: json['platform'] as String,
-  );
+        appVersion: json['appVersion'] == null ? null : json['appVersion'] as String,
+        hasPushToken: json['hasPushToken'] as bool,
+        id: json['id'] as String,
+        lastSeenAt: json['lastSeenAt'] as String,
+        platform: json['platform'] as String,
+      );
 
   final String? appVersion;
   final bool hasPushToken;
   final String id;
   final String lastSeenAt;
-
   /// One of: android, ios, web.
   final String platform;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'appVersion': ?appVersion,
-    'hasPushToken': hasPushToken,
-    'id': id,
-    'lastSeenAt': lastSeenAt,
-    'platform': platform,
-  };
+        'appVersion': ?appVersion,
+        'hasPushToken': hasPushToken,
+        'id': id,
+        'lastSeenAt': lastSeenAt,
+        'platform': platform,
+      };
 }
 
 @immutable
@@ -2194,34 +2180,32 @@ class EarningsResponse {
   });
 
   factory EarningsResponse.fromJson(Map<String, dynamic> json) => EarningsResponse(
-    availableForPayoutPaise: json['availableForPayoutPaise'] as num,
-    inFlightPayoutsPaise: json['inFlightPayoutsPaise'] as num,
-    paidOutPaise: json['paidOutPaise'] as num,
-    payablePaise: json['payablePaise'] as num,
-    pendingServicePaise: json['pendingServicePaise'] as num,
-    settlementHoldDays: json['settlementHoldDays'] as num,
-  );
+        availableForPayoutPaise: json['availableForPayoutPaise'] as num,
+        inFlightPayoutsPaise: json['inFlightPayoutsPaise'] as num,
+        paidOutPaise: json['paidOutPaise'] as num,
+        payablePaise: json['payablePaise'] as num,
+        pendingServicePaise: json['pendingServicePaise'] as num,
+        settlementHoldDays: json['settlementHoldDays'] as num,
+      );
 
   /// Past the settlement hold and not in a payout yet
   final num availableForPayoutPaise;
   final num inFlightPayoutsPaise;
   final num paidOutPaise;
-
   /// Earned and not yet paid out
   final num payablePaise;
-
   /// Vendor share of bookings not yet completed
   final num pendingServicePaise;
   final num settlementHoldDays;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'availableForPayoutPaise': availableForPayoutPaise,
-    'inFlightPayoutsPaise': inFlightPayoutsPaise,
-    'paidOutPaise': paidOutPaise,
-    'payablePaise': payablePaise,
-    'pendingServicePaise': pendingServicePaise,
-    'settlementHoldDays': settlementHoldDays,
-  };
+        'availableForPayoutPaise': availableForPayoutPaise,
+        'inFlightPayoutsPaise': inFlightPayoutsPaise,
+        'paidOutPaise': paidOutPaise,
+        'payablePaise': payablePaise,
+        'pendingServicePaise': pendingServicePaise,
+        'settlementHoldDays': settlementHoldDays,
+      };
 }
 
 @immutable
@@ -2235,12 +2219,12 @@ class EmergencyContactDto {
   });
 
   factory EmergencyContactDto.fromJson(Map<String, dynamic> json) => EmergencyContactDto(
-    name: json['name'] as String,
-    notifyWhatsapp: json['notifyWhatsapp'] == null ? null : json['notifyWhatsapp'] as bool,
-    phoneE164: json['phoneE164'] as String,
-    priority: json['priority'] == null ? null : json['priority'] as num,
-    relation: json['relation'] == null ? null : json['relation'] as String,
-  );
+        name: json['name'] as String,
+        notifyWhatsapp: json['notifyWhatsapp'] == null ? null : json['notifyWhatsapp'] as bool,
+        phoneE164: json['phoneE164'] as String,
+        priority: json['priority'] == null ? null : json['priority'] as num,
+        relation: json['relation'] == null ? null : json['relation'] as String,
+      );
 
   final String name;
   final bool? notifyWhatsapp;
@@ -2249,12 +2233,12 @@ class EmergencyContactDto {
   final String? relation;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'name': name,
-    'notifyWhatsapp': ?notifyWhatsapp,
-    'phoneE164': phoneE164,
-    'priority': ?priority,
-    'relation': ?relation,
-  };
+        'name': name,
+        'notifyWhatsapp': ?notifyWhatsapp,
+        'phoneE164': phoneE164,
+        'priority': ?priority,
+        'relation': ?relation,
+      };
 }
 
 @immutable
@@ -2269,13 +2253,13 @@ class EmergencyContactResponse {
   });
 
   factory EmergencyContactResponse.fromJson(Map<String, dynamic> json) => EmergencyContactResponse(
-    id: json['id'] as String,
-    name: json['name'] as String,
-    notifyWhatsapp: json['notifyWhatsapp'] as bool,
-    phoneE164: json['phoneE164'] as String,
-    priority: json['priority'] as num,
-    relation: json['relation'] == null ? null : json['relation'] as String,
-  );
+        id: json['id'] as String,
+        name: json['name'] as String,
+        notifyWhatsapp: json['notifyWhatsapp'] as bool,
+        phoneE164: json['phoneE164'] as String,
+        priority: json['priority'] as num,
+        relation: json['relation'] == null ? null : json['relation'] as String,
+      );
 
   final String id;
   final String name;
@@ -2285,26 +2269,34 @@ class EmergencyContactResponse {
   final String? relation;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'id': id,
-    'name': name,
-    'notifyWhatsapp': notifyWhatsapp,
-    'phoneE164': phoneE164,
-    'priority': priority,
-    'relation': ?relation,
-  };
+        'id': id,
+        'name': name,
+        'notifyWhatsapp': notifyWhatsapp,
+        'phoneE164': phoneE164,
+        'priority': priority,
+        'relation': ?relation,
+      };
 }
 
 @immutable
 class ExperienceOrderDto {
-  const ExperienceOrderDto({required this.seats, required this.slotId});
+  const ExperienceOrderDto({
+    required this.seats,
+    required this.slotId,
+  });
 
-  factory ExperienceOrderDto.fromJson(Map<String, dynamic> json) =>
-      ExperienceOrderDto(seats: json['seats'] as num, slotId: json['slotId'] as String);
+  factory ExperienceOrderDto.fromJson(Map<String, dynamic> json) => ExperienceOrderDto(
+        seats: json['seats'] as num,
+        slotId: json['slotId'] as String,
+      );
 
   final num seats;
   final String slotId;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{'seats': seats, 'slotId': slotId};
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'seats': seats,
+        'slotId': slotId,
+      };
 }
 
 @immutable
@@ -2325,23 +2317,19 @@ class ExperienceResponse {
   });
 
   factory ExperienceResponse.fromJson(Map<String, dynamic> json) => ExperienceResponse(
-    cancellationPolicy: CancellationPolicyDto.fromJson(_map(json['cancellationPolicy'])),
-    cityId: json['cityId'] as String,
-    description: json['description'] == null ? null : json['description'] as String,
-    durationMin: json['durationMin'] as num,
-    id: json['id'] as String,
-    isPublished: json['isPublished'] as bool,
-    kind: json['kind'] as String,
-    maxGroupSize: json['maxGroupSize'] as num,
-    pricePaise: json['pricePaise'] as num,
-    slots: json['slots'] == null
-        ? null
-        : (json['slots'] as List<dynamic>)
-              .map((dynamic x) => SlotResponse.fromJson(_map(x)))
-              .toList(),
-    title: json['title'] as String,
-    vendorId: json['vendorId'] as String,
-  );
+        cancellationPolicy: CancellationPolicyDto.fromJson(_map(json['cancellationPolicy'])),
+        cityId: json['cityId'] as String,
+        description: json['description'] == null ? null : json['description'] as String,
+        durationMin: json['durationMin'] as num,
+        id: json['id'] as String,
+        isPublished: json['isPublished'] as bool,
+        kind: json['kind'] as String,
+        maxGroupSize: json['maxGroupSize'] as num,
+        pricePaise: json['pricePaise'] as num,
+        slots: json['slots'] == null ? null : (json['slots'] as List<dynamic>).map((dynamic x) => SlotResponse.fromJson(_map(x))).toList(),
+        title: json['title'] as String,
+        vendorId: json['vendorId'] as String,
+      );
 
   final CancellationPolicyDto cancellationPolicy;
   final String cityId;
@@ -2349,7 +2337,6 @@ class ExperienceResponse {
   final num durationMin;
   final String id;
   final bool isPublished;
-
   /// One of: guided_tour, boat_ride, parikrama_guide, cooking, workshop, other.
   final String kind;
   final num maxGroupSize;
@@ -2359,19 +2346,19 @@ class ExperienceResponse {
   final String vendorId;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'cancellationPolicy': cancellationPolicy.toJson(),
-    'cityId': cityId,
-    'description': ?description,
-    'durationMin': durationMin,
-    'id': id,
-    'isPublished': isPublished,
-    'kind': kind,
-    'maxGroupSize': maxGroupSize,
-    'pricePaise': pricePaise,
-    'slots': ?slots?.map((x) => x.toJson()).toList(),
-    'title': title,
-    'vendorId': vendorId,
-  };
+        'cancellationPolicy': cancellationPolicy.toJson(),
+        'cityId': cityId,
+        'description': ?description,
+        'durationMin': durationMin,
+        'id': id,
+        'isPublished': isPublished,
+        'kind': kind,
+        'maxGroupSize': maxGroupSize,
+        'pricePaise': pricePaise,
+        'slots': ?slots?.map((x) => x.toJson()).toList(),
+        'title': title,
+        'vendorId': vendorId,
+      };
 }
 
 @immutable
@@ -2388,15 +2375,15 @@ class ExploreItemResponse {
   });
 
   factory ExploreItemResponse.fromJson(Map<String, dynamic> json) => ExploreItemResponse(
-    body: json['body'] == null ? null : json['body'] as String,
-    cityId: json['cityId'] as String,
-    coverUrl: json['coverUrl'] == null ? null : json['coverUrl'] as String,
-    id: json['id'] as String,
-    kind: json['kind'] as String,
-    lat: json['lat'] == null ? null : json['lat'] as num,
-    lng: json['lng'] == null ? null : json['lng'] as num,
-    title: json['title'] as String,
-  );
+        body: json['body'] == null ? null : json['body'] as String,
+        cityId: json['cityId'] as String,
+        coverUrl: json['coverUrl'] == null ? null : json['coverUrl'] as String,
+        id: json['id'] as String,
+        kind: json['kind'] as String,
+        lat: json['lat'] == null ? null : json['lat'] as num,
+        lng: json['lng'] == null ? null : json['lng'] as num,
+        title: json['title'] as String,
+      );
 
   final String? body;
   final String cityId;
@@ -2408,36 +2395,146 @@ class ExploreItemResponse {
   final String title;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'body': ?body,
-    'cityId': cityId,
-    'coverUrl': ?coverUrl,
-    'id': id,
-    'kind': kind,
-    'lat': ?lat,
-    'lng': ?lng,
-    'title': title,
-  };
+        'body': ?body,
+        'cityId': cityId,
+        'coverUrl': ?coverUrl,
+        'id': id,
+        'kind': kind,
+        'lat': ?lat,
+        'lng': ?lng,
+        'title': title,
+      };
 }
 
 @immutable
 class ExternalLinksDto {
-  const ExternalLinksDto({this.blinkit, this.swiggy, this.zomato});
+  const ExternalLinksDto({
+    this.blinkit,
+    this.swiggy,
+    this.zomato,
+  });
 
   factory ExternalLinksDto.fromJson(Map<String, dynamic> json) => ExternalLinksDto(
-    blinkit: json['blinkit'] == null ? null : json['blinkit'] as String,
-    swiggy: json['swiggy'] == null ? null : json['swiggy'] as String,
-    zomato: json['zomato'] == null ? null : json['zomato'] as String,
-  );
+        blinkit: json['blinkit'] == null ? null : json['blinkit'] as String,
+        swiggy: json['swiggy'] == null ? null : json['swiggy'] as String,
+        zomato: json['zomato'] == null ? null : json['zomato'] as String,
+      );
 
   final String? blinkit;
   final String? swiggy;
   final String? zomato;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'blinkit': ?blinkit,
-    'swiggy': ?swiggy,
-    'zomato': ?zomato,
-  };
+        'blinkit': ?blinkit,
+        'swiggy': ?swiggy,
+        'zomato': ?zomato,
+      };
+}
+
+@immutable
+class FamilyGroupResponse {
+  const FamilyGroupResponse({
+    required this.id,
+    required this.isOwner,
+    required this.joinCode,
+    required this.members,
+    required this.name,
+  });
+
+  factory FamilyGroupResponse.fromJson(Map<String, dynamic> json) => FamilyGroupResponse(
+        id: json['id'] as String,
+        isOwner: json['isOwner'] as bool,
+        joinCode: json['joinCode'] as String,
+        members: (json['members'] as List<dynamic>).map((dynamic x) => FamilyMemberResponse.fromJson(_map(x))).toList(),
+        name: json['name'] as String,
+      );
+
+  final String id;
+  final bool isOwner;
+  final String joinCode;
+  final List<FamilyMemberResponse> members;
+  final String name;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'id': id,
+        'isOwner': isOwner,
+        'joinCode': joinCode,
+        'members': members.map((x) => x.toJson()).toList(),
+        'name': name,
+      };
+}
+
+@immutable
+class FamilyMemberResponse {
+  const FamilyMemberResponse({
+    this.avatarUrl,
+    required this.isMe,
+    required this.isOwner,
+    this.lat,
+    this.lng,
+    this.locationAt,
+    required this.name,
+    required this.sharing,
+    this.trip,
+    required this.userId,
+  });
+
+  factory FamilyMemberResponse.fromJson(Map<String, dynamic> json) => FamilyMemberResponse(
+        avatarUrl: json['avatarUrl'] == null ? null : json['avatarUrl'] as String,
+        isMe: json['isMe'] as bool,
+        isOwner: json['isOwner'] as bool,
+        lat: json['lat'] == null ? null : json['lat'] as num,
+        lng: json['lng'] == null ? null : json['lng'] as num,
+        locationAt: json['locationAt'] == null ? null : json['locationAt'] as String,
+        name: json['name'] as String,
+        sharing: json['sharing'] as bool,
+        trip: json['trip'] == null ? null : MemberTripResponse.fromJson(_map(json['trip'])),
+        userId: json['userId'] as String,
+      );
+
+  final String? avatarUrl;
+  final bool isMe;
+  final bool isOwner;
+  final num? lat;
+  final num? lng;
+  final String? locationAt;
+  final String name;
+  /// This member allows the group to see their location
+  final bool sharing;
+  /// Active trip, if any
+  final MemberTripResponse? trip;
+  final String userId;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'avatarUrl': ?avatarUrl,
+        'isMe': isMe,
+        'isOwner': isOwner,
+        'lat': ?lat,
+        'lng': ?lng,
+        'locationAt': ?locationAt,
+        'name': name,
+        'sharing': sharing,
+        'trip': ?trip?.toJson(),
+        'userId': userId,
+      };
+}
+
+@immutable
+class FamilySharingDto {
+  const FamilySharingDto({
+    required this.sharing,
+  });
+
+  factory FamilySharingDto.fromJson(Map<String, dynamic> json) => FamilySharingDto(
+        sharing: json['sharing'] as bool,
+      );
+
+  /// Consent: may this group see my live trip location?
+  final bool sharing;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'sharing': sharing,
+      };
 }
 
 @immutable
@@ -2454,15 +2551,15 @@ class FestivalResponse {
   });
 
   factory FestivalResponse.fromJson(Map<String, dynamic> json) => FestivalResponse(
-    cityId: json['cityId'] == null ? null : json['cityId'] as String,
-    crowdAdvisory: json['crowdAdvisory'] == null ? null : json['crowdAdvisory'] as String,
-    description: json['description'] == null ? null : json['description'] as String,
-    endsOn: json['endsOn'] as String,
-    id: json['id'] as String,
-    name: json['name'] as String,
-    startsOn: json['startsOn'] as String,
-    templeId: json['templeId'] == null ? null : json['templeId'] as String,
-  );
+        cityId: json['cityId'] == null ? null : json['cityId'] as String,
+        crowdAdvisory: json['crowdAdvisory'] == null ? null : json['crowdAdvisory'] as String,
+        description: json['description'] == null ? null : json['description'] as String,
+        endsOn: json['endsOn'] as String,
+        id: json['id'] as String,
+        name: json['name'] as String,
+        startsOn: json['startsOn'] as String,
+        templeId: json['templeId'] == null ? null : json['templeId'] as String,
+      );
 
   final String? cityId;
   final String? crowdAdvisory;
@@ -2474,112 +2571,130 @@ class FestivalResponse {
   final String? templeId;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'cityId': ?cityId,
-    'crowdAdvisory': ?crowdAdvisory,
-    'description': ?description,
-    'endsOn': endsOn,
-    'id': id,
-    'name': name,
-    'startsOn': startsOn,
-    'templeId': ?templeId,
-  };
+        'cityId': ?cityId,
+        'crowdAdvisory': ?crowdAdvisory,
+        'description': ?description,
+        'endsOn': endsOn,
+        'id': id,
+        'name': name,
+        'startsOn': startsOn,
+        'templeId': ?templeId,
+      };
 }
 
 @immutable
 class FirebaseExchangeDto {
-  const FirebaseExchangeDto({this.device, required this.idToken});
+  const FirebaseExchangeDto({
+    this.device,
+    required this.idToken,
+  });
 
   factory FirebaseExchangeDto.fromJson(Map<String, dynamic> json) => FirebaseExchangeDto(
-    device: json['device'] == null ? null : DeviceInfoDto.fromJson(_map(json['device'])),
-    idToken: json['idToken'] as String,
-  );
+        device: json['device'] == null ? null : DeviceInfoDto.fromJson(_map(json['device'])),
+        idToken: json['idToken'] as String,
+      );
 
   final DeviceInfoDto? device;
-
   /// Firebase ID token (mock: "mock:&lt;uid&gt;[:&lt;phone&gt;][:&lt;email&gt;]" or "mock:guest:&lt;uid&gt;")
   final String idToken;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'device': ?device?.toJson(),
-    'idToken': idToken,
-  };
+        'device': ?device?.toJson(),
+        'idToken': idToken,
+      };
 }
 
 @immutable
 class FixedRouteDto {
-  const FixedRouteDto({required this.farePaise, required this.from, required this.to});
+  const FixedRouteDto({
+    required this.farePaise,
+    required this.from,
+    required this.to,
+  });
 
   factory FixedRouteDto.fromJson(Map<String, dynamic> json) => FixedRouteDto(
-    farePaise: json['farePaise'] as num,
-    from: json['from'] as String,
-    to: json['to'] as String,
-  );
+        farePaise: json['farePaise'] as num,
+        from: json['from'] as String,
+        to: json['to'] as String,
+      );
 
   final num farePaise;
   final String from;
   final String to;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'farePaise': farePaise,
-    'from': from,
-    'to': to,
-  };
+        'farePaise': farePaise,
+        'from': from,
+        'to': to,
+      };
 }
 
 @immutable
 class FoodLineDto {
-  const FoodLineDto({required this.menuItemId, required this.quantity});
+  const FoodLineDto({
+    required this.menuItemId,
+    required this.quantity,
+  });
 
-  factory FoodLineDto.fromJson(Map<String, dynamic> json) =>
-      FoodLineDto(menuItemId: json['menuItemId'] as String, quantity: json['quantity'] as num);
+  factory FoodLineDto.fromJson(Map<String, dynamic> json) => FoodLineDto(
+        menuItemId: json['menuItemId'] as String,
+        quantity: json['quantity'] as num,
+      );
 
   final String menuItemId;
   final num quantity;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'menuItemId': menuItemId,
-    'quantity': quantity,
-  };
+        'menuItemId': menuItemId,
+        'quantity': quantity,
+      };
 }
 
 @immutable
 class FoodOrderDto {
-  const FoodOrderDto({required this.items, this.mode, this.notes, required this.restaurantId});
+  const FoodOrderDto({
+    required this.items,
+    this.mode,
+    this.notes,
+    required this.restaurantId,
+  });
 
   factory FoodOrderDto.fromJson(Map<String, dynamic> json) => FoodOrderDto(
-    items: (json['items'] as List<dynamic>)
-        .map((dynamic x) => FoodLineDto.fromJson(_map(x)))
-        .toList(),
-    mode: json['mode'] == null ? null : json['mode'] as String,
-    notes: json['notes'] == null ? null : json['notes'] as String,
-    restaurantId: json['restaurantId'] as String,
-  );
+        items: (json['items'] as List<dynamic>).map((dynamic x) => FoodLineDto.fromJson(_map(x))).toList(),
+        mode: json['mode'] == null ? null : json['mode'] as String,
+        notes: json['notes'] == null ? null : json['notes'] as String,
+        restaurantId: json['restaurantId'] as String,
+      );
 
   final List<FoodLineDto> items;
-
   /// One of: pickup, dine_in.
   final String? mode;
   final String? notes;
   final String restaurantId;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'items': items.map((x) => x.toJson()).toList(),
-    'mode': ?mode,
-    'notes': ?notes,
-    'restaurantId': restaurantId,
-  };
+        'items': items.map((x) => x.toJson()).toList(),
+        'mode': ?mode,
+        'notes': ?notes,
+        'restaurantId': restaurantId,
+      };
 }
 
 @immutable
 class ForgotPasswordDto {
-  const ForgotPasswordDto({required this.email});
+  const ForgotPasswordDto({
+    required this.email,
+  });
 
-  factory ForgotPasswordDto.fromJson(Map<String, dynamic> json) =>
-      ForgotPasswordDto(email: json['email'] as String);
+  factory ForgotPasswordDto.fromJson(Map<String, dynamic> json) => ForgotPasswordDto(
+        email: json['email'] as String,
+      );
 
   final String email;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{'email': email};
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'email': email,
+      };
 }
 
 @immutable
@@ -2594,13 +2709,13 @@ class HelpPointResponse {
   });
 
   factory HelpPointResponse.fromJson(Map<String, dynamic> json) => HelpPointResponse(
-    category: json['category'] as String,
-    distanceKm: json['distanceKm'] == null ? null : json['distanceKm'] as num,
-    lat: json['lat'] as num,
-    lng: json['lng'] as num,
-    name: json['name'] as String,
-    phoneE164: json['phoneE164'] == null ? null : json['phoneE164'] as String,
-  );
+        category: json['category'] as String,
+        distanceKm: json['distanceKm'] == null ? null : json['distanceKm'] as num,
+        lat: json['lat'] as num,
+        lng: json['lng'] as num,
+        name: json['name'] as String,
+        phoneE164: json['phoneE164'] == null ? null : json['phoneE164'] as String,
+      );
 
   final String category;
   final num? distanceKm;
@@ -2610,38 +2725,51 @@ class HelpPointResponse {
   final String? phoneE164;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'category': category,
-    'distanceKm': ?distanceKm,
-    'lat': lat,
-    'lng': lng,
-    'name': name,
-    'phoneE164': ?phoneE164,
-  };
+        'category': category,
+        'distanceKm': ?distanceKm,
+        'lat': lat,
+        'lng': lng,
+        'name': name,
+        'phoneE164': ?phoneE164,
+      };
 }
 
 @immutable
 class HelplineResponse {
-  const HelplineResponse({required this.name, required this.phone});
+  const HelplineResponse({
+    required this.name,
+    required this.phone,
+  });
 
-  factory HelplineResponse.fromJson(Map<String, dynamic> json) =>
-      HelplineResponse(name: json['name'] as String, phone: json['phone'] as String);
+  factory HelplineResponse.fromJson(Map<String, dynamic> json) => HelplineResponse(
+        name: json['name'] as String,
+        phone: json['phone'] as String,
+      );
 
   final String name;
   final String phone;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{'name': name, 'phone': phone};
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'name': name,
+        'phone': phone,
+      };
 }
 
 @immutable
 class HoldPayoutDto {
-  const HoldPayoutDto({required this.reason});
+  const HoldPayoutDto({
+    required this.reason,
+  });
 
-  factory HoldPayoutDto.fromJson(Map<String, dynamic> json) =>
-      HoldPayoutDto(reason: json['reason'] as String);
+  factory HoldPayoutDto.fromJson(Map<String, dynamic> json) => HoldPayoutDto(
+        reason: json['reason'] as String,
+      );
 
   final String reason;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{'reason': reason};
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'reason': reason,
+      };
 }
 
 @immutable
@@ -2658,15 +2786,15 @@ class HotelOrderDto {
   });
 
   factory HotelOrderDto.fromJson(Map<String, dynamic> json) => HotelOrderDto(
-    checkIn: json['checkIn'] as String,
-    checkOut: json['checkOut'] as String,
-    guestName: json['guestName'] == null ? null : json['guestName'] as String,
-    guestPhone: json['guestPhone'] == null ? null : json['guestPhone'] as String,
-    guests: json['guests'] as num,
-    rooms: json['rooms'] as num,
-    roomTypeId: json['roomTypeId'] as String,
-    specialRequests: json['specialRequests'] == null ? null : json['specialRequests'] as String,
-  );
+        checkIn: json['checkIn'] as String,
+        checkOut: json['checkOut'] as String,
+        guestName: json['guestName'] == null ? null : json['guestName'] as String,
+        guestPhone: json['guestPhone'] == null ? null : json['guestPhone'] as String,
+        guests: json['guests'] as num,
+        rooms: json['rooms'] as num,
+        roomTypeId: json['roomTypeId'] as String,
+        specialRequests: json['specialRequests'] == null ? null : json['specialRequests'] as String,
+      );
 
   final String checkIn;
   final String checkOut;
@@ -2678,15 +2806,15 @@ class HotelOrderDto {
   final String? specialRequests;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'checkIn': checkIn,
-    'checkOut': checkOut,
-    'guestName': ?guestName,
-    'guestPhone': ?guestPhone,
-    'guests': guests,
-    'rooms': rooms,
-    'roomTypeId': roomTypeId,
-    'specialRequests': ?specialRequests,
-  };
+        'checkIn': checkIn,
+        'checkOut': checkOut,
+        'guestName': ?guestName,
+        'guestPhone': ?guestPhone,
+        'guests': guests,
+        'rooms': rooms,
+        'roomTypeId': roomTypeId,
+        'specialRequests': ?specialRequests,
+      };
 }
 
 @immutable
@@ -2715,31 +2843,27 @@ class HotelResponse {
   });
 
   factory HotelResponse.fromJson(Map<String, dynamic> json) => HotelResponse(
-    address: json['address'] as String,
-    amenities: (json['amenities'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-    cancellationPolicy: CancellationPolicyDto.fromJson(_map(json['cancellationPolicy'])),
-    checkinTime: json['checkinTime'] as String,
-    checkoutTime: json['checkoutTime'] as String,
-    cityId: json['cityId'] as String,
-    coverUrl: json['coverUrl'] == null ? null : json['coverUrl'] as String,
-    description: json['description'] == null ? null : json['description'] as String,
-    distanceKm: json['distanceKm'] == null ? null : json['distanceKm'] as num,
-    fromPricePaise: json['fromPricePaise'] == null ? null : json['fromPricePaise'] as num,
-    id: json['id'] as String,
-    isPublished: json['isPublished'] as bool,
-    lat: json['lat'] as num,
-    lng: json['lng'] as num,
-    name: json['name'] as String,
-    ratingAvg: json['ratingAvg'] as num,
-    ratingCount: json['ratingCount'] as num,
-    roomTypes: json['roomTypes'] == null
-        ? null
-        : (json['roomTypes'] as List<dynamic>)
-              .map((dynamic x) => RoomTypeResponse.fromJson(_map(x)))
-              .toList(),
-    starRating: json['starRating'] == null ? null : json['starRating'] as num,
-    vendorId: json['vendorId'] as String,
-  );
+        address: json['address'] as String,
+        amenities: (json['amenities'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+        cancellationPolicy: CancellationPolicyDto.fromJson(_map(json['cancellationPolicy'])),
+        checkinTime: json['checkinTime'] as String,
+        checkoutTime: json['checkoutTime'] as String,
+        cityId: json['cityId'] as String,
+        coverUrl: json['coverUrl'] == null ? null : json['coverUrl'] as String,
+        description: json['description'] == null ? null : json['description'] as String,
+        distanceKm: json['distanceKm'] == null ? null : json['distanceKm'] as num,
+        fromPricePaise: json['fromPricePaise'] == null ? null : json['fromPricePaise'] as num,
+        id: json['id'] as String,
+        isPublished: json['isPublished'] as bool,
+        lat: json['lat'] as num,
+        lng: json['lng'] as num,
+        name: json['name'] as String,
+        ratingAvg: json['ratingAvg'] as num,
+        ratingCount: json['ratingCount'] as num,
+        roomTypes: json['roomTypes'] == null ? null : (json['roomTypes'] as List<dynamic>).map((dynamic x) => RoomTypeResponse.fromJson(_map(x))).toList(),
+        starRating: json['starRating'] == null ? null : json['starRating'] as num,
+        vendorId: json['vendorId'] as String,
+      );
 
   final String address;
   final List<String> amenities;
@@ -2750,7 +2874,6 @@ class HotelResponse {
   final String? coverUrl;
   final String? description;
   final num? distanceKm;
-
   /// Lowest nightly price per room for the query, paise
   final num? fromPricePaise;
   final String id;
@@ -2765,63 +2888,91 @@ class HotelResponse {
   final String vendorId;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'address': address,
-    'amenities': amenities,
-    'cancellationPolicy': cancellationPolicy.toJson(),
-    'checkinTime': checkinTime,
-    'checkoutTime': checkoutTime,
-    'cityId': cityId,
-    'coverUrl': ?coverUrl,
-    'description': ?description,
-    'distanceKm': ?distanceKm,
-    'fromPricePaise': ?fromPricePaise,
-    'id': id,
-    'isPublished': isPublished,
-    'lat': lat,
-    'lng': lng,
-    'name': name,
-    'ratingAvg': ratingAvg,
-    'ratingCount': ratingCount,
-    'roomTypes': ?roomTypes?.map((x) => x.toJson()).toList(),
-    'starRating': ?starRating,
-    'vendorId': vendorId,
-  };
+        'address': address,
+        'amenities': amenities,
+        'cancellationPolicy': cancellationPolicy.toJson(),
+        'checkinTime': checkinTime,
+        'checkoutTime': checkoutTime,
+        'cityId': cityId,
+        'coverUrl': ?coverUrl,
+        'description': ?description,
+        'distanceKm': ?distanceKm,
+        'fromPricePaise': ?fromPricePaise,
+        'id': id,
+        'isPublished': isPublished,
+        'lat': lat,
+        'lng': lng,
+        'name': name,
+        'ratingAvg': ratingAvg,
+        'ratingCount': ratingCount,
+        'roomTypes': ?roomTypes?.map((x) => x.toJson()).toList(),
+        'starRating': ?starRating,
+        'vendorId': vendorId,
+      };
 }
 
 @immutable
 class I18nTextDto {
-  const I18nTextDto({required this.en, this.hi});
+  const I18nTextDto({
+    required this.en,
+    this.hi,
+  });
 
-  factory I18nTextDto.fromJson(Map<String, dynamic> json) =>
-      I18nTextDto(en: json['en'] as String, hi: json['hi'] == null ? null : json['hi'] as String);
+  factory I18nTextDto.fromJson(Map<String, dynamic> json) => I18nTextDto(
+        en: json['en'] as String,
+        hi: json['hi'] == null ? null : json['hi'] as String,
+      );
 
   final String en;
   final String? hi;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{'en': en, 'hi': ?hi};
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'en': en,
+        'hi': ?hi,
+      };
 }
 
 @immutable
 class InviteStaffDto {
-  const InviteStaffDto({this.email, required this.permissions, this.phoneE164});
+  const InviteStaffDto({
+    this.email,
+    required this.permissions,
+    this.phoneE164,
+  });
 
   factory InviteStaffDto.fromJson(Map<String, dynamic> json) => InviteStaffDto(
-    email: json['email'] == null ? null : json['email'] as String,
-    permissions: (json['permissions'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-    phoneE164: json['phoneE164'] == null ? null : json['phoneE164'] as String,
-  );
+        email: json['email'] == null ? null : json['email'] as String,
+        permissions: (json['permissions'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+        phoneE164: json['phoneE164'] == null ? null : json['phoneE164'] as String,
+      );
 
   final String? email;
-
   /// One of: listings.edit, inventory.edit, orders.manage, finance.view, reviews.reply.
   final List<String> permissions;
   final String? phoneE164;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'email': ?email,
-    'permissions': permissions,
-    'phoneE164': ?phoneE164,
-  };
+        'email': ?email,
+        'permissions': permissions,
+        'phoneE164': ?phoneE164,
+      };
+}
+
+@immutable
+class JoinFamilyGroupDto {
+  const JoinFamilyGroupDto({
+    required this.code,
+  });
+
+  factory JoinFamilyGroupDto.fromJson(Map<String, dynamic> json) => JoinFamilyGroupDto(
+        code: json['code'] as String,
+      );
+
+  final String code;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'code': code,
+      };
 }
 
 @immutable
@@ -2836,66 +2987,76 @@ class KycDocumentResponse {
   });
 
   factory KycDocumentResponse.fromJson(Map<String, dynamic> json) => KycDocumentResponse(
-    docType: json['docType'] as String,
-    id: json['id'] as String,
-    mediaId: json['mediaId'] as String,
-    reviewerNote: json['reviewerNote'] == null ? null : json['reviewerNote'] as String,
-    status: json['status'] as String,
-    url: json['url'] == null ? null : json['url'] as String,
-  );
+        docType: json['docType'] as String,
+        id: json['id'] as String,
+        mediaId: json['mediaId'] as String,
+        reviewerNote: json['reviewerNote'] == null ? null : json['reviewerNote'] as String,
+        status: json['status'] as String,
+        url: json['url'] == null ? null : json['url'] as String,
+      );
 
   /// One of: pan, gst, aadhaar, fssai, trade_license, rc, permit, other.
   final String docType;
   final String id;
   final String mediaId;
   final String? reviewerNote;
-
   /// One of: pending, approved, rejected.
   final String status;
-
   /// Short-lived signed URL (admins and the vendor only)
   final String? url;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'docType': docType,
-    'id': id,
-    'mediaId': mediaId,
-    'reviewerNote': ?reviewerNote,
-    'status': status,
-    'url': ?url,
-  };
+        'docType': docType,
+        'id': id,
+        'mediaId': mediaId,
+        'reviewerNote': ?reviewerNote,
+        'status': status,
+        'url': ?url,
+      };
 }
 
 @immutable
 class LandmarkDto {
-  const LandmarkDto({this.lat, this.lng, required this.mediaId});
+  const LandmarkDto({
+    this.lat,
+    this.lng,
+    required this.mediaId,
+  });
 
   factory LandmarkDto.fromJson(Map<String, dynamic> json) => LandmarkDto(
-    lat: json['lat'] == null ? null : json['lat'] as num,
-    lng: json['lng'] == null ? null : json['lng'] as num,
-    mediaId: json['mediaId'] as String,
-  );
+        lat: json['lat'] == null ? null : json['lat'] as num,
+        lng: json['lng'] == null ? null : json['lng'] as num,
+        mediaId: json['mediaId'] as String,
+      );
 
   final num? lat;
   final num? lng;
-
   /// landmark_photo upload
   final String mediaId;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{'lat': ?lat, 'lng': ?lng, 'mediaId': mediaId};
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'lat': ?lat,
+        'lng': ?lng,
+        'mediaId': mediaId,
+      };
 }
 
 @immutable
 class LogoutDto {
-  const LogoutDto({this.allSessions});
+  const LogoutDto({
+    this.allSessions,
+  });
 
-  factory LogoutDto.fromJson(Map<String, dynamic> json) =>
-      LogoutDto(allSessions: json['allSessions'] == null ? null : json['allSessions'] as bool);
+  factory LogoutDto.fromJson(Map<String, dynamic> json) => LogoutDto(
+        allSessions: json['allSessions'] == null ? null : json['allSessions'] as bool,
+      );
 
   /// Revoke every session of this user, not just the current one
   final bool? allSessions;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{'allSessions': ?allSessions};
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'allSessions': ?allSessions,
+      };
 }
 
 @immutable
@@ -2913,48 +3074,71 @@ class MediaAssetResponse {
   });
 
   factory MediaAssetResponse.fromJson(Map<String, dynamic> json) => MediaAssetResponse(
-    height: json['height'] == null ? null : json['height'] as num,
-    id: json['id'] as String,
-    kind: json['kind'] as String,
-    mimeType: json['mimeType'] as String,
-    sizeBytes: json['sizeBytes'] == null ? null : json['sizeBytes'] as num,
-    status: json['status'] as String,
-    url: json['url'] == null ? null : json['url'] as String,
-    variants: (json['variants'] as Map<String, dynamic>).map(
-      (k, dynamic v) => MapEntry(k, v as String),
-    ),
-    width: json['width'] == null ? null : json['width'] as num,
-  );
+        height: json['height'] == null ? null : json['height'] as num,
+        id: json['id'] as String,
+        kind: json['kind'] as String,
+        mimeType: json['mimeType'] as String,
+        sizeBytes: json['sizeBytes'] == null ? null : json['sizeBytes'] as num,
+        status: json['status'] as String,
+        url: json['url'] == null ? null : json['url'] as String,
+        variants: (json['variants'] as Map<String, dynamic>).map((k, dynamic v) => MapEntry(k, v as String)),
+        width: json['width'] == null ? null : json['width'] as num,
+      );
 
   final num? height;
   final String id;
-
   /// One of: image, video, document, audio.
   final String kind;
   final String mimeType;
   final num? sizeBytes;
-
   /// One of: pending_upload, uploaded, processing, ready, failed.
   final String status;
-
   /// Public or short-lived signed URL
   final String? url;
-
   /// Variant name → URL
   final Map<String, String> variants;
   final num? width;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'height': ?height,
-    'id': id,
-    'kind': kind,
-    'mimeType': mimeType,
-    'sizeBytes': ?sizeBytes,
-    'status': status,
-    'url': ?url,
-    'variants': variants,
-    'width': ?width,
-  };
+        'height': ?height,
+        'id': id,
+        'kind': kind,
+        'mimeType': mimeType,
+        'sizeBytes': ?sizeBytes,
+        'status': status,
+        'url': ?url,
+        'variants': variants,
+        'width': ?width,
+      };
+}
+
+@immutable
+class MemberTripResponse {
+  const MemberTripResponse({
+    this.fromPlace,
+    required this.id,
+    required this.startedAt,
+    required this.title,
+  });
+
+  factory MemberTripResponse.fromJson(Map<String, dynamic> json) => MemberTripResponse(
+        fromPlace: json['fromPlace'] == null ? null : json['fromPlace'] as String,
+        id: json['id'] as String,
+        startedAt: json['startedAt'] as String,
+        title: json['title'] as String,
+      );
+
+  final String? fromPlace;
+  final String id;
+  final String startedAt;
+  final String title;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'fromPlace': ?fromPlace,
+        'id': id,
+        'startedAt': startedAt,
+        'title': title,
+      };
 }
 
 @immutable
@@ -2970,14 +3154,14 @@ class MenuItemResponse {
   });
 
   factory MenuItemResponse.fromJson(Map<String, dynamic> json) => MenuItemResponse(
-    category: json['category'] as String,
-    id: json['id'] as String,
-    imageUrl: json['imageUrl'] == null ? null : json['imageUrl'] as String,
-    isAvailable: json['isAvailable'] as bool,
-    isJain: json['isJain'] as bool,
-    name: json['name'] as String,
-    pricePaise: json['pricePaise'] as num,
-  );
+        category: json['category'] as String,
+        id: json['id'] as String,
+        imageUrl: json['imageUrl'] == null ? null : json['imageUrl'] as String,
+        isAvailable: json['isAvailable'] as bool,
+        isJain: json['isJain'] as bool,
+        name: json['name'] as String,
+        pricePaise: json['pricePaise'] as num,
+      );
 
   final String category;
   final String id;
@@ -2988,66 +3172,82 @@ class MenuItemResponse {
   final num pricePaise;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'category': category,
-    'id': id,
-    'imageUrl': ?imageUrl,
-    'isAvailable': isAvailable,
-    'isJain': isJain,
-    'name': name,
-    'pricePaise': pricePaise,
-  };
+        'category': category,
+        'id': id,
+        'imageUrl': ?imageUrl,
+        'isAvailable': isAvailable,
+        'isJain': isJain,
+        'name': name,
+        'pricePaise': pricePaise,
+      };
 }
 
 @immutable
 class ModerationActionDto {
-  const ModerationActionDto({required this.action, this.note});
+  const ModerationActionDto({
+    required this.action,
+    this.note,
+  });
 
   factory ModerationActionDto.fromJson(Map<String, dynamic> json) => ModerationActionDto(
-    action: json['action'] as String,
-    note: json['note'] == null ? null : json['note'] as String,
-  );
+        action: json['action'] as String,
+        note: json['note'] == null ? null : json['note'] as String,
+      );
 
   /// One of: approve, hide, remove, warn_user, suspend_user, restore.
   final String action;
   final String? note;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{'action': action, 'note': ?note};
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'action': action,
+        'note': ?note,
+      };
 }
 
 @immutable
 class NightPriceResponse {
-  const NightPriceResponse({required this.date, required this.pricePaise});
+  const NightPriceResponse({
+    required this.date,
+    required this.pricePaise,
+  });
 
-  factory NightPriceResponse.fromJson(Map<String, dynamic> json) =>
-      NightPriceResponse(date: json['date'] as String, pricePaise: json['pricePaise'] as num);
+  factory NightPriceResponse.fromJson(Map<String, dynamic> json) => NightPriceResponse(
+        date: json['date'] as String,
+        pricePaise: json['pricePaise'] as num,
+      );
 
   final String date;
   final num pricePaise;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{'date': date, 'pricePaise': pricePaise};
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'date': date,
+        'pricePaise': pricePaise,
+      };
 }
 
 @immutable
 class NotificationPageResponse {
-  const NotificationPageResponse({required this.data, this.nextCursor, required this.unreadCount});
+  const NotificationPageResponse({
+    required this.data,
+    this.nextCursor,
+    required this.unreadCount,
+  });
 
   factory NotificationPageResponse.fromJson(Map<String, dynamic> json) => NotificationPageResponse(
-    data: (json['data'] as List<dynamic>)
-        .map((dynamic x) => NotificationResponse.fromJson(_map(x)))
-        .toList(),
-    nextCursor: json['nextCursor'] == null ? null : json['nextCursor'] as String,
-    unreadCount: json['unreadCount'] as num,
-  );
+        data: (json['data'] as List<dynamic>).map((dynamic x) => NotificationResponse.fromJson(_map(x))).toList(),
+        nextCursor: json['nextCursor'] == null ? null : json['nextCursor'] as String,
+        unreadCount: json['unreadCount'] as num,
+      );
 
   final List<NotificationResponse> data;
   final String? nextCursor;
   final num unreadCount;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'data': data.map((x) => x.toJson()).toList(),
-    'nextCursor': ?nextCursor,
-    'unreadCount': unreadCount,
-  };
+        'data': data.map((x) => x.toJson()).toList(),
+        'nextCursor': ?nextCursor,
+        'unreadCount': unreadCount,
+      };
 }
 
 @immutable
@@ -3059,13 +3259,10 @@ class NotificationPreferencesDto {
     this.marketing,
   });
 
-  factory NotificationPreferencesDto.fromJson(Map<String, dynamic> json) =>
-      NotificationPreferencesDto(
+  factory NotificationPreferencesDto.fromJson(Map<String, dynamic> json) => NotificationPreferencesDto(
         aartiReminders: json['aartiReminders'] == null ? null : json['aartiReminders'] as bool,
         bookingUpdates: json['bookingUpdates'] == null ? null : json['bookingUpdates'] as bool,
-        defaultReminderMinutes: json['defaultReminderMinutes'] == null
-            ? null
-            : json['defaultReminderMinutes'] as num,
+        defaultReminderMinutes: json['defaultReminderMinutes'] == null ? null : json['defaultReminderMinutes'] as num,
         marketing: json['marketing'] == null ? null : json['marketing'] as bool,
       );
 
@@ -3075,11 +3272,11 @@ class NotificationPreferencesDto {
   final bool? marketing;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'aartiReminders': ?aartiReminders,
-    'bookingUpdates': ?bookingUpdates,
-    'defaultReminderMinutes': ?defaultReminderMinutes,
-    'marketing': ?marketing,
-  };
+        'aartiReminders': ?aartiReminders,
+        'bookingUpdates': ?bookingUpdates,
+        'defaultReminderMinutes': ?defaultReminderMinutes,
+        'marketing': ?marketing,
+      };
 }
 
 @immutable
@@ -3092,13 +3289,11 @@ class NotificationPrefsDto {
   });
 
   factory NotificationPrefsDto.fromJson(Map<String, dynamic> json) => NotificationPrefsDto(
-    aartiReminders: json['aartiReminders'] == null ? null : json['aartiReminders'] as bool,
-    bookingUpdates: json['bookingUpdates'] == null ? null : json['bookingUpdates'] as bool,
-    defaultReminderMinutes: json['defaultReminderMinutes'] == null
-        ? null
-        : json['defaultReminderMinutes'] as num,
-    marketing: json['marketing'] == null ? null : json['marketing'] as bool,
-  );
+        aartiReminders: json['aartiReminders'] == null ? null : json['aartiReminders'] as bool,
+        bookingUpdates: json['bookingUpdates'] == null ? null : json['bookingUpdates'] as bool,
+        defaultReminderMinutes: json['defaultReminderMinutes'] == null ? null : json['defaultReminderMinutes'] as num,
+        marketing: json['marketing'] == null ? null : json['marketing'] as bool,
+      );
 
   final bool? aartiReminders;
   final bool? bookingUpdates;
@@ -3106,11 +3301,11 @@ class NotificationPrefsDto {
   final bool? marketing;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'aartiReminders': ?aartiReminders,
-    'bookingUpdates': ?bookingUpdates,
-    'defaultReminderMinutes': ?defaultReminderMinutes,
-    'marketing': ?marketing,
-  };
+        'aartiReminders': ?aartiReminders,
+        'bookingUpdates': ?bookingUpdates,
+        'defaultReminderMinutes': ?defaultReminderMinutes,
+        'marketing': ?marketing,
+      };
 }
 
 @immutable
@@ -3125,13 +3320,13 @@ class NotificationResponse {
   });
 
   factory NotificationResponse.fromJson(Map<String, dynamic> json) => NotificationResponse(
-    body: json['body'] as String,
-    createdAt: json['createdAt'] as String,
-    data: (json['data'] as Map<String, dynamic>).map((k, dynamic v) => MapEntry(k, v as String)),
-    id: json['id'] as String,
-    readAt: json['readAt'] == null ? null : json['readAt'] as String,
-    title: json['title'] == null ? null : json['title'] as String,
-  );
+        body: json['body'] as String,
+        createdAt: json['createdAt'] as String,
+        data: (json['data'] as Map<String, dynamic>).map((k, dynamic v) => MapEntry(k, v as String)),
+        id: json['id'] as String,
+        readAt: json['readAt'] == null ? null : json['readAt'] as String,
+        title: json['title'] == null ? null : json['title'] as String,
+      );
 
   final String body;
   final String createdAt;
@@ -3141,13 +3336,13 @@ class NotificationResponse {
   final String? title;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'body': body,
-    'createdAt': createdAt,
-    'data': data,
-    'id': id,
-    'readAt': ?readAt,
-    'title': ?title,
-  };
+        'body': body,
+        'createdAt': createdAt,
+        'data': data,
+        'id': id,
+        'readAt': ?readAt,
+        'title': ?title,
+      };
 }
 
 @immutable
@@ -3163,14 +3358,14 @@ class OrderItemResponse {
   });
 
   factory OrderItemResponse.fromJson(Map<String, dynamic> json) => OrderItemResponse(
-    itemType: json['itemType'] as String,
-    quantity: json['quantity'] as num,
-    refId: json['refId'] == null ? null : json['refId'] as String,
-    snapshot: _map(json['snapshot']),
-    stayDate: json['stayDate'] == null ? null : json['stayDate'] as String,
-    totalPaise: json['totalPaise'] as num,
-    unitPricePaise: json['unitPricePaise'] as num,
-  );
+        itemType: json['itemType'] as String,
+        quantity: json['quantity'] as num,
+        refId: json['refId'] == null ? null : json['refId'] as String,
+        snapshot: _map(json['snapshot']),
+        stayDate: json['stayDate'] == null ? null : json['stayDate'] as String,
+        totalPaise: json['totalPaise'] as num,
+        unitPricePaise: json['unitPricePaise'] as num,
+      );
 
   final String itemType;
   final num quantity;
@@ -3181,34 +3376,35 @@ class OrderItemResponse {
   final num unitPricePaise;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'itemType': itemType,
-    'quantity': quantity,
-    'refId': ?refId,
-    'snapshot': snapshot,
-    'stayDate': ?stayDate,
-    'totalPaise': totalPaise,
-    'unitPricePaise': unitPricePaise,
-  };
+        'itemType': itemType,
+        'quantity': quantity,
+        'refId': ?refId,
+        'snapshot': snapshot,
+        'stayDate': ?stayDate,
+        'totalPaise': totalPaise,
+        'unitPricePaise': unitPricePaise,
+      };
 }
 
 @immutable
 class OrderPageResponse {
-  const OrderPageResponse({required this.data, this.nextCursor});
+  const OrderPageResponse({
+    required this.data,
+    this.nextCursor,
+  });
 
   factory OrderPageResponse.fromJson(Map<String, dynamic> json) => OrderPageResponse(
-    data: (json['data'] as List<dynamic>)
-        .map((dynamic x) => OrderResponse.fromJson(_map(x)))
-        .toList(),
-    nextCursor: json['nextCursor'] == null ? null : json['nextCursor'] as String,
-  );
+        data: (json['data'] as List<dynamic>).map((dynamic x) => OrderResponse.fromJson(_map(x))).toList(),
+        nextCursor: json['nextCursor'] == null ? null : json['nextCursor'] as String,
+      );
 
   final List<OrderResponse> data;
   final String? nextCursor;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'data': data.map((x) => x.toJson()).toList(),
-    'nextCursor': ?nextCursor,
-  };
+        'data': data.map((x) => x.toJson()).toList(),
+        'nextCursor': ?nextCursor,
+      };
 }
 
 @immutable
@@ -3237,33 +3433,27 @@ class OrderResponse {
   });
 
   factory OrderResponse.fromJson(Map<String, dynamic> json) => OrderResponse(
-    code: json['code'] as String,
-    createdAt: json['createdAt'] as String,
-    details: _map(json['details']),
-    discountPaise: json['discountPaise'] as num,
-    feePaise: json['feePaise'] as num,
-    history: json['history'] == null
-        ? null
-        : (json['history'] as List<dynamic>)
-              .map((dynamic x) => StatusHistoryResponse.fromJson(_map(x)))
-              .toList(),
-    holdExpiresAt: json['holdExpiresAt'] == null ? null : json['holdExpiresAt'] as String,
-    id: json['id'] as String,
-    items: (json['items'] as List<dynamic>)
-        .map((dynamic x) => OrderItemResponse.fromJson(_map(x)))
-        .toList(),
-    refundedPaise: json['refundedPaise'] == null ? null : json['refundedPaise'] as num,
-    serviceEndsAt: json['serviceEndsAt'] == null ? null : json['serviceEndsAt'] as String,
-    serviceStartsAt: json['serviceStartsAt'] == null ? null : json['serviceStartsAt'] as String,
-    status: json['status'] as String,
-    subStatus: json['subStatus'] == null ? null : json['subStatus'] as String,
-    subtotalPaise: json['subtotalPaise'] as num,
-    taxPaise: json['taxPaise'] as num,
-    totalPaise: json['totalPaise'] as num,
-    type: json['type'] as String,
-    userId: json['userId'] as String,
-    vendorId: json['vendorId'] == null ? null : json['vendorId'] as String,
-  );
+        code: json['code'] as String,
+        createdAt: json['createdAt'] as String,
+        details: _map(json['details']),
+        discountPaise: json['discountPaise'] as num,
+        feePaise: json['feePaise'] as num,
+        history: json['history'] == null ? null : (json['history'] as List<dynamic>).map((dynamic x) => StatusHistoryResponse.fromJson(_map(x))).toList(),
+        holdExpiresAt: json['holdExpiresAt'] == null ? null : json['holdExpiresAt'] as String,
+        id: json['id'] as String,
+        items: (json['items'] as List<dynamic>).map((dynamic x) => OrderItemResponse.fromJson(_map(x))).toList(),
+        refundedPaise: json['refundedPaise'] == null ? null : json['refundedPaise'] as num,
+        serviceEndsAt: json['serviceEndsAt'] == null ? null : json['serviceEndsAt'] as String,
+        serviceStartsAt: json['serviceStartsAt'] == null ? null : json['serviceStartsAt'] as String,
+        status: json['status'] as String,
+        subStatus: json['subStatus'] == null ? null : json['subStatus'] as String,
+        subtotalPaise: json['subtotalPaise'] as num,
+        taxPaise: json['taxPaise'] as num,
+        totalPaise: json['totalPaise'] as num,
+        type: json['type'] as String,
+        userId: json['userId'] as String,
+        vendorId: json['vendorId'] == null ? null : json['vendorId'] as String,
+      );
 
   final String code;
   final String createdAt;
@@ -3274,46 +3464,43 @@ class OrderResponse {
   final String? holdExpiresAt;
   final String id;
   final List<OrderItemResponse> items;
-
   /// Refunded so far, paise
   final num? refundedPaise;
   final String? serviceEndsAt;
   final String? serviceStartsAt;
-
   /// One of: pending, confirmed, in_progress, completed, cancelled, refunded.
   final String status;
   final String? subStatus;
   final num subtotalPaise;
   final num taxPaise;
   final num totalPaise;
-
   /// One of: hotel, cab, food, experience, transit.
   final String type;
   final String userId;
   final String? vendorId;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'code': code,
-    'createdAt': createdAt,
-    'details': details,
-    'discountPaise': discountPaise,
-    'feePaise': feePaise,
-    'history': ?history?.map((x) => x.toJson()).toList(),
-    'holdExpiresAt': ?holdExpiresAt,
-    'id': id,
-    'items': items.map((x) => x.toJson()).toList(),
-    'refundedPaise': ?refundedPaise,
-    'serviceEndsAt': ?serviceEndsAt,
-    'serviceStartsAt': ?serviceStartsAt,
-    'status': status,
-    'subStatus': ?subStatus,
-    'subtotalPaise': subtotalPaise,
-    'taxPaise': taxPaise,
-    'totalPaise': totalPaise,
-    'type': type,
-    'userId': userId,
-    'vendorId': ?vendorId,
-  };
+        'code': code,
+        'createdAt': createdAt,
+        'details': details,
+        'discountPaise': discountPaise,
+        'feePaise': feePaise,
+        'history': ?history?.map((x) => x.toJson()).toList(),
+        'holdExpiresAt': ?holdExpiresAt,
+        'id': id,
+        'items': items.map((x) => x.toJson()).toList(),
+        'refundedPaise': ?refundedPaise,
+        'serviceEndsAt': ?serviceEndsAt,
+        'serviceStartsAt': ?serviceStartsAt,
+        'status': status,
+        'subStatus': ?subStatus,
+        'subtotalPaise': subtotalPaise,
+        'taxPaise': taxPaise,
+        'totalPaise': totalPaise,
+        'type': type,
+        'userId': userId,
+        'vendorId': ?vendorId,
+      };
 }
 
 @immutable
@@ -3326,40 +3513,46 @@ class OtpChallengeResponse {
   });
 
   factory OtpChallengeResponse.fromJson(Map<String, dynamic> json) => OtpChallengeResponse(
-    challengeId: json['challengeId'] as String,
-    channel: json['channel'] as String,
-    expiresAt: json['expiresAt'] as String,
-    otpRequired: json['otpRequired'] as bool,
-  );
+        challengeId: json['challengeId'] as String,
+        channel: json['channel'] as String,
+        expiresAt: json['expiresAt'] as String,
+        otpRequired: json['otpRequired'] as bool,
+      );
 
   final String challengeId;
-
   /// One of: email, sms.
   final String channel;
   final String expiresAt;
-
   /// One of: true.
   final bool otpRequired;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'challengeId': challengeId,
-    'channel': channel,
-    'expiresAt': expiresAt,
-    'otpRequired': otpRequired,
-  };
+        'challengeId': challengeId,
+        'channel': channel,
+        'expiresAt': expiresAt,
+        'otpRequired': otpRequired,
+      };
 }
 
 @immutable
 class OtpVerifyDto {
-  const OtpVerifyDto({required this.challengeId, required this.code});
+  const OtpVerifyDto({
+    required this.challengeId,
+    required this.code,
+  });
 
-  factory OtpVerifyDto.fromJson(Map<String, dynamic> json) =>
-      OtpVerifyDto(challengeId: json['challengeId'] as String, code: json['code'] as String);
+  factory OtpVerifyDto.fromJson(Map<String, dynamic> json) => OtpVerifyDto(
+        challengeId: json['challengeId'] as String,
+        code: json['code'] as String,
+      );
 
   final String challengeId;
   final String code;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{'challengeId': challengeId, 'code': code};
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'challengeId': challengeId,
+        'code': code,
+      };
 }
 
 @immutable
@@ -3377,18 +3570,16 @@ class ParikramaRouteResponse {
   });
 
   factory ParikramaRouteResponse.fromJson(Map<String, dynamic> json) => ParikramaRouteResponse(
-    description: json['description'] == null ? null : json['description'] as String,
-    difficulty: json['difficulty'] == null ? null : json['difficulty'] as String,
-    distanceM: json['distanceM'] as num,
-    estDurationMin: json['estDurationMin'] as num,
-    id: json['id'] as String,
-    name: json['name'] as String,
-    polyline: json['polyline'] == null ? null : json['polyline'] as String,
-    slug: json['slug'] as String,
-    stops: (json['stops'] as List<dynamic>)
-        .map((dynamic x) => ParikramaStopResponse.fromJson(_map(x)))
-        .toList(),
-  );
+        description: json['description'] == null ? null : json['description'] as String,
+        difficulty: json['difficulty'] == null ? null : json['difficulty'] as String,
+        distanceM: json['distanceM'] as num,
+        estDurationMin: json['estDurationMin'] as num,
+        id: json['id'] as String,
+        name: json['name'] as String,
+        polyline: json['polyline'] == null ? null : json['polyline'] as String,
+        slug: json['slug'] as String,
+        stops: (json['stops'] as List<dynamic>).map((dynamic x) => ParikramaStopResponse.fromJson(_map(x))).toList(),
+      );
 
   final String? description;
   final String? difficulty;
@@ -3401,37 +3592,41 @@ class ParikramaRouteResponse {
   final List<ParikramaStopResponse> stops;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'description': ?description,
-    'difficulty': ?difficulty,
-    'distanceM': distanceM,
-    'estDurationMin': estDurationMin,
-    'id': id,
-    'name': name,
-    'polyline': ?polyline,
-    'slug': slug,
-    'stops': stops.map((x) => x.toJson()).toList(),
-  };
+        'description': ?description,
+        'difficulty': ?difficulty,
+        'distanceM': distanceM,
+        'estDurationMin': estDurationMin,
+        'id': id,
+        'name': name,
+        'polyline': ?polyline,
+        'slug': slug,
+        'stops': stops.map((x) => x.toJson()).toList(),
+      };
 }
 
 @immutable
 class ParikramaStopDto {
-  const ParikramaStopDto({this.note, this.poiId, this.templeId});
+  const ParikramaStopDto({
+    this.note,
+    this.poiId,
+    this.templeId,
+  });
 
   factory ParikramaStopDto.fromJson(Map<String, dynamic> json) => ParikramaStopDto(
-    note: json['note'] == null ? null : I18nTextDto.fromJson(_map(json['note'])),
-    poiId: json['poiId'] == null ? null : json['poiId'] as String,
-    templeId: json['templeId'] == null ? null : json['templeId'] as String,
-  );
+        note: json['note'] == null ? null : I18nTextDto.fromJson(_map(json['note'])),
+        poiId: json['poiId'] == null ? null : json['poiId'] as String,
+        templeId: json['templeId'] == null ? null : json['templeId'] as String,
+      );
 
   final I18nTextDto? note;
   final String? poiId;
   final String? templeId;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'note': ?note?.toJson(),
-    'poiId': ?poiId,
-    'templeId': ?templeId,
-  };
+        'note': ?note?.toJson(),
+        'poiId': ?poiId,
+        'templeId': ?templeId,
+      };
 }
 
 @immutable
@@ -3447,14 +3642,14 @@ class ParikramaStopResponse {
   });
 
   factory ParikramaStopResponse.fromJson(Map<String, dynamic> json) => ParikramaStopResponse(
-    lat: json['lat'] == null ? null : json['lat'] as num,
-    lng: json['lng'] == null ? null : json['lng'] as num,
-    name: json['name'] as String,
-    note: json['note'] == null ? null : json['note'] as String,
-    poiId: json['poiId'] == null ? null : json['poiId'] as String,
-    seq: json['seq'] as num,
-    templeId: json['templeId'] == null ? null : json['templeId'] as String,
-  );
+        lat: json['lat'] == null ? null : json['lat'] as num,
+        lng: json['lng'] == null ? null : json['lng'] as num,
+        name: json['name'] as String,
+        note: json['note'] == null ? null : json['note'] as String,
+        poiId: json['poiId'] == null ? null : json['poiId'] as String,
+        seq: json['seq'] as num,
+        templeId: json['templeId'] == null ? null : json['templeId'] as String,
+      );
 
   final num? lat;
   final num? lng;
@@ -3465,14 +3660,14 @@ class ParikramaStopResponse {
   final String? templeId;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'lat': ?lat,
-    'lng': ?lng,
-    'name': name,
-    'note': ?note,
-    'poiId': ?poiId,
-    'seq': seq,
-    'templeId': ?templeId,
-  };
+        'lat': ?lat,
+        'lng': ?lng,
+        'name': name,
+        'note': ?note,
+        'poiId': ?poiId,
+        'seq': seq,
+        'templeId': ?templeId,
+      };
 }
 
 @immutable
@@ -3487,16 +3682,15 @@ class PaymentIntentResponse {
   });
 
   factory PaymentIntentResponse.fromJson(Map<String, dynamic> json) => PaymentIntentResponse(
-    amountPaise: json['amountPaise'] as num,
-    currency: json['currency'] as String,
-    keyId: json['keyId'] as String,
-    paymentId: json['paymentId'] as String,
-    provider: json['provider'] as String,
-    providerOrderId: json['providerOrderId'] as String,
-  );
+        amountPaise: json['amountPaise'] as num,
+        currency: json['currency'] as String,
+        keyId: json['keyId'] as String,
+        paymentId: json['paymentId'] as String,
+        provider: json['provider'] as String,
+        providerOrderId: json['providerOrderId'] as String,
+      );
 
   final num amountPaise;
-
   /// One of: INR.
   final String currency;
   final String keyId;
@@ -3505,33 +3699,34 @@ class PaymentIntentResponse {
   final String providerOrderId;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'amountPaise': amountPaise,
-    'currency': currency,
-    'keyId': keyId,
-    'paymentId': paymentId,
-    'provider': provider,
-    'providerOrderId': providerOrderId,
-  };
+        'amountPaise': amountPaise,
+        'currency': currency,
+        'keyId': keyId,
+        'paymentId': paymentId,
+        'provider': provider,
+        'providerOrderId': providerOrderId,
+      };
 }
 
 @immutable
 class PayoutPageResponse {
-  const PayoutPageResponse({required this.data, this.nextCursor});
+  const PayoutPageResponse({
+    required this.data,
+    this.nextCursor,
+  });
 
   factory PayoutPageResponse.fromJson(Map<String, dynamic> json) => PayoutPageResponse(
-    data: (json['data'] as List<dynamic>)
-        .map((dynamic x) => PayoutResponse.fromJson(_map(x)))
-        .toList(),
-    nextCursor: json['nextCursor'] == null ? null : json['nextCursor'] as String,
-  );
+        data: (json['data'] as List<dynamic>).map((dynamic x) => PayoutResponse.fromJson(_map(x))).toList(),
+        nextCursor: json['nextCursor'] == null ? null : json['nextCursor'] as String,
+      );
 
   final List<PayoutResponse> data;
   final String? nextCursor;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'data': data.map((x) => x.toJson()).toList(),
-    'nextCursor': ?nextCursor,
-  };
+        'data': data.map((x) => x.toJson()).toList(),
+        'nextCursor': ?nextCursor,
+      };
 }
 
 @immutable
@@ -3551,20 +3746,18 @@ class PayoutResponse {
   });
 
   factory PayoutResponse.fromJson(Map<String, dynamic> json) => PayoutResponse(
-    amountPaise: json['amountPaise'] as num,
-    approvedAt: json['approvedAt'] == null ? null : json['approvedAt'] as String,
-    createdAt: json['createdAt'] as String,
-    failureReason: json['failureReason'] == null ? null : json['failureReason'] as String,
-    id: json['id'] as String,
-    paidAt: json['paidAt'] == null ? null : json['paidAt'] as String,
-    periodEnd: json['periodEnd'] as String,
-    periodStart: json['periodStart'] as String,
-    providerTransferId: json['providerTransferId'] == null
-        ? null
-        : json['providerTransferId'] as String,
-    status: json['status'] as String,
-    vendorId: json['vendorId'] as String,
-  );
+        amountPaise: json['amountPaise'] as num,
+        approvedAt: json['approvedAt'] == null ? null : json['approvedAt'] as String,
+        createdAt: json['createdAt'] as String,
+        failureReason: json['failureReason'] == null ? null : json['failureReason'] as String,
+        id: json['id'] as String,
+        paidAt: json['paidAt'] == null ? null : json['paidAt'] as String,
+        periodEnd: json['periodEnd'] as String,
+        periodStart: json['periodStart'] as String,
+        providerTransferId: json['providerTransferId'] == null ? null : json['providerTransferId'] as String,
+        status: json['status'] as String,
+        vendorId: json['vendorId'] as String,
+      );
 
   final num amountPaise;
   final String? approvedAt;
@@ -3575,54 +3768,66 @@ class PayoutResponse {
   final String periodEnd;
   final String periodStart;
   final String? providerTransferId;
-
   /// One of: pending_approval, approved, processing, paid, failed, on_hold.
   final String status;
   final String vendorId;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'amountPaise': amountPaise,
-    'approvedAt': ?approvedAt,
-    'createdAt': createdAt,
-    'failureReason': ?failureReason,
-    'id': id,
-    'paidAt': ?paidAt,
-    'periodEnd': periodEnd,
-    'periodStart': periodStart,
-    'providerTransferId': ?providerTransferId,
-    'status': status,
-    'vendorId': vendorId,
-  };
+        'amountPaise': amountPaise,
+        'approvedAt': ?approvedAt,
+        'createdAt': createdAt,
+        'failureReason': ?failureReason,
+        'id': id,
+        'paidAt': ?paidAt,
+        'periodEnd': periodEnd,
+        'periodStart': periodStart,
+        'providerTransferId': ?providerTransferId,
+        'status': status,
+        'vendorId': vendorId,
+      };
 }
 
 @immutable
 class PlaceDto {
-  const PlaceDto({this.address, required this.lat, required this.lng});
+  const PlaceDto({
+    this.address,
+    required this.lat,
+    required this.lng,
+  });
 
   factory PlaceDto.fromJson(Map<String, dynamic> json) => PlaceDto(
-    address: json['address'] == null ? null : json['address'] as String,
-    lat: json['lat'] as num,
-    lng: json['lng'] as num,
-  );
+        address: json['address'] == null ? null : json['address'] as String,
+        lat: json['lat'] as num,
+        lng: json['lng'] as num,
+      );
 
   final String? address;
   final num lat;
   final num lng;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{'address': ?address, 'lat': lat, 'lng': lng};
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'address': ?address,
+        'lat': lat,
+        'lng': lng,
+      };
 }
 
 @immutable
 class PlatformRoleDto {
-  const PlatformRoleDto({required this.role});
+  const PlatformRoleDto({
+    required this.role,
+  });
 
-  factory PlatformRoleDto.fromJson(Map<String, dynamic> json) =>
-      PlatformRoleDto(role: json['role'] as String);
+  factory PlatformRoleDto.fromJson(Map<String, dynamic> json) => PlatformRoleDto(
+        role: json['role'] as String,
+      );
 
   /// One of: admin, super_admin.
   final String role;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{'role': role};
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'role': role,
+      };
 }
 
 @immutable
@@ -3642,18 +3847,18 @@ class PoiResponse {
   });
 
   factory PoiResponse.fromJson(Map<String, dynamic> json) => PoiResponse(
-    address: json['address'] == null ? null : json['address'] as String,
-    category: json['category'] as String,
-    cityId: json['cityId'] as String,
-    distanceKm: json['distanceKm'] == null ? null : json['distanceKm'] as num,
-    id: json['id'] as String,
-    is24x7: json['is24x7'] as bool,
-    isEmergency: json['isEmergency'] as bool,
-    lat: json['lat'] as num,
-    lng: json['lng'] as num,
-    name: json['name'] as String,
-    phoneE164: json['phoneE164'] == null ? null : json['phoneE164'] as String,
-  );
+        address: json['address'] == null ? null : json['address'] as String,
+        category: json['category'] as String,
+        cityId: json['cityId'] as String,
+        distanceKm: json['distanceKm'] == null ? null : json['distanceKm'] as num,
+        id: json['id'] as String,
+        is24x7: json['is24x7'] as bool,
+        isEmergency: json['isEmergency'] as bool,
+        lat: json['lat'] as num,
+        lng: json['lng'] as num,
+        name: json['name'] as String,
+        phoneE164: json['phoneE164'] == null ? null : json['phoneE164'] as String,
+      );
 
   final String? address;
   final String category;
@@ -3668,92 +3873,113 @@ class PoiResponse {
   final String? phoneE164;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'address': ?address,
-    'category': category,
-    'cityId': cityId,
-    'distanceKm': ?distanceKm,
-    'id': id,
-    'is24x7': is24x7,
-    'isEmergency': isEmergency,
-    'lat': lat,
-    'lng': lng,
-    'name': name,
-    'phoneE164': ?phoneE164,
-  };
+        'address': ?address,
+        'category': category,
+        'cityId': cityId,
+        'distanceKm': ?distanceKm,
+        'id': id,
+        'is24x7': is24x7,
+        'isEmergency': isEmergency,
+        'lat': lat,
+        'lng': lng,
+        'name': name,
+        'phoneE164': ?phoneE164,
+      };
 }
 
 @immutable
 class PointDto {
-  const PointDto({required this.lat, required this.lng});
+  const PointDto({
+    required this.lat,
+    required this.lng,
+  });
 
-  factory PointDto.fromJson(Map<String, dynamic> json) =>
-      PointDto(lat: json['lat'] as num, lng: json['lng'] as num);
+  factory PointDto.fromJson(Map<String, dynamic> json) => PointDto(
+        lat: json['lat'] as num,
+        lng: json['lng'] as num,
+      );
 
   final num lat;
   final num lng;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{'lat': lat, 'lng': lng};
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'lat': lat,
+        'lng': lng,
+      };
 }
 
 @immutable
 class PortalLoginDto {
-  const PortalLoginDto({required this.email, required this.password});
+  const PortalLoginDto({
+    required this.email,
+    required this.password,
+  });
 
-  factory PortalLoginDto.fromJson(Map<String, dynamic> json) =>
-      PortalLoginDto(email: json['email'] as String, password: json['password'] as String);
+  factory PortalLoginDto.fromJson(Map<String, dynamic> json) => PortalLoginDto(
+        email: json['email'] as String,
+        password: json['password'] as String,
+      );
 
   final String email;
   final String password;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{'email': email, 'password': password};
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'email': email,
+        'password': password,
+      };
 }
 
 @immutable
 class PortalRegisterDto {
-  const PortalRegisterDto({required this.displayName, required this.email, required this.password});
+  const PortalRegisterDto({
+    required this.displayName,
+    required this.email,
+    required this.password,
+  });
 
   factory PortalRegisterDto.fromJson(Map<String, dynamic> json) => PortalRegisterDto(
-    displayName: json['displayName'] as String,
-    email: json['email'] as String,
-    password: json['password'] as String,
-  );
+        displayName: json['displayName'] as String,
+        email: json['email'] as String,
+        password: json['password'] as String,
+      );
 
   final String displayName;
   final String email;
-
   /// Min 10 chars with a letter and a digit
   final String password;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'displayName': displayName,
-    'email': email,
-    'password': password,
-  };
+        'displayName': displayName,
+        'email': email,
+        'password': password,
+      };
 }
 
 @immutable
 class PresignUploadDto {
-  const PresignUploadDto({required this.mimeType, required this.purpose, required this.sizeBytes});
+  const PresignUploadDto({
+    required this.mimeType,
+    required this.purpose,
+    required this.sizeBytes,
+  });
 
   factory PresignUploadDto.fromJson(Map<String, dynamic> json) => PresignUploadDto(
-    mimeType: json['mimeType'] as String,
-    purpose: json['purpose'] as String,
-    sizeBytes: json['sizeBytes'] as num,
-  );
+        mimeType: json['mimeType'] as String,
+        purpose: json['purpose'] as String,
+        sizeBytes: json['sizeBytes'] as num,
+      );
 
   final String mimeType;
-
   /// One of: avatar, listing_image, menu_image, review_image, reel_video, reel_thumbnail, kyc_document, knowledge_document, landmark_photo, voice_note.
   final String purpose;
-
   /// Exact size of the file to upload, in bytes
   final num sizeBytes;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'mimeType': mimeType,
-    'purpose': purpose,
-    'sizeBytes': sizeBytes,
-  };
+        'mimeType': mimeType,
+        'purpose': purpose,
+        'sizeBytes': sizeBytes,
+      };
 }
 
 @immutable
@@ -3774,19 +4000,19 @@ class ProfileResponse {
   });
 
   factory ProfileResponse.fromJson(Map<String, dynamic> json) => ProfileResponse(
-    accessibility: _map(json['accessibility']),
-    avatarUrl: json['avatarUrl'] == null ? null : json['avatarUrl'] as String,
-    displayName: json['displayName'] == null ? null : json['displayName'] as String,
-    email: json['email'] == null ? null : json['email'] as String,
-    homeCityId: json['homeCityId'] == null ? null : json['homeCityId'] as String,
-    id: json['id'] as String,
-    isGuest: json['isGuest'] as bool,
-    notificationPrefs: _map(json['notificationPrefs']),
-    phoneE164: json['phoneE164'] == null ? null : json['phoneE164'] as String,
-    preferredLang: json['preferredLang'] as String,
-    roles: (json['roles'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-    vendorIds: (json['vendorIds'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-  );
+        accessibility: _map(json['accessibility']),
+        avatarUrl: json['avatarUrl'] == null ? null : json['avatarUrl'] as String,
+        displayName: json['displayName'] == null ? null : json['displayName'] as String,
+        email: json['email'] == null ? null : json['email'] as String,
+        homeCityId: json['homeCityId'] == null ? null : json['homeCityId'] as String,
+        id: json['id'] as String,
+        isGuest: json['isGuest'] as bool,
+        notificationPrefs: _map(json['notificationPrefs']),
+        phoneE164: json['phoneE164'] == null ? null : json['phoneE164'] as String,
+        preferredLang: json['preferredLang'] as String,
+        roles: (json['roles'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+        vendorIds: (json['vendorIds'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+      );
 
   final Map<String, dynamic> accessibility;
   final String? avatarUrl;
@@ -3797,26 +4023,25 @@ class ProfileResponse {
   final bool isGuest;
   final Map<String, dynamic> notificationPrefs;
   final String? phoneE164;
-
   /// One of: en, hi.
   final String preferredLang;
   final List<String> roles;
   final List<String> vendorIds;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'accessibility': accessibility,
-    'avatarUrl': ?avatarUrl,
-    'displayName': ?displayName,
-    'email': ?email,
-    'homeCityId': ?homeCityId,
-    'id': id,
-    'isGuest': isGuest,
-    'notificationPrefs': notificationPrefs,
-    'phoneE164': ?phoneE164,
-    'preferredLang': preferredLang,
-    'roles': roles,
-    'vendorIds': vendorIds,
-  };
+        'accessibility': accessibility,
+        'avatarUrl': ?avatarUrl,
+        'displayName': ?displayName,
+        'email': ?email,
+        'homeCityId': ?homeCityId,
+        'id': id,
+        'isGuest': isGuest,
+        'notificationPrefs': notificationPrefs,
+        'phoneE164': ?phoneE164,
+        'preferredLang': preferredLang,
+        'roles': roles,
+        'vendorIds': vendorIds,
+      };
 }
 
 @immutable
@@ -3828,32 +4053,37 @@ class RatingSummaryResponse {
   });
 
   factory RatingSummaryResponse.fromJson(Map<String, dynamic> json) => RatingSummaryResponse(
-    average: json['average'] as num,
-    count: json['count'] as num,
-    distribution: _map(json['distribution']),
-  );
+        average: json['average'] as num,
+        count: json['count'] as num,
+        distribution: _map(json['distribution']),
+      );
 
   final num average;
   final num count;
   final Map<String, dynamic> distribution;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'average': average,
-    'count': count,
-    'distribution': distribution,
-  };
+        'average': average,
+        'count': count,
+        'distribution': distribution,
+      };
 }
 
 @immutable
 class ReasonDto {
-  const ReasonDto({required this.reason});
+  const ReasonDto({
+    required this.reason,
+  });
 
-  factory ReasonDto.fromJson(Map<String, dynamic> json) =>
-      ReasonDto(reason: json['reason'] as String);
+  factory ReasonDto.fromJson(Map<String, dynamic> json) => ReasonDto(
+        reason: json['reason'] as String,
+      );
 
   final String reason;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{'reason': reason};
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'reason': reason,
+      };
 }
 
 @immutable
@@ -3868,36 +4098,32 @@ class ReelEditsDto {
   });
 
   factory ReelEditsDto.fromJson(Map<String, dynamic> json) => ReelEditsDto(
-    filter: json['filter'] as String,
-    muted: json['muted'] as bool,
-    overlays: (json['overlays'] as List<dynamic>)
-        .map((dynamic x) => ReelOverlayDto.fromJson(_map(x)))
-        .toList(),
-    speed: json['speed'] as num,
-    trimEndMs: json['trimEndMs'] == null ? null : json['trimEndMs'] as num,
-    trimStartMs: json['trimStartMs'] as num,
-  );
+        filter: json['filter'] as String,
+        muted: json['muted'] as bool,
+        overlays: (json['overlays'] as List<dynamic>).map((dynamic x) => ReelOverlayDto.fromJson(_map(x))).toList(),
+        speed: json['speed'] as num,
+        trimEndMs: json['trimEndMs'] == null ? null : json['trimEndMs'] as num,
+        trimStartMs: json['trimStartMs'] as num,
+      );
 
   /// One of: none, warm, cool, vivid, mono, sepia, fade, saffron.
   final String filter;
   final bool muted;
   final List<ReelOverlayDto> overlays;
-
   /// One of: 0.5, 1, 1.5, 2.
   final num speed;
-
   /// null = to the end
   final num? trimEndMs;
   final num trimStartMs;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'filter': filter,
-    'muted': muted,
-    'overlays': overlays.map((x) => x.toJson()).toList(),
-    'speed': speed,
-    'trimEndMs': ?trimEndMs,
-    'trimStartMs': trimStartMs,
-  };
+        'filter': filter,
+        'muted': muted,
+        'overlays': overlays.map((x) => x.toJson()).toList(),
+        'speed': speed,
+        'trimEndMs': ?trimEndMs,
+        'trimStartMs': trimStartMs,
+      };
 }
 
 @immutable
@@ -3912,17 +4138,16 @@ class ReelOverlayDto {
   });
 
   factory ReelOverlayDto.fromJson(Map<String, dynamic> json) => ReelOverlayDto(
-    color: json['color'] as String,
-    size: json['size'] as num,
-    style: json['style'] as String,
-    text: json['text'] as String,
-    x: json['x'] as num,
-    y: json['y'] as num,
-  );
+        color: json['color'] as String,
+        size: json['size'] as num,
+        style: json['style'] as String,
+        text: json['text'] as String,
+        x: json['x'] as num,
+        y: json['y'] as num,
+      );
 
   final String color;
   final num size;
-
   /// One of: plain, box, outline.
   final String style;
   final String text;
@@ -3930,33 +4155,34 @@ class ReelOverlayDto {
   final num y;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'color': color,
-    'size': size,
-    'style': style,
-    'text': text,
-    'x': x,
-    'y': y,
-  };
+        'color': color,
+        'size': size,
+        'style': style,
+        'text': text,
+        'x': x,
+        'y': y,
+      };
 }
 
 @immutable
 class ReelPageResponse {
-  const ReelPageResponse({required this.data, this.nextCursor});
+  const ReelPageResponse({
+    required this.data,
+    this.nextCursor,
+  });
 
   factory ReelPageResponse.fromJson(Map<String, dynamic> json) => ReelPageResponse(
-    data: (json['data'] as List<dynamic>)
-        .map((dynamic x) => ReelResponse.fromJson(_map(x)))
-        .toList(),
-    nextCursor: json['nextCursor'] == null ? null : json['nextCursor'] as String,
-  );
+        data: (json['data'] as List<dynamic>).map((dynamic x) => ReelResponse.fromJson(_map(x))).toList(),
+        nextCursor: json['nextCursor'] == null ? null : json['nextCursor'] as String,
+      );
 
   final List<ReelResponse> data;
   final String? nextCursor;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'data': data.map((x) => x.toJson()).toList(),
-    'nextCursor': ?nextCursor,
-  };
+        'data': data.map((x) => x.toJson()).toList(),
+        'nextCursor': ?nextCursor,
+      };
 }
 
 @immutable
@@ -3986,28 +4212,28 @@ class ReelResponse {
   });
 
   factory ReelResponse.fromJson(Map<String, dynamic> json) => ReelResponse(
-    caption: json['caption'] == null ? null : json['caption'] as String,
-    cityId: json['cityId'] == null ? null : json['cityId'] as String,
-    commentCount: json['commentCount'] as num,
-    createdAt: json['createdAt'] as String,
-    creator: CreatorResponse.fromJson(_map(json['creator'])),
-    durationMs: json['durationMs'] == null ? null : json['durationMs'] as num,
-    edits: json['edits'] == null ? null : ReelEditsDto.fromJson(_map(json['edits'])),
-    followingCreator: json['followingCreator'] as bool,
-    hashtags: (json['hashtags'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-    id: json['id'] as String,
-    likeCount: json['likeCount'] as num,
-    likedByMe: json['likedByMe'] as bool,
-    moderationStatus: json['moderationStatus'] as String,
-    playbackUrl: json['playbackUrl'] == null ? null : json['playbackUrl'] as String,
-    posterUrl: json['posterUrl'] == null ? null : json['posterUrl'] as String,
-    saveCount: json['saveCount'] as num,
-    savedByMe: json['savedByMe'] as bool,
-    status: json['status'] as String,
-    templeId: json['templeId'] == null ? null : json['templeId'] as String,
-    templeName: json['templeName'] == null ? null : json['templeName'] as String,
-    viewCount: json['viewCount'] as num,
-  );
+        caption: json['caption'] == null ? null : json['caption'] as String,
+        cityId: json['cityId'] == null ? null : json['cityId'] as String,
+        commentCount: json['commentCount'] as num,
+        createdAt: json['createdAt'] as String,
+        creator: CreatorResponse.fromJson(_map(json['creator'])),
+        durationMs: json['durationMs'] == null ? null : json['durationMs'] as num,
+        edits: json['edits'] == null ? null : ReelEditsDto.fromJson(_map(json['edits'])),
+        followingCreator: json['followingCreator'] as bool,
+        hashtags: (json['hashtags'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+        id: json['id'] as String,
+        likeCount: json['likeCount'] as num,
+        likedByMe: json['likedByMe'] as bool,
+        moderationStatus: json['moderationStatus'] as String,
+        playbackUrl: json['playbackUrl'] == null ? null : json['playbackUrl'] as String,
+        posterUrl: json['posterUrl'] == null ? null : json['posterUrl'] as String,
+        saveCount: json['saveCount'] as num,
+        savedByMe: json['savedByMe'] as bool,
+        status: json['status'] as String,
+        templeId: json['templeId'] == null ? null : json['templeId'] as String,
+        templeName: json['templeName'] == null ? null : json['templeName'] as String,
+        viewCount: json['viewCount'] as num,
+      );
 
   final String? caption;
   final String? cityId;
@@ -4016,21 +4242,18 @@ class ReelResponse {
   final CreatorResponse creator;
   final num? durationMs;
   final ReelEditsDto? edits;
-
   /// The viewer follows the creator
   final bool followingCreator;
   final List<String> hashtags;
   final String id;
   final num likeCount;
   final bool likedByMe;
-
   /// One of: pending, approved, flagged, removed.
   final String moderationStatus;
   final String? playbackUrl;
   final String? posterUrl;
   final num saveCount;
   final bool savedByMe;
-
   /// One of: processing, published, hidden, removed.
   final String status;
   final String? templeId;
@@ -4038,40 +4261,45 @@ class ReelResponse {
   final num viewCount;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'caption': ?caption,
-    'cityId': ?cityId,
-    'commentCount': commentCount,
-    'createdAt': createdAt,
-    'creator': creator.toJson(),
-    'durationMs': ?durationMs,
-    'edits': ?edits?.toJson(),
-    'followingCreator': followingCreator,
-    'hashtags': hashtags,
-    'id': id,
-    'likeCount': likeCount,
-    'likedByMe': likedByMe,
-    'moderationStatus': moderationStatus,
-    'playbackUrl': ?playbackUrl,
-    'posterUrl': ?posterUrl,
-    'saveCount': saveCount,
-    'savedByMe': savedByMe,
-    'status': status,
-    'templeId': ?templeId,
-    'templeName': ?templeName,
-    'viewCount': viewCount,
-  };
+        'caption': ?caption,
+        'cityId': ?cityId,
+        'commentCount': commentCount,
+        'createdAt': createdAt,
+        'creator': creator.toJson(),
+        'durationMs': ?durationMs,
+        'edits': ?edits?.toJson(),
+        'followingCreator': followingCreator,
+        'hashtags': hashtags,
+        'id': id,
+        'likeCount': likeCount,
+        'likedByMe': likedByMe,
+        'moderationStatus': moderationStatus,
+        'playbackUrl': ?playbackUrl,
+        'posterUrl': ?posterUrl,
+        'saveCount': saveCount,
+        'savedByMe': savedByMe,
+        'status': status,
+        'templeId': ?templeId,
+        'templeName': ?templeName,
+        'viewCount': viewCount,
+      };
 }
 
 @immutable
 class RefreshDto {
-  const RefreshDto({required this.refreshToken});
+  const RefreshDto({
+    required this.refreshToken,
+  });
 
-  factory RefreshDto.fromJson(Map<String, dynamic> json) =>
-      RefreshDto(refreshToken: json['refreshToken'] as String);
+  factory RefreshDto.fromJson(Map<String, dynamic> json) => RefreshDto(
+        refreshToken: json['refreshToken'] as String,
+      );
 
   final String refreshToken;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{'refreshToken': refreshToken};
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'refreshToken': refreshToken,
+      };
 }
 
 @immutable
@@ -4085,69 +4313,88 @@ class RegisterDeviceDto {
   });
 
   factory RegisterDeviceDto.fromJson(Map<String, dynamic> json) => RegisterDeviceDto(
-    appVersion: json['appVersion'] == null ? null : json['appVersion'] as String,
-    deviceId: json['deviceId'] == null ? null : json['deviceId'] as String,
-    fcmToken: json['fcmToken'] == null ? null : json['fcmToken'] as String,
-    locale: json['locale'] == null ? null : json['locale'] as String,
-    platform: json['platform'] as String,
-  );
+        appVersion: json['appVersion'] == null ? null : json['appVersion'] as String,
+        deviceId: json['deviceId'] == null ? null : json['deviceId'] as String,
+        fcmToken: json['fcmToken'] == null ? null : json['fcmToken'] as String,
+        locale: json['locale'] == null ? null : json['locale'] as String,
+        platform: json['platform'] as String,
+      );
 
   final String? appVersion;
   final String? deviceId;
   final String? fcmToken;
   final String? locale;
-
   /// One of: android, ios, web.
   final String platform;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'appVersion': ?appVersion,
-    'deviceId': ?deviceId,
-    'fcmToken': ?fcmToken,
-    'locale': ?locale,
-    'platform': platform,
-  };
+        'appVersion': ?appVersion,
+        'deviceId': ?deviceId,
+        'fcmToken': ?fcmToken,
+        'locale': ?locale,
+        'platform': platform,
+      };
 }
 
 @immutable
 class ReplyDto {
-  const ReplyDto({required this.reply});
+  const ReplyDto({
+    required this.reply,
+  });
 
-  factory ReplyDto.fromJson(Map<String, dynamic> json) => ReplyDto(reply: json['reply'] as String);
+  factory ReplyDto.fromJson(Map<String, dynamic> json) => ReplyDto(
+        reply: json['reply'] as String,
+      );
 
   final String reply;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{'reply': reply};
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'reply': reply,
+      };
 }
 
 @immutable
 class ResetPasswordDto {
-  const ResetPasswordDto({required this.password, required this.token});
+  const ResetPasswordDto({
+    required this.password,
+    required this.token,
+  });
 
-  factory ResetPasswordDto.fromJson(Map<String, dynamic> json) =>
-      ResetPasswordDto(password: json['password'] as String, token: json['token'] as String);
+  factory ResetPasswordDto.fromJson(Map<String, dynamic> json) => ResetPasswordDto(
+        password: json['password'] as String,
+        token: json['token'] as String,
+      );
 
   /// Min 10 chars with a letter and a digit
   final String password;
   final String token;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{'password': password, 'token': token};
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'password': password,
+        'token': token,
+      };
 }
 
 @immutable
 class ResolveSosDto {
-  const ResolveSosDto({this.falseAlarm, this.note});
+  const ResolveSosDto({
+    this.falseAlarm,
+    this.note,
+  });
 
   factory ResolveSosDto.fromJson(Map<String, dynamic> json) => ResolveSosDto(
-    falseAlarm: json['falseAlarm'] == null ? null : json['falseAlarm'] as bool,
-    note: json['note'] == null ? null : json['note'] as String,
-  );
+        falseAlarm: json['falseAlarm'] == null ? null : json['falseAlarm'] as bool,
+        note: json['note'] == null ? null : json['note'] as String,
+      );
 
   /// Admin only: mark as a false alarm
   final bool? falseAlarm;
   final String? note;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{'falseAlarm': ?falseAlarm, 'note': ?note};
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'falseAlarm': ?falseAlarm,
+        'note': ?note,
+      };
 }
 
 @immutable
@@ -4171,26 +4418,22 @@ class RestaurantResponse {
   });
 
   factory RestaurantResponse.fromJson(Map<String, dynamic> json) => RestaurantResponse(
-    acceptsOrders: json['acceptsOrders'] as bool,
-    address: json['address'] == null ? null : json['address'] as String,
-    cityId: json['cityId'] as String,
-    distanceKm: json['distanceKm'] == null ? null : json['distanceKm'] as num,
-    externalLinks: ExternalLinksDto.fromJson(_map(json['externalLinks'])),
-    id: json['id'] as String,
-    isPublished: json['isPublished'] as bool,
-    isPureVeg: json['isPureVeg'] as bool,
-    isSatvik: json['isSatvik'] as bool,
-    lat: json['lat'] as num,
-    lng: json['lng'] as num,
-    menu: json['menu'] == null
-        ? null
-        : (json['menu'] as List<dynamic>)
-              .map((dynamic x) => MenuItemResponse.fromJson(_map(x)))
-              .toList(),
-    name: json['name'] as String,
-    openingHours: _map(json['openingHours']),
-    vendorId: json['vendorId'] as String,
-  );
+        acceptsOrders: json['acceptsOrders'] as bool,
+        address: json['address'] == null ? null : json['address'] as String,
+        cityId: json['cityId'] as String,
+        distanceKm: json['distanceKm'] == null ? null : json['distanceKm'] as num,
+        externalLinks: ExternalLinksDto.fromJson(_map(json['externalLinks'])),
+        id: json['id'] as String,
+        isPublished: json['isPublished'] as bool,
+        isPureVeg: json['isPureVeg'] as bool,
+        isSatvik: json['isSatvik'] as bool,
+        lat: json['lat'] as num,
+        lng: json['lng'] as num,
+        menu: json['menu'] == null ? null : (json['menu'] as List<dynamic>).map((dynamic x) => MenuItemResponse.fromJson(_map(x))).toList(),
+        name: json['name'] as String,
+        openingHours: _map(json['openingHours']),
+        vendorId: json['vendorId'] as String,
+      );
 
   final bool acceptsOrders;
   final String? address;
@@ -4209,82 +4452,94 @@ class RestaurantResponse {
   final String vendorId;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'acceptsOrders': acceptsOrders,
-    'address': ?address,
-    'cityId': cityId,
-    'distanceKm': ?distanceKm,
-    'externalLinks': externalLinks.toJson(),
-    'id': id,
-    'isPublished': isPublished,
-    'isPureVeg': isPureVeg,
-    'isSatvik': isSatvik,
-    'lat': lat,
-    'lng': lng,
-    'menu': ?menu?.map((x) => x.toJson()).toList(),
-    'name': name,
-    'openingHours': openingHours,
-    'vendorId': vendorId,
-  };
+        'acceptsOrders': acceptsOrders,
+        'address': ?address,
+        'cityId': cityId,
+        'distanceKm': ?distanceKm,
+        'externalLinks': externalLinks.toJson(),
+        'id': id,
+        'isPublished': isPublished,
+        'isPureVeg': isPureVeg,
+        'isSatvik': isSatvik,
+        'lat': lat,
+        'lng': lng,
+        'menu': ?menu?.map((x) => x.toJson()).toList(),
+        'name': name,
+        'openingHours': openingHours,
+        'vendorId': vendorId,
+      };
 }
 
 @immutable
 class ReviewAuthorResponse {
-  const ReviewAuthorResponse({this.avatarUrl, required this.displayName, required this.id});
+  const ReviewAuthorResponse({
+    this.avatarUrl,
+    required this.displayName,
+    required this.id,
+  });
 
   factory ReviewAuthorResponse.fromJson(Map<String, dynamic> json) => ReviewAuthorResponse(
-    avatarUrl: json['avatarUrl'] == null ? null : json['avatarUrl'] as String,
-    displayName: json['displayName'] as String,
-    id: json['id'] as String,
-  );
+        avatarUrl: json['avatarUrl'] == null ? null : json['avatarUrl'] as String,
+        displayName: json['displayName'] as String,
+        id: json['id'] as String,
+      );
 
   final String? avatarUrl;
   final String displayName;
   final String id;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'avatarUrl': ?avatarUrl,
-    'displayName': displayName,
-    'id': id,
-  };
+        'avatarUrl': ?avatarUrl,
+        'displayName': displayName,
+        'id': id,
+      };
 }
 
 @immutable
 class ReviewKycDto {
-  const ReviewKycDto({required this.decision, this.note});
+  const ReviewKycDto({
+    required this.decision,
+    this.note,
+  });
 
   factory ReviewKycDto.fromJson(Map<String, dynamic> json) => ReviewKycDto(
-    decision: json['decision'] as String,
-    note: json['note'] == null ? null : json['note'] as String,
-  );
+        decision: json['decision'] as String,
+        note: json['note'] == null ? null : json['note'] as String,
+      );
 
   /// One of: approved, rejected.
   final String decision;
   final String? note;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{'decision': decision, 'note': ?note};
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'decision': decision,
+        'note': ?note,
+      };
 }
 
 @immutable
 class ReviewPageResponse {
-  const ReviewPageResponse({required this.data, this.nextCursor, required this.summary});
+  const ReviewPageResponse({
+    required this.data,
+    this.nextCursor,
+    required this.summary,
+  });
 
   factory ReviewPageResponse.fromJson(Map<String, dynamic> json) => ReviewPageResponse(
-    data: (json['data'] as List<dynamic>)
-        .map((dynamic x) => ReviewResponse.fromJson(_map(x)))
-        .toList(),
-    nextCursor: json['nextCursor'] == null ? null : json['nextCursor'] as String,
-    summary: RatingSummaryResponse.fromJson(_map(json['summary'])),
-  );
+        data: (json['data'] as List<dynamic>).map((dynamic x) => ReviewResponse.fromJson(_map(x))).toList(),
+        nextCursor: json['nextCursor'] == null ? null : json['nextCursor'] as String,
+        summary: RatingSummaryResponse.fromJson(_map(json['summary'])),
+      );
 
   final List<ReviewResponse> data;
   final String? nextCursor;
   final RatingSummaryResponse summary;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'data': data.map((x) => x.toJson()).toList(),
-    'nextCursor': ?nextCursor,
-    'summary': summary.toJson(),
-  };
+        'data': data.map((x) => x.toJson()).toList(),
+        'nextCursor': ?nextCursor,
+        'summary': summary.toJson(),
+      };
 }
 
 @immutable
@@ -4306,32 +4561,30 @@ class ReviewResponse {
   });
 
   factory ReviewResponse.fromJson(Map<String, dynamic> json) => ReviewResponse(
-    author: ReviewAuthorResponse.fromJson(_map(json['author'])),
-    body: json['body'] == null ? null : json['body'] as String,
-    createdAt: json['createdAt'] as String,
-    id: json['id'] as String,
-    moderationStatus: json['moderationStatus'] as String,
-    photoUrls: (json['photoUrls'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-    rating: json['rating'] as num,
-    targetId: json['targetId'] as String,
-    targetType: json['targetType'] as String,
-    updatedAt: json['updatedAt'] as String,
-    vendorRepliedAt: json['vendorRepliedAt'] == null ? null : json['vendorRepliedAt'] as String,
-    vendorReply: json['vendorReply'] == null ? null : json['vendorReply'] as String,
-    verifiedStay: json['verifiedStay'] as bool,
-  );
+        author: ReviewAuthorResponse.fromJson(_map(json['author'])),
+        body: json['body'] == null ? null : json['body'] as String,
+        createdAt: json['createdAt'] as String,
+        id: json['id'] as String,
+        moderationStatus: json['moderationStatus'] as String,
+        photoUrls: (json['photoUrls'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+        rating: json['rating'] as num,
+        targetId: json['targetId'] as String,
+        targetType: json['targetType'] as String,
+        updatedAt: json['updatedAt'] as String,
+        vendorRepliedAt: json['vendorRepliedAt'] == null ? null : json['vendorRepliedAt'] as String,
+        vendorReply: json['vendorReply'] == null ? null : json['vendorReply'] as String,
+        verifiedStay: json['verifiedStay'] as bool,
+      );
 
   final ReviewAuthorResponse author;
   final String? body;
   final String createdAt;
   final String id;
-
   /// One of: pending, approved, flagged, removed.
   final String moderationStatus;
   final List<String> photoUrls;
   final num rating;
   final String targetId;
-
   /// One of: hotel, restaurant, experience, vendor, temple.
   final String targetType;
   final String updatedAt;
@@ -4340,20 +4593,20 @@ class ReviewResponse {
   final bool verifiedStay;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'author': author.toJson(),
-    'body': ?body,
-    'createdAt': createdAt,
-    'id': id,
-    'moderationStatus': moderationStatus,
-    'photoUrls': photoUrls,
-    'rating': rating,
-    'targetId': targetId,
-    'targetType': targetType,
-    'updatedAt': updatedAt,
-    'vendorRepliedAt': ?vendorRepliedAt,
-    'vendorReply': ?vendorReply,
-    'verifiedStay': verifiedStay,
-  };
+        'author': author.toJson(),
+        'body': ?body,
+        'createdAt': createdAt,
+        'id': id,
+        'moderationStatus': moderationStatus,
+        'photoUrls': photoUrls,
+        'rating': rating,
+        'targetId': targetId,
+        'targetType': targetType,
+        'updatedAt': updatedAt,
+        'vendorRepliedAt': ?vendorRepliedAt,
+        'vendorReply': ?vendorReply,
+        'verifiedStay': verifiedStay,
+      };
 }
 
 @immutable
@@ -4373,25 +4626,20 @@ class RoomTypeResponse {
   });
 
   factory RoomTypeResponse.fromJson(Map<String, dynamic> json) => RoomTypeResponse(
-    amenities: (json['amenities'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-    available: json['available'] == null ? null : json['available'] as bool,
-    basePricePaise: json['basePricePaise'] as num,
-    id: json['id'] as String,
-    imageUrls: (json['imageUrls'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-    maxGuests: json['maxGuests'] as num,
-    name: json['name'] as String,
-    nights: json['nights'] == null
-        ? null
-        : (json['nights'] as List<dynamic>)
-              .map((dynamic x) => NightPriceResponse.fromJson(_map(x)))
-              .toList(),
-    roomsLeft: json['roomsLeft'] == null ? null : json['roomsLeft'] as num,
-    stayTotalPaise: json['stayTotalPaise'] == null ? null : json['stayTotalPaise'] as num,
-    totalRooms: json['totalRooms'] as num,
-  );
+        amenities: (json['amenities'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+        available: json['available'] == null ? null : json['available'] as bool,
+        basePricePaise: json['basePricePaise'] as num,
+        id: json['id'] as String,
+        imageUrls: (json['imageUrls'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+        maxGuests: json['maxGuests'] as num,
+        name: json['name'] as String,
+        nights: json['nights'] == null ? null : (json['nights'] as List<dynamic>).map((dynamic x) => NightPriceResponse.fromJson(_map(x))).toList(),
+        roomsLeft: json['roomsLeft'] == null ? null : json['roomsLeft'] as num,
+        stayTotalPaise: json['stayTotalPaise'] == null ? null : json['stayTotalPaise'] as num,
+        totalRooms: json['totalRooms'] as num,
+      );
 
   final List<String> amenities;
-
   /// With dates: bookable for the whole stay
   final bool? available;
   final num basePricePaise;
@@ -4400,27 +4648,25 @@ class RoomTypeResponse {
   final num maxGuests;
   final String name;
   final List<NightPriceResponse>? nights;
-
   /// With dates: fewest rooms left on any night
   final num? roomsLeft;
-
   /// With dates: total for all nights × rooms, paise
   final num? stayTotalPaise;
   final num totalRooms;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'amenities': amenities,
-    'available': ?available,
-    'basePricePaise': basePricePaise,
-    'id': id,
-    'imageUrls': imageUrls,
-    'maxGuests': maxGuests,
-    'name': name,
-    'nights': ?nights?.map((x) => x.toJson()).toList(),
-    'roomsLeft': ?roomsLeft,
-    'stayTotalPaise': ?stayTotalPaise,
-    'totalRooms': totalRooms,
-  };
+        'amenities': amenities,
+        'available': ?available,
+        'basePricePaise': basePricePaise,
+        'id': id,
+        'imageUrls': imageUrls,
+        'maxGuests': maxGuests,
+        'name': name,
+        'nights': ?nights?.map((x) => x.toJson()).toList(),
+        'roomsLeft': ?roomsLeft,
+        'stayTotalPaise': ?stayTotalPaise,
+        'totalRooms': totalRooms,
+      };
 }
 
 @immutable
@@ -4432,24 +4678,20 @@ class SafetyDirectoryResponse {
   });
 
   factory SafetyDirectoryResponse.fromJson(Map<String, dynamic> json) => SafetyDirectoryResponse(
-    helplines: (json['helplines'] as List<dynamic>)
-        .map((dynamic x) => HelplineResponse.fromJson(_map(x)))
-        .toList(),
-    pois: (json['pois'] as List<dynamic>)
-        .map((dynamic x) => PoiResponse.fromJson(_map(x)))
-        .toList(),
-    updatedAt: json['updatedAt'] as String,
-  );
+        helplines: (json['helplines'] as List<dynamic>).map((dynamic x) => HelplineResponse.fromJson(_map(x))).toList(),
+        pois: (json['pois'] as List<dynamic>).map((dynamic x) => PoiResponse.fromJson(_map(x))).toList(),
+        updatedAt: json['updatedAt'] as String,
+      );
 
   final List<HelplineResponse> helplines;
   final List<PoiResponse> pois;
   final String updatedAt;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'helplines': helplines.map((x) => x.toJson()).toList(),
-    'pois': pois.map((x) => x.toJson()).toList(),
-    'updatedAt': updatedAt,
-  };
+        'helplines': helplines.map((x) => x.toJson()).toList(),
+        'pois': pois.map((x) => x.toJson()).toList(),
+        'updatedAt': updatedAt,
+      };
 }
 
 @immutable
@@ -4465,19 +4707,18 @@ class SearchResultResponse {
   });
 
   factory SearchResultResponse.fromJson(Map<String, dynamic> json) => SearchResultResponse(
-    id: json['id'] as String,
-    lat: json['lat'] == null ? null : json['lat'] as num,
-    lng: json['lng'] == null ? null : json['lng'] as num,
-    score: json['score'] as num,
-    subtitle: json['subtitle'] == null ? null : json['subtitle'] as String,
-    title: json['title'] as String,
-    type: json['type'] as String,
-  );
+        id: json['id'] as String,
+        lat: json['lat'] == null ? null : json['lat'] as num,
+        lng: json['lng'] == null ? null : json['lng'] as num,
+        score: json['score'] as num,
+        subtitle: json['subtitle'] == null ? null : json['subtitle'] as String,
+        title: json['title'] as String,
+        type: json['type'] as String,
+      );
 
   final String id;
   final num? lat;
   final num? lng;
-
   /// 0–1 relevance
   final num score;
   final String? subtitle;
@@ -4485,14 +4726,14 @@ class SearchResultResponse {
   final String type;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'id': id,
-    'lat': ?lat,
-    'lng': ?lng,
-    'score': score,
-    'subtitle': ?subtitle,
-    'title': title,
-    'type': type,
-  };
+        'id': id,
+        'lat': ?lat,
+        'lng': ?lng,
+        'score': score,
+        'subtitle': ?subtitle,
+        'title': title,
+        'type': type,
+      };
 }
 
 @immutable
@@ -4510,16 +4751,16 @@ class SharedSosResponse {
   });
 
   factory SharedSosResponse.fromJson(Map<String, dynamic> json) => SharedSosResponse(
-    accuracyM: json['accuracyM'] == null ? null : json['accuracyM'] as num,
-    batteryPct: json['batteryPct'] == null ? null : json['batteryPct'] as num,
-    expiresAt: json['expiresAt'] as String,
-    lat: json['lat'] == null ? null : json['lat'] as num,
-    lng: json['lng'] == null ? null : json['lng'] as num,
-    name: json['name'] as String,
-    state: json['state'] as String,
-    trail: (json['trail'] as List<dynamic>).map((dynamic x) => _map(x)).toList(),
-    updatedAt: json['updatedAt'] as String,
-  );
+        accuracyM: json['accuracyM'] == null ? null : json['accuracyM'] as num,
+        batteryPct: json['batteryPct'] == null ? null : json['batteryPct'] as num,
+        expiresAt: json['expiresAt'] as String,
+        lat: json['lat'] == null ? null : json['lat'] as num,
+        lng: json['lng'] == null ? null : json['lng'] as num,
+        name: json['name'] as String,
+        state: json['state'] as String,
+        trail: (json['trail'] as List<dynamic>).map((dynamic x) => _map(x)).toList(),
+        updatedAt: json['updatedAt'] as String,
+      );
 
   final num? accuracyM;
   final num? batteryPct;
@@ -4527,25 +4768,78 @@ class SharedSosResponse {
   final num? lat;
   final num? lng;
   final String name;
-
   /// One of: active, ended.
   final String state;
-
   /// Recent points, oldest first
   final List<Map<String, dynamic>> trail;
   final String updatedAt;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'accuracyM': ?accuracyM,
-    'batteryPct': ?batteryPct,
-    'expiresAt': expiresAt,
-    'lat': ?lat,
-    'lng': ?lng,
-    'name': name,
-    'state': state,
-    'trail': trail,
-    'updatedAt': updatedAt,
-  };
+        'accuracyM': ?accuracyM,
+        'batteryPct': ?batteryPct,
+        'expiresAt': expiresAt,
+        'lat': ?lat,
+        'lng': ?lng,
+        'name': name,
+        'state': state,
+        'trail': trail,
+        'updatedAt': updatedAt,
+      };
+}
+
+@immutable
+class SharedTripResponse {
+  const SharedTripResponse({
+    this.endedAt,
+    this.fromPlace,
+    this.lat,
+    this.lng,
+    this.locationAt,
+    required this.name,
+    required this.sharing,
+    required this.startedAt,
+    required this.status,
+    required this.title,
+  });
+
+  factory SharedTripResponse.fromJson(Map<String, dynamic> json) => SharedTripResponse(
+        endedAt: json['endedAt'] == null ? null : json['endedAt'] as String,
+        fromPlace: json['fromPlace'] == null ? null : json['fromPlace'] as String,
+        lat: json['lat'] == null ? null : json['lat'] as num,
+        lng: json['lng'] == null ? null : json['lng'] as num,
+        locationAt: json['locationAt'] == null ? null : json['locationAt'] as String,
+        name: json['name'] as String,
+        sharing: json['sharing'] as bool,
+        startedAt: json['startedAt'] as String,
+        status: json['status'] as String,
+        title: json['title'] as String,
+      );
+
+  final String? endedAt;
+  final String? fromPlace;
+  final num? lat;
+  final num? lng;
+  final String? locationAt;
+  final String name;
+  /// Location is shown only while the traveller shares it
+  final bool sharing;
+  final String startedAt;
+  /// One of: active, ended.
+  final String status;
+  final String title;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'endedAt': ?endedAt,
+        'fromPlace': ?fromPlace,
+        'lat': ?lat,
+        'lng': ?lng,
+        'locationAt': ?locationAt,
+        'name': name,
+        'sharing': sharing,
+        'startedAt': startedAt,
+        'status': status,
+        'title': title,
+      };
 }
 
 @immutable
@@ -4559,12 +4853,12 @@ class SlotResponse {
   });
 
   factory SlotResponse.fromJson(Map<String, dynamic> json) => SlotResponse(
-    booked: json['booked'] as num,
-    capacity: json['capacity'] as num,
-    id: json['id'] as String,
-    remaining: json['remaining'] as num,
-    startsAt: json['startsAt'] as String,
-  );
+        booked: json['booked'] as num,
+        capacity: json['capacity'] as num,
+        id: json['id'] as String,
+        remaining: json['remaining'] as num,
+        startsAt: json['startsAt'] as String,
+      );
 
   final num booked;
   final num capacity;
@@ -4573,24 +4867,29 @@ class SlotResponse {
   final String startsAt;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'booked': booked,
-    'capacity': capacity,
-    'id': id,
-    'remaining': remaining,
-    'startsAt': startsAt,
-  };
+        'booked': booked,
+        'capacity': capacity,
+        'id': id,
+        'remaining': remaining,
+        'startsAt': startsAt,
+      };
 }
 
 @immutable
 class SosLocationDto {
-  const SosLocationDto({this.accuracyM, this.batteryPct, required this.lat, required this.lng});
+  const SosLocationDto({
+    this.accuracyM,
+    this.batteryPct,
+    required this.lat,
+    required this.lng,
+  });
 
   factory SosLocationDto.fromJson(Map<String, dynamic> json) => SosLocationDto(
-    accuracyM: json['accuracyM'] == null ? null : json['accuracyM'] as num,
-    batteryPct: json['batteryPct'] == null ? null : json['batteryPct'] as num,
-    lat: json['lat'] as num,
-    lng: json['lng'] as num,
-  );
+        accuracyM: json['accuracyM'] == null ? null : json['accuracyM'] as num,
+        batteryPct: json['batteryPct'] == null ? null : json['batteryPct'] as num,
+        lat: json['lat'] as num,
+        lng: json['lng'] as num,
+      );
 
   final num? accuracyM;
   final num? batteryPct;
@@ -4598,11 +4897,11 @@ class SosLocationDto {
   final num lng;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'accuracyM': ?accuracyM,
-    'batteryPct': ?batteryPct,
-    'lat': lat,
-    'lng': lng,
-  };
+        'accuracyM': ?accuracyM,
+        'batteryPct': ?batteryPct,
+        'lat': lat,
+        'lng': lng,
+      };
 }
 
 @immutable
@@ -4624,22 +4923,20 @@ class SosResponse {
   });
 
   factory SosResponse.fromJson(Map<String, dynamic> json) => SosResponse(
-    cancellableForS: json['cancellableForS'] as num,
-    contactsNotified: json['contactsNotified'] as num,
-    createdAt: json['createdAt'] as String,
-    dispatchedAt: json['dispatchedAt'] == null ? null : json['dispatchedAt'] as String,
-    helplines: (json['helplines'] as List<dynamic>).map((dynamic x) => _map(x)).toList(),
-    id: json['id'] as String,
-    lat: json['lat'] as num,
-    lng: json['lng'] as num,
-    nearestHelp: (json['nearestHelp'] as List<dynamic>)
-        .map((dynamic x) => HelpPointResponse.fromJson(_map(x)))
-        .toList(),
-    resolvedAt: json['resolvedAt'] == null ? null : json['resolvedAt'] as String,
-    shareExpiresAt: json['shareExpiresAt'] as String,
-    shareUrl: json['shareUrl'] as String,
-    status: json['status'] as String,
-  );
+        cancellableForS: json['cancellableForS'] as num,
+        contactsNotified: json['contactsNotified'] as num,
+        createdAt: json['createdAt'] as String,
+        dispatchedAt: json['dispatchedAt'] == null ? null : json['dispatchedAt'] as String,
+        helplines: (json['helplines'] as List<dynamic>).map((dynamic x) => _map(x)).toList(),
+        id: json['id'] as String,
+        lat: json['lat'] as num,
+        lng: json['lng'] as num,
+        nearestHelp: (json['nearestHelp'] as List<dynamic>).map((dynamic x) => HelpPointResponse.fromJson(_map(x))).toList(),
+        resolvedAt: json['resolvedAt'] == null ? null : json['resolvedAt'] as String,
+        shareExpiresAt: json['shareExpiresAt'] as String,
+        shareUrl: json['shareUrl'] as String,
+        status: json['status'] as String,
+      );
 
   /// Seconds left to cancel an accidental trigger
   final num cancellableForS;
@@ -4654,41 +4951,46 @@ class SosResponse {
   final String? resolvedAt;
   final String shareExpiresAt;
   final String shareUrl;
-
   /// One of: triggered, dispatched, resolved, cancelled, false_alarm.
   final String status;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'cancellableForS': cancellableForS,
-    'contactsNotified': contactsNotified,
-    'createdAt': createdAt,
-    'dispatchedAt': ?dispatchedAt,
-    'helplines': helplines,
-    'id': id,
-    'lat': lat,
-    'lng': lng,
-    'nearestHelp': nearestHelp.map((x) => x.toJson()).toList(),
-    'resolvedAt': ?resolvedAt,
-    'shareExpiresAt': shareExpiresAt,
-    'shareUrl': shareUrl,
-    'status': status,
-  };
+        'cancellableForS': cancellableForS,
+        'contactsNotified': contactsNotified,
+        'createdAt': createdAt,
+        'dispatchedAt': ?dispatchedAt,
+        'helplines': helplines,
+        'id': id,
+        'lat': lat,
+        'lng': lng,
+        'nearestHelp': nearestHelp.map((x) => x.toJson()).toList(),
+        'resolvedAt': ?resolvedAt,
+        'shareExpiresAt': shareExpiresAt,
+        'shareUrl': shareUrl,
+        'status': status,
+      };
 }
 
 @immutable
 class SpeakDto {
-  const SpeakDto({this.lang, required this.text});
+  const SpeakDto({
+    this.lang,
+    required this.text,
+  });
 
   factory SpeakDto.fromJson(Map<String, dynamic> json) => SpeakDto(
-    lang: json['lang'] == null ? null : json['lang'] as String,
-    text: json['text'] as String,
-  );
+        lang: json['lang'] == null ? null : json['lang'] as String,
+        text: json['text'] as String,
+      );
 
   /// One of: en, hi.
   final String? lang;
   final String text;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{'lang': ?lang, 'text': text};
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'lang': ?lang,
+        'text': text,
+      };
 }
 
 @immutable
@@ -4702,12 +5004,12 @@ class StaffResponse {
   });
 
   factory StaffResponse.fromJson(Map<String, dynamic> json) => StaffResponse(
-    displayName: json['displayName'] == null ? null : json['displayName'] as String,
-    id: json['id'] as String,
-    isActive: json['isActive'] as bool,
-    permissions: (json['permissions'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-    userId: json['userId'] as String,
-  );
+        displayName: json['displayName'] == null ? null : json['displayName'] as String,
+        id: json['id'] as String,
+        isActive: json['isActive'] as bool,
+        permissions: (json['permissions'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+        userId: json['userId'] as String,
+      );
 
   final String? displayName;
   final String id;
@@ -4716,12 +5018,43 @@ class StaffResponse {
   final String userId;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'displayName': ?displayName,
-    'id': id,
-    'isActive': isActive,
-    'permissions': permissions,
-    'userId': userId,
-  };
+        'displayName': ?displayName,
+        'id': id,
+        'isActive': isActive,
+        'permissions': permissions,
+        'userId': userId,
+      };
+}
+
+@immutable
+class StartTripDto {
+  const StartTripDto({
+    this.fromPlace,
+    this.itineraryId,
+    this.shareLocation,
+    this.title,
+  });
+
+  factory StartTripDto.fromJson(Map<String, dynamic> json) => StartTripDto(
+        fromPlace: json['fromPlace'] == null ? null : json['fromPlace'] as String,
+        itineraryId: json['itineraryId'] == null ? null : json['itineraryId'] as String,
+        shareLocation: json['shareLocation'] == null ? null : json['shareLocation'] as bool,
+        title: json['title'] == null ? null : json['title'] as String,
+      );
+
+  final String? fromPlace;
+  /// A saved itinerary this trip follows
+  final String? itineraryId;
+  /// Start sharing live location with family right away
+  final bool? shareLocation;
+  final String? title;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'fromPlace': ?fromPlace,
+        'itineraryId': ?itineraryId,
+        'shareLocation': ?shareLocation,
+        'title': ?title,
+      };
 }
 
 @immutable
@@ -4735,12 +5068,12 @@ class StationResponse {
   });
 
   factory StationResponse.fromJson(Map<String, dynamic> json) => StationResponse(
-    city: json['city'] as String,
-    code: json['code'] as String,
-    lat: json['lat'] as num,
-    lng: json['lng'] as num,
-    name: json['name'] as String,
-  );
+        city: json['city'] as String,
+        code: json['code'] as String,
+        lat: json['lat'] as num,
+        lng: json['lng'] as num,
+        name: json['name'] as String,
+      );
 
   final String city;
   final String code;
@@ -4749,12 +5082,12 @@ class StationResponse {
   final String name;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'city': city,
-    'code': code,
-    'lat': lat,
-    'lng': lng,
-    'name': name,
-  };
+        'city': city,
+        'code': code,
+        'lat': lat,
+        'lng': lng,
+        'name': name,
+      };
 }
 
 @immutable
@@ -4768,12 +5101,12 @@ class StatusHistoryResponse {
   });
 
   factory StatusHistoryResponse.fromJson(Map<String, dynamic> json) => StatusHistoryResponse(
-    actorType: json['actorType'] as String,
-    at: json['at'] as String,
-    from: json['from'] == null ? null : json['from'] as String,
-    reason: json['reason'] == null ? null : json['reason'] as String,
-    to: json['to'] as String,
-  );
+        actorType: json['actorType'] as String,
+        at: json['at'] as String,
+        from: json['from'] == null ? null : json['from'] as String,
+        reason: json['reason'] == null ? null : json['reason'] as String,
+        to: json['to'] as String,
+      );
 
   final String actorType;
   final String at;
@@ -4782,12 +5115,12 @@ class StatusHistoryResponse {
   final String to;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'actorType': actorType,
-    'at': at,
-    'from': ?from,
-    'reason': ?reason,
-    'to': to,
-  };
+        'actorType': actorType,
+        'at': at,
+        'from': ?from,
+        'reason': ?reason,
+        'to': to,
+      };
 }
 
 @immutable
@@ -4814,29 +5147,25 @@ class TempleDetailResponse {
   });
 
   factory TempleDetailResponse.fromJson(Map<String, dynamic> json) => TempleDetailResponse(
-    aartiToday: (json['aartiToday'] as List<dynamic>)
-        .map((dynamic x) => AartiInstanceResponse.fromJson(_map(x)))
-        .toList(),
-    address: json['address'] == null ? null : json['address'] as String,
-    cityId: json['cityId'] as String,
-    coverUrl: json['coverUrl'] == null ? null : json['coverUrl'] as String,
-    crowdLevel: json['crowdLevel'] as num,
-    description: json['description'] == null ? null : json['description'] as String,
-    distanceKm: json['distanceKm'] == null ? null : json['distanceKm'] as num,
-    dressCode: json['dressCode'] == null ? null : json['dressCode'] as String,
-    galleryUrls: (json['galleryUrls'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-    history: json['history'] == null ? null : json['history'] as String,
-    id: json['id'] as String,
-    lat: json['lat'] as num,
-    lng: json['lng'] as num,
-    name: json['name'] as String,
-    nextAarti: json['nextAarti'] == null
-        ? null
-        : AartiInstanceResponse.fromJson(_map(json['nextAarti'])),
-    openingHours: _map(json['openingHours']),
-    slug: json['slug'] as String,
-    tags: (json['tags'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-  );
+        aartiToday: (json['aartiToday'] as List<dynamic>).map((dynamic x) => AartiInstanceResponse.fromJson(_map(x))).toList(),
+        address: json['address'] == null ? null : json['address'] as String,
+        cityId: json['cityId'] as String,
+        coverUrl: json['coverUrl'] == null ? null : json['coverUrl'] as String,
+        crowdLevel: json['crowdLevel'] as num,
+        description: json['description'] == null ? null : json['description'] as String,
+        distanceKm: json['distanceKm'] == null ? null : json['distanceKm'] as num,
+        dressCode: json['dressCode'] == null ? null : json['dressCode'] as String,
+        galleryUrls: (json['galleryUrls'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+        history: json['history'] == null ? null : json['history'] as String,
+        id: json['id'] as String,
+        lat: json['lat'] as num,
+        lng: json['lng'] as num,
+        name: json['name'] as String,
+        nextAarti: json['nextAarti'] == null ? null : AartiInstanceResponse.fromJson(_map(json['nextAarti'])),
+        openingHours: _map(json['openingHours']),
+        slug: json['slug'] as String,
+        tags: (json['tags'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+      );
 
   final List<AartiInstanceResponse> aartiToday;
   final String? address;
@@ -4844,7 +5173,6 @@ class TempleDetailResponse {
   final String? coverUrl;
   final num crowdLevel;
   final String? description;
-
   /// Present when the request had lat/lng
   final num? distanceKm;
   final String? dressCode;
@@ -4860,25 +5188,25 @@ class TempleDetailResponse {
   final List<String> tags;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'aartiToday': aartiToday.map((x) => x.toJson()).toList(),
-    'address': ?address,
-    'cityId': cityId,
-    'coverUrl': ?coverUrl,
-    'crowdLevel': crowdLevel,
-    'description': ?description,
-    'distanceKm': ?distanceKm,
-    'dressCode': ?dressCode,
-    'galleryUrls': galleryUrls,
-    'history': ?history,
-    'id': id,
-    'lat': lat,
-    'lng': lng,
-    'name': name,
-    'nextAarti': ?nextAarti?.toJson(),
-    'openingHours': openingHours,
-    'slug': slug,
-    'tags': tags,
-  };
+        'aartiToday': aartiToday.map((x) => x.toJson()).toList(),
+        'address': ?address,
+        'cityId': cityId,
+        'coverUrl': ?coverUrl,
+        'crowdLevel': crowdLevel,
+        'description': ?description,
+        'distanceKm': ?distanceKm,
+        'dressCode': ?dressCode,
+        'galleryUrls': galleryUrls,
+        'history': ?history,
+        'id': id,
+        'lat': lat,
+        'lng': lng,
+        'name': name,
+        'nextAarti': ?nextAarti?.toJson(),
+        'openingHours': openingHours,
+        'slug': slug,
+        'tags': tags,
+      };
 }
 
 @immutable
@@ -4897,22 +5225,21 @@ class TempleSummaryResponse {
   });
 
   factory TempleSummaryResponse.fromJson(Map<String, dynamic> json) => TempleSummaryResponse(
-    cityId: json['cityId'] as String,
-    coverUrl: json['coverUrl'] == null ? null : json['coverUrl'] as String,
-    crowdLevel: json['crowdLevel'] as num,
-    distanceKm: json['distanceKm'] == null ? null : json['distanceKm'] as num,
-    id: json['id'] as String,
-    lat: json['lat'] as num,
-    lng: json['lng'] as num,
-    name: json['name'] as String,
-    slug: json['slug'] as String,
-    tags: (json['tags'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-  );
+        cityId: json['cityId'] as String,
+        coverUrl: json['coverUrl'] == null ? null : json['coverUrl'] as String,
+        crowdLevel: json['crowdLevel'] as num,
+        distanceKm: json['distanceKm'] == null ? null : json['distanceKm'] as num,
+        id: json['id'] as String,
+        lat: json['lat'] as num,
+        lng: json['lng'] as num,
+        name: json['name'] as String,
+        slug: json['slug'] as String,
+        tags: (json['tags'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+      );
 
   final String cityId;
   final String? coverUrl;
   final num crowdLevel;
-
   /// Present when the request had lat/lng
   final num? distanceKm;
   final String id;
@@ -4923,17 +5250,17 @@ class TempleSummaryResponse {
   final List<String> tags;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'cityId': cityId,
-    'coverUrl': ?coverUrl,
-    'crowdLevel': crowdLevel,
-    'distanceKm': ?distanceKm,
-    'id': id,
-    'lat': lat,
-    'lng': lng,
-    'name': name,
-    'slug': slug,
-    'tags': tags,
-  };
+        'cityId': cityId,
+        'coverUrl': ?coverUrl,
+        'crowdLevel': crowdLevel,
+        'distanceKm': ?distanceKm,
+        'id': id,
+        'lat': lat,
+        'lng': lng,
+        'name': name,
+        'slug': slug,
+        'tags': tags,
+      };
 }
 
 @immutable
@@ -4953,18 +5280,18 @@ class TrainResponse {
   });
 
   factory TrainResponse.fromJson(Map<String, dynamic> json) => TrainResponse(
-    arrivalDayOffset: json['arrivalDayOffset'] as num,
-    arrives: json['arrives'] as String,
-    bookingUrl: json['bookingUrl'] as String,
-    classes: (json['classes'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-    departs: json['departs'] as String,
-    durationMin: json['durationMin'] as num,
-    fromCode: json['fromCode'] as String,
-    name: json['name'] as String,
-    number: json['number'] as String,
-    runsOn: (json['runsOn'] as List<dynamic>).map((dynamic x) => x as num).toList(),
-    toCode: json['toCode'] as String,
-  );
+        arrivalDayOffset: json['arrivalDayOffset'] as num,
+        arrives: json['arrives'] as String,
+        bookingUrl: json['bookingUrl'] as String,
+        classes: (json['classes'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+        departs: json['departs'] as String,
+        durationMin: json['durationMin'] as num,
+        fromCode: json['fromCode'] as String,
+        name: json['name'] as String,
+        number: json['number'] as String,
+        runsOn: (json['runsOn'] as List<dynamic>).map((dynamic x) => x as num).toList(),
+        toCode: json['toCode'] as String,
+      );
 
   final num arrivalDayOffset;
   final String arrives;
@@ -4979,18 +5306,18 @@ class TrainResponse {
   final String toCode;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'arrivalDayOffset': arrivalDayOffset,
-    'arrives': arrives,
-    'bookingUrl': bookingUrl,
-    'classes': classes,
-    'departs': departs,
-    'durationMin': durationMin,
-    'fromCode': fromCode,
-    'name': name,
-    'number': number,
-    'runsOn': runsOn,
-    'toCode': toCode,
-  };
+        'arrivalDayOffset': arrivalDayOffset,
+        'arrives': arrives,
+        'bookingUrl': bookingUrl,
+        'classes': classes,
+        'departs': departs,
+        'durationMin': durationMin,
+        'fromCode': fromCode,
+        'name': name,
+        'number': number,
+        'runsOn': runsOn,
+        'toCode': toCode,
+      };
 }
 
 @immutable
@@ -5004,17 +5331,14 @@ class TrainSearchResponse {
   });
 
   factory TrainSearchResponse.fromJson(Map<String, dynamic> json) => TrainSearchResponse(
-    date: json['date'] as String,
-    disclaimer: json['disclaimer'] as String,
-    from: StationResponse.fromJson(_map(json['from'])),
-    to: StationResponse.fromJson(_map(json['to'])),
-    trains: (json['trains'] as List<dynamic>)
-        .map((dynamic x) => TrainResponse.fromJson(_map(x)))
-        .toList(),
-  );
+        date: json['date'] as String,
+        disclaimer: json['disclaimer'] as String,
+        from: StationResponse.fromJson(_map(json['from'])),
+        to: StationResponse.fromJson(_map(json['to'])),
+        trains: (json['trains'] as List<dynamic>).map((dynamic x) => TrainResponse.fromJson(_map(x))).toList(),
+      );
 
   final String date;
-
   /// Shown in the app: timings are indicative; confirm on IRCTC.
   final String disclaimer;
   final StationResponse from;
@@ -5022,37 +5346,47 @@ class TrainSearchResponse {
   final List<TrainResponse> trains;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'date': date,
-    'disclaimer': disclaimer,
-    'from': from.toJson(),
-    'to': to.toJson(),
-    'trains': trains.map((x) => x.toJson()).toList(),
-  };
+        'date': date,
+        'disclaimer': disclaimer,
+        'from': from.toJson(),
+        'to': to.toJson(),
+        'trains': trains.map((x) => x.toJson()).toList(),
+      };
 }
 
 @immutable
 class TranscribeDto {
-  const TranscribeDto({required this.mediaId});
+  const TranscribeDto({
+    required this.mediaId,
+  });
 
-  factory TranscribeDto.fromJson(Map<String, dynamic> json) =>
-      TranscribeDto(mediaId: json['mediaId'] as String);
+  factory TranscribeDto.fromJson(Map<String, dynamic> json) => TranscribeDto(
+        mediaId: json['mediaId'] as String,
+      );
 
   /// voice_note upload
   final String mediaId;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{'mediaId': mediaId};
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'mediaId': mediaId,
+      };
 }
 
 @immutable
 class TriggerSosDto {
-  const TriggerSosDto({this.accuracyM, this.batteryPct, required this.lat, required this.lng});
+  const TriggerSosDto({
+    this.accuracyM,
+    this.batteryPct,
+    required this.lat,
+    required this.lng,
+  });
 
   factory TriggerSosDto.fromJson(Map<String, dynamic> json) => TriggerSosDto(
-    accuracyM: json['accuracyM'] == null ? null : json['accuracyM'] as num,
-    batteryPct: json['batteryPct'] == null ? null : json['batteryPct'] as num,
-    lat: json['lat'] as num,
-    lng: json['lng'] as num,
-  );
+        accuracyM: json['accuracyM'] == null ? null : json['accuracyM'] as num,
+        batteryPct: json['batteryPct'] == null ? null : json['batteryPct'] as num,
+        lat: json['lat'] as num,
+        lng: json['lng'] as num,
+      );
 
   final num? accuracyM;
   final num? batteryPct;
@@ -5060,37 +5394,190 @@ class TriggerSosDto {
   final num lng;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'accuracyM': ?accuracyM,
-    'batteryPct': ?batteryPct,
-    'lat': lat,
-    'lng': lng,
-  };
+        'accuracyM': ?accuracyM,
+        'batteryPct': ?batteryPct,
+        'lat': lat,
+        'lng': lng,
+      };
+}
+
+@immutable
+class TripLocationDto {
+  const TripLocationDto({
+    this.accuracyM,
+    required this.lat,
+    required this.lng,
+  });
+
+  factory TripLocationDto.fromJson(Map<String, dynamic> json) => TripLocationDto(
+        accuracyM: json['accuracyM'] == null ? null : json['accuracyM'] as num,
+        lat: json['lat'] as num,
+        lng: json['lng'] as num,
+      );
+
+  final num? accuracyM;
+  final num lat;
+  final num lng;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'accuracyM': ?accuracyM,
+        'lat': lat,
+        'lng': lng,
+      };
 }
 
 @immutable
 class TripMemberDto {
-  const TripMemberDto({this.age, required this.name, this.phone, this.role});
+  const TripMemberDto({
+    this.age,
+    required this.name,
+    this.phone,
+    this.role,
+  });
 
   factory TripMemberDto.fromJson(Map<String, dynamic> json) => TripMemberDto(
-    age: json['age'] == null ? null : json['age'] as num,
-    name: json['name'] as String,
-    phone: json['phone'] == null ? null : json['phone'] as String,
-    role: json['role'] == null ? null : json['role'] as String,
-  );
+        age: json['age'] == null ? null : json['age'] as num,
+        name: json['name'] as String,
+        phone: json['phone'] == null ? null : json['phone'] as String,
+        role: json['role'] == null ? null : json['role'] as String,
+      );
 
   final num? age;
   final String name;
   final String? phone;
-
   /// One of: organiser, member, elder, child.
   final String? role;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'age': ?age,
-    'name': name,
-    'phone': ?phone,
-    'role': ?role,
-  };
+        'age': ?age,
+        'name': name,
+        'phone': ?phone,
+        'role': ?role,
+      };
+}
+
+@immutable
+class TripPageResponse {
+  const TripPageResponse({
+    required this.data,
+    this.nextCursor,
+  });
+
+  factory TripPageResponse.fromJson(Map<String, dynamic> json) => TripPageResponse(
+        data: (json['data'] as List<dynamic>).map((dynamic x) => TripResponse.fromJson(_map(x))).toList(),
+        nextCursor: json['nextCursor'] == null ? null : json['nextCursor'] as String,
+      );
+
+  final List<TripResponse> data;
+  final String? nextCursor;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'data': data.map((x) => x.toJson()).toList(),
+        'nextCursor': ?nextCursor,
+      };
+}
+
+@immutable
+class TripResponse {
+  const TripResponse({
+    this.endedAt,
+    this.fromPlace,
+    required this.id,
+    this.itineraryId,
+    this.lastLat,
+    this.lastLng,
+    this.lastLocationAt,
+    this.shareUrl,
+    required this.sharingLocation,
+    required this.startedAt,
+    required this.status,
+    required this.title,
+  });
+
+  factory TripResponse.fromJson(Map<String, dynamic> json) => TripResponse(
+        endedAt: json['endedAt'] == null ? null : json['endedAt'] as String,
+        fromPlace: json['fromPlace'] == null ? null : json['fromPlace'] as String,
+        id: json['id'] as String,
+        itineraryId: json['itineraryId'] == null ? null : json['itineraryId'] as String,
+        lastLat: json['lastLat'] == null ? null : json['lastLat'] as num,
+        lastLng: json['lastLng'] == null ? null : json['lastLng'] as num,
+        lastLocationAt: json['lastLocationAt'] == null ? null : json['lastLocationAt'] as String,
+        shareUrl: json['shareUrl'] == null ? null : json['shareUrl'] as String,
+        sharingLocation: json['sharingLocation'] as bool,
+        startedAt: json['startedAt'] as String,
+        status: json['status'] as String,
+        title: json['title'] as String,
+      );
+
+  final String? endedAt;
+  final String? fromPlace;
+  final String id;
+  final String? itineraryId;
+  final num? lastLat;
+  final num? lastLng;
+  final String? lastLocationAt;
+  /// Tracking link, if created
+  final String? shareUrl;
+  final bool sharingLocation;
+  final String startedAt;
+  /// One of: active, ended.
+  final String status;
+  final String title;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'endedAt': ?endedAt,
+        'fromPlace': ?fromPlace,
+        'id': id,
+        'itineraryId': ?itineraryId,
+        'lastLat': ?lastLat,
+        'lastLng': ?lastLng,
+        'lastLocationAt': ?lastLocationAt,
+        'shareUrl': ?shareUrl,
+        'sharingLocation': sharingLocation,
+        'startedAt': startedAt,
+        'status': status,
+        'title': title,
+      };
+}
+
+@immutable
+class TripShareResponse {
+  const TripShareResponse({
+    required this.message,
+    required this.shareUrl,
+  });
+
+  factory TripShareResponse.fromJson(Map<String, dynamic> json) => TripShareResponse(
+        message: json['message'] as String,
+        shareUrl: json['shareUrl'] as String,
+      );
+
+  /// Ready-made text for WhatsApp or SMS
+  final String message;
+  final String shareUrl;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'message': message,
+        'shareUrl': shareUrl,
+      };
+}
+
+@immutable
+class TripSharingDto {
+  const TripSharingDto({
+    required this.sharing,
+  });
+
+  factory TripSharingDto.fromJson(Map<String, dynamic> json) => TripSharingDto(
+        sharing: json['sharing'] as bool,
+      );
+
+  /// true = share live location, false = pause
+  final bool sharing;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'sharing': sharing,
+      };
 }
 
 @immutable
@@ -5106,36 +5593,34 @@ class TripStayDto {
   });
 
   factory TripStayDto.fromJson(Map<String, dynamic> json) => TripStayDto(
-    address: json['address'] == null ? null : json['address'] as String,
-    checkInTime: json['checkInTime'] == null ? null : json['checkInTime'] as String,
-    hotelId: json['hotelId'] == null ? null : json['hotelId'] as String,
-    name: json['name'] as String,
-    nightlyPaise: json['nightlyPaise'] == null ? null : json['nightlyPaise'] as num,
-    notes: json['notes'] == null ? null : json['notes'] as String,
-    rooms: json['rooms'] == null ? null : json['rooms'] as num,
-  );
+        address: json['address'] == null ? null : json['address'] as String,
+        checkInTime: json['checkInTime'] == null ? null : json['checkInTime'] as String,
+        hotelId: json['hotelId'] == null ? null : json['hotelId'] as String,
+        name: json['name'] as String,
+        nightlyPaise: json['nightlyPaise'] == null ? null : json['nightlyPaise'] as num,
+        notes: json['notes'] == null ? null : json['notes'] as String,
+        rooms: json['rooms'] == null ? null : json['rooms'] as num,
+      );
 
   final String? address;
   final String? checkInTime;
-
   /// A TirthNow hotel, if booked here
   final String? hotelId;
   final String name;
-
   /// Price per room per night (paise)
   final num? nightlyPaise;
   final String? notes;
   final num? rooms;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'address': ?address,
-    'checkInTime': ?checkInTime,
-    'hotelId': ?hotelId,
-    'name': name,
-    'nightlyPaise': ?nightlyPaise,
-    'notes': ?notes,
-    'rooms': ?rooms,
-  };
+        'address': ?address,
+        'checkInTime': ?checkInTime,
+        'hotelId': ?hotelId,
+        'name': name,
+        'nightlyPaise': ?nightlyPaise,
+        'notes': ?notes,
+        'rooms': ?rooms,
+      };
 }
 
 @immutable
@@ -5150,36 +5635,33 @@ class TripTravelDto {
   });
 
   factory TripTravelDto.fromJson(Map<String, dynamic> json) => TripTravelDto(
-    arrivalMode: json['arrivalMode'] as String,
-    arrivalTime: json['arrivalTime'] == null ? null : json['arrivalTime'] as String,
-    departureTime: json['departureTime'] == null ? null : json['departureTime'] as String,
-    details: json['details'] == null ? null : json['details'] as String,
-    from: json['from'] == null ? null : json['from'] as String,
-    localTransport: json['localTransport'] == null ? null : json['localTransport'] as String,
-  );
+        arrivalMode: json['arrivalMode'] as String,
+        arrivalTime: json['arrivalTime'] == null ? null : json['arrivalTime'] as String,
+        departureTime: json['departureTime'] == null ? null : json['departureTime'] as String,
+        details: json['details'] == null ? null : json['details'] as String,
+        from: json['from'] == null ? null : json['from'] as String,
+        localTransport: json['localTransport'] == null ? null : json['localTransport'] as String,
+      );
 
   /// One of: train, bus, car, flight, other.
   final String arrivalMode;
-
   /// Arrival on day 1 (IST)
   final String? arrivalTime;
-
   /// Departure on the last day (IST)
   final String? departureTime;
   final String? details;
   final String? from;
-
   /// One of: e_rickshaw, cab, walk, bus, own_vehicle.
   final String? localTransport;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'arrivalMode': arrivalMode,
-    'arrivalTime': ?arrivalTime,
-    'departureTime': ?departureTime,
-    'details': ?details,
-    'from': ?from,
-    'localTransport': ?localTransport,
-  };
+        'arrivalMode': arrivalMode,
+        'arrivalTime': ?arrivalTime,
+        'departureTime': ?departureTime,
+        'details': ?details,
+        'from': ?from,
+        'localTransport': ?localTransport,
+      };
 }
 
 @immutable
@@ -5198,29 +5680,26 @@ class UpdateAartiScheduleDto {
   });
 
   factory UpdateAartiScheduleDto.fromJson(Map<String, dynamic> json) => UpdateAartiScheduleDto(
-    durationMin: json['durationMin'] == null ? null : json['durationMin'] as num,
-    isLiveStreamed: json['isLiveStreamed'] == null ? null : json['isLiveStreamed'] as bool,
-    kind: json['kind'] == null ? null : json['kind'] as String,
-    localTime: json['localTime'] == null ? null : json['localTime'] as String,
-    name: json['name'] == null ? null : I18nTextDto.fromJson(_map(json['name'])),
-    recurrence: json['recurrence'] == null ? null : json['recurrence'] as String,
-    season: json['season'] == null ? null : json['season'] as String,
-    streamUrl: json['streamUrl'] == null ? null : json['streamUrl'] as String,
-    validFrom: json['validFrom'] == null ? null : json['validFrom'] as String,
-    validTo: json['validTo'] == null ? null : json['validTo'] as String,
-  );
+        durationMin: json['durationMin'] == null ? null : json['durationMin'] as num,
+        isLiveStreamed: json['isLiveStreamed'] == null ? null : json['isLiveStreamed'] as bool,
+        kind: json['kind'] == null ? null : json['kind'] as String,
+        localTime: json['localTime'] == null ? null : json['localTime'] as String,
+        name: json['name'] == null ? null : I18nTextDto.fromJson(_map(json['name'])),
+        recurrence: json['recurrence'] == null ? null : json['recurrence'] as String,
+        season: json['season'] == null ? null : json['season'] as String,
+        streamUrl: json['streamUrl'] == null ? null : json['streamUrl'] as String,
+        validFrom: json['validFrom'] == null ? null : json['validFrom'] as String,
+        validTo: json['validTo'] == null ? null : json['validTo'] as String,
+      );
 
   final num? durationMin;
   final bool? isLiveStreamed;
-
   /// One of: mangla, shringar, rajbhog, utthapan, sandhya, shayan, other.
   final String? kind;
-
   /// IST wall-clock HH:MM
   final String? localTime;
   final I18nTextDto? name;
   final String? recurrence;
-
   /// One of: all, summer, winter.
   final String? season;
   final String? streamUrl;
@@ -5228,17 +5707,17 @@ class UpdateAartiScheduleDto {
   final String? validTo;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'durationMin': ?durationMin,
-    'isLiveStreamed': ?isLiveStreamed,
-    'kind': ?kind,
-    'localTime': ?localTime,
-    'name': ?name?.toJson(),
-    'recurrence': ?recurrence,
-    'season': ?season,
-    'streamUrl': ?streamUrl,
-    'validFrom': ?validFrom,
-    'validTo': ?validTo,
-  };
+        'durationMin': ?durationMin,
+        'isLiveStreamed': ?isLiveStreamed,
+        'kind': ?kind,
+        'localTime': ?localTime,
+        'name': ?name?.toJson(),
+        'recurrence': ?recurrence,
+        'season': ?season,
+        'streamUrl': ?streamUrl,
+        'validFrom': ?validFrom,
+        'validTo': ?validTo,
+      };
 }
 
 @immutable
@@ -5253,50 +5732,51 @@ class UpdateCalendarDto {
   });
 
   factory UpdateCalendarDto.fromJson(Map<String, dynamic> json) => UpdateCalendarDto(
-    from: json['from'] as String,
-    pricePaise: json['pricePaise'] == null ? null : json['pricePaise'] as num,
-    stopSell: json['stopSell'] == null ? null : json['stopSell'] as bool,
-    to: json['to'] as String,
-    total: json['total'] == null ? null : json['total'] as num,
-    weekdays: json['weekdays'] == null
-        ? null
-        : (json['weekdays'] as List<dynamic>).map((dynamic x) => x as num).toList(),
-  );
+        from: json['from'] as String,
+        pricePaise: json['pricePaise'] == null ? null : json['pricePaise'] as num,
+        stopSell: json['stopSell'] == null ? null : json['stopSell'] as bool,
+        to: json['to'] as String,
+        total: json['total'] == null ? null : json['total'] as num,
+        weekdays: json['weekdays'] == null ? null : (json['weekdays'] as List<dynamic>).map((dynamic x) => x as num).toList(),
+      );
 
   final String from;
-
   /// Nightly price override in paise
   final num? pricePaise;
   final bool? stopSell;
   final String to;
-
   /// Rooms in the inventory for these nights
   final num? total;
-
   /// Only these weekdays (0=Sun … 6=Sat), e.g. weekend pricing
   final List<num>? weekdays;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'from': from,
-    'pricePaise': ?pricePaise,
-    'stopSell': ?stopSell,
-    'to': to,
-    'total': ?total,
-    'weekdays': ?weekdays,
-  };
+        'from': from,
+        'pricePaise': ?pricePaise,
+        'stopSell': ?stopSell,
+        'to': to,
+        'total': ?total,
+        'weekdays': ?weekdays,
+      };
 }
 
 @immutable
 class UpdateCityDto {
-  const UpdateCityDto({this.lat, this.lng, this.name, this.slug, this.sortOrder});
+  const UpdateCityDto({
+    this.lat,
+    this.lng,
+    this.name,
+    this.slug,
+    this.sortOrder,
+  });
 
   factory UpdateCityDto.fromJson(Map<String, dynamic> json) => UpdateCityDto(
-    lat: json['lat'] == null ? null : json['lat'] as num,
-    lng: json['lng'] == null ? null : json['lng'] as num,
-    name: json['name'] == null ? null : I18nTextDto.fromJson(_map(json['name'])),
-    slug: json['slug'] == null ? null : json['slug'] as String,
-    sortOrder: json['sortOrder'] == null ? null : json['sortOrder'] as num,
-  );
+        lat: json['lat'] == null ? null : json['lat'] as num,
+        lng: json['lng'] == null ? null : json['lng'] as num,
+        name: json['name'] == null ? null : I18nTextDto.fromJson(_map(json['name'])),
+        slug: json['slug'] == null ? null : json['slug'] as String,
+        sortOrder: json['sortOrder'] == null ? null : json['sortOrder'] as num,
+      );
 
   final num? lat;
   final num? lng;
@@ -5305,12 +5785,12 @@ class UpdateCityDto {
   final num? sortOrder;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'lat': ?lat,
-    'lng': ?lng,
-    'name': ?name?.toJson(),
-    'slug': ?slug,
-    'sortOrder': ?sortOrder,
-  };
+        'lat': ?lat,
+        'lng': ?lng,
+        'name': ?name?.toJson(),
+        'slug': ?slug,
+        'sortOrder': ?sortOrder,
+      };
 }
 
 @immutable
@@ -5331,19 +5811,19 @@ class UpdateCommissionRuleDto {
   });
 
   factory UpdateCommissionRuleDto.fromJson(Map<String, dynamic> json) => UpdateCommissionRuleDto(
-    cityId: json['cityId'] == null ? null : json['cityId'] as String,
-    effectiveFrom: json['effectiveFrom'] == null ? null : json['effectiveFrom'] as String,
-    effectiveTo: json['effectiveTo'] == null ? null : json['effectiveTo'] as String,
-    flatPaise: json['flatPaise'] == null ? null : json['flatPaise'] as num,
-    isActive: json['isActive'] == null ? null : json['isActive'] as bool,
-    maxPaise: json['maxPaise'] == null ? null : json['maxPaise'] as num,
-    minPaise: json['minPaise'] == null ? null : json['minPaise'] as num,
-    name: json['name'] == null ? null : json['name'] as String,
-    orderType: json['orderType'] == null ? null : json['orderType'] as String,
-    percentBps: json['percentBps'] == null ? null : json['percentBps'] as num,
-    priority: json['priority'] == null ? null : json['priority'] as num,
-    vendorId: json['vendorId'] == null ? null : json['vendorId'] as String,
-  );
+        cityId: json['cityId'] == null ? null : json['cityId'] as String,
+        effectiveFrom: json['effectiveFrom'] == null ? null : json['effectiveFrom'] as String,
+        effectiveTo: json['effectiveTo'] == null ? null : json['effectiveTo'] as String,
+        flatPaise: json['flatPaise'] == null ? null : json['flatPaise'] as num,
+        isActive: json['isActive'] == null ? null : json['isActive'] as bool,
+        maxPaise: json['maxPaise'] == null ? null : json['maxPaise'] as num,
+        minPaise: json['minPaise'] == null ? null : json['minPaise'] as num,
+        name: json['name'] == null ? null : json['name'] as String,
+        orderType: json['orderType'] == null ? null : json['orderType'] as String,
+        percentBps: json['percentBps'] == null ? null : json['percentBps'] as num,
+        priority: json['priority'] == null ? null : json['priority'] as num,
+        vendorId: json['vendorId'] == null ? null : json['vendorId'] as String,
+      );
 
   final String? cityId;
   final String? effectiveFrom;
@@ -5353,29 +5833,27 @@ class UpdateCommissionRuleDto {
   final num? maxPaise;
   final num? minPaise;
   final String? name;
-
   /// One of: hotel, cab, food, experience, transit.
   final String? orderType;
-
   /// Basis points (1000 = 10%)
   final num? percentBps;
   final num? priority;
   final String? vendorId;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'cityId': ?cityId,
-    'effectiveFrom': ?effectiveFrom,
-    'effectiveTo': ?effectiveTo,
-    'flatPaise': ?flatPaise,
-    'isActive': ?isActive,
-    'maxPaise': ?maxPaise,
-    'minPaise': ?minPaise,
-    'name': ?name,
-    'orderType': ?orderType,
-    'percentBps': ?percentBps,
-    'priority': ?priority,
-    'vendorId': ?vendorId,
-  };
+        'cityId': ?cityId,
+        'effectiveFrom': ?effectiveFrom,
+        'effectiveTo': ?effectiveTo,
+        'flatPaise': ?flatPaise,
+        'isActive': ?isActive,
+        'maxPaise': ?maxPaise,
+        'minPaise': ?minPaise,
+        'name': ?name,
+        'orderType': ?orderType,
+        'percentBps': ?percentBps,
+        'priority': ?priority,
+        'vendorId': ?vendorId,
+      };
 }
 
 @immutable
@@ -5388,8 +5866,7 @@ class UpdateEmergencyContactDto {
     this.relation,
   });
 
-  factory UpdateEmergencyContactDto.fromJson(Map<String, dynamic> json) =>
-      UpdateEmergencyContactDto(
+  factory UpdateEmergencyContactDto.fromJson(Map<String, dynamic> json) => UpdateEmergencyContactDto(
         name: json['name'] == null ? null : json['name'] as String,
         notifyWhatsapp: json['notifyWhatsapp'] == null ? null : json['notifyWhatsapp'] as bool,
         phoneE164: json['phoneE164'] == null ? null : json['phoneE164'] as String,
@@ -5404,12 +5881,12 @@ class UpdateEmergencyContactDto {
   final String? relation;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'name': ?name,
-    'notifyWhatsapp': ?notifyWhatsapp,
-    'phoneE164': ?phoneE164,
-    'priority': ?priority,
-    'relation': ?relation,
-  };
+        'name': ?name,
+        'notifyWhatsapp': ?notifyWhatsapp,
+        'phoneE164': ?phoneE164,
+        'priority': ?priority,
+        'relation': ?relation,
+      };
 }
 
 @immutable
@@ -5427,46 +5904,40 @@ class UpdateExperienceDto {
   });
 
   factory UpdateExperienceDto.fromJson(Map<String, dynamic> json) => UpdateExperienceDto(
-    cancellationPolicy: json['cancellationPolicy'] == null
-        ? null
-        : CancellationPolicyDto.fromJson(_map(json['cancellationPolicy'])),
-    cityId: json['cityId'] == null ? null : json['cityId'] as String,
-    description: json['description'] == null
-        ? null
-        : I18nTextDto.fromJson(_map(json['description'])),
-    durationMin: json['durationMin'] == null ? null : json['durationMin'] as num,
-    isPublished: json['isPublished'] == null ? null : json['isPublished'] as bool,
-    kind: json['kind'] == null ? null : json['kind'] as String,
-    maxGroupSize: json['maxGroupSize'] == null ? null : json['maxGroupSize'] as num,
-    pricePaise: json['pricePaise'] == null ? null : json['pricePaise'] as num,
-    title: json['title'] == null ? null : I18nTextDto.fromJson(_map(json['title'])),
-  );
+        cancellationPolicy: json['cancellationPolicy'] == null ? null : CancellationPolicyDto.fromJson(_map(json['cancellationPolicy'])),
+        cityId: json['cityId'] == null ? null : json['cityId'] as String,
+        description: json['description'] == null ? null : I18nTextDto.fromJson(_map(json['description'])),
+        durationMin: json['durationMin'] == null ? null : json['durationMin'] as num,
+        isPublished: json['isPublished'] == null ? null : json['isPublished'] as bool,
+        kind: json['kind'] == null ? null : json['kind'] as String,
+        maxGroupSize: json['maxGroupSize'] == null ? null : json['maxGroupSize'] as num,
+        pricePaise: json['pricePaise'] == null ? null : json['pricePaise'] as num,
+        title: json['title'] == null ? null : I18nTextDto.fromJson(_map(json['title'])),
+      );
 
   final CancellationPolicyDto? cancellationPolicy;
   final String? cityId;
   final I18nTextDto? description;
   final num? durationMin;
   final bool? isPublished;
-
   /// One of: guided_tour, boat_ride, parikrama_guide, cooking, workshop, other.
   final String? kind;
   final num? maxGroupSize;
-
   /// Per person, paise
   final num? pricePaise;
   final I18nTextDto? title;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'cancellationPolicy': ?cancellationPolicy?.toJson(),
-    'cityId': ?cityId,
-    'description': ?description?.toJson(),
-    'durationMin': ?durationMin,
-    'isPublished': ?isPublished,
-    'kind': ?kind,
-    'maxGroupSize': ?maxGroupSize,
-    'pricePaise': ?pricePaise,
-    'title': ?title?.toJson(),
-  };
+        'cancellationPolicy': ?cancellationPolicy?.toJson(),
+        'cityId': ?cityId,
+        'description': ?description?.toJson(),
+        'durationMin': ?durationMin,
+        'isPublished': ?isPublished,
+        'kind': ?kind,
+        'maxGroupSize': ?maxGroupSize,
+        'pricePaise': ?pricePaise,
+        'title': ?title?.toJson(),
+      };
 }
 
 @immutable
@@ -5484,22 +5955,21 @@ class UpdateExploreItemDto {
   });
 
   factory UpdateExploreItemDto.fromJson(Map<String, dynamic> json) => UpdateExploreItemDto(
-    body: json['body'] == null ? null : I18nTextDto.fromJson(_map(json['body'])),
-    cityId: json['cityId'] == null ? null : json['cityId'] as String,
-    coverMediaId: json['coverMediaId'] == null ? null : json['coverMediaId'] as String,
-    isPublished: json['isPublished'] == null ? null : json['isPublished'] as bool,
-    kind: json['kind'] == null ? null : json['kind'] as String,
-    lat: json['lat'] == null ? null : json['lat'] as num,
-    lng: json['lng'] == null ? null : json['lng'] as num,
-    sortOrder: json['sortOrder'] == null ? null : json['sortOrder'] as num,
-    title: json['title'] == null ? null : I18nTextDto.fromJson(_map(json['title'])),
-  );
+        body: json['body'] == null ? null : I18nTextDto.fromJson(_map(json['body'])),
+        cityId: json['cityId'] == null ? null : json['cityId'] as String,
+        coverMediaId: json['coverMediaId'] == null ? null : json['coverMediaId'] as String,
+        isPublished: json['isPublished'] == null ? null : json['isPublished'] as bool,
+        kind: json['kind'] == null ? null : json['kind'] as String,
+        lat: json['lat'] == null ? null : json['lat'] as num,
+        lng: json['lng'] == null ? null : json['lng'] as num,
+        sortOrder: json['sortOrder'] == null ? null : json['sortOrder'] as num,
+        title: json['title'] == null ? null : I18nTextDto.fromJson(_map(json['title'])),
+      );
 
   final I18nTextDto? body;
   final String? cityId;
   final String? coverMediaId;
   final bool? isPublished;
-
   /// One of: ghat, kund, van, market, museum, food_spot, story.
   final String? kind;
   final num? lat;
@@ -5508,16 +5978,16 @@ class UpdateExploreItemDto {
   final I18nTextDto? title;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'body': ?body?.toJson(),
-    'cityId': ?cityId,
-    'coverMediaId': ?coverMediaId,
-    'isPublished': ?isPublished,
-    'kind': ?kind,
-    'lat': ?lat,
-    'lng': ?lng,
-    'sortOrder': ?sortOrder,
-    'title': ?title?.toJson(),
-  };
+        'body': ?body?.toJson(),
+        'cityId': ?cityId,
+        'coverMediaId': ?coverMediaId,
+        'isPublished': ?isPublished,
+        'kind': ?kind,
+        'lat': ?lat,
+        'lng': ?lng,
+        'sortOrder': ?sortOrder,
+        'title': ?title?.toJson(),
+      };
 }
 
 @immutable
@@ -5534,19 +6004,15 @@ class UpdateFestivalDto {
   });
 
   factory UpdateFestivalDto.fromJson(Map<String, dynamic> json) => UpdateFestivalDto(
-    cityId: json['cityId'] == null ? null : json['cityId'] as String,
-    coverMediaId: json['coverMediaId'] == null ? null : json['coverMediaId'] as String,
-    crowdAdvisory: json['crowdAdvisory'] == null
-        ? null
-        : I18nTextDto.fromJson(_map(json['crowdAdvisory'])),
-    description: json['description'] == null
-        ? null
-        : I18nTextDto.fromJson(_map(json['description'])),
-    endsOn: json['endsOn'] == null ? null : json['endsOn'] as String,
-    name: json['name'] == null ? null : I18nTextDto.fromJson(_map(json['name'])),
-    startsOn: json['startsOn'] == null ? null : json['startsOn'] as String,
-    templeId: json['templeId'] == null ? null : json['templeId'] as String,
-  );
+        cityId: json['cityId'] == null ? null : json['cityId'] as String,
+        coverMediaId: json['coverMediaId'] == null ? null : json['coverMediaId'] as String,
+        crowdAdvisory: json['crowdAdvisory'] == null ? null : I18nTextDto.fromJson(_map(json['crowdAdvisory'])),
+        description: json['description'] == null ? null : I18nTextDto.fromJson(_map(json['description'])),
+        endsOn: json['endsOn'] == null ? null : json['endsOn'] as String,
+        name: json['name'] == null ? null : I18nTextDto.fromJson(_map(json['name'])),
+        startsOn: json['startsOn'] == null ? null : json['startsOn'] as String,
+        templeId: json['templeId'] == null ? null : json['templeId'] as String,
+      );
 
   final String? cityId;
   final String? coverMediaId;
@@ -5558,15 +6024,15 @@ class UpdateFestivalDto {
   final String? templeId;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'cityId': ?cityId,
-    'coverMediaId': ?coverMediaId,
-    'crowdAdvisory': ?crowdAdvisory?.toJson(),
-    'description': ?description?.toJson(),
-    'endsOn': ?endsOn,
-    'name': ?name?.toJson(),
-    'startsOn': ?startsOn,
-    'templeId': ?templeId,
-  };
+        'cityId': ?cityId,
+        'coverMediaId': ?coverMediaId,
+        'crowdAdvisory': ?crowdAdvisory?.toJson(),
+        'description': ?description?.toJson(),
+        'endsOn': ?endsOn,
+        'name': ?name?.toJson(),
+        'startsOn': ?startsOn,
+        'templeId': ?templeId,
+      };
 }
 
 @immutable
@@ -5587,25 +6053,19 @@ class UpdateHotelDto {
   });
 
   factory UpdateHotelDto.fromJson(Map<String, dynamic> json) => UpdateHotelDto(
-    address: json['address'] == null ? null : json['address'] as String,
-    amenities: json['amenities'] == null
-        ? null
-        : (json['amenities'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-    cancellationPolicy: json['cancellationPolicy'] == null
-        ? null
-        : CancellationPolicyDto.fromJson(_map(json['cancellationPolicy'])),
-    checkinTime: json['checkinTime'] == null ? null : json['checkinTime'] as String,
-    checkoutTime: json['checkoutTime'] == null ? null : json['checkoutTime'] as String,
-    cityId: json['cityId'] == null ? null : json['cityId'] as String,
-    description: json['description'] == null
-        ? null
-        : I18nTextDto.fromJson(_map(json['description'])),
-    isPublished: json['isPublished'] == null ? null : json['isPublished'] as bool,
-    lat: json['lat'] == null ? null : json['lat'] as num,
-    lng: json['lng'] == null ? null : json['lng'] as num,
-    name: json['name'] == null ? null : I18nTextDto.fromJson(_map(json['name'])),
-    starRating: json['starRating'] == null ? null : json['starRating'] as num,
-  );
+        address: json['address'] == null ? null : json['address'] as String,
+        amenities: json['amenities'] == null ? null : (json['amenities'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+        cancellationPolicy: json['cancellationPolicy'] == null ? null : CancellationPolicyDto.fromJson(_map(json['cancellationPolicy'])),
+        checkinTime: json['checkinTime'] == null ? null : json['checkinTime'] as String,
+        checkoutTime: json['checkoutTime'] == null ? null : json['checkoutTime'] as String,
+        cityId: json['cityId'] == null ? null : json['cityId'] as String,
+        description: json['description'] == null ? null : I18nTextDto.fromJson(_map(json['description'])),
+        isPublished: json['isPublished'] == null ? null : json['isPublished'] as bool,
+        lat: json['lat'] == null ? null : json['lat'] as num,
+        lng: json['lng'] == null ? null : json['lng'] as num,
+        name: json['name'] == null ? null : I18nTextDto.fromJson(_map(json['name'])),
+        starRating: json['starRating'] == null ? null : json['starRating'] as num,
+      );
 
   final String? address;
   final List<String>? amenities;
@@ -5614,7 +6074,6 @@ class UpdateHotelDto {
   final String? checkoutTime;
   final String? cityId;
   final I18nTextDto? description;
-
   /// Visible to travellers (vendor must be active)
   final bool? isPublished;
   final num? lat;
@@ -5623,45 +6082,46 @@ class UpdateHotelDto {
   final num? starRating;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'address': ?address,
-    'amenities': ?amenities,
-    'cancellationPolicy': ?cancellationPolicy?.toJson(),
-    'checkinTime': ?checkinTime,
-    'checkoutTime': ?checkoutTime,
-    'cityId': ?cityId,
-    'description': ?description?.toJson(),
-    'isPublished': ?isPublished,
-    'lat': ?lat,
-    'lng': ?lng,
-    'name': ?name?.toJson(),
-    'starRating': ?starRating,
-  };
+        'address': ?address,
+        'amenities': ?amenities,
+        'cancellationPolicy': ?cancellationPolicy?.toJson(),
+        'checkinTime': ?checkinTime,
+        'checkoutTime': ?checkoutTime,
+        'cityId': ?cityId,
+        'description': ?description?.toJson(),
+        'isPublished': ?isPublished,
+        'lat': ?lat,
+        'lng': ?lng,
+        'name': ?name?.toJson(),
+        'starRating': ?starRating,
+      };
 }
 
 @immutable
 class UpdateItineraryDto {
-  const UpdateItineraryDto({this.removeItemIds, this.status, this.title});
+  const UpdateItineraryDto({
+    this.removeItemIds,
+    this.status,
+    this.title,
+  });
 
   factory UpdateItineraryDto.fromJson(Map<String, dynamic> json) => UpdateItineraryDto(
-    removeItemIds: json['removeItemIds'] == null
-        ? null
-        : (json['removeItemIds'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-    status: json['status'] == null ? null : json['status'] as String,
-    title: json['title'] == null ? null : json['title'] as String,
-  );
+        removeItemIds: json['removeItemIds'] == null ? null : (json['removeItemIds'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+        status: json['status'] == null ? null : json['status'] as String,
+        title: json['title'] == null ? null : json['title'] as String,
+      );
 
   /// Item ids to remove
   final List<String>? removeItemIds;
-
   /// One of: draft, saved, archived.
   final String? status;
   final String? title;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'removeItemIds': ?removeItemIds,
-    'status': ?status,
-    'title': ?title,
-  };
+        'removeItemIds': ?removeItemIds,
+        'status': ?status,
+        'title': ?title,
+      };
 }
 
 @immutable
@@ -5676,13 +6136,13 @@ class UpdateMenuItemDto {
   });
 
   factory UpdateMenuItemDto.fromJson(Map<String, dynamic> json) => UpdateMenuItemDto(
-    category: json['category'] == null ? null : json['category'] as String,
-    isAvailable: json['isAvailable'] == null ? null : json['isAvailable'] as bool,
-    isJain: json['isJain'] == null ? null : json['isJain'] as bool,
-    mediaId: json['mediaId'] == null ? null : json['mediaId'] as String,
-    name: json['name'] == null ? null : I18nTextDto.fromJson(_map(json['name'])),
-    pricePaise: json['pricePaise'] == null ? null : json['pricePaise'] as num,
-  );
+        category: json['category'] == null ? null : json['category'] as String,
+        isAvailable: json['isAvailable'] == null ? null : json['isAvailable'] as bool,
+        isJain: json['isJain'] == null ? null : json['isJain'] as bool,
+        mediaId: json['mediaId'] == null ? null : json['mediaId'] as String,
+        name: json['name'] == null ? null : I18nTextDto.fromJson(_map(json['name'])),
+        pricePaise: json['pricePaise'] == null ? null : json['pricePaise'] as num,
+      );
 
   final String? category;
   final bool? isAvailable;
@@ -5692,13 +6152,13 @@ class UpdateMenuItemDto {
   final num? pricePaise;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'category': ?category,
-    'isAvailable': ?isAvailable,
-    'isJain': ?isJain,
-    'mediaId': ?mediaId,
-    'name': ?name?.toJson(),
-    'pricePaise': ?pricePaise,
-  };
+        'category': ?category,
+        'isAvailable': ?isAvailable,
+        'isJain': ?isJain,
+        'mediaId': ?mediaId,
+        'name': ?name?.toJson(),
+        'pricePaise': ?pricePaise,
+      };
 }
 
 @immutable
@@ -5716,19 +6176,18 @@ class UpdatePoiDto {
   });
 
   factory UpdatePoiDto.fromJson(Map<String, dynamic> json) => UpdatePoiDto(
-    address: json['address'] == null ? null : json['address'] as String,
-    category: json['category'] == null ? null : json['category'] as String,
-    cityId: json['cityId'] == null ? null : json['cityId'] as String,
-    is24x7: json['is24x7'] == null ? null : json['is24x7'] as bool,
-    isEmergency: json['isEmergency'] == null ? null : json['isEmergency'] as bool,
-    lat: json['lat'] == null ? null : json['lat'] as num,
-    lng: json['lng'] == null ? null : json['lng'] as num,
-    name: json['name'] == null ? null : I18nTextDto.fromJson(_map(json['name'])),
-    phoneE164: json['phoneE164'] == null ? null : json['phoneE164'] as String,
-  );
+        address: json['address'] == null ? null : json['address'] as String,
+        category: json['category'] == null ? null : json['category'] as String,
+        cityId: json['cityId'] == null ? null : json['cityId'] as String,
+        is24x7: json['is24x7'] == null ? null : json['is24x7'] as bool,
+        isEmergency: json['isEmergency'] == null ? null : json['isEmergency'] as bool,
+        lat: json['lat'] == null ? null : json['lat'] as num,
+        lng: json['lng'] == null ? null : json['lng'] as num,
+        name: json['name'] == null ? null : I18nTextDto.fromJson(_map(json['name'])),
+        phoneE164: json['phoneE164'] == null ? null : json['phoneE164'] as String,
+      );
 
   final String? address;
-
   /// One of: hospital, police, pharmacy, atm, parking, toilet, water, ghat, other.
   final String? category;
   final String? cityId;
@@ -5740,16 +6199,16 @@ class UpdatePoiDto {
   final String? phoneE164;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'address': ?address,
-    'category': ?category,
-    'cityId': ?cityId,
-    'is24x7': ?is24x7,
-    'isEmergency': ?isEmergency,
-    'lat': ?lat,
-    'lng': ?lng,
-    'name': ?name?.toJson(),
-    'phoneE164': ?phoneE164,
-  };
+        'address': ?address,
+        'category': ?category,
+        'cityId': ?cityId,
+        'is24x7': ?is24x7,
+        'isEmergency': ?isEmergency,
+        'lat': ?lat,
+        'lng': ?lng,
+        'name': ?name?.toJson(),
+        'phoneE164': ?phoneE164,
+      };
 }
 
 @immutable
@@ -5764,37 +6223,31 @@ class UpdateProfileDto {
   });
 
   factory UpdateProfileDto.fromJson(Map<String, dynamic> json) => UpdateProfileDto(
-    accessibility: json['accessibility'] == null
-        ? null
-        : AccessibilityDto.fromJson(_map(json['accessibility'])),
-    avatarMediaId: json['avatarMediaId'] == null ? null : json['avatarMediaId'] as String,
-    displayName: json['displayName'] == null ? null : json['displayName'] as String,
-    homeCityId: json['homeCityId'] == null ? null : json['homeCityId'] as String,
-    notificationPrefs: json['notificationPrefs'] == null
-        ? null
-        : NotificationPrefsDto.fromJson(_map(json['notificationPrefs'])),
-    preferredLang: json['preferredLang'] == null ? null : json['preferredLang'] as String,
-  );
+        accessibility: json['accessibility'] == null ? null : AccessibilityDto.fromJson(_map(json['accessibility'])),
+        avatarMediaId: json['avatarMediaId'] == null ? null : json['avatarMediaId'] as String,
+        displayName: json['displayName'] == null ? null : json['displayName'] as String,
+        homeCityId: json['homeCityId'] == null ? null : json['homeCityId'] as String,
+        notificationPrefs: json['notificationPrefs'] == null ? null : NotificationPrefsDto.fromJson(_map(json['notificationPrefs'])),
+        preferredLang: json['preferredLang'] == null ? null : json['preferredLang'] as String,
+      );
 
   final AccessibilityDto? accessibility;
-
   /// Ready media id uploaded with purpose "avatar"
   final String? avatarMediaId;
   final String? displayName;
   final String? homeCityId;
   final NotificationPrefsDto? notificationPrefs;
-
   /// One of: en, hi.
   final String? preferredLang;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'accessibility': ?accessibility?.toJson(),
-    'avatarMediaId': ?avatarMediaId,
-    'displayName': ?displayName,
-    'homeCityId': ?homeCityId,
-    'notificationPrefs': ?notificationPrefs?.toJson(),
-    'preferredLang': ?preferredLang,
-  };
+        'accessibility': ?accessibility?.toJson(),
+        'avatarMediaId': ?avatarMediaId,
+        'displayName': ?displayName,
+        'homeCityId': ?homeCityId,
+        'notificationPrefs': ?notificationPrefs?.toJson(),
+        'preferredLang': ?preferredLang,
+      };
 }
 
 @immutable
@@ -5808,32 +6261,28 @@ class UpdateReelDto {
   });
 
   factory UpdateReelDto.fromJson(Map<String, dynamic> json) => UpdateReelDto(
-    caption: json['caption'] == null ? null : json['caption'] as String,
-    edits: json['edits'] == null ? null : ReelEditsDto.fromJson(_map(json['edits'])),
-    hashtags: json['hashtags'] == null
-        ? null
-        : (json['hashtags'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-    templeId: json['templeId'] == null ? null : json['templeId'] as String,
-    thumbnailMediaId: json['thumbnailMediaId'] == null ? null : json['thumbnailMediaId'] as String,
-  );
+        caption: json['caption'] == null ? null : json['caption'] as String,
+        edits: json['edits'] == null ? null : ReelEditsDto.fromJson(_map(json['edits'])),
+        hashtags: json['hashtags'] == null ? null : (json['hashtags'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+        templeId: json['templeId'] == null ? null : json['templeId'] as String,
+        thumbnailMediaId: json['thumbnailMediaId'] == null ? null : json['thumbnailMediaId'] as String,
+      );
 
   final String? caption;
   final ReelEditsDto? edits;
   final List<String>? hashtags;
-
   /// null removes the tag
   final String? templeId;
-
   /// New uploaded reel_thumbnail (cover)
   final String? thumbnailMediaId;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'caption': ?caption,
-    'edits': ?edits?.toJson(),
-    'hashtags': ?hashtags,
-    'templeId': ?templeId,
-    'thumbnailMediaId': ?thumbnailMediaId,
-  };
+        'caption': ?caption,
+        'edits': ?edits?.toJson(),
+        'hashtags': ?hashtags,
+        'templeId': ?templeId,
+        'thumbnailMediaId': ?thumbnailMediaId,
+      };
 }
 
 @immutable
@@ -5854,21 +6303,19 @@ class UpdateRestaurantDto {
   });
 
   factory UpdateRestaurantDto.fromJson(Map<String, dynamic> json) => UpdateRestaurantDto(
-    acceptsOrders: json['acceptsOrders'] == null ? null : json['acceptsOrders'] as bool,
-    address: json['address'] == null ? null : json['address'] as String,
-    cityId: json['cityId'] == null ? null : json['cityId'] as String,
-    externalLinks: json['externalLinks'] == null
-        ? null
-        : ExternalLinksDto.fromJson(_map(json['externalLinks'])),
-    fssaiNo: json['fssaiNo'] == null ? null : json['fssaiNo'] as String,
-    isPublished: json['isPublished'] == null ? null : json['isPublished'] as bool,
-    isPureVeg: json['isPureVeg'] == null ? null : json['isPureVeg'] as bool,
-    isSatvik: json['isSatvik'] == null ? null : json['isSatvik'] as bool,
-    lat: json['lat'] == null ? null : json['lat'] as num,
-    lng: json['lng'] == null ? null : json['lng'] as num,
-    name: json['name'] == null ? null : I18nTextDto.fromJson(_map(json['name'])),
-    openingHours: json['openingHours'] == null ? null : _map(json['openingHours']),
-  );
+        acceptsOrders: json['acceptsOrders'] == null ? null : json['acceptsOrders'] as bool,
+        address: json['address'] == null ? null : json['address'] as String,
+        cityId: json['cityId'] == null ? null : json['cityId'] as String,
+        externalLinks: json['externalLinks'] == null ? null : ExternalLinksDto.fromJson(_map(json['externalLinks'])),
+        fssaiNo: json['fssaiNo'] == null ? null : json['fssaiNo'] as String,
+        isPublished: json['isPublished'] == null ? null : json['isPublished'] as bool,
+        isPureVeg: json['isPureVeg'] == null ? null : json['isPureVeg'] as bool,
+        isSatvik: json['isSatvik'] == null ? null : json['isSatvik'] as bool,
+        lat: json['lat'] == null ? null : json['lat'] as num,
+        lng: json['lng'] == null ? null : json['lng'] as num,
+        name: json['name'] == null ? null : I18nTextDto.fromJson(_map(json['name'])),
+        openingHours: json['openingHours'] == null ? null : _map(json['openingHours']),
+      );
 
   /// Accept in-app food orders
   final bool? acceptsOrders;
@@ -5885,42 +6332,44 @@ class UpdateRestaurantDto {
   final Map<String, dynamic>? openingHours;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'acceptsOrders': ?acceptsOrders,
-    'address': ?address,
-    'cityId': ?cityId,
-    'externalLinks': ?externalLinks?.toJson(),
-    'fssaiNo': ?fssaiNo,
-    'isPublished': ?isPublished,
-    'isPureVeg': ?isPureVeg,
-    'isSatvik': ?isSatvik,
-    'lat': ?lat,
-    'lng': ?lng,
-    'name': ?name?.toJson(),
-    'openingHours': ?openingHours,
-  };
+        'acceptsOrders': ?acceptsOrders,
+        'address': ?address,
+        'cityId': ?cityId,
+        'externalLinks': ?externalLinks?.toJson(),
+        'fssaiNo': ?fssaiNo,
+        'isPublished': ?isPublished,
+        'isPureVeg': ?isPureVeg,
+        'isSatvik': ?isSatvik,
+        'lat': ?lat,
+        'lng': ?lng,
+        'name': ?name?.toJson(),
+        'openingHours': ?openingHours,
+      };
 }
 
 @immutable
 class UpdateReviewDto {
-  const UpdateReviewDto({this.body, this.mediaIds, this.rating});
+  const UpdateReviewDto({
+    this.body,
+    this.mediaIds,
+    this.rating,
+  });
 
   factory UpdateReviewDto.fromJson(Map<String, dynamic> json) => UpdateReviewDto(
-    body: json['body'] == null ? null : json['body'] as String,
-    mediaIds: json['mediaIds'] == null
-        ? null
-        : (json['mediaIds'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-    rating: json['rating'] == null ? null : json['rating'] as num,
-  );
+        body: json['body'] == null ? null : json['body'] as String,
+        mediaIds: json['mediaIds'] == null ? null : (json['mediaIds'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+        rating: json['rating'] == null ? null : json['rating'] as num,
+      );
 
   final String? body;
   final List<String>? mediaIds;
   final num? rating;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'body': ?body,
-    'mediaIds': ?mediaIds,
-    'rating': ?rating,
-  };
+        'body': ?body,
+        'mediaIds': ?mediaIds,
+        'rating': ?rating,
+      };
 }
 
 @immutable
@@ -5935,20 +6384,15 @@ class UpdateRoomTypeDto {
   });
 
   factory UpdateRoomTypeDto.fromJson(Map<String, dynamic> json) => UpdateRoomTypeDto(
-    amenities: json['amenities'] == null
-        ? null
-        : (json['amenities'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-    basePricePaise: json['basePricePaise'] == null ? null : json['basePricePaise'] as num,
-    maxGuests: json['maxGuests'] == null ? null : json['maxGuests'] as num,
-    mediaIds: json['mediaIds'] == null
-        ? null
-        : (json['mediaIds'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-    name: json['name'] == null ? null : I18nTextDto.fromJson(_map(json['name'])),
-    totalRooms: json['totalRooms'] == null ? null : json['totalRooms'] as num,
-  );
+        amenities: json['amenities'] == null ? null : (json['amenities'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+        basePricePaise: json['basePricePaise'] == null ? null : json['basePricePaise'] as num,
+        maxGuests: json['maxGuests'] == null ? null : json['maxGuests'] as num,
+        mediaIds: json['mediaIds'] == null ? null : (json['mediaIds'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+        name: json['name'] == null ? null : I18nTextDto.fromJson(_map(json['name'])),
+        totalRooms: json['totalRooms'] == null ? null : json['totalRooms'] as num,
+      );
 
   final List<String>? amenities;
-
   /// Default nightly price in paise
   final num? basePricePaise;
   final num? maxGuests;
@@ -5957,35 +6401,35 @@ class UpdateRoomTypeDto {
   final num? totalRooms;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'amenities': ?amenities,
-    'basePricePaise': ?basePricePaise,
-    'maxGuests': ?maxGuests,
-    'mediaIds': ?mediaIds,
-    'name': ?name?.toJson(),
-    'totalRooms': ?totalRooms,
-  };
+        'amenities': ?amenities,
+        'basePricePaise': ?basePricePaise,
+        'maxGuests': ?maxGuests,
+        'mediaIds': ?mediaIds,
+        'name': ?name?.toJson(),
+        'totalRooms': ?totalRooms,
+      };
 }
 
 @immutable
 class UpdateStaffDto {
-  const UpdateStaffDto({this.isActive, this.permissions});
+  const UpdateStaffDto({
+    this.isActive,
+    this.permissions,
+  });
 
   factory UpdateStaffDto.fromJson(Map<String, dynamic> json) => UpdateStaffDto(
-    isActive: json['isActive'] == null ? null : json['isActive'] as bool,
-    permissions: json['permissions'] == null
-        ? null
-        : (json['permissions'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-  );
+        isActive: json['isActive'] == null ? null : json['isActive'] as bool,
+        permissions: json['permissions'] == null ? null : (json['permissions'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+      );
 
   final bool? isActive;
-
   /// One of: listings.edit, inventory.edit, orders.manage, finance.view, reviews.reply.
   final List<String>? permissions;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'isActive': ?isActive,
-    'permissions': ?permissions,
-  };
+        'isActive': ?isActive,
+        'permissions': ?permissions,
+      };
 }
 
 @immutable
@@ -6009,28 +6453,22 @@ class UpdateTempleDto {
   });
 
   factory UpdateTempleDto.fromJson(Map<String, dynamic> json) => UpdateTempleDto(
-    address: json['address'] == null ? null : json['address'] as String,
-    cityId: json['cityId'] == null ? null : json['cityId'] as String,
-    coverMediaId: json['coverMediaId'] == null ? null : json['coverMediaId'] as String,
-    crowdLevel: json['crowdLevel'] == null ? null : json['crowdLevel'] as num,
-    description: json['description'] == null
-        ? null
-        : I18nTextDto.fromJson(_map(json['description'])),
-    dressCode: json['dressCode'] == null ? null : I18nTextDto.fromJson(_map(json['dressCode'])),
-    galleryMediaIds: json['galleryMediaIds'] == null
-        ? null
-        : (json['galleryMediaIds'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-    history: json['history'] == null ? null : I18nTextDto.fromJson(_map(json['history'])),
-    isPublished: json['isPublished'] == null ? null : json['isPublished'] as bool,
-    lat: json['lat'] == null ? null : json['lat'] as num,
-    lng: json['lng'] == null ? null : json['lng'] as num,
-    name: json['name'] == null ? null : I18nTextDto.fromJson(_map(json['name'])),
-    openingHours: json['openingHours'] == null ? null : _map(json['openingHours']),
-    slug: json['slug'] == null ? null : json['slug'] as String,
-    tags: json['tags'] == null
-        ? null
-        : (json['tags'] as List<dynamic>).map((dynamic x) => x as String).toList(),
-  );
+        address: json['address'] == null ? null : json['address'] as String,
+        cityId: json['cityId'] == null ? null : json['cityId'] as String,
+        coverMediaId: json['coverMediaId'] == null ? null : json['coverMediaId'] as String,
+        crowdLevel: json['crowdLevel'] == null ? null : json['crowdLevel'] as num,
+        description: json['description'] == null ? null : I18nTextDto.fromJson(_map(json['description'])),
+        dressCode: json['dressCode'] == null ? null : I18nTextDto.fromJson(_map(json['dressCode'])),
+        galleryMediaIds: json['galleryMediaIds'] == null ? null : (json['galleryMediaIds'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+        history: json['history'] == null ? null : I18nTextDto.fromJson(_map(json['history'])),
+        isPublished: json['isPublished'] == null ? null : json['isPublished'] as bool,
+        lat: json['lat'] == null ? null : json['lat'] as num,
+        lng: json['lng'] == null ? null : json['lng'] as num,
+        name: json['name'] == null ? null : I18nTextDto.fromJson(_map(json['name'])),
+        openingHours: json['openingHours'] == null ? null : _map(json['openingHours']),
+        slug: json['slug'] == null ? null : json['slug'] as String,
+        tags: json['tags'] == null ? null : (json['tags'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+      );
 
   final String? address;
   final String? cityId;
@@ -6049,22 +6487,22 @@ class UpdateTempleDto {
   final List<String>? tags;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'address': ?address,
-    'cityId': ?cityId,
-    'coverMediaId': ?coverMediaId,
-    'crowdLevel': ?crowdLevel,
-    'description': ?description?.toJson(),
-    'dressCode': ?dressCode?.toJson(),
-    'galleryMediaIds': ?galleryMediaIds,
-    'history': ?history?.toJson(),
-    'isPublished': ?isPublished,
-    'lat': ?lat,
-    'lng': ?lng,
-    'name': ?name?.toJson(),
-    'openingHours': ?openingHours,
-    'slug': ?slug,
-    'tags': ?tags,
-  };
+        'address': ?address,
+        'cityId': ?cityId,
+        'coverMediaId': ?coverMediaId,
+        'crowdLevel': ?crowdLevel,
+        'description': ?description?.toJson(),
+        'dressCode': ?dressCode?.toJson(),
+        'galleryMediaIds': ?galleryMediaIds,
+        'history': ?history?.toJson(),
+        'isPublished': ?isPublished,
+        'lat': ?lat,
+        'lng': ?lng,
+        'name': ?name?.toJson(),
+        'openingHours': ?openingHours,
+        'slug': ?slug,
+        'tags': ?tags,
+      };
 }
 
 @immutable
@@ -6079,13 +6517,13 @@ class UpdateVehicleDto {
   });
 
   factory UpdateVehicleDto.fromJson(Map<String, dynamic> json) => UpdateVehicleDto(
-    driverName: json['driverName'] == null ? null : json['driverName'] as String,
-    driverPhoneE164: json['driverPhoneE164'] == null ? null : json['driverPhoneE164'] as String,
-    driverUserId: json['driverUserId'] == null ? null : json['driverUserId'] as String,
-    isActive: json['isActive'] == null ? null : json['isActive'] as bool,
-    model: json['model'] == null ? null : json['model'] as String,
-    seats: json['seats'] == null ? null : json['seats'] as num,
-  );
+        driverName: json['driverName'] == null ? null : json['driverName'] as String,
+        driverPhoneE164: json['driverPhoneE164'] == null ? null : json['driverPhoneE164'] as String,
+        driverUserId: json['driverUserId'] == null ? null : json['driverUserId'] as String,
+        isActive: json['isActive'] == null ? null : json['isActive'] as bool,
+        model: json['model'] == null ? null : json['model'] as String,
+        seats: json['seats'] == null ? null : json['seats'] as num,
+      );
 
   final String? driverName;
   final String? driverPhoneE164;
@@ -6095,26 +6533,32 @@ class UpdateVehicleDto {
   final num? seats;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'driverName': ?driverName,
-    'driverPhoneE164': ?driverPhoneE164,
-    'driverUserId': ?driverUserId,
-    'isActive': ?isActive,
-    'model': ?model,
-    'seats': ?seats,
-  };
+        'driverName': ?driverName,
+        'driverPhoneE164': ?driverPhoneE164,
+        'driverUserId': ?driverUserId,
+        'isActive': ?isActive,
+        'model': ?model,
+        'seats': ?seats,
+      };
 }
 
 @immutable
 class UpdateVendorDto {
-  const UpdateVendorDto({this.cityId, this.displayName, this.gstin, this.legalName, this.pan});
+  const UpdateVendorDto({
+    this.cityId,
+    this.displayName,
+    this.gstin,
+    this.legalName,
+    this.pan,
+  });
 
   factory UpdateVendorDto.fromJson(Map<String, dynamic> json) => UpdateVendorDto(
-    cityId: json['cityId'] == null ? null : json['cityId'] as String,
-    displayName: json['displayName'] == null ? null : json['displayName'] as String,
-    gstin: json['gstin'] == null ? null : json['gstin'] as String,
-    legalName: json['legalName'] == null ? null : json['legalName'] as String,
-    pan: json['pan'] == null ? null : json['pan'] as String,
-  );
+        cityId: json['cityId'] == null ? null : json['cityId'] as String,
+        displayName: json['displayName'] == null ? null : json['displayName'] as String,
+        gstin: json['gstin'] == null ? null : json['gstin'] as String,
+        legalName: json['legalName'] == null ? null : json['legalName'] as String,
+        pan: json['pan'] == null ? null : json['pan'] as String,
+      );
 
   final String? cityId;
   final String? displayName;
@@ -6123,12 +6567,12 @@ class UpdateVendorDto {
   final String? pan;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'cityId': ?cityId,
-    'displayName': ?displayName,
-    'gstin': ?gstin,
-    'legalName': ?legalName,
-    'pan': ?pan,
-  };
+        'cityId': ?cityId,
+        'displayName': ?displayName,
+        'gstin': ?gstin,
+        'legalName': ?legalName,
+        'pan': ?pan,
+      };
 }
 
 @immutable
@@ -6143,17 +6587,13 @@ class UpsertCabFareDto {
   });
 
   factory UpsertCabFareDto.fromJson(Map<String, dynamic> json) => UpsertCabFareDto(
-    baseFarePaise: json['baseFarePaise'] as num,
-    fixedRoutes: json['fixedRoutes'] == null
-        ? null
-        : (json['fixedRoutes'] as List<dynamic>)
-              .map((dynamic x) => FixedRouteDto.fromJson(_map(x)))
-              .toList(),
-    minFarePaise: json['minFarePaise'] as num,
-    nightSurchargePct: json['nightSurchargePct'] == null ? null : json['nightSurchargePct'] as num,
-    perKmPaise: json['perKmPaise'] as num,
-    perMinPaise: json['perMinPaise'] as num,
-  );
+        baseFarePaise: json['baseFarePaise'] as num,
+        fixedRoutes: json['fixedRoutes'] == null ? null : (json['fixedRoutes'] as List<dynamic>).map((dynamic x) => FixedRouteDto.fromJson(_map(x))).toList(),
+        minFarePaise: json['minFarePaise'] as num,
+        nightSurchargePct: json['nightSurchargePct'] == null ? null : json['nightSurchargePct'] as num,
+        perKmPaise: json['perKmPaise'] as num,
+        perMinPaise: json['perMinPaise'] as num,
+      );
 
   final num baseFarePaise;
   final List<FixedRouteDto>? fixedRoutes;
@@ -6163,13 +6603,13 @@ class UpsertCabFareDto {
   final num perMinPaise;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'baseFarePaise': baseFarePaise,
-    'fixedRoutes': ?fixedRoutes?.map((x) => x.toJson()).toList(),
-    'minFarePaise': minFarePaise,
-    'nightSurchargePct': ?nightSurchargePct,
-    'perKmPaise': perKmPaise,
-    'perMinPaise': perMinPaise,
-  };
+        'baseFarePaise': baseFarePaise,
+        'fixedRoutes': ?fixedRoutes?.map((x) => x.toJson()).toList(),
+        'minFarePaise': minFarePaise,
+        'nightSurchargePct': ?nightSurchargePct,
+        'perKmPaise': perKmPaise,
+        'perMinPaise': perMinPaise,
+      };
 }
 
 @immutable
@@ -6185,18 +6625,14 @@ class UpsertParikramaRouteDto {
   });
 
   factory UpsertParikramaRouteDto.fromJson(Map<String, dynamic> json) => UpsertParikramaRouteDto(
-    description: json['description'] == null
-        ? null
-        : I18nTextDto.fromJson(_map(json['description'])),
-    difficulty: json['difficulty'] == null ? null : json['difficulty'] as String,
-    distanceM: json['distanceM'] as num,
-    estDurationMin: json['estDurationMin'] as num,
-    name: I18nTextDto.fromJson(_map(json['name'])),
-    polyline: json['polyline'] == null ? null : json['polyline'] as String,
-    stops: (json['stops'] as List<dynamic>)
-        .map((dynamic x) => ParikramaStopDto.fromJson(_map(x)))
-        .toList(),
-  );
+        description: json['description'] == null ? null : I18nTextDto.fromJson(_map(json['description'])),
+        difficulty: json['difficulty'] == null ? null : json['difficulty'] as String,
+        distanceM: json['distanceM'] as num,
+        estDurationMin: json['estDurationMin'] as num,
+        name: I18nTextDto.fromJson(_map(json['name'])),
+        polyline: json['polyline'] == null ? null : json['polyline'] as String,
+        stops: (json['stops'] as List<dynamic>).map((dynamic x) => ParikramaStopDto.fromJson(_map(x))).toList(),
+      );
 
   final I18nTextDto? description;
   final String? difficulty;
@@ -6207,14 +6643,14 @@ class UpsertParikramaRouteDto {
   final List<ParikramaStopDto> stops;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'description': ?description?.toJson(),
-    'difficulty': ?difficulty,
-    'distanceM': distanceM,
-    'estDurationMin': estDurationMin,
-    'name': name.toJson(),
-    'polyline': ?polyline,
-    'stops': stops.map((x) => x.toJson()).toList(),
-  };
+        'description': ?description?.toJson(),
+        'difficulty': ?difficulty,
+        'distanceM': distanceM,
+        'estDurationMin': estDurationMin,
+        'name': name.toJson(),
+        'polyline': ?polyline,
+        'stops': stops.map((x) => x.toJson()).toList(),
+      };
 }
 
 @immutable
@@ -6230,57 +6666,58 @@ class UpsertTemplateDto {
   });
 
   factory UpsertTemplateDto.fromJson(Map<String, dynamic> json) => UpsertTemplateDto(
-    body: I18nTextDto.fromJson(_map(json['body'])),
-    channel: json['channel'] as String,
-    dltTemplateId: json['dltTemplateId'] == null ? null : json['dltTemplateId'] as String,
-    isActive: json['isActive'] == null ? null : json['isActive'] as bool,
-    key: json['key'] as String,
-    title: json['title'] == null ? null : I18nTextDto.fromJson(_map(json['title'])),
-    whatsappTemplateName: json['whatsappTemplateName'] == null
-        ? null
-        : json['whatsappTemplateName'] as String,
-  );
+        body: I18nTextDto.fromJson(_map(json['body'])),
+        channel: json['channel'] as String,
+        dltTemplateId: json['dltTemplateId'] == null ? null : json['dltTemplateId'] as String,
+        isActive: json['isActive'] == null ? null : json['isActive'] as bool,
+        key: json['key'] as String,
+        title: json['title'] == null ? null : I18nTextDto.fromJson(_map(json['title'])),
+        whatsappTemplateName: json['whatsappTemplateName'] == null ? null : json['whatsappTemplateName'] as String,
+      );
 
   final I18nTextDto body;
-
   /// One of: push, sms, whatsapp, email, in_app.
   final String channel;
-
   /// DLT template id registered at the SMS gateway
   final String? dltTemplateId;
   final bool? isActive;
-
-  /// One of: order_confirmed, order_accepted, order_started, order_completed, order_cancelled, refund_processed, vendor_new_order, vendor_order_cancelled, review_reply, content_warning, vendor_status, payout_paid, payout_failed, aarti_reminder, sos_alert, sos_resolved, broadcast, emergency_broadcast.
+  /// One of: order_confirmed, order_accepted, order_started, order_completed, order_cancelled, refund_processed, vendor_new_order, vendor_order_cancelled, review_reply, content_warning, vendor_status, payout_paid, payout_failed, aarti_reminder, sos_alert, sos_resolved, trip_started, trip_ended, family_trip_started, family_trip_ended, broadcast, emergency_broadcast.
   final String key;
   final I18nTextDto? title;
-
   /// Approved WhatsApp template name
   final String? whatsappTemplateName;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'body': body.toJson(),
-    'channel': channel,
-    'dltTemplateId': ?dltTemplateId,
-    'isActive': ?isActive,
-    'key': key,
-    'title': ?title?.toJson(),
-    'whatsappTemplateName': ?whatsappTemplateName,
-  };
+        'body': body.toJson(),
+        'channel': channel,
+        'dltTemplateId': ?dltTemplateId,
+        'isActive': ?isActive,
+        'key': key,
+        'title': ?title?.toJson(),
+        'whatsappTemplateName': ?whatsappTemplateName,
+      };
 }
 
 @immutable
 class UserStatusDto {
-  const UserStatusDto({required this.reason, required this.status});
+  const UserStatusDto({
+    required this.reason,
+    required this.status,
+  });
 
-  factory UserStatusDto.fromJson(Map<String, dynamic> json) =>
-      UserStatusDto(reason: json['reason'] as String, status: json['status'] as String);
+  factory UserStatusDto.fromJson(Map<String, dynamic> json) => UserStatusDto(
+        reason: json['reason'] as String,
+        status: json['status'] as String,
+      );
 
   final String reason;
-
   /// One of: active, suspended.
   final String status;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{'reason': reason, 'status': status};
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'reason': reason,
+        'status': status,
+      };
 }
 
 @immutable
@@ -6298,16 +6735,16 @@ class VehicleResponse {
   });
 
   factory VehicleResponse.fromJson(Map<String, dynamic> json) => VehicleResponse(
-    class_: json['class'] as String,
-    driverName: json['driverName'] == null ? null : json['driverName'] as String,
-    driverPhoneE164: json['driverPhoneE164'] == null ? null : json['driverPhoneE164'] as String,
-    driverUserId: json['driverUserId'] == null ? null : json['driverUserId'] as String,
-    id: json['id'] as String,
-    isActive: json['isActive'] as bool,
-    model: json['model'] == null ? null : json['model'] as String,
-    registrationNo: json['registrationNo'] as String,
-    seats: json['seats'] as num,
-  );
+        class_: json['class'] as String,
+        driverName: json['driverName'] == null ? null : json['driverName'] as String,
+        driverPhoneE164: json['driverPhoneE164'] == null ? null : json['driverPhoneE164'] as String,
+        driverUserId: json['driverUserId'] == null ? null : json['driverUserId'] as String,
+        id: json['id'] as String,
+        isActive: json['isActive'] as bool,
+        model: json['model'] == null ? null : json['model'] as String,
+        registrationNo: json['registrationNo'] as String,
+        seats: json['seats'] as num,
+      );
 
   /// One of: auto, hatchback, sedan, suv, tempo_traveller, e_rickshaw.
   final String class_;
@@ -6321,16 +6758,16 @@ class VehicleResponse {
   final num seats;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'class': class_,
-    'driverName': ?driverName,
-    'driverPhoneE164': ?driverPhoneE164,
-    'driverUserId': ?driverUserId,
-    'id': id,
-    'isActive': isActive,
-    'model': ?model,
-    'registrationNo': registrationNo,
-    'seats': seats,
-  };
+        'class': class_,
+        'driverName': ?driverName,
+        'driverPhoneE164': ?driverPhoneE164,
+        'driverUserId': ?driverUserId,
+        'id': id,
+        'isActive': isActive,
+        'model': ?model,
+        'registrationNo': registrationNo,
+        'seats': seats,
+      };
 }
 
 @immutable
@@ -6352,26 +6789,20 @@ class VendorResponse {
   });
 
   factory VendorResponse.fromJson(Map<String, dynamic> json) => VendorResponse(
-    approvedAt: json['approvedAt'] == null ? null : json['approvedAt'] as String,
-    cityId: json['cityId'] == null ? null : json['cityId'] as String,
-    displayName: json['displayName'] as String,
-    gstin: json['gstin'] == null ? null : json['gstin'] as String,
-    id: json['id'] as String,
-    kycDocuments: (json['kycDocuments'] as List<dynamic>)
-        .map((dynamic x) => KycDocumentResponse.fromJson(_map(x)))
-        .toList(),
-    legalName: json['legalName'] as String,
-    missingDocuments: (json['missingDocuments'] as List<dynamic>)
-        .map((dynamic x) => x as String)
-        .toList(),
-    myPermissions: (json['myPermissions'] as List<dynamic>)
-        .map((dynamic x) => x as String)
-        .toList(),
-    myRole: json['myRole'] as String,
-    pan: json['pan'] == null ? null : json['pan'] as String,
-    status: json['status'] as String,
-    type: json['type'] as String,
-  );
+        approvedAt: json['approvedAt'] == null ? null : json['approvedAt'] as String,
+        cityId: json['cityId'] == null ? null : json['cityId'] as String,
+        displayName: json['displayName'] as String,
+        gstin: json['gstin'] == null ? null : json['gstin'] as String,
+        id: json['id'] as String,
+        kycDocuments: (json['kycDocuments'] as List<dynamic>).map((dynamic x) => KycDocumentResponse.fromJson(_map(x))).toList(),
+        legalName: json['legalName'] as String,
+        missingDocuments: (json['missingDocuments'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+        myPermissions: (json['myPermissions'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+        myRole: json['myRole'] as String,
+        pan: json['pan'] == null ? null : json['pan'] as String,
+        status: json['status'] as String,
+        type: json['type'] as String,
+      );
 
   final String? approvedAt;
   final String? cityId;
@@ -6380,56 +6811,53 @@ class VendorResponse {
   final String id;
   final List<KycDocumentResponse> kycDocuments;
   final String legalName;
-
   /// Document types still needed before submission
   final List<String> missingDocuments;
   final List<String> myPermissions;
-
   /// One of: owner, staff, admin.
   final String myRole;
   final String? pan;
-
   /// One of: draft, kyc_pending, kyc_rejected, active, suspended.
   final String status;
-
   /// One of: hotel, cab, restaurant, experience, multi.
   final String type;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'approvedAt': ?approvedAt,
-    'cityId': ?cityId,
-    'displayName': displayName,
-    'gstin': ?gstin,
-    'id': id,
-    'kycDocuments': kycDocuments.map((x) => x.toJson()).toList(),
-    'legalName': legalName,
-    'missingDocuments': missingDocuments,
-    'myPermissions': myPermissions,
-    'myRole': myRole,
-    'pan': ?pan,
-    'status': status,
-    'type': type,
-  };
+        'approvedAt': ?approvedAt,
+        'cityId': ?cityId,
+        'displayName': displayName,
+        'gstin': ?gstin,
+        'id': id,
+        'kycDocuments': kycDocuments.map((x) => x.toJson()).toList(),
+        'legalName': legalName,
+        'missingDocuments': missingDocuments,
+        'myPermissions': myPermissions,
+        'myRole': myRole,
+        'pan': ?pan,
+        'status': status,
+        'type': type,
+      };
 }
 
 @immutable
 class VendorReviewPageResponse {
-  const VendorReviewPageResponse({required this.data, this.nextCursor});
+  const VendorReviewPageResponse({
+    required this.data,
+    this.nextCursor,
+  });
 
   factory VendorReviewPageResponse.fromJson(Map<String, dynamic> json) => VendorReviewPageResponse(
-    data: (json['data'] as List<dynamic>)
-        .map((dynamic x) => ReviewResponse.fromJson(_map(x)))
-        .toList(),
-    nextCursor: json['nextCursor'] == null ? null : json['nextCursor'] as String,
-  );
+        data: (json['data'] as List<dynamic>).map((dynamic x) => ReviewResponse.fromJson(_map(x))).toList(),
+        nextCursor: json['nextCursor'] == null ? null : json['nextCursor'] as String,
+      );
 
   final List<ReviewResponse> data;
   final String? nextCursor;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'data': data.map((x) => x.toJson()).toList(),
-    'nextCursor': ?nextCursor,
-  };
+        'data': data.map((x) => x.toJson()).toList(),
+        'nextCursor': ?nextCursor,
+      };
 }
 
 @immutable
@@ -6441,20 +6869,20 @@ class VerifyPaymentDto {
   });
 
   factory VerifyPaymentDto.fromJson(Map<String, dynamic> json) => VerifyPaymentDto(
-    providerOrderId: json['providerOrderId'] as String,
-    providerPaymentId: json['providerPaymentId'] as String,
-    signature: json['signature'] as String,
-  );
+        providerOrderId: json['providerOrderId'] as String,
+        providerPaymentId: json['providerPaymentId'] as String,
+        signature: json['signature'] as String,
+      );
 
   final String providerOrderId;
   final String providerPaymentId;
   final String signature;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'providerOrderId': providerOrderId,
-    'providerPaymentId': providerPaymentId,
-    'signature': signature,
-  };
+        'providerOrderId': providerOrderId,
+        'providerPaymentId': providerPaymentId,
+        'signature': signature,
+      };
 }
 
 @immutable
@@ -6467,26 +6895,25 @@ class WeatherAdvisoryResponse {
   });
 
   factory WeatherAdvisoryResponse.fromJson(Map<String, dynamic> json) => WeatherAdvisoryResponse(
-    code: json['code'] as String,
-    date: json['date'] as String,
-    message: json['message'] as String,
-    severity: json['severity'] as String,
-  );
+        code: json['code'] as String,
+        date: json['date'] as String,
+        message: json['message'] as String,
+        severity: json['severity'] as String,
+      );
 
   /// One of: heat, cold, rain, fog, storm.
   final String code;
   final String date;
   final String message;
-
   /// One of: info, warning.
   final String severity;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'code': code,
-    'date': date,
-    'message': message,
-    'severity': severity,
-  };
+        'code': code,
+        'date': date,
+        'message': message,
+        'severity': severity,
+      };
 }
 
 @immutable
@@ -6500,12 +6927,12 @@ class WeatherDayResponse {
   });
 
   factory WeatherDayResponse.fromJson(Map<String, dynamic> json) => WeatherDayResponse(
-    condition: json['condition'] as String,
-    date: json['date'] as String,
-    maxC: json['maxC'] as num,
-    minC: json['minC'] as num,
-    rainChancePct: json['rainChancePct'] as num,
-  );
+        condition: json['condition'] as String,
+        date: json['date'] as String,
+        maxC: json['maxC'] as num,
+        minC: json['minC'] as num,
+        rainChancePct: json['rainChancePct'] as num,
+      );
 
   final String condition;
   final String date;
@@ -6514,12 +6941,12 @@ class WeatherDayResponse {
   final num rainChancePct;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'condition': condition,
-    'date': date,
-    'maxC': maxC,
-    'minC': minC,
-    'rainChancePct': rainChancePct,
-  };
+        'condition': condition,
+        'date': date,
+        'maxC': maxC,
+        'minC': minC,
+        'rainChancePct': rainChancePct,
+      };
 }
 
 @immutable
@@ -6537,16 +6964,16 @@ class WeatherNowResponse {
   });
 
   factory WeatherNowResponse.fromJson(Map<String, dynamic> json) => WeatherNowResponse(
-    condition: json['condition'] as String,
-    description: json['description'] as String,
-    feelsLikeC: json['feelsLikeC'] as num,
-    humidityPct: json['humidityPct'] as num,
-    observedAt: json['observedAt'] as String,
-    sunrise: json['sunrise'] == null ? null : json['sunrise'] as String,
-    sunset: json['sunset'] == null ? null : json['sunset'] as String,
-    tempC: json['tempC'] as num,
-    windKph: json['windKph'] as num,
-  );
+        condition: json['condition'] as String,
+        description: json['description'] as String,
+        feelsLikeC: json['feelsLikeC'] as num,
+        humidityPct: json['humidityPct'] as num,
+        observedAt: json['observedAt'] as String,
+        sunrise: json['sunrise'] == null ? null : json['sunrise'] as String,
+        sunset: json['sunset'] == null ? null : json['sunset'] as String,
+        tempC: json['tempC'] as num,
+        windKph: json['windKph'] as num,
+      );
 
   final String condition;
   final String description;
@@ -6559,16 +6986,16 @@ class WeatherNowResponse {
   final num windKph;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'condition': condition,
-    'description': description,
-    'feelsLikeC': feelsLikeC,
-    'humidityPct': humidityPct,
-    'observedAt': observedAt,
-    'sunrise': ?sunrise,
-    'sunset': ?sunset,
-    'tempC': tempC,
-    'windKph': windKph,
-  };
+        'condition': condition,
+        'description': description,
+        'feelsLikeC': feelsLikeC,
+        'humidityPct': humidityPct,
+        'observedAt': observedAt,
+        'sunrise': ?sunrise,
+        'sunset': ?sunset,
+        'tempC': tempC,
+        'windKph': windKph,
+      };
 }
 
 @immutable
@@ -6585,19 +7012,15 @@ class WeatherResponse {
   });
 
   factory WeatherResponse.fromJson(Map<String, dynamic> json) => WeatherResponse(
-    advisories: (json['advisories'] as List<dynamic>)
-        .map((dynamic x) => WeatherAdvisoryResponse.fromJson(_map(x)))
-        .toList(),
-    cityId: json['cityId'] == null ? null : json['cityId'] as String,
-    daily: (json['daily'] as List<dynamic>)
-        .map((dynamic x) => WeatherDayResponse.fromJson(_map(x)))
-        .toList(),
-    fetchedAt: json['fetchedAt'] as String,
-    lat: json['lat'] as num,
-    lng: json['lng'] as num,
-    now: WeatherNowResponse.fromJson(_map(json['now'])),
-    source: json['source'] as String,
-  );
+        advisories: (json['advisories'] as List<dynamic>).map((dynamic x) => WeatherAdvisoryResponse.fromJson(_map(x))).toList(),
+        cityId: json['cityId'] == null ? null : json['cityId'] as String,
+        daily: (json['daily'] as List<dynamic>).map((dynamic x) => WeatherDayResponse.fromJson(_map(x))).toList(),
+        fetchedAt: json['fetchedAt'] as String,
+        lat: json['lat'] as num,
+        lng: json['lng'] as num,
+        now: WeatherNowResponse.fromJson(_map(json['now'])),
+        source: json['source'] as String,
+      );
 
   final List<WeatherAdvisoryResponse> advisories;
   final String? cityId;
@@ -6609,13 +7032,13 @@ class WeatherResponse {
   final String source;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'advisories': advisories.map((x) => x.toJson()).toList(),
-    'cityId': ?cityId,
-    'daily': daily.map((x) => x.toJson()).toList(),
-    'fetchedAt': fetchedAt,
-    'lat': lat,
-    'lng': lng,
-    'now': now.toJson(),
-    'source': source,
-  };
+        'advisories': advisories.map((x) => x.toJson()).toList(),
+        'cityId': ?cityId,
+        'daily': daily.map((x) => x.toJson()).toList(),
+        'fetchedAt': fetchedAt,
+        'lat': lat,
+        'lng': lng,
+        'now': now.toJson(),
+        'source': source,
+      };
 }

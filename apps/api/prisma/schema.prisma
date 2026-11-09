@@ -434,6 +434,9 @@ model User {
   idempotencyKeys   IdempotencyKey[]
 
   @@map("users")
+  trips             Trip[]
+  familyGroupsOwned FamilyGroup[]  @relation("FamilyGroupOwner")
+  familyMemberships FamilyMember[]
 }
 
 model UserProfile {
@@ -1772,4 +1775,70 @@ model AppConfig {
   updatedBy User? @relation(fields: [updatedById], references: [id])
 
   @@map("app_config")
+}
+
+// ─────────────────────────── trips (module: trips) ───────────────────────────
+
+enum TripStatus {
+  active
+  ended
+
+  @@map("trip_status")
+}
+
+/// A pilgrimage the user started in the app. Location is stored only while
+/// the traveller has sharing switched on (explicit consent).
+model Trip {
+  id               String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId           String     @map("user_id") @db.Uuid
+  title            String
+  fromPlace        String?    @map("from_place")
+  itineraryId      String?    @map("itinerary_id") @db.Uuid
+  status           TripStatus @default(active)
+  startedAt        DateTime   @default(now()) @map("started_at") @db.Timestamptz(3)
+  endedAt          DateTime?  @map("ended_at") @db.Timestamptz(3)
+  sharingLocation  Boolean    @default(false) @map("sharing_location")
+  shareToken       String?    @unique @map("share_token")
+  lastLat          Float?     @map("last_lat")
+  lastLng          Float?     @map("last_lng")
+  lastAccuracyM    Int?       @map("last_accuracy_m")
+  lastLocationAt   DateTime?  @map("last_location_at") @db.Timestamptz(3)
+  createdAt        DateTime   @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt        DateTime   @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, startedAt(sort: Desc)])
+  @@map("trips")
+}
+
+/// A family tracking group: members join with a code; each member decides
+/// whether the group may see their location.
+model FamilyGroup {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  ownerId   String   @map("owner_id") @db.Uuid
+  name      String
+  joinCode  String   @unique @map("join_code")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  owner   User           @relation("FamilyGroupOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  members FamilyMember[]
+
+  @@map("family_groups")
+}
+
+model FamilyMember {
+  groupId   String   @map("group_id") @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  isOwner   Boolean  @default(false) @map("is_owner")
+  /// Consent: the group may see this member's live trip location.
+  sharing   Boolean  @default(false)
+  joinedAt  DateTime @default(now()) @map("joined_at") @db.Timestamptz(3)
+
+  group FamilyGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  user  User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([groupId, userId])
+  @@index([userId])
+  @@map("family_members")
 }

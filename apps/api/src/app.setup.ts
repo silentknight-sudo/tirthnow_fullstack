@@ -36,6 +36,8 @@ export function configureApp(app: NestExpressApplication, config: AppConfig): vo
       { path: 'readyz', method: RequestMethod.GET },
       // SOS share links sent by SMS stay short: /s/<token>.
       { path: 's/:shareToken', method: RequestMethod.GET },
+      // Trip tracking links shared on WhatsApp: /t/<token>.
+      { path: 't/:token', method: RequestMethod.GET },
     ],
   });
   // Demo reel videos shipped with the repo (seeded "adiyogi" creator).

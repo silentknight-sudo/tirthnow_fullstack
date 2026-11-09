@@ -1090,6 +1090,19 @@
         ],
         "type": "object"
       },
+      "CreateFamilyGroupDto": {
+        "properties": {
+          "name": {
+            "example": "Sharma parivar",
+            "maxLength": 60,
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "type": "object"
+      },
       "CreateFestivalDto": {
         "properties": {
           "cityId": {
@@ -2330,6 +2343,107 @@
         },
         "type": "object"
       },
+      "FamilyGroupResponse": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "isOwner": {
+            "type": "boolean"
+          },
+          "joinCode": {
+            "type": "string"
+          },
+          "members": {
+            "items": {
+              "$ref": "#/components/schemas/FamilyMemberResponse"
+            },
+            "type": "array"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "joinCode",
+          "isOwner",
+          "members"
+        ],
+        "type": "object"
+      },
+      "FamilyMemberResponse": {
+        "properties": {
+          "avatarUrl": {
+            "nullable": true,
+            "type": "string"
+          },
+          "isMe": {
+            "type": "boolean"
+          },
+          "isOwner": {
+            "type": "boolean"
+          },
+          "lat": {
+            "nullable": true,
+            "type": "number"
+          },
+          "lng": {
+            "nullable": true,
+            "type": "number"
+          },
+          "locationAt": {
+            "nullable": true,
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "sharing": {
+            "description": "This member allows the group to see their location",
+            "type": "boolean"
+          },
+          "trip": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MemberTripResponse"
+              }
+            ],
+            "description": "Active trip, if any",
+            "nullable": true,
+            "type": "object"
+          },
+          "userId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "userId",
+          "name",
+          "avatarUrl",
+          "isOwner",
+          "isMe",
+          "sharing",
+          "trip",
+          "lat",
+          "lng",
+          "locationAt"
+        ],
+        "type": "object"
+      },
+      "FamilySharingDto": {
+        "properties": {
+          "sharing": {
+            "description": "Consent: may this group see my live trip location?",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "sharing"
+        ],
+        "type": "object"
+      },
       "FestivalResponse": {
         "properties": {
           "cityId": {
@@ -2713,6 +2827,18 @@
         ],
         "type": "object"
       },
+      "JoinFamilyGroupDto": {
+        "properties": {
+          "code": {
+            "example": "K7P2QX",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code"
+        ],
+        "type": "object"
+      },
       "KycDocumentResponse": {
         "properties": {
           "docType": {
@@ -2849,6 +2975,30 @@
           "status",
           "mimeType",
           "variants"
+        ],
+        "type": "object"
+      },
+      "MemberTripResponse": {
+        "properties": {
+          "fromPlace": {
+            "nullable": true,
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "startedAt": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "fromPlace",
+          "startedAt"
         ],
         "type": "object"
       },
@@ -4467,6 +4617,63 @@
         ],
         "type": "object"
       },
+      "SharedTripResponse": {
+        "properties": {
+          "endedAt": {
+            "nullable": true,
+            "type": "string"
+          },
+          "fromPlace": {
+            "nullable": true,
+            "type": "string"
+          },
+          "lat": {
+            "nullable": true,
+            "type": "number"
+          },
+          "lng": {
+            "nullable": true,
+            "type": "number"
+          },
+          "locationAt": {
+            "nullable": true,
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "sharing": {
+            "description": "Location is shown only while the traveller shares it",
+            "type": "boolean"
+          },
+          "startedAt": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "active",
+              "ended"
+            ],
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "title",
+          "fromPlace",
+          "status",
+          "startedAt",
+          "endedAt",
+          "sharing",
+          "lat",
+          "lng",
+          "locationAt"
+        ],
+        "type": "object"
+      },
       "SlotResponse": {
         "properties": {
           "booked": {
@@ -4646,6 +4853,30 @@
           "permissions",
           "isActive"
         ],
+        "type": "object"
+      },
+      "StartTripDto": {
+        "properties": {
+          "fromPlace": {
+            "example": "Delhi",
+            "maxLength": 80,
+            "type": "string"
+          },
+          "itineraryId": {
+            "description": "A saved itinerary this trip follows",
+            "format": "uuid",
+            "type": "string"
+          },
+          "shareLocation": {
+            "description": "Start sharing live location with family right away",
+            "type": "boolean"
+          },
+          "title": {
+            "example": "Vrindavan yatra",
+            "maxLength": 80,
+            "type": "string"
+          }
+        },
         "type": "object"
       },
       "StationResponse": {
@@ -4990,6 +5221,27 @@
         ],
         "type": "object"
       },
+      "TripLocationDto": {
+        "properties": {
+          "accuracyM": {
+            "example": 12,
+            "type": "number"
+          },
+          "lat": {
+            "example": 27.5806,
+            "type": "number"
+          },
+          "lng": {
+            "example": 77.6996,
+            "type": "number"
+          }
+        },
+        "required": [
+          "lat",
+          "lng"
+        ],
+        "type": "object"
+      },
       "TripMemberDto": {
         "properties": {
           "age": {
@@ -5017,6 +5269,120 @@
         },
         "required": [
           "name"
+        ],
+        "type": "object"
+      },
+      "TripPageResponse": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/TripResponse"
+            },
+            "type": "array"
+          },
+          "nextCursor": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "data",
+          "nextCursor"
+        ],
+        "type": "object"
+      },
+      "TripResponse": {
+        "properties": {
+          "endedAt": {
+            "nullable": true,
+            "type": "string"
+          },
+          "fromPlace": {
+            "nullable": true,
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "itineraryId": {
+            "nullable": true,
+            "type": "string"
+          },
+          "lastLat": {
+            "nullable": true,
+            "type": "number"
+          },
+          "lastLng": {
+            "nullable": true,
+            "type": "number"
+          },
+          "lastLocationAt": {
+            "nullable": true,
+            "type": "string"
+          },
+          "shareUrl": {
+            "description": "Tracking link, if created",
+            "nullable": true,
+            "type": "string"
+          },
+          "sharingLocation": {
+            "type": "boolean"
+          },
+          "startedAt": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "active",
+              "ended"
+            ],
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "fromPlace",
+          "itineraryId",
+          "status",
+          "startedAt",
+          "endedAt",
+          "sharingLocation",
+          "shareUrl",
+          "lastLat",
+          "lastLng",
+          "lastLocationAt"
+        ],
+        "type": "object"
+      },
+      "TripShareResponse": {
+        "properties": {
+          "message": {
+            "description": "Ready-made text for WhatsApp or SMS",
+            "type": "string"
+          },
+          "shareUrl": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "shareUrl",
+          "message"
+        ],
+        "type": "object"
+      },
+      "TripSharingDto": {
+        "properties": {
+          "sharing": {
+            "description": "true = share live location, false = pause",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "sharing"
         ],
         "type": "object"
       },
@@ -5966,6 +6332,10 @@
               "aarti_reminder",
               "sos_alert",
               "sos_resolved",
+              "trip_started",
+              "trip_ended",
+              "family_trip_started",
+              "family_trip_ended",
               "broadcast",
               "emergency_broadcast"
             ],
@@ -10045,6 +10415,221 @@
         ]
       }
     },
+    "/v1/family/groups": {
+      "get": {
+        "operationId": "FamilyController_mine",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/FamilyGroupResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "trips"
+        ]
+      },
+      "post": {
+        "operationId": "FamilyController_create",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFamilyGroupDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FamilyGroupResponse"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "trips"
+        ]
+      }
+    },
+    "/v1/family/groups/{id}/me": {
+      "delete": {
+        "operationId": "FamilyController_leave",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Leave the group (the owner leaving deletes it)",
+        "tags": [
+          "trips"
+        ]
+      },
+      "patch": {
+        "operationId": "FamilyController_sharing",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FamilySharingDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FamilyGroupResponse"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "My consent: may this group see my live trip location?",
+        "tags": [
+          "trips"
+        ]
+      }
+    },
+    "/v1/family/groups/{id}/members/{userId}": {
+      "delete": {
+        "operationId": "FamilyController_remove",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FamilyGroupResponse"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "trips"
+        ]
+      }
+    },
+    "/v1/family/groups/join": {
+      "post": {
+        "operationId": "FamilyController_join",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JoinFamilyGroupDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FamilyGroupResponse"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "trips"
+        ]
+      }
+    },
     "/v1/festivals": {
       "get": {
         "operationId": "CatalogController_festivals",
@@ -12706,6 +13291,37 @@
         ]
       }
     },
+    "/v1/t/{token}": {
+      "get": {
+        "operationId": "TripShareController_view",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SharedTripResponse"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Shared trip and permitted live location (JSON, or HTML for browsers)",
+        "tags": [
+          "trips"
+        ]
+      }
+    },
     "/v1/temples": {
       "get": {
         "operationId": "CatalogController_temples",
@@ -12970,6 +13586,299 @@
         },
         "tags": [
           "transit"
+        ]
+      }
+    },
+    "/v1/trips": {
+      "get": {
+        "operationId": "TripsController_history",
+        "parameters": [
+          {
+            "description": "Opaque cursor from the previous page",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 20,
+              "maximum": 50,
+              "minimum": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TripPageResponse"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Trip history, newest first",
+        "tags": [
+          "trips"
+        ]
+      },
+      "post": {
+        "operationId": "TripsController_start",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StartTripDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TripResponse"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Start a pilgrimage (sends the trip-start notification)",
+        "tags": [
+          "trips"
+        ]
+      }
+    },
+    "/v1/trips/{id}/end": {
+      "post": {
+        "operationId": "TripsController_end",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TripResponse"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "End a pilgrimage (sends the trip-end notification, stops sharing)",
+        "tags": [
+          "trips"
+        ]
+      }
+    },
+    "/v1/trips/{id}/location": {
+      "post": {
+        "operationId": "TripsController_location",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TripLocationDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Live location update (stored only while sharing is on)",
+        "tags": [
+          "trips"
+        ]
+      }
+    },
+    "/v1/trips/{id}/share": {
+      "delete": {
+        "operationId": "TripsController_unshare",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Stop the tracking link",
+        "tags": [
+          "trips"
+        ]
+      },
+      "post": {
+        "operationId": "TripsController_share",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TripShareResponse"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create a tracking link and a WhatsApp-ready message",
+        "tags": [
+          "trips"
+        ]
+      }
+    },
+    "/v1/trips/{id}/sharing": {
+      "patch": {
+        "operationId": "TripsController_sharing",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TripSharingDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TripResponse"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Start or pause live location sharing for this trip",
+        "tags": [
+          "trips"
+        ]
+      }
+    },
+    "/v1/trips/active": {
+      "get": {
+        "operationId": "TripsController_active",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TripResponse"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "trips"
         ]
       }
     },
