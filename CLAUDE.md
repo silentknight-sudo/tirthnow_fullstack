@@ -140,7 +140,7 @@ Do not use plain `prisma migrate dev` to create migrations (it will offer to dro
 - Flutter app for vendors (the web vendor portal stays for desktop). Same core as `apps/mobile` (ApiClient, session, theme); models come from the same generator (`gen_api_models.mjs` writes both apps).
 - Flow: OTP login → choose service (cab, hotel, dharamshala, restaurant, store) → business details → KYC + bank → waiting / dashboard. Router stage logic in `core/router.dart` (`partnerStage`).
 - Listings per service type in `features/listings`; every price field shows the pilgrim price (`customerPrice`: +18% GST +5% fee). Coupons, reviews with replies, analytics dashboard.
-- Online KYC options and the accounts they need: `docs/CLIENT_SETUP_TODO.md`. Temple photo credits: `docs/IMAGE_CREDITS.md`.
+- Online KYC options and the accounts they need: `docs/CLIENT_SETUP_TODO.md`. Image sources: `docs/IMAGE_CREDITS.md`.
 
 ## How the vendor portal fits (Phase 4)
 

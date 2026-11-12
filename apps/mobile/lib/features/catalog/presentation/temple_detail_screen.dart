@@ -73,19 +73,6 @@ class _Body extends ConsumerWidget {
                   radius: 0,
                   fallbackAsset: templeImage(temple.slug),
                 ),
-                if (temple.coverUrl == null && templePhotoCredits[temple.slug] != null)
-                  Positioned(
-                    right: 8,
-                    bottom: 6,
-                    child: Text(
-                      '📷 ${templePhotoCredits[temple.slug]}',
-                      style: const TextStyle(
-                        color: Colors.white70,
-                        fontSize: 10,
-                        shadows: [Shadow(blurRadius: 4)],
-                      ),
-                    ),
-                  ),
               ],
             ),
           ),

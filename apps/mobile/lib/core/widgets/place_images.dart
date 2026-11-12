@@ -17,17 +17,32 @@ const _templeAssets = {
   'yashoda-kund': 'radha-kund',
 };
 
-/// Real CC-licensed photos (Wikimedia Commons), credited in the temple screen
-/// and in docs/IMAGE_CREDITS.md. Preferred over the Canva illustrations.
-const templePhotoCredits = {
-  'kirti-mandir': 'Vikas.jehanabad · CC BY-SA 4.0',
-  'prem-mandir': 'Suyash Dwivedi · CC BY-SA 4.0',
-  'radha-raman-temple': 'Kridha20 · CC BY-SA 4.0',
-  'gokulnath-ji-temple': 'Hidden_macy · CC BY 3.0',
-  'daan-ghati-temple': 'Gyanendrasinghchauhan · CC BY 3.0',
+/// Per-temple images generated in Canva (`assets/images/temples/<slug>.jpg`).
+const _templePhotos = {
+  'shri-krishna-janmabhoomi',
+  'dwarkadhish-temple',
+  'gita-mandir',
+  'bhuteshwar-mahadev',
+  'kesava-deo-temple',
+  'banke-bihari',
+  'iskcon-krishna-balaram-mandir',
+  'prem-mandir',
+  'radha-raman-temple',
+  'radha-vallabh-temple',
+  'daan-ghati-temple',
+  'mukharvind-jatipura',
+  'haridev-ji-temple',
+  'radha-kund',
+  'chakleshwar-mahadev',
+  'shriji-temple',
+  'kirti-mandir',
+  'rangili-mahal',
+  'maan-mandir',
+  'mor-kuti',
+  'gokulnath-ji-temple',
 };
 
-String templeImage(String slug) => templePhotoCredits.containsKey(slug)
+String templeImage(String slug) => _templePhotos.contains(slug)
     ? 'assets/images/temples/$slug.jpg'
     : 'assets/images/canva/${_templeAssets[slug] ?? 'temple'}.jpg';
 
