@@ -18,6 +18,7 @@ class OnboardingScreen extends ConsumerStatefulWidget {
 
 class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   Service? _service;
+  Service? _picked;
   final _form = GlobalKey<FormState>();
   final _display = TextEditingController();
   final _legal = TextEditingController();
@@ -89,57 +90,49 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 
   Widget _chooser(BuildContext context) {
     final l = context.l10n;
-    return ListView(
+    return Column(
       key: const ValueKey('choose'),
-      padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
       children: [
-        const _Steps(step: 0),
-        const SizedBox(height: 16),
-        Text(l.obChooseTitle, style: Theme.of(context).textTheme.headlineSmall),
-        const SizedBox(height: 4),
-        Text(l.obChooseSub, style: const TextStyle(color: TnColors.muted)),
-        const SizedBox(height: 16),
-        for (final svc in services)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 12),
-            child: PanelCard(
-              padding: EdgeInsets.zero,
-              onTap: () => setState(() => _service = svc),
-              child: Row(
-                children: [
-                  ClipRRect(
-                    borderRadius: const BorderRadius.horizontal(left: Radius.circular(17)),
-                    child: Image.asset(svc.image, width: 112, height: 92, fit: BoxFit.cover),
-                  ),
-                  const SizedBox(width: 14),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(svc.icon, size: 18, color: TnColors.accent),
-                            const SizedBox(width: 6),
-                            Text(
-                              svc.title(l),
-                              style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          svc.subtitle(l),
-                          style: const TextStyle(color: TnColors.muted, fontSize: 13),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Icon(Icons.chevron_right_rounded, color: TnColors.muted),
-                  const SizedBox(width: 8),
-                ],
+        Expanded(
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+            children: [
+              const _Steps(step: 0),
+              const SizedBox(height: 18),
+              Text(
+                l.obChooseTitle,
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w800,
+                  color: PColors.night,
+                ),
               ),
+              const SizedBox(height: 4),
+              Text(l.obChooseSub, style: const TextStyle(color: TnColors.muted)),
+              const SizedBox(height: 16),
+              for (final svc in services)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: _ServiceOption(
+                    service: svc,
+                    selected: _picked == svc,
+                    onTap: () => setState(() => _picked = svc),
+                  ),
+                ),
+            ],
+          ),
+        ),
+        SafeArea(
+          top: false,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 4, 16, 12),
+            child: GoldButton(
+              label: l.next,
+              icon: Icons.arrow_forward_rounded,
+              onPressed: _picked == null ? null : () => setState(() => _service = _picked),
             ),
           ),
+        ),
       ],
     );
   }
@@ -159,16 +152,32 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             borderRadius: BorderRadius.circular(18),
             child: Stack(
               children: [
-                Image.asset(svc.image, height: 130, width: double.infinity, fit: BoxFit.cover),
+                Image.asset(svc.image, height: 140, width: double.infinity, fit: BoxFit.cover),
+                const Positioned.fill(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [Color(0x000E1433), Color(0xCC0E1433)],
+                      ),
+                    ),
+                  ),
+                ),
                 Positioned(
                   left: 12,
                   bottom: 12,
-                  child: Pill(svc.title(l), color: TnColors.navy, icon: svc.icon),
+                  child: Pill(svc.title(l), color: Colors.white, icon: svc.icon),
                 ),
               ],
             ),
           ),
           const SizedBox(height: 18),
+          InputDecorator(
+            decoration: InputDecoration(labelText: l.businessType, prefixIcon: Icon(svc.icon)),
+            child: Text(svc.title(l), style: const TextStyle(fontWeight: FontWeight.w600)),
+          ),
+          const SizedBox(height: 12),
           TextFormField(
             controller: _display,
             decoration: InputDecoration(labelText: l.displayName),
@@ -216,37 +225,154 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             },
           ),
           const SizedBox(height: 20),
-          FilledButton(onPressed: _busy ? null : _create, child: Text(l.createAccount)),
-          if (_busy)
-            const Padding(padding: EdgeInsets.only(top: 10), child: LinearProgressIndicator()),
+          GoldButton(label: l.createAccount, busy: _busy, onPressed: _create),
         ],
       ),
     );
   }
 }
 
-/// Service → details → documents → approval.
+class _ServiceOption extends StatelessWidget {
+  const _ServiceOption({required this.service, required this.selected, required this.onTap});
+
+  final Service service;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 180),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(
+          color: selected ? PColors.violet : const Color(0x14232C6B),
+          width: selected ? 2 : 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: selected ? const Color(0x337B5CFF) : const Color(0x14232C6B),
+            blurRadius: selected ? 18 : 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Material(
+        type: MaterialType.transparency,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(18),
+          onTap: onTap,
+          child: Row(
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.horizontal(left: Radius.circular(17)),
+                child: Image.asset(service.image, width: 104, height: 84, fit: BoxFit.cover),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      service.title(l),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 16,
+                        color: PColors.night,
+                      ),
+                    ),
+                    const SizedBox(height: 3),
+                    Text(
+                      service.subtitle(l),
+                      style: const TextStyle(color: TnColors.muted, fontSize: 12.5),
+                    ),
+                  ],
+                ),
+              ),
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 180),
+                width: 26,
+                height: 26,
+                margin: const EdgeInsets.only(right: 14),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: selected ? PColors.violet : Colors.transparent,
+                  border: Border.all(color: selected ? PColors.violet : TnColors.line, width: 2),
+                ),
+                child: selected
+                    ? const Icon(Icons.check_rounded, size: 16, color: Colors.white)
+                    : null,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Service → details → documents → approval, with labelled dots.
 class _Steps extends StatelessWidget {
   const _Steps({required this.step, super.key});
 
   final int step;
 
   @override
-  Widget build(BuildContext context) => Row(
-    children: [
-      for (var i = 0; i < 4; i++)
-        Expanded(
-          child: Container(
-            height: 5,
-            margin: const EdgeInsets.symmetric(horizontal: 3),
-            decoration: BoxDecoration(
-              color: i <= step ? TnColors.accent : TnColors.paper2,
-              borderRadius: BorderRadius.circular(3),
-            ),
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final labels = [l.businessType, l.stepDetails, l.stepKyc, l.stepVerify];
+    return Row(
+      children: [
+        for (var i = 0; i < 4; i++) ...[
+          Column(
+            children: [
+              Container(
+                width: 28,
+                height: 28,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: i <= step ? PColors.goldGradient : null,
+                  color: i <= step ? null : Colors.white,
+                  border: Border.all(color: i <= step ? PColors.gold : TnColors.line, width: 2),
+                ),
+                child: Center(
+                  child: i < step
+                      ? const Icon(Icons.check_rounded, size: 16, color: PColors.night)
+                      : Text(
+                          '${i + 1}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w800,
+                            fontSize: 12,
+                            color: i <= step ? PColors.night : TnColors.muted,
+                          ),
+                        ),
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                labels[i],
+                style: TextStyle(
+                  fontSize: 10.5,
+                  fontWeight: i == step ? FontWeight.w800 : FontWeight.w500,
+                  color: i <= step ? PColors.night : TnColors.muted,
+                ),
+              ),
+            ],
           ),
-        ),
-    ],
-  );
+          if (i < 3)
+            Expanded(
+              child: Container(
+                height: 2,
+                margin: const EdgeInsets.only(bottom: 18, left: 4, right: 4),
+                color: i < step ? PColors.gold : TnColors.line,
+              ),
+            ),
+        ],
+      ],
+    );
+  }
 }
 
 /// Shared with the KYC and waiting screens.

@@ -623,4 +623,193 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get help => 'Partner support';
+
+  @override
+  String get splashTitle => 'Grow your Pilgrimage Business with TirthNow';
+
+  @override
+  String get splashSub =>
+      'List your cab, hotel, dharamshala, restaurant or temple store and reach thousands of pilgrims.';
+
+  @override
+  String get getStarted => 'Get Started';
+
+  @override
+  String get login => 'Login';
+
+  @override
+  String get register => 'Register';
+
+  @override
+  String get verifyNumber => 'Verify your number';
+
+  @override
+  String otpEnter(String phone) {
+    return 'Enter the 6-digit OTP sent to $phone';
+  }
+
+  @override
+  String resendIn(String sec) {
+    return 'Resend OTP in ${sec}s';
+  }
+
+  @override
+  String get resend => 'Resend OTP';
+
+  @override
+  String get partnerTag => 'Partner';
+
+  @override
+  String get overview => 'Business overview';
+
+  @override
+  String lastDays(String n) {
+    return 'Last $n days';
+  }
+
+  @override
+  String get revenue => 'Revenue';
+
+  @override
+  String get aov => 'Avg order';
+
+  @override
+  String get rating => 'Rating';
+
+  @override
+  String get addListing => 'Add listing';
+
+  @override
+  String get payouts => 'Payouts';
+
+  @override
+  String get analytics => 'Analytics';
+
+  @override
+  String get aiTips => 'AI business tips';
+
+  @override
+  String get tipNoListings =>
+      'Add your first listing with a clear photo — pilgrims book what they can see.';
+
+  @override
+  String get tipCoupon => 'Create a festival coupon (10% off) to get your first orders faster.';
+
+  @override
+  String get tipRating => 'Reply to reviews — partners who reply get more repeat pilgrims.';
+
+  @override
+  String tipGrowth(String pct) {
+    return 'Sales are up $pct% — keep stock ready for the weekend rush.';
+  }
+
+  @override
+  String tipDown(String pct) {
+    return 'Sales dipped $pct% — try a limited-time coupon or new photos.';
+  }
+
+  @override
+  String get businessAnalytics => 'Business analytics';
+
+  @override
+  String get bestDay => 'Best day';
+
+  @override
+  String get marketing => 'Marketing & growth';
+
+  @override
+  String get shareStore => 'Share on WhatsApp';
+
+  @override
+  String get shareStoreSub => 'Send your listing to customers and groups';
+
+  @override
+  String shareText(String name) {
+    return 'Book with $name on TirthNow — trusted service for your Braj yatra 🙏';
+  }
+
+  @override
+  String get festivalCampaign => 'Festival campaigns';
+
+  @override
+  String get festivalCampaignSub => 'Ready coupons for Janmashtami, Holi, Kartik';
+
+  @override
+  String get comingSoon => 'Coming soon';
+
+  @override
+  String get promotions => 'Run promotions';
+
+  @override
+  String get promotionsSub => 'Boost your listing in search and home';
+
+  @override
+  String get loyalty => 'Loyalty program';
+
+  @override
+  String get loyaltySub => 'Reward repeat pilgrims';
+
+  @override
+  String get support => 'Help & support';
+
+  @override
+  String get howHelp => 'How can we help you?';
+
+  @override
+  String get chatSupport => 'Chat on WhatsApp';
+
+  @override
+  String get callUs => 'Request a callback';
+
+  @override
+  String get emailUs => 'Email us';
+
+  @override
+  String get faqs => 'FAQs';
+
+  @override
+  String get faq1q => 'When do I get paid?';
+
+  @override
+  String get faq1a =>
+      'Earnings are settled to your bank account after the service is completed, minus the 5% platform fee.';
+
+  @override
+  String get faq2q => 'Why does the pilgrim pay more than my price?';
+
+  @override
+  String get faq2a => '18% GST and the 5% platform fee are added on top of your price at checkout.';
+
+  @override
+  String get faq3q => 'How long does verification take?';
+
+  @override
+  String get faq3a => 'Usually within 24 hours once all documents and the bank account are added.';
+
+  @override
+  String get all => 'All';
+
+  @override
+  String get draft => 'Draft';
+
+  @override
+  String get stepDetails => 'Details';
+
+  @override
+  String get stepKyc => 'KYC';
+
+  @override
+  String get stepVerify => 'Verify';
+
+  @override
+  String get docsSecure => 'Your documents are encrypted and used only for verification.';
+
+  @override
+  String get businessType => 'Business type';
+
+  @override
+  String get account => 'My account';
+
+  @override
+  String get settings => 'Settings';
 }

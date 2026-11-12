@@ -54,109 +54,153 @@ Future<void> _guard(BuildContext context, Future<void> Function() fn) async {
 
 // ───────────────────────── Temple Store ─────────────────────────
 
-class _StoreListings extends ConsumerWidget {
+class _StoreListings extends ConsumerStatefulWidget {
   const _StoreListings({required this.vendor});
 
   final VendorResponse vendor;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_StoreListings> createState() => _StoreListingsState();
+}
+
+class _StoreListingsState extends ConsumerState<_StoreListings> {
+  String _filter = 'all';
+
+  @override
+  Widget build(BuildContext context) {
     final l = context.l10n;
-    final list = ref.watch(_productsProvider(vendor.id));
+    final vid = widget.vendor.id;
+    final list = ref.watch(_productsProvider(vid));
+    final items = list.value ?? const <ProductResponse>[];
+    final active = items.where((p) => p.isPublished).length;
     return Scaffold(
-      appBar: AppBar(title: Text(l.products)),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _productForm(context, ref, vendor.id, null),
-        icon: const Icon(Icons.add),
-        label: Text(l.addProduct),
-      ),
-      body: AsyncView(
-        value: list,
-        onRetry: () => ref.invalidate(_productsProvider(vendor.id)),
-        builder: (items) => items.isEmpty
-            ? EmptyState(icon: Icons.storefront_outlined, message: l.emptyList)
-            : GridView.builder(
-                padding: const EdgeInsets.fromLTRB(16, 12, 16, 96),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 12,
-                  crossAxisSpacing: 12,
-                  childAspectRatio: 0.66,
-                ),
-                itemCount: items.length,
-                itemBuilder: (_, i) => _ProductCard(
-                  p: items[i],
-                  onTap: () => _productForm(context, ref, vendor.id, items[i]),
-                ),
+      appBar: AppBar(title: Text('${l.tabListings} (${items.length})')),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 14, 16, 4),
+            child: Row(
+              children: [
+                for (final (key, label) in [
+                  ('all', '${l.all} (${items.length})'),
+                  ('active', '${l.active} ($active)'),
+                  ('draft', '${l.draft} (${items.length - active})'),
+                ])
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: ChoiceChip(
+                      label: Text(label),
+                      selected: _filter == key,
+                      showCheckmark: false,
+                      onSelected: (_) => setState(() => _filter = key),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: AsyncView(
+              value: list,
+              onRetry: () => ref.invalidate(_productsProvider(vid)),
+              builder: (all) {
+                final shown = all
+                    .where((p) => _filter == 'all' || (_filter == 'active') == p.isPublished)
+                    .toList();
+                return shown.isEmpty
+                    ? EmptyState(icon: Icons.storefront_outlined, message: l.emptyList)
+                    : ListView.separated(
+                        padding: const EdgeInsets.fromLTRB(16, 10, 16, 16),
+                        itemCount: shown.length,
+                        separatorBuilder: (_, _) => const SizedBox(height: 10),
+                        itemBuilder: (_, i) => _ProductRow(
+                          p: shown[i],
+                          onTap: () => _productForm(context, ref, vid, shown[i]),
+                          onToggle: (on) async {
+                            try {
+                              await ref.read(vendorRepositoryProvider).saveProduct(vid, {
+                                'isPublished': on,
+                              }, productId: shown[i].id);
+                              ref.invalidate(_productsProvider(vid));
+                            } on Object catch (e) {
+                              if (context.mounted) showSnack(context, errorText(context, e));
+                            }
+                          },
+                        ),
+                      );
+              },
+            ),
+          ),
+          SafeArea(
+            top: false,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 4, 16, 12),
+              child: GoldButton(
+                label: l.addProduct,
+                icon: Icons.add_rounded,
+                onPressed: () => _productForm(context, ref, vid, null),
               ),
+            ),
+          ),
+        ],
       ),
     );
   }
 }
 
-class _ProductCard extends StatelessWidget {
-  const _ProductCard({required this.p, required this.onTap});
+class _ProductRow extends StatelessWidget {
+  const _ProductRow({required this.p, required this.onTap, required this.onToggle});
 
   final ProductResponse p;
   final VoidCallback onTap;
+  final ValueChanged<bool> onToggle;
 
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
     return PanelCard(
-      padding: EdgeInsets.zero,
       onTap: onTap,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      padding: const EdgeInsets.all(10),
+      child: Row(
         children: [
-          Expanded(
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                if (p.imageUrls.isNotEmpty)
-                  Image.network(
-                    p.imageUrls.first,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, _, _) => const _NoImage(),
-                  )
-                else
-                  const _NoImage(),
-                if (!p.isPublished)
-                  Positioned(top: 8, left: 8, child: Pill(l.hidden, color: TnColors.muted)),
-              ],
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: SizedBox(
+              width: 64,
+              height: 64,
+              child: p.imageUrls.isNotEmpty
+                  ? Image.network(
+                      p.imageUrls.first,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, _, _) => const _NoImage(),
+                    )
+                  : const _NoImage(),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(10),
+          const SizedBox(width: 12),
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   p.name,
-                  maxLines: 2,
+                  maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontWeight: FontWeight.w600),
+                  style: const TextStyle(fontWeight: FontWeight.w700, color: PColors.night),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 2),
                 Text(
-                  formatRupees(p.pricePaise),
-                  style: const TextStyle(fontWeight: FontWeight.w700, color: TnColors.navy),
+                  '${formatRupees(p.pricePaise)} · ${l.customerPays(formatRupees(p.displayPricePaise))}',
+                  style: const TextStyle(fontSize: 12, color: TnColors.muted),
                 ),
-                Text(
-                  l.customerPays(formatRupees(p.displayPricePaise)),
-                  style: const TextStyle(fontSize: 11, color: TnColors.muted),
-                ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 2),
                 Text(
                   '${l.inStock('${p.stock}')} · ${l.sold('${p.soldCount}')}',
-                  style: TextStyle(
-                    fontSize: 11.5,
-                    color: p.stock == 0 ? TnColors.sos : TnColors.success,
-                  ),
+                  style: TextStyle(fontSize: 11.5, color: p.stock == 0 ? TnColors.sos : PColors.up),
                 ),
               ],
             ),
           ),
+          Switch(value: p.isPublished, onChanged: onToggle),
         ],
       ),
     );

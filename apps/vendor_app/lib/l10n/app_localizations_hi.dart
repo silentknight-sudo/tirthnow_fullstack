@@ -623,4 +623,194 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get help => 'पार्टनर सहायता';
+
+  @override
+  String get splashTitle => 'तीर्थनाउ के साथ अपना तीर्थ व्यवसाय बढ़ाएँ';
+
+  @override
+  String get splashSub =>
+      'अपनी कैब, होटल, धर्मशाला, भोजनालय या मंदिर स्टोर जोड़ें और हज़ारों यात्रियों तक पहुँचें।';
+
+  @override
+  String get getStarted => 'शुरू करें';
+
+  @override
+  String get login => 'लॉगिन';
+
+  @override
+  String get register => 'रजिस्टर';
+
+  @override
+  String get verifyNumber => 'अपना नंबर सत्यापित करें';
+
+  @override
+  String otpEnter(String phone) {
+    return '$phone पर भेजा गया 6 अंकों का OTP डालें';
+  }
+
+  @override
+  String resendIn(String sec) {
+    return '$sec सेकंड में दोबारा भेजें';
+  }
+
+  @override
+  String get resend => 'OTP दोबारा भेजें';
+
+  @override
+  String get partnerTag => 'पार्टनर';
+
+  @override
+  String get overview => 'व्यवसाय का सार';
+
+  @override
+  String lastDays(String n) {
+    return 'पिछले $n दिन';
+  }
+
+  @override
+  String get revenue => 'कमाई';
+
+  @override
+  String get aov => 'औसत ऑर्डर';
+
+  @override
+  String get rating => 'रेटिंग';
+
+  @override
+  String get addListing => 'लिस्टिंग जोड़ें';
+
+  @override
+  String get payouts => 'भुगतान';
+
+  @override
+  String get analytics => 'एनालिटिक्स';
+
+  @override
+  String get aiTips => 'AI व्यवसाय सुझाव';
+
+  @override
+  String get tipNoListings =>
+      'साफ़ फ़ोटो के साथ पहली लिस्टिंग जोड़ें — यात्री वही बुक करते हैं जो दिखता है।';
+
+  @override
+  String get tipCoupon => 'त्योहार कूपन (10% छूट) बनाएँ ताकि पहले ऑर्डर जल्दी आएँ।';
+
+  @override
+  String get tipRating =>
+      'समीक्षाओं का जवाब दें — जवाब देने वाले पार्टनर को ज़्यादा यात्री लौटते हैं।';
+
+  @override
+  String tipGrowth(String pct) {
+    return 'बिक्री $pct% बढ़ी है — सप्ताहांत की भीड़ के लिए स्टॉक तैयार रखें।';
+  }
+
+  @override
+  String tipDown(String pct) {
+    return 'बिक्री $pct% घटी है — सीमित समय का कूपन या नई फ़ोटो आज़माएँ।';
+  }
+
+  @override
+  String get businessAnalytics => 'व्यवसाय एनालिटिक्स';
+
+  @override
+  String get bestDay => 'सबसे अच्छा दिन';
+
+  @override
+  String get marketing => 'मार्केटिंग और ग्रोथ';
+
+  @override
+  String get shareStore => 'WhatsApp पर शेयर करें';
+
+  @override
+  String get shareStoreSub => 'ग्राहकों और ग्रुप में अपनी लिस्टिंग भेजें';
+
+  @override
+  String shareText(String name) {
+    return 'तीर्थनाउ पर $name के साथ बुक करें — आपकी ब्रज यात्रा के लिए भरोसेमंद सेवा 🙏';
+  }
+
+  @override
+  String get festivalCampaign => 'त्योहार अभियान';
+
+  @override
+  String get festivalCampaignSub => 'जन्माष्टमी, होली, कार्तिक के लिए तैयार कूपन';
+
+  @override
+  String get comingSoon => 'जल्द आ रहा है';
+
+  @override
+  String get promotions => 'प्रमोशन चलाएँ';
+
+  @override
+  String get promotionsSub => 'सर्च और होम में अपनी लिस्टिंग आगे लाएँ';
+
+  @override
+  String get loyalty => 'लॉयल्टी प्रोग्राम';
+
+  @override
+  String get loyaltySub => 'बार-बार आने वाले यात्रियों को इनाम';
+
+  @override
+  String get support => 'सहायता';
+
+  @override
+  String get howHelp => 'हम आपकी कैसे मदद करें?';
+
+  @override
+  String get chatSupport => 'WhatsApp पर बात करें';
+
+  @override
+  String get callUs => 'कॉलबैक मंगाएँ';
+
+  @override
+  String get emailUs => 'ईमेल करें';
+
+  @override
+  String get faqs => 'सामान्य प्रश्न';
+
+  @override
+  String get faq1q => 'भुगतान कब मिलता है?';
+
+  @override
+  String get faq1a =>
+      'सेवा पूरी होने के बाद 5% प्लेटफ़ॉर्म शुल्क घटाकर कमाई आपके बैंक खाते में आती है।';
+
+  @override
+  String get faq2q => 'यात्री मेरी कीमत से ज़्यादा क्यों देता है?';
+
+  @override
+  String get faq2a => 'चेकआउट पर आपकी कीमत में 18% GST और 5% प्लेटफ़ॉर्म शुल्क जुड़ता है।';
+
+  @override
+  String get faq3q => 'सत्यापन में कितना समय लगता है?';
+
+  @override
+  String get faq3a => 'सभी दस्तावेज़ और बैंक खाता जुड़ने के बाद आमतौर पर 24 घंटे में।';
+
+  @override
+  String get all => 'सभी';
+
+  @override
+  String get draft => 'ड्राफ़्ट';
+
+  @override
+  String get stepDetails => 'जानकारी';
+
+  @override
+  String get stepKyc => 'KYC';
+
+  @override
+  String get stepVerify => 'सत्यापन';
+
+  @override
+  String get docsSecure => 'आपके दस्तावेज़ एन्क्रिप्टेड हैं और केवल सत्यापन के लिए उपयोग होते हैं।';
+
+  @override
+  String get businessType => 'व्यवसाय का प्रकार';
+
+  @override
+  String get account => 'मेरा खाता';
+
+  @override
+  String get settings => 'सेटिंग्स';
 }

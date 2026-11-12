@@ -21,6 +21,23 @@ abstract final class TnColors {
 /// Cormorant's default old-style numerals make times like 07:45 hard to scan.
 const liningFigures = [FontFeature.liningFigures(), FontFeature.tabularFigures()];
 
+/// Partner app palette: deep night-blue chrome, gold actions, lavender canvas.
+abstract final class PColors {
+  static const night = Color(0xFF0E1433);
+  static const indigo = Color(0xFF232C6B);
+  static const violet = Color(0xFF4B3C9E);
+  static const gold = Color(0xFFF2B544);
+  static const goldDeep = Color(0xFFE08A1E);
+  static const canvas = Color(0xFFF4F2FB);
+  static const up = Color(0xFF1E9E5A);
+  static const goldGradient = LinearGradient(colors: [gold, goldDeep]);
+  static const nightGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [night, indigo, violet],
+  );
+}
+
 abstract final class TnTheme {
   static const _display = 'Cormorant';
 
@@ -42,7 +59,7 @@ abstract final class TnTheme {
     );
     final text = base.textTheme.apply(bodyColor: TnColors.ink, displayColor: TnColors.navy);
     return base.copyWith(
-      scaffoldBackgroundColor: TnColors.paper,
+      scaffoldBackgroundColor: PColors.canvas,
       textTheme: text.copyWith(
         headlineLarge: text.headlineLarge?.copyWith(
           fontFamily: _display,
@@ -63,16 +80,16 @@ abstract final class TnTheme {
         titleMedium: text.titleMedium?.copyWith(fontWeight: FontWeight.w600),
       ),
       appBarTheme: const AppBarTheme(
-        backgroundColor: TnColors.paper,
-        foregroundColor: TnColors.navy,
+        backgroundColor: PColors.night,
+        foregroundColor: Colors.white,
         elevation: 0,
         scrolledUnderElevation: 0,
         centerTitle: false,
         titleTextStyle: TextStyle(
           fontFeatures: liningFigures,
           fontSize: 20,
-          fontWeight: FontWeight.w800,
-          color: TnColors.navy,
+          fontWeight: FontWeight.w700,
+          color: Colors.white,
         ),
       ),
       cardTheme: CardThemeData(
@@ -88,11 +105,12 @@ abstract final class TnTheme {
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
-          backgroundColor: TnColors.navy,
-          foregroundColor: TnColors.paper,
-          minimumSize: const Size(48, 48),
+          backgroundColor: PColors.gold,
+          foregroundColor: PColors.night,
+          disabledBackgroundColor: const Color(0x33F2B544),
+          minimumSize: const Size(48, 50),
           shape: const StadiumBorder(),
-          textStyle: const TextStyle(fontWeight: FontWeight.w600),
+          textStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -105,7 +123,7 @@ abstract final class TnTheme {
       ),
       chipTheme: base.chipTheme.copyWith(
         backgroundColor: TnColors.card,
-        selectedColor: TnColors.navy,
+        selectedColor: PColors.indigo,
         checkmarkColor: Colors.white,
         // Readable on both states: ink on white, white on navy.
         labelStyle: TextStyle(
@@ -121,19 +139,31 @@ abstract final class TnTheme {
         filled: true,
         fillColor: TnColors.card,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(28),
+          borderRadius: BorderRadius.circular(14),
           borderSide: const BorderSide(color: TnColors.line),
         ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: PColors.violet, width: 1.6),
+        ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(28),
+          borderRadius: BorderRadius.circular(14),
           borderSide: const BorderSide(color: TnColors.line),
         ),
       ),
       navigationBarTheme: const NavigationBarThemeData(
-        backgroundColor: TnColors.card,
-        indicatorColor: Color(0x29C9692A),
+        backgroundColor: Colors.white,
+        indicatorColor: Color(0x33F2B544),
+        elevation: 8,
       ),
       dividerTheme: const DividerThemeData(color: TnColors.line),
+      tabBarTheme: const TabBarThemeData(
+        labelColor: PColors.gold,
+        unselectedLabelColor: Color(0xB3FFFFFF),
+        indicatorColor: PColors.gold,
+        dividerColor: Colors.transparent,
+        labelStyle: TextStyle(fontWeight: FontWeight.w700),
+      ),
     );
   }
 }

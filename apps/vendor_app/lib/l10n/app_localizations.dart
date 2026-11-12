@@ -1280,6 +1280,354 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Partner support'**
   String get help;
+
+  /// No description provided for @splashTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Grow your Pilgrimage Business with TirthNow'**
+  String get splashTitle;
+
+  /// No description provided for @splashSub.
+  ///
+  /// In en, this message translates to:
+  /// **'List your cab, hotel, dharamshala, restaurant or temple store and reach thousands of pilgrims.'**
+  String get splashSub;
+
+  /// No description provided for @getStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get getStarted;
+
+  /// No description provided for @login.
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get login;
+
+  /// No description provided for @register.
+  ///
+  /// In en, this message translates to:
+  /// **'Register'**
+  String get register;
+
+  /// No description provided for @verifyNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify your number'**
+  String get verifyNumber;
+
+  /// No description provided for @otpEnter.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the 6-digit OTP sent to {phone}'**
+  String otpEnter(String phone);
+
+  /// No description provided for @resendIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend OTP in {sec}s'**
+  String resendIn(String sec);
+
+  /// No description provided for @resend.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend OTP'**
+  String get resend;
+
+  /// No description provided for @partnerTag.
+  ///
+  /// In en, this message translates to:
+  /// **'Partner'**
+  String get partnerTag;
+
+  /// No description provided for @overview.
+  ///
+  /// In en, this message translates to:
+  /// **'Business overview'**
+  String get overview;
+
+  /// No description provided for @lastDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Last {n} days'**
+  String lastDays(String n);
+
+  /// No description provided for @revenue.
+  ///
+  /// In en, this message translates to:
+  /// **'Revenue'**
+  String get revenue;
+
+  /// No description provided for @aov.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg order'**
+  String get aov;
+
+  /// No description provided for @rating.
+  ///
+  /// In en, this message translates to:
+  /// **'Rating'**
+  String get rating;
+
+  /// No description provided for @addListing.
+  ///
+  /// In en, this message translates to:
+  /// **'Add listing'**
+  String get addListing;
+
+  /// No description provided for @payouts.
+  ///
+  /// In en, this message translates to:
+  /// **'Payouts'**
+  String get payouts;
+
+  /// No description provided for @analytics.
+  ///
+  /// In en, this message translates to:
+  /// **'Analytics'**
+  String get analytics;
+
+  /// No description provided for @aiTips.
+  ///
+  /// In en, this message translates to:
+  /// **'AI business tips'**
+  String get aiTips;
+
+  /// No description provided for @tipNoListings.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your first listing with a clear photo — pilgrims book what they can see.'**
+  String get tipNoListings;
+
+  /// No description provided for @tipCoupon.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a festival coupon (10% off) to get your first orders faster.'**
+  String get tipCoupon;
+
+  /// No description provided for @tipRating.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply to reviews — partners who reply get more repeat pilgrims.'**
+  String get tipRating;
+
+  /// No description provided for @tipGrowth.
+  ///
+  /// In en, this message translates to:
+  /// **'Sales are up {pct}% — keep stock ready for the weekend rush.'**
+  String tipGrowth(String pct);
+
+  /// No description provided for @tipDown.
+  ///
+  /// In en, this message translates to:
+  /// **'Sales dipped {pct}% — try a limited-time coupon or new photos.'**
+  String tipDown(String pct);
+
+  /// No description provided for @businessAnalytics.
+  ///
+  /// In en, this message translates to:
+  /// **'Business analytics'**
+  String get businessAnalytics;
+
+  /// No description provided for @bestDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Best day'**
+  String get bestDay;
+
+  /// No description provided for @marketing.
+  ///
+  /// In en, this message translates to:
+  /// **'Marketing & growth'**
+  String get marketing;
+
+  /// No description provided for @shareStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Share on WhatsApp'**
+  String get shareStore;
+
+  /// No description provided for @shareStoreSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Send your listing to customers and groups'**
+  String get shareStoreSub;
+
+  /// No description provided for @shareText.
+  ///
+  /// In en, this message translates to:
+  /// **'Book with {name} on TirthNow — trusted service for your Braj yatra 🙏'**
+  String shareText(String name);
+
+  /// No description provided for @festivalCampaign.
+  ///
+  /// In en, this message translates to:
+  /// **'Festival campaigns'**
+  String get festivalCampaign;
+
+  /// No description provided for @festivalCampaignSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready coupons for Janmashtami, Holi, Kartik'**
+  String get festivalCampaignSub;
+
+  /// No description provided for @comingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming soon'**
+  String get comingSoon;
+
+  /// No description provided for @promotions.
+  ///
+  /// In en, this message translates to:
+  /// **'Run promotions'**
+  String get promotions;
+
+  /// No description provided for @promotionsSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Boost your listing in search and home'**
+  String get promotionsSub;
+
+  /// No description provided for @loyalty.
+  ///
+  /// In en, this message translates to:
+  /// **'Loyalty program'**
+  String get loyalty;
+
+  /// No description provided for @loyaltySub.
+  ///
+  /// In en, this message translates to:
+  /// **'Reward repeat pilgrims'**
+  String get loyaltySub;
+
+  /// No description provided for @support.
+  ///
+  /// In en, this message translates to:
+  /// **'Help & support'**
+  String get support;
+
+  /// No description provided for @howHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'How can we help you?'**
+  String get howHelp;
+
+  /// No description provided for @chatSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat on WhatsApp'**
+  String get chatSupport;
+
+  /// No description provided for @callUs.
+  ///
+  /// In en, this message translates to:
+  /// **'Request a callback'**
+  String get callUs;
+
+  /// No description provided for @emailUs.
+  ///
+  /// In en, this message translates to:
+  /// **'Email us'**
+  String get emailUs;
+
+  /// No description provided for @faqs.
+  ///
+  /// In en, this message translates to:
+  /// **'FAQs'**
+  String get faqs;
+
+  /// No description provided for @faq1q.
+  ///
+  /// In en, this message translates to:
+  /// **'When do I get paid?'**
+  String get faq1q;
+
+  /// No description provided for @faq1a.
+  ///
+  /// In en, this message translates to:
+  /// **'Earnings are settled to your bank account after the service is completed, minus the 5% platform fee.'**
+  String get faq1a;
+
+  /// No description provided for @faq2q.
+  ///
+  /// In en, this message translates to:
+  /// **'Why does the pilgrim pay more than my price?'**
+  String get faq2q;
+
+  /// No description provided for @faq2a.
+  ///
+  /// In en, this message translates to:
+  /// **'18% GST and the 5% platform fee are added on top of your price at checkout.'**
+  String get faq2a;
+
+  /// No description provided for @faq3q.
+  ///
+  /// In en, this message translates to:
+  /// **'How long does verification take?'**
+  String get faq3q;
+
+  /// No description provided for @faq3a.
+  ///
+  /// In en, this message translates to:
+  /// **'Usually within 24 hours once all documents and the bank account are added.'**
+  String get faq3a;
+
+  /// No description provided for @all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get all;
+
+  /// No description provided for @draft.
+  ///
+  /// In en, this message translates to:
+  /// **'Draft'**
+  String get draft;
+
+  /// No description provided for @stepDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get stepDetails;
+
+  /// No description provided for @stepKyc.
+  ///
+  /// In en, this message translates to:
+  /// **'KYC'**
+  String get stepKyc;
+
+  /// No description provided for @stepVerify.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify'**
+  String get stepVerify;
+
+  /// No description provided for @docsSecure.
+  ///
+  /// In en, this message translates to:
+  /// **'Your documents are encrypted and used only for verification.'**
+  String get docsSecure;
+
+  /// No description provided for @businessType.
+  ///
+  /// In en, this message translates to:
+  /// **'Business type'**
+  String get businessType;
+
+  /// No description provided for @account.
+  ///
+  /// In en, this message translates to:
+  /// **'My account'**
+  String get account;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

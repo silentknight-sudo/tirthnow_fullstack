@@ -260,5 +260,105 @@
   "statusRejected": "Needs changes",
   "statusSuspended": "Suspended",
   "switchLanguage": "Language",
-  "help": "Partner support"
+  "help": "Partner support",
+  "splashTitle": "Grow your Pilgrimage Business with TirthNow",
+  "splashSub": "List your cab, hotel, dharamshala, restaurant or temple store and reach thousands of pilgrims.",
+  "getStarted": "Get Started",
+  "login": "Login",
+  "register": "Register",
+  "verifyNumber": "Verify your number",
+  "otpEnter": "Enter the 6-digit OTP sent to {phone}",
+  "@otpEnter": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "resendIn": "Resend OTP in {sec}s",
+  "@resendIn": {
+    "placeholders": {
+      "sec": {
+        "type": "String"
+      }
+    }
+  },
+  "resend": "Resend OTP",
+  "partnerTag": "Partner",
+  "overview": "Business overview",
+  "lastDays": "Last {n} days",
+  "@lastDays": {
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "revenue": "Revenue",
+  "aov": "Avg order",
+  "rating": "Rating",
+  "addListing": "Add listing",
+  "payouts": "Payouts",
+  "analytics": "Analytics",
+  "aiTips": "AI business tips",
+  "tipNoListings": "Add your first listing with a clear photo — pilgrims book what they can see.",
+  "tipCoupon": "Create a festival coupon (10% off) to get your first orders faster.",
+  "tipRating": "Reply to reviews — partners who reply get more repeat pilgrims.",
+  "tipGrowth": "Sales are up {pct}% — keep stock ready for the weekend rush.",
+  "@tipGrowth": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "tipDown": "Sales dipped {pct}% — try a limited-time coupon or new photos.",
+  "@tipDown": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "businessAnalytics": "Business analytics",
+  "bestDay": "Best day",
+  "marketing": "Marketing & growth",
+  "shareStore": "Share on WhatsApp",
+  "shareStoreSub": "Send your listing to customers and groups",
+  "shareText": "Book with {name} on TirthNow — trusted service for your Braj yatra 🙏",
+  "@shareText": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "festivalCampaign": "Festival campaigns",
+  "festivalCampaignSub": "Ready coupons for Janmashtami, Holi, Kartik",
+  "comingSoon": "Coming soon",
+  "promotions": "Run promotions",
+  "promotionsSub": "Boost your listing in search and home",
+  "loyalty": "Loyalty program",
+  "loyaltySub": "Reward repeat pilgrims",
+  "support": "Help & support",
+  "howHelp": "How can we help you?",
+  "chatSupport": "Chat on WhatsApp",
+  "callUs": "Request a callback",
+  "emailUs": "Email us",
+  "faqs": "FAQs",
+  "faq1q": "When do I get paid?",
+  "faq1a": "Earnings are settled to your bank account after the service is completed, minus the 5% platform fee.",
+  "faq2q": "Why does the pilgrim pay more than my price?",
+  "faq2a": "18% GST and the 5% platform fee are added on top of your price at checkout.",
+  "faq3q": "How long does verification take?",
+  "faq3a": "Usually within 24 hours once all documents and the bank account are added.",
+  "all": "All",
+  "draft": "Draft",
+  "stepDetails": "Details",
+  "stepKyc": "KYC",
+  "stepVerify": "Verify",
+  "docsSecure": "Your documents are encrypted and used only for verification.",
+  "businessType": "Business type",
+  "account": "My account",
+  "settings": "Settings"
 }

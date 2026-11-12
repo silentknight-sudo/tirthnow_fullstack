@@ -386,6 +386,7 @@ async function seedDharamshalaAndStore(adminId: string, password: string): Promi
     email: 'store.owner@tirthnow.local',
     password,
     displayName: 'Gopal Agarwal',
+    phone: '+919876500077',
     roles: [{ key: 'user' }],
   });
   const storeId = await upsertVendor('braj-pooja-bhandar', {

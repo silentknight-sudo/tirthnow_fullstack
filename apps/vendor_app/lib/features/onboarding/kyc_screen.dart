@@ -170,10 +170,26 @@ class _KycScreenState extends ConsumerState<KycScreen> {
                     style: const TextStyle(color: TnColors.muted, fontSize: 13),
                   ),
                 ),
-              FilledButton.icon(
-                onPressed: ready && !_submitting ? () => _submit(v) : null,
-                icon: const Icon(Icons.verified_user_rounded),
-                label: Text(l.submitKyc),
+              Container(
+                padding: const EdgeInsets.all(12),
+                margin: const EdgeInsets.only(bottom: 14),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFF6E6),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.lock_outline_rounded, color: PColors.goldDeep),
+                    const SizedBox(width: 10),
+                    Expanded(child: Text(l.docsSecure, style: const TextStyle(fontSize: 12.5))),
+                  ],
+                ),
+              ),
+              GoldButton(
+                label: l.submitKyc,
+                icon: Icons.verified_user_rounded,
+                busy: _submitting,
+                onPressed: ready ? () => _submit(v) : null,
               ),
             ],
           );
@@ -387,7 +403,7 @@ class _BankFormState extends ConsumerState<_BankForm> {
                   : l.invalidValue,
             ),
             const SizedBox(height: 14),
-            FilledButton.tonal(onPressed: _busy ? null : _save, child: Text(l.addBank)),
+            GoldButton(label: l.addBank, busy: _busy, onPressed: _save),
           ],
         ),
       ),

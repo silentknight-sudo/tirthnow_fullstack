@@ -7,6 +7,9 @@ import '../../core/theme/app_theme.dart';
 import '../../core/widgets/common.dart';
 import '../auth/data/session_controller.dart';
 import '../coupons/coupons_screen.dart';
+import '../growth/analytics_screen.dart';
+import '../growth/marketing_screen.dart';
+import '../growth/support_screen.dart';
 import '../shared/partner_ui.dart';
 import 'reviews_screen.dart';
 
@@ -31,83 +34,104 @@ class MoreScreen extends ConsumerWidget {
     void open(Widget page) =>
         Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => page));
     return Scaffold(
-      appBar: AppBar(title: Text(l.tabMore)),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+        padding: EdgeInsets.zero,
         children: [
-          PanelCard(
-            child: Row(
+          NightHeader(title: l.account, subtitle: l.settings),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(14),
-                  child: Image.asset(svc.image, width: 68, height: 54, fit: BoxFit.cover),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                PanelCard(
+                  child: Row(
                     children: [
-                      Text(
-                        vendor.displayName,
-                        style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(14),
+                        child: Image.asset(svc.image, width: 68, height: 54, fit: BoxFit.cover),
                       ),
-                      Text(
-                        vendor.legalName,
-                        style: const TextStyle(color: TnColors.muted, fontSize: 12.5),
-                      ),
-                      const SizedBox(height: 4),
-                      Wrap(
-                        spacing: 6,
-                        children: [
-                          Pill(svc.title(l), color: TnColors.navy, icon: svc.icon),
-                          Pill(statusText, color: statusColor, icon: Icons.verified_rounded),
-                        ],
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              vendor.displayName,
+                              style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+                            ),
+                            Text(
+                              vendor.legalName,
+                              style: const TextStyle(color: TnColors.muted, fontSize: 12.5),
+                            ),
+                            const SizedBox(height: 4),
+                            Wrap(
+                              spacing: 6,
+                              children: [
+                                Pill(svc.title(l), color: TnColors.navy, icon: svc.icon),
+                                Pill(statusText, color: statusColor, icon: Icons.verified_rounded),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
                 ),
+                const SizedBox(height: 16),
+                _Tile(
+                  icon: Icons.insights_rounded,
+                  title: l.analytics,
+                  subtitle: l.businessAnalytics,
+                  onTap: () => open(AnalyticsScreen(vendor: vendor)),
+                ),
+                _Tile(
+                  icon: Icons.campaign_rounded,
+                  title: l.marketing,
+                  subtitle: l.festivalCampaignSub,
+                  onTap: () => open(MarketingScreen(vendor: vendor)),
+                ),
+                _Tile(
+                  icon: Icons.local_offer_rounded,
+                  title: l.coupons,
+                  subtitle: l.couponsSub,
+                  onTap: () => open(CouponsScreen(vendorId: vendor.id)),
+                ),
+                _Tile(
+                  icon: Icons.star_rounded,
+                  title: l.reviews,
+                  subtitle: l.ratings,
+                  onTap: () => open(ReviewsScreen(vendorId: vendor.id)),
+                ),
+                _Tile(
+                  icon: Icons.badge_rounded,
+                  title: l.kycStatus,
+                  subtitle: [
+                    if (vendor.pan != null) 'PAN ${vendor.pan}',
+                    if (vendor.gstin != null) 'GSTIN ${vendor.gstin}',
+                    '${vendor.kycDocuments.length} ✓',
+                  ].join(' · '),
+                ),
+                _Tile(
+                  icon: Icons.translate_rounded,
+                  title: l.switchLanguage,
+                  subtitle: lang == 'hi' ? 'हिंदी' : 'English',
+                  onTap: () => ref.read(localeProvider.notifier).set(lang == 'hi' ? 'en' : 'hi'),
+                ),
+                _Tile(
+                  icon: Icons.support_agent_rounded,
+                  title: l.support,
+                  subtitle: l.howHelp,
+                  onTap: () => open(const SupportScreen()),
+                ),
+                const SizedBox(height: 12),
+                OutlinedButton.icon(
+                  onPressed: () => ref.read(sessionProvider.notifier).signOut(),
+                  icon: const Icon(Icons.logout_rounded),
+                  label: Text(l.signOut),
+                  style: OutlinedButton.styleFrom(foregroundColor: TnColors.sos),
+                ),
               ],
             ),
-          ),
-          const SizedBox(height: 16),
-          _Tile(
-            icon: Icons.local_offer_rounded,
-            title: l.coupons,
-            subtitle: l.couponsSub,
-            onTap: () => open(CouponsScreen(vendorId: vendor.id)),
-          ),
-          _Tile(
-            icon: Icons.star_rounded,
-            title: l.reviews,
-            subtitle: l.ratings,
-            onTap: () => open(ReviewsScreen(vendorId: vendor.id)),
-          ),
-          _Tile(
-            icon: Icons.badge_rounded,
-            title: l.kycStatus,
-            subtitle: [
-              if (vendor.pan != null) 'PAN ${vendor.pan}',
-              if (vendor.gstin != null) 'GSTIN ${vendor.gstin}',
-              '${vendor.kycDocuments.length} ✓',
-            ].join(' · '),
-          ),
-          _Tile(
-            icon: Icons.translate_rounded,
-            title: l.switchLanguage,
-            subtitle: lang == 'hi' ? 'हिंदी' : 'English',
-            onTap: () => ref.read(localeProvider.notifier).set(lang == 'hi' ? 'en' : 'hi'),
-          ),
-          _Tile(
-            icon: Icons.support_agent_rounded,
-            title: l.help,
-            subtitle: 'partners@tirthnow.app',
-          ),
-          const SizedBox(height: 12),
-          OutlinedButton.icon(
-            onPressed: () => ref.read(sessionProvider.notifier).signOut(),
-            icon: const Icon(Icons.logout_rounded),
-            label: Text(l.signOut),
-            style: OutlinedButton.styleFrom(foregroundColor: TnColors.sos),
           ),
         ],
       ),
@@ -138,7 +162,7 @@ class _Tile extends StatelessWidget {
               color: const Color(0xFFFFF1E4),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(icon, color: TnColors.accent),
+            child: Icon(icon, color: PColors.violet),
           ),
           const SizedBox(width: 12),
           Expanded(
