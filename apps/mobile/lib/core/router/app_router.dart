@@ -23,6 +23,7 @@ import '../../features/home/presentation/home_screen.dart';
 import '../../features/journey/presentation/journey_screen.dart';
 import '../../features/notifications/presentation/notifications_screen.dart';
 import '../../features/profile/presentation/contacts_screen.dart';
+import '../../features/profile/presentation/create_creator_screen.dart';
 import '../../features/profile/presentation/edit_profile_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/reels/presentation/my_reels_screen.dart';
@@ -210,6 +211,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         routes: [GoRoute(path: 'family', builder: (_, _) => const FamilyScreen())],
       ),
       GoRoute(path: '/account/edit', builder: (_, _) => const EditProfileScreen()),
+      GoRoute(path: '/creator/create', builder: (_, _) => const CreateCreatorScreen()),
     ],
   );
 });

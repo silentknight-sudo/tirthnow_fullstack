@@ -243,233 +243,233 @@ class _GlanceCards extends ConsumerWidget {
     final trip = ref.watch(activeTripProvider).value;
     // Sample count for the demo build, derived from the temple's crowd level.
     final demoCount = 40 + ((busiest?.crowdLevel ?? 2) * 22).round();
-    return SizedBox(
-      height: 172,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.fromLTRB(16, 14, 16, 6),
-        children: [
-          SizedBox(
-            width: 162,
-            child: _GlanceCard(
-              border: const Color(0xFFF2D9A8),
-              onTap: () => context.push('/people'),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const Icon(Icons.groups_rounded, color: Color(0xFFE8590C), size: 22),
-                      const SizedBox(width: 5),
-                      Expanded(child: _CardTitle(l.liveCrowd)),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  SizedBox(
-                    height: 34,
-                    child: Stack(
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(12, 14, 12, 6),
+      child: SizedBox(
+        height: 158,
+        child: Row(
+          children: [
+            Expanded(
+              child: _GlanceCard(
+                border: const Color(0xFFF2D9A8),
+                onTap: () => context.push('/people'),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
                       children: [
-                        for (var k = 0; k < 3; k++)
-                          Positioned(
-                            left: k * 20.0,
-                            child: Container(
-                              padding: const EdgeInsets.all(1.5),
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
-                              ),
-                              child: CircleAvatar(
-                                radius: 15,
-                                backgroundImage: AssetImage(
-                                  'assets/images/demo-people/p${k + 1}.jpg',
+                        const Icon(Icons.groups_rounded, color: Color(0xFFE8590C), size: 22),
+                        const SizedBox(width: 5),
+                        Expanded(child: _CardTitle(l.liveCrowd)),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      height: 34,
+                      child: Stack(
+                        children: [
+                          for (var k = 0; k < 3; k++)
+                            Positioned(
+                              left: k * 20.0,
+                              child: Container(
+                                padding: const EdgeInsets.all(1.5),
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: CircleAvatar(
+                                  radius: 15,
+                                  backgroundImage: AssetImage(
+                                    'assets/images/demo-people/p${k + 1}.jpg',
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        Positioned(
-                          left: 60,
-                          child: Container(
-                            height: 33,
-                            padding: const EdgeInsets.symmetric(horizontal: 6),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(17),
-                              boxShadow: const [BoxShadow(color: Color(0x1A000000), blurRadius: 4)],
-                            ),
-                            child: Text(
-                              '+$demoCount',
-                              style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 11.5),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Spacer(),
-                  Row(
-                    children: [
-                      Container(
-                        width: 8,
-                        height: 8,
-                        decoration: const BoxDecoration(
-                          color: Color(0xFF2F9E44),
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      const SizedBox(width: 5),
-                      Expanded(
-                        child: Text(
-                          l.atPlace(busiest?.name ?? 'Banke Bihari Ji'),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      Text(
-                        busiest == null ? '' : crowdLabel(context, busiest.crowdLevel),
-                        style: const TextStyle(fontSize: 10, color: TnColors.muted),
-                      ),
-                      const Spacer(),
-                      const DemoBadge(),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(width: 10),
-          SizedBox(
-            width: 162,
-            child: _GlanceCard(
-              border: const Color(0xFFF5C9B0),
-              tint: const Color(0xFFFFF6F1),
-              onTap: () => context.push('/aarti'),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const Text('🪔', style: TextStyle(fontSize: 18)),
-                      const SizedBox(width: 4),
-                      Expanded(child: _CardTitle(l.aartiTitle)),
-                    ],
-                  ),
-                  Text(
-                    l.liveLyricsAudio,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontSize: 10.5, color: TnColors.muted),
-                  ),
-                  const SizedBox(height: 8),
-                  Expanded(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Stack(
-                        fit: StackFit.expand,
-                        children: [
-                          Image.asset('assets/images/canva/banke-bihari.jpg', fit: BoxFit.cover),
-                          const ColoredBox(color: Color(0x33000000)),
-                          Center(
+                          Positioned(
+                            left: 60,
                             child: Container(
-                              width: 34,
-                              height: 34,
+                              height: 33,
+                              padding: const EdgeInsets.symmetric(horizontal: 6),
+                              alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(color: Colors.white, width: 2),
-                                color: const Color(0x55000000),
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(17),
+                                boxShadow: const [
+                                  BoxShadow(color: Color(0x1A000000), blurRadius: 4),
+                                ],
                               ),
-                              child: const Icon(Icons.play_arrow_rounded, color: Colors.white),
+                              child: Text(
+                                '+$demoCount',
+                                style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 11.5),
+                              ),
                             ),
                           ),
                         ],
                       ),
                     ),
-                  ),
-                ],
+                    const Spacer(),
+                    Row(
+                      children: [
+                        Container(
+                          width: 8,
+                          height: 8,
+                          decoration: const BoxDecoration(
+                            color: Color(0xFF2F9E44),
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        Expanded(
+                          child: Text(
+                            l.atPlace(busiest?.name ?? 'Banke Bihari Ji'),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        Text(
+                          busiest == null ? '' : crowdLabel(context, busiest.crowdLevel),
+                          style: const TextStyle(fontSize: 10, color: TnColors.muted),
+                        ),
+                        const Spacer(),
+                        const DemoBadge(),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          const SizedBox(width: 10),
-          SizedBox(
-            width: 162,
-            child: _GlanceCard(
-              border: const Color(0xFFD7E3D2),
-              onTap: () => context.push('/trips'),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const Icon(Icons.route_rounded, color: Color(0xFF2F9E44), size: 22),
-                      const SizedBox(width: 5),
-                      Expanded(child: _CardTitle(l.myTrip)),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  if (trip != null) ...[
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF2F9E44),
+            const SizedBox(width: 7),
+            Expanded(
+              child: _GlanceCard(
+                border: const Color(0xFFF5C9B0),
+                tint: const Color(0xFFFFF6F1),
+                onTap: () => context.push('/aarti'),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Text('🪔', style: TextStyle(fontSize: 18)),
+                        const SizedBox(width: 4),
+                        Expanded(child: _CardTitle(l.aartiTitle)),
+                      ],
+                    ),
+                    Text(
+                      l.liveLyricsAudio,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(fontSize: 10.5, color: TnColors.muted),
+                    ),
+                    const SizedBox(height: 8),
+                    Expanded(
+                      child: ClipRRect(
                         borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        l.tripInProgress,
-                        maxLines: 1,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                    ),
-                    const Spacer(),
-                    Text(
-                      l.startedAt(formatIstTime(DateTime.parse(trip.startedAt))),
-                      style: const TextStyle(fontSize: 11.5),
-                    ),
-                    if (trip.fromPlace != null)
-                      Text(
-                        l.fromPlace(trip.fromPlace!),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w700),
-                      ),
-                  ] else ...[
-                    Text(
-                      l.noActiveTrip,
-                      style: const TextStyle(fontSize: 11.5, color: TnColors.muted),
-                    ),
-                    const Spacer(),
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(vertical: 6),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: TnColors.navy,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        l.startTrip,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 11.5,
-                          fontWeight: FontWeight.w700,
+                        child: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            Image.asset('assets/images/canva/banke-bihari.jpg', fit: BoxFit.cover),
+                            const ColoredBox(color: Color(0x33000000)),
+                            Center(
+                              child: Container(
+                                width: 34,
+                                height: 34,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(color: Colors.white, width: 2),
+                                  color: const Color(0x55000000),
+                                ),
+                                child: const Icon(Icons.play_arrow_rounded, color: Colors.white),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ],
-                ],
+                ),
               ),
             ),
-          ),
-        ],
+            const SizedBox(width: 7),
+            Expanded(
+              child: _GlanceCard(
+                border: const Color(0xFFD7E3D2),
+                onTap: () => context.push(trip == null ? '/guide/planner' : '/trips'),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.route_rounded, color: Color(0xFF2F9E44), size: 22),
+                        const SizedBox(width: 5),
+                        Expanded(child: _CardTitle(l.myTrip)),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    if (trip != null) ...[
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF2F9E44),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          l.tripInProgress,
+                          maxLines: 1,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        l.startedAt(formatIstTime(DateTime.parse(trip.startedAt))),
+                        style: const TextStyle(fontSize: 11.5),
+                      ),
+                      if (trip.fromPlace != null)
+                        Text(
+                          l.fromPlace(trip.fromPlace!),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w700),
+                        ),
+                    ] else ...[
+                      Text(
+                        l.noActiveTrip,
+                        style: const TextStyle(fontSize: 11.5, color: TnColors.muted),
+                      ),
+                      const Spacer(),
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(vertical: 6),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: TnColors.navy,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          '${l.heroPlanTrip}  →',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 11.5,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -486,7 +486,7 @@ class _CardTitle extends StatelessWidget {
     overflow: TextOverflow.ellipsis,
     style: const TextStyle(
       fontFamily: 'Cormorant',
-      fontSize: 18,
+      fontSize: 16.5,
       fontWeight: FontWeight.w700,
       color: TnColors.ink,
       height: 1.1,
@@ -624,7 +624,7 @@ class _QuickAccess extends StatelessWidget {
       (
         Icons.person_add_alt_1_rounded,
         l.createProfile,
-        '/account/edit',
+        '/creator/create',
         const Color(0xFF7048E8),
         const Color(0xFFF0EBFF),
       ),
@@ -852,6 +852,8 @@ class _HeroTab {
     required this.cta,
     required this.route,
     required this.tiles,
+    required this.icon,
+    required this.photos,
   });
   final String tab;
   final String title;
@@ -860,6 +862,8 @@ class _HeroTab {
   final String cta;
   final String route;
   final List<_HeroTile> tiles;
+  final IconData icon;
+  final List<String> photos;
 }
 
 /// Four tabs under the AI Voice bar (Traveling, Pooja, Place, Temple), each
@@ -900,7 +904,9 @@ class _HeroCarouselState extends State<_HeroCarousel> {
         tab: l.heroTabTravel,
         title: l.heroTravelTitle,
         subtitle: l.heroTravelSub,
-        image: 'assets/images/canva/krishna-planner.jpg',
+        image: 'assets/images/canva/hero-travel.jpg',
+        icon: Icons.flight_takeoff_rounded,
+        photos: const ['prem-mandir', 'banke-bihari', 'radha-kund'],
         cta: l.heroTravelCta,
         route: '/guide/planner',
         tiles: [
@@ -908,15 +914,17 @@ class _HeroCarouselState extends State<_HeroCarousel> {
           _HeroTile(Icons.restaurant_rounded, l.food, '/book/restaurants', orange),
           _HeroTile(Icons.support_agent_rounded, l.heroBrajGuide, '/guide', blue),
           _HeroTile(Icons.local_taxi_rounded, l.heroPickupDrop, '/book/cabs', orange),
-          _HeroTile(Icons.movie_rounded, l.reels, '/reels', orange),
-          _HeroTile(Icons.route_rounded, l.yatraJourney, '/journey', purple),
+          _HeroTile(Icons.movie_filter_rounded, l.reels, '/reels', orange),
+          _HeroTile(Icons.videocam_rounded, l.heroTravelVideo, '/reels/new', orange),
         ],
       ),
       _HeroTab(
         tab: l.heroTabPooja,
         title: l.heroPoojaTitle,
         subtitle: l.heroPoojaSub,
-        image: 'assets/images/canva/banke-bihari.jpg',
+        image: 'assets/images/canva/hero-pooja.jpg',
+        icon: Icons.local_fire_department_rounded,
+        photos: const ['banke-bihari', 'iskcon', 'shriji'],
         cta: l.heroPoojaCta,
         route: '/aarti',
         tiles: [
@@ -924,27 +932,35 @@ class _HeroCarouselState extends State<_HeroCarousel> {
           _HeroTile(Icons.lyrics_rounded, l.heroLyrics, '/aarti', purple),
           _HeroTile(Icons.storefront_rounded, l.poojaItems, '/pooja', orange),
           _HeroTile(Icons.event_available_rounded, l.heroDarshan, '/book/experiences', blue),
+          _HeroTile(Icons.temple_hindu_rounded, l.heroTemples, '/temples', orange),
+          _HeroTile(Icons.movie_filter_rounded, l.reels, '/reels', orange),
         ],
       ),
       _HeroTab(
         tab: l.heroTabPlace,
         title: l.heroPlaceTitle,
         subtitle: l.heroPlaceSub,
-        image: 'assets/images/canva/govardhan.jpg',
+        image: 'assets/images/canva/hero-place.jpg',
+        icon: Icons.place_rounded,
+        photos: const ['govardhan', 'janmabhoomi', 'radha-kund'],
         cta: l.heroPlaceCta,
         route: '/journey',
         tiles: [
           _HeroTile(Icons.temple_hindu_rounded, l.heroTemples, '/temples', orange),
           _HeroTile(Icons.route_rounded, l.yatraJourney, '/journey', purple),
           _HeroTile(Icons.map_rounded, l.heroPlanTrip, '/guide/planner', blue),
-          _HeroTile(Icons.movie_rounded, l.reels, '/reels', orange),
+          _HeroTile(Icons.hotel_rounded, l.stay, '/book/hotels', blue),
+          _HeroTile(Icons.local_taxi_rounded, l.cabs, '/book/cabs', green),
+          _HeroTile(Icons.movie_filter_rounded, l.reels, '/reels', orange),
         ],
       ),
       _HeroTab(
         tab: l.heroTabTemple,
         title: l.poojaItems,
         subtitle: l.heroStoreSub,
-        image: 'assets/images/canva/prem-mandir.jpg',
+        image: 'assets/images/canva/hero-store.jpg',
+        icon: Icons.storefront_rounded,
+        photos: const ['temple', 'banke-bihari', 'prem-mandir'],
         cta: l.heroStoreCta,
         route: '/pooja',
         tiles: [
@@ -952,6 +968,8 @@ class _HeroCarouselState extends State<_HeroCarousel> {
           _HeroTile(Icons.local_florist_rounded, l.heroGarland, '/pooja', green),
           _HeroTile(Icons.checkroom_rounded, l.heroPoshak, '/pooja', purple),
           _HeroTile(Icons.light_mode_rounded, l.heroDiya, '/pooja', orange),
+          _HeroTile(Icons.spa_rounded, l.poojaTilak, '/pooja', purple),
+          _HeroTile(Icons.volunteer_activism_rounded, l.poojaOffering, '/pooja', green),
         ],
       ),
     ];
@@ -992,7 +1010,7 @@ class _HeroCarouselState extends State<_HeroCarousel> {
         ),
         const SizedBox(height: 10),
         SizedBox(
-          height: 276,
+          height: 236,
           child: PageView.builder(
             controller: _pages,
             itemCount: tabs.length,
@@ -1028,101 +1046,118 @@ class _HeroPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: TnColors.line),
-        boxShadow: const [
-          BoxShadow(color: Color(0x1F1C3C6B), blurRadius: 14, offset: Offset(0, 6)),
-        ],
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: Stack(
-        children: [
-          Positioned(
-            right: 0,
-            top: 0,
-            bottom: 0,
-            width: 150,
-            child: ShaderMask(
-              shaderCallback: (r) => const LinearGradient(
-                colors: [Colors.transparent, Colors.black],
-                stops: [0, 0.45],
-              ).createShader(r),
-              blendMode: BlendMode.dstIn,
-              child: Image.asset(tab.image, fit: BoxFit.cover),
-            ),
+    Widget photo(String name, double angle, double left, double bottom) => Positioned(
+      left: left,
+      bottom: bottom,
+      child: Transform.rotate(
+        angle: angle,
+        child: Container(
+          width: 52,
+          height: 64,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: const [
+              BoxShadow(color: Color(0x401C3C6B), blurRadius: 8, offset: Offset(0, 3)),
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          padding: const EdgeInsets.all(2.5),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Image.asset('assets/images/canva/$name.jpg', fit: BoxFit.cover),
+          ),
+        ),
+      ),
+    );
+    return GestureDetector(
+      onTap: () => context.push(tab.route),
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(color: TnColors.line),
+          boxShadow: const [
+            BoxShadow(color: Color(0x1F1C3C6B), blurRadius: 14, offset: Offset(0, 6)),
+          ],
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: LayoutBuilder(
+          builder: (context, box) {
+            final art = box.maxWidth * 0.46;
+            return Stack(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 110),
-                  child: Text(
-                    tab.title,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontFamily: 'Cormorant',
-                      color: TnColors.navy,
-                      fontSize: 22,
-                      fontWeight: FontWeight.w800,
-                    ),
+                // Canva art: already fades to white on its left edge.
+                Positioned(
+                  right: 0,
+                  top: 0,
+                  bottom: 0,
+                  width: art,
+                  child: Image.asset(
+                    tab.image,
+                    fit: BoxFit.cover,
+                    alignment: Alignment.centerRight,
                   ),
                 ),
-                const SizedBox(height: 2),
+                photo(tab.photos[0], -0.14, box.maxWidth - art + 6, 8),
+                photo(tab.photos[1], 0, box.maxWidth - art + 50, 4),
+                photo(tab.photos[2], 0.14, box.maxWidth - art + 94, 10),
                 Padding(
-                  padding: const EdgeInsets.only(right: 120),
-                  child: Text(
-                    tab.subtitle,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(color: TnColors.muted, fontSize: 12.5),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.only(right: 96),
-                  child: Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: [for (final t in tab.tiles) _HeroTileView(tile: t)],
-                  ),
-                ),
-                const Spacer(),
-                GestureDetector(
-                  onTap: () => context.push(tab.route),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: TnColors.navy,
-                      borderRadius: BorderRadius.circular(22),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          tab.cta,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 13,
+                  padding: EdgeInsets.fromLTRB(14, 12, art - 30, 12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Flexible(
+                            child: Text(
+                              tab.title,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontFamily: 'Cormorant',
+                                color: TnColors.navy,
+                                fontSize: 23,
+                                fontWeight: FontWeight.w800,
+                                height: 1.1,
+                              ),
+                            ),
                           ),
+                          const SizedBox(width: 6),
+                          Icon(tab.icon, color: TnColors.saffron, size: 20),
+                        ],
+                      ),
+                      const SizedBox(height: 3),
+                      Text(
+                        tab.subtitle,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontFamily: 'Cormorant',
+                          color: TnColors.ink,
+                          fontSize: 13.5,
+                          fontWeight: FontWeight.w600,
+                          height: 1.15,
                         ),
-                        const SizedBox(width: 6),
-                        const Icon(Icons.arrow_forward_rounded, color: Colors.white, size: 16),
-                      ],
-                    ),
+                      ),
+                      const Spacer(),
+                      GridView.count(
+                        crossAxisCount: 3,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: EdgeInsets.zero,
+                        mainAxisSpacing: 7,
+                        crossAxisSpacing: 7,
+                        childAspectRatio: 1.18,
+                        children: [for (final t in tab.tiles.take(6)) _HeroTileView(tile: t)],
+                      ),
+                    ],
                   ),
                 ),
               ],
-            ),
-          ),
-        ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -1137,8 +1172,6 @@ class _HeroTileView extends StatelessWidget {
     return GestureDetector(
       onTap: () => context.push(tile.route),
       child: Container(
-        width: 66,
-        height: 58,
         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 5),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -1151,7 +1184,7 @@ class _HeroTileView extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(tile.icon, color: tile.color, size: 20),
+            Icon(tile.icon, color: tile.color, size: 22),
             const SizedBox(height: 3),
             Text(
               tile.label,
@@ -1159,9 +1192,10 @@ class _HeroTileView extends StatelessWidget {
               textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
-                fontSize: 9.5,
-                height: 1.1,
-                fontWeight: FontWeight.w600,
+                fontFamily: 'Cormorant',
+                fontSize: 11.5,
+                height: 1.0,
+                fontWeight: FontWeight.w700,
                 color: TnColors.navy,
               ),
             ),
@@ -1172,76 +1206,179 @@ class _HeroTileView extends StatelessWidget {
   }
 }
 
-/// Planner entry point that shows what the planner can do for a group.
+/// Planner entry point: "Plan Your Yatra" card with the six things the planner asks for.
 class _GroupYatraCard extends StatelessWidget {
   const _GroupYatraCard();
 
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
-    Widget feat(IconData icon, String label) => Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(9),
-          decoration: const BoxDecoration(color: Color(0x26FFFFFF), shape: BoxShape.circle),
-          child: Icon(icon, color: Colors.white, size: 19),
-        ),
-        const SizedBox(height: 5),
-        Text(label, style: const TextStyle(color: Colors.white, fontSize: 11)),
-      ],
-    );
+    final feats = <(IconData, String, Color)>[
+      (Icons.groups_rounded, l.planTravellers, const Color(0xFF7B4FC9)),
+      (Icons.event_available_rounded, l.planDateDays, const Color(0xFF1C6FD1)),
+      (Icons.hotel_rounded, l.stay, TnColors.navy),
+      (Icons.directions_bus_rounded, l.planTravel, const Color(0xFF7B4FC9)),
+      (Icons.tune_rounded, l.planPace, TnColors.saffron),
+      (Icons.place_rounded, l.planStops, const Color(0xFF2E8B57)),
+    ];
     return GestureDetector(
       onTap: () => context.push('/guide/planner'),
       child: Container(
-        margin: const EdgeInsets.fromLTRB(16, 8, 16, 4),
-        padding: const EdgeInsets.all(16),
+        margin: const EdgeInsets.fromLTRB(16, 10, 16, 4),
         decoration: BoxDecoration(
+          color: Colors.white,
           borderRadius: BorderRadius.circular(22),
-          // Photo banner (Canva) with a dark fade so the text stays readable.
-          image: const DecorationImage(
-            image: AssetImage('assets/images/canva/planner.jpg'),
-            fit: BoxFit.cover,
-            alignment: Alignment.centerRight,
-            colorFilter: ColorFilter.mode(Color(0x8C0C1A30), BlendMode.srcATop),
-          ),
+          border: Border.all(color: TnColors.line),
           boxShadow: const [
-            BoxShadow(color: Color(0x401C3C6B), blurRadius: 16, offset: Offset(0, 8)),
+            BoxShadow(color: Color(0x1F1C3C6B), blurRadius: 14, offset: Offset(0, 6)),
           ],
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        clipBehavior: Clip.antiAlias,
+        child: Stack(
           children: [
-            Row(
-              children: [
-                const Icon(Icons.auto_awesome, color: Colors.white, size: 20),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    l.planGroupYatra,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w800,
+            Positioned(
+              right: 0,
+              top: 0,
+              width: 170,
+              height: 120,
+              child: ShaderMask(
+                shaderCallback: (r) => const LinearGradient(
+                  colors: [Colors.transparent, Colors.black],
+                  stops: [0, 0.5],
+                ).createShader(r),
+                blendMode: BlendMode.dstIn,
+                child: ShaderMask(
+                  shaderCallback: (r) => const LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    colors: [Colors.transparent, Colors.black],
+                    stops: [0, 0.4],
+                  ).createShader(r),
+                  blendMode: BlendMode.dstIn,
+                  child: Image.asset('assets/images/canva/prem-mandir.jpg', fit: BoxFit.cover),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFEAF0FA),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.calendar_month_rounded, color: TnColors.saffron, size: 15),
+                        const SizedBox(width: 5),
+                        Text(
+                          l.aiTripPlanner,
+                          style: const TextStyle(
+                            fontFamily: 'Cormorant',
+                            color: TnColors.navy,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-                const Icon(Icons.arrow_forward_rounded, color: Colors.white),
-              ],
-            ),
-            const SizedBox(height: 4),
-            Text(
-              l.planGroupYatraSub,
-              style: const TextStyle(color: Colors.white70, fontSize: 12.5),
-            ),
-            const SizedBox(height: 14),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                feat(Icons.groups_rounded, l.featMembers),
-                feat(Icons.hotel_rounded, l.stay),
-                feat(Icons.train_rounded, l.travelDetails),
-                feat(Icons.picture_as_pdf_rounded, 'PDF'),
-              ],
+                  const SizedBox(height: 8),
+                  Text(
+                    l.planYourYatra,
+                    style: const TextStyle(
+                      fontFamily: 'Cormorant',
+                      color: TnColors.ink,
+                      fontSize: 27,
+                      fontWeight: FontWeight.w800,
+                      height: 1.05,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 70),
+                    child: Text(
+                      l.planYourYatraSub,
+                      style: const TextStyle(
+                        fontFamily: 'Cormorant',
+                        color: TnColors.ink,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        height: 1.15,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      for (final (i, f) in feats.indexed) ...[
+                        if (i > 0) const SizedBox(width: 6),
+                        Expanded(
+                          child: Container(
+                            height: 64,
+                            padding: const EdgeInsets.symmetric(horizontal: 2),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color: TnColors.line),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(f.$1, color: f.$3, size: 21),
+                                const SizedBox(height: 3),
+                                Text(
+                                  f.$2,
+                                  maxLines: 2,
+                                  textAlign: TextAlign.center,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontFamily: 'Cormorant',
+                                    fontSize: 11,
+                                    height: 1.0,
+                                    fontWeight: FontWeight.w700,
+                                    color: TnColors.ink,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                  const SizedBox(height: 14),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+                    decoration: BoxDecoration(
+                      color: TnColors.navy,
+                      borderRadius: BorderRadius.circular(26),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.auto_awesome, color: Colors.white, size: 18),
+                        const SizedBox(width: 8),
+                        Text(
+                          l.planYourYatra,
+                          style: const TextStyle(
+                            fontFamily: 'Cormorant',
+                            color: Colors.white,
+                            fontSize: 17,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        const Icon(Icons.arrow_forward_rounded, color: Colors.white, size: 18),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

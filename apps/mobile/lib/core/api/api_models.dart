@@ -2018,6 +2018,47 @@ class CreatorPageResponse {
 }
 
 @immutable
+class CreatorProfileDto {
+  const CreatorProfileDto({
+    this.bio,
+    this.dateOfBirth,
+    this.gender,
+    this.interests,
+    this.location,
+    this.username,
+  });
+
+  factory CreatorProfileDto.fromJson(Map<String, dynamic> json) => CreatorProfileDto(
+    bio: json['bio'] == null ? null : json['bio'] as String,
+    dateOfBirth: json['dateOfBirth'] == null ? null : json['dateOfBirth'] as String,
+    gender: json['gender'] == null ? null : json['gender'] as String,
+    interests: json['interests'] == null
+        ? null
+        : (json['interests'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+    location: json['location'] == null ? null : json['location'] as String,
+    username: json['username'] == null ? null : json['username'] as String,
+  );
+
+  final String? bio;
+  final String? dateOfBirth;
+
+  /// One of: female, male, other, undisclosed.
+  final String? gender;
+  final List<String>? interests;
+  final String? location;
+  final String? username;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'bio': ?bio,
+    'dateOfBirth': ?dateOfBirth,
+    'gender': ?gender,
+    'interests': ?interests,
+    'location': ?location,
+    'username': ?username,
+  };
+}
+
+@immutable
 class CreatorProfileResponse {
   const CreatorProfileResponse({
     this.avatarUrl,
@@ -3919,6 +3960,7 @@ class ProfileResponse {
   const ProfileResponse({
     required this.accessibility,
     this.avatarUrl,
+    required this.creator,
     this.displayName,
     this.email,
     this.homeCityId,
@@ -3934,6 +3976,7 @@ class ProfileResponse {
   factory ProfileResponse.fromJson(Map<String, dynamic> json) => ProfileResponse(
     accessibility: _map(json['accessibility']),
     avatarUrl: json['avatarUrl'] == null ? null : json['avatarUrl'] as String,
+    creator: CreatorProfileDto.fromJson(_map(json['creator'])),
     displayName: json['displayName'] == null ? null : json['displayName'] as String,
     email: json['email'] == null ? null : json['email'] as String,
     homeCityId: json['homeCityId'] == null ? null : json['homeCityId'] as String,
@@ -3948,6 +3991,7 @@ class ProfileResponse {
 
   final Map<String, dynamic> accessibility;
   final String? avatarUrl;
+  final CreatorProfileDto creator;
   final String? displayName;
   final String? email;
   final String? homeCityId;
@@ -3964,6 +4008,7 @@ class ProfileResponse {
   Map<String, dynamic> toJson() => <String, dynamic>{
     'accessibility': accessibility,
     'avatarUrl': ?avatarUrl,
+    'creator': creator.toJson(),
     'displayName': ?displayName,
     'email': ?email,
     'homeCityId': ?homeCityId,
@@ -6162,6 +6207,7 @@ class UpdateProfileDto {
   const UpdateProfileDto({
     this.accessibility,
     this.avatarMediaId,
+    this.creator,
     this.displayName,
     this.homeCityId,
     this.notificationPrefs,
@@ -6173,6 +6219,7 @@ class UpdateProfileDto {
         ? null
         : AccessibilityDto.fromJson(_map(json['accessibility'])),
     avatarMediaId: json['avatarMediaId'] == null ? null : json['avatarMediaId'] as String,
+    creator: json['creator'] == null ? null : CreatorProfileDto.fromJson(_map(json['creator'])),
     displayName: json['displayName'] == null ? null : json['displayName'] as String,
     homeCityId: json['homeCityId'] == null ? null : json['homeCityId'] as String,
     notificationPrefs: json['notificationPrefs'] == null
@@ -6185,6 +6232,7 @@ class UpdateProfileDto {
 
   /// Ready media id uploaded with purpose "avatar"
   final String? avatarMediaId;
+  final CreatorProfileDto? creator;
   final String? displayName;
   final String? homeCityId;
   final NotificationPrefsDto? notificationPrefs;
@@ -6195,6 +6243,7 @@ class UpdateProfileDto {
   Map<String, dynamic> toJson() => <String, dynamic>{
     'accessibility': ?accessibility?.toJson(),
     'avatarMediaId': ?avatarMediaId,
+    'creator': ?creator?.toJson(),
     'displayName': ?displayName,
     'homeCityId': ?homeCityId,
     'notificationPrefs': ?notificationPrefs?.toJson(),

@@ -1642,4 +1642,198 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get heroDiya => 'Diya & dhoop';
+
+  @override
+  String get heroTravelVideo => 'Travel Video';
+
+  @override
+  String get aiTripPlanner => 'AI Trip Planner';
+
+  @override
+  String get planYourYatraSub =>
+      'Create a personalized Braj yatra with stays, travel, darshan, aarti times and more.';
+
+  @override
+  String get planTravellers => 'Travellers';
+
+  @override
+  String get planDateDays => 'Date & Days';
+
+  @override
+  String get planTravel => 'Travel';
+
+  @override
+  String get planPace => 'Pace & Plan';
+
+  @override
+  String get planStops => 'Your Stops';
+
+  @override
+  String get cpUsernameRule => 'Username: 3-30 lowercase letters, numbers, _ or .';
+
+  @override
+  String get cpPickInterest => 'Pick at least one interest';
+
+  @override
+  String get cpIntBraj => 'Braj Yatra';
+
+  @override
+  String get cpIntTips => 'Travel Tips';
+
+  @override
+  String get cpIntVlogs => 'Yatra Vlogs';
+
+  @override
+  String get cpIntFestivals => 'Festival & Events';
+
+  @override
+  String get cpIntBhakti => 'Bhakti / Kirtan';
+
+  @override
+  String get cpIntFood => 'Local Food';
+
+  @override
+  String get cpIntHistory => 'History & Culture';
+
+  @override
+  String get cpIntOther => 'Other';
+
+  @override
+  String get cpAccountTitle => 'Create Account';
+
+  @override
+  String get cpAccountSub => 'Sign up to start creating and sharing on TirthNow';
+
+  @override
+  String get cpWithGoogle => 'Continue with Google';
+
+  @override
+  String get cpWithPhone => 'Continue with Phone';
+
+  @override
+  String get cpWithEmail => 'Continue with Email';
+
+  @override
+  String get cpSignInNote => 'You\'ll come back here after signing in.';
+
+  @override
+  String get cpFemale => 'Female';
+
+  @override
+  String get cpMale => 'Male';
+
+  @override
+  String get cpOther => 'Other';
+
+  @override
+  String get cpUndisclosed => 'Prefer not to say';
+
+  @override
+  String get cpDetailsTitle => 'Basic Details';
+
+  @override
+  String get cpDetailsSub => 'Tell us a bit about yourself';
+
+  @override
+  String get cpUsername => 'Username';
+
+  @override
+  String cpUsernameHint(String name) {
+    return 'This will be your unique profile link tirthnow.com/@$name';
+  }
+
+  @override
+  String get cpDob => 'Date of Birth';
+
+  @override
+  String get cpDobHint => 'Select your date of birth';
+
+  @override
+  String get cpGender => 'Gender';
+
+  @override
+  String get cpGenderHint => 'Select gender';
+
+  @override
+  String get cpProfileTitle => 'Create Your Profile';
+
+  @override
+  String get cpProfileSub => 'Make it easy for others to know you';
+
+  @override
+  String get cpAddPhoto => 'Add Profile Photo';
+
+  @override
+  String get cpBio => 'Bio (optional)';
+
+  @override
+  String get cpBioHint => 'Eg. Braj yatra, temples, travel & bhakti content creator 🙏';
+
+  @override
+  String get cpLocation => 'Location';
+
+  @override
+  String get cpLocationHint => 'Add your city (e.g. Mathura)';
+
+  @override
+  String get cpInterestsTitle => 'Choose Your Interests';
+
+  @override
+  String get cpInterestsSub => 'Select topics you create or enjoy';
+
+  @override
+  String get cpInterests => 'Interests';
+
+  @override
+  String get cpReviewTitle => 'Review & Create';
+
+  @override
+  String get cpReviewSub => 'Check your details before creating your profile';
+
+  @override
+  String get cpIntroTitle => 'Create your TirthNow Creator Profile';
+
+  @override
+  String get cpIntroSub =>
+      'Share your yatra, darshan, travel tips and Braj experiences with the community.';
+
+  @override
+  String get cpPointVideos => 'Create & share short videos';
+
+  @override
+  String get cpPointCommunity => 'Build your devotee community';
+
+  @override
+  String get cpPointFollowers => 'Get followers & engagement';
+
+  @override
+  String get cpHaveProfile => 'I already have a profile';
+
+  @override
+  String get cpSignIn => 'Sign In';
+
+  @override
+  String get cpDoneTitle => 'Profile Created Successfully!';
+
+  @override
+  String get cpDoneSub =>
+      'Welcome to the TirthNow Creators community. Start sharing your yatra and Braj experiences.';
+
+  @override
+  String get cpGoProfile => 'Go to My Profile';
+
+  @override
+  String get cpFirstPost => 'Create Your First Post';
+
+  @override
+  String get cpStepAccount => 'Account';
+
+  @override
+  String get cpStepDetails => 'Details';
+
+  @override
+  String get cpStepProfile => 'Profile';
+
+  @override
+  String get cpStepInterests => 'Interests';
 }

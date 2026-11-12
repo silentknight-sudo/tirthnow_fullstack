@@ -71,6 +71,28 @@ describe('admin', () => {
       .set(...bearer(yatri.token))
       .send({ displayName: 'Meera Bai' })
       .expect(200);
+    // Creator card: stored, merged on partial updates, validated.
+    await t.http
+      .patch('/v1/me/profile')
+      .set(...bearer(yatri.token))
+      .send({ creator: { username: 'meera_bai', interests: ['bhakti'], gender: 'female' } })
+      .expect(200);
+    const creator = await t.http
+      .patch('/v1/me/profile')
+      .set(...bearer(yatri.token))
+      .send({ creator: { bio: 'Kirtan from Vrindavan' } })
+      .expect(200);
+    expect(creator.body.creator).toEqual({
+      username: 'meera_bai',
+      interests: ['bhakti'],
+      gender: 'female',
+      bio: 'Kirtan from Vrindavan',
+    });
+    await t.http
+      .patch('/v1/me/profile')
+      .set(...bearer(yatri.token))
+      .send({ creator: { username: 'Has Spaces' } })
+      .expect(400);
     const found = await t.http
       .get('/v1/admin/users?q=meera')
       .set(...bearer(admin))

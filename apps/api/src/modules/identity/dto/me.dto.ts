@@ -1,7 +1,10 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
+  ArrayMaxSize,
+  IsArray,
   IsBoolean,
+  IsISO8601,
   IsEnum,
   IsIn,
   IsInt,
@@ -38,6 +41,45 @@ export class NotificationPrefsDto {
   @Min(5)
   @Max(120)
   defaultReminderMinutes?: number;
+}
+
+export const CREATOR_GENDERS = ['female', 'male', 'other', 'undisclosed'] as const;
+
+export class CreatorProfileDto {
+  @ApiPropertyOptional({ example: 'adityakumar', pattern: '^[a-z0-9_.]{3,30}$' })
+  @IsOptional()
+  @Matches(/^[a-z0-9_.]{3,30}$/)
+  username?: string;
+
+  @ApiPropertyOptional({ maxLength: 150 })
+  @IsOptional()
+  @IsString()
+  @MaxLength(150)
+  bio?: string;
+
+  @ApiPropertyOptional({ example: 'Mathura, Uttar Pradesh' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(80)
+  location?: string;
+
+  @ApiPropertyOptional({ format: 'date', example: '1998-04-12' })
+  @IsOptional()
+  @IsISO8601({ strict: true })
+  dateOfBirth?: string;
+
+  @ApiPropertyOptional({ enum: CREATOR_GENDERS })
+  @IsOptional()
+  @IsIn(CREATOR_GENDERS)
+  gender?: (typeof CREATOR_GENDERS)[number];
+
+  @ApiPropertyOptional({ type: [String], example: ['braj_yatra', 'temples'] })
+  @IsOptional()
+  @IsArray()
+  @ArrayMaxSize(12)
+  @IsString({ each: true })
+  @MaxLength(40, { each: true })
+  interests?: string[];
 }
 
 export class UpdateProfileDto {
@@ -79,6 +121,13 @@ export class UpdateProfileDto {
   @ValidateNested()
   @Type(() => NotificationPrefsDto)
   notificationPrefs?: NotificationPrefsDto;
+
+  @ApiPropertyOptional({ type: CreatorProfileDto })
+  @IsOptional()
+  @IsObject()
+  @ValidateNested()
+  @Type(() => CreatorProfileDto)
+  creator?: CreatorProfileDto;
 }
 
 export class RegisterDeviceDto {
@@ -165,6 +214,7 @@ export class ProfileResponse {
   @ApiProperty({ type: String, nullable: true }) avatarUrl!: string | null;
   @ApiProperty({ type: Object }) accessibility!: Record<string, unknown>;
   @ApiProperty({ type: Object }) notificationPrefs!: Record<string, unknown>;
+  @ApiProperty({ type: CreatorProfileDto }) creator!: CreatorProfileDto;
   @ApiProperty({ type: [String] }) roles!: string[];
   @ApiProperty({ type: [String] }) vendorIds!: string[];
 }

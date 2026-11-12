@@ -63,6 +63,7 @@ export class ProfileService implements OnModuleInit {
       avatarUrl: avatar && avatar.status === 'ready' ? await this.files.url(avatar, 'thumb') : null,
       accessibility: asRecord(user.profile?.accessibility),
       notificationPrefs: asRecord(user.profile?.notificationPrefs),
+      creator: asRecord(user.profile?.creator),
       roles: auth.roles,
       vendorIds: auth.vendorIds,
     };
@@ -95,6 +96,14 @@ export class ProfileService implements OnModuleInit {
             notificationPrefs: {
               ...asRecord(existing?.notificationPrefs),
               ...defined(dto.notificationPrefs),
+            } as Prisma.InputJsonObject,
+          }
+        : {}),
+      ...(dto.creator !== undefined
+        ? {
+            creator: {
+              ...asRecord(existing?.creator),
+              ...defined(dto.creator),
             } as Prisma.InputJsonObject,
           }
         : {}),

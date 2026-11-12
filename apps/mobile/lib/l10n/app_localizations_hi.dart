@@ -1639,4 +1639,196 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get heroDiya => 'दीया व धूप';
+
+  @override
+  String get heroTravelVideo => 'यात्रा वीडियो';
+
+  @override
+  String get aiTripPlanner => 'AI ट्रिप प्लानर';
+
+  @override
+  String get planYourYatraSub => 'ठहरने, सफ़र, दर्शन, आरती समय के साथ अपनी ब्रज यात्रा बनाएँ।';
+
+  @override
+  String get planTravellers => 'यात्री';
+
+  @override
+  String get planDateDays => 'तारीख़ व दिन';
+
+  @override
+  String get planTravel => 'सफ़र';
+
+  @override
+  String get planPace => 'गति व प्लान';
+
+  @override
+  String get planStops => 'आपके पड़ाव';
+
+  @override
+  String get cpUsernameRule => 'यूज़रनेम: 3-30 छोटे अक्षर, अंक, _ या .';
+
+  @override
+  String get cpPickInterest => 'कम से कम एक रुचि चुनें';
+
+  @override
+  String get cpIntBraj => 'ब्रज यात्रा';
+
+  @override
+  String get cpIntTips => 'यात्रा टिप्स';
+
+  @override
+  String get cpIntVlogs => 'यात्रा व्लॉग';
+
+  @override
+  String get cpIntFestivals => 'त्योहार व आयोजन';
+
+  @override
+  String get cpIntBhakti => 'भक्ति / कीर्तन';
+
+  @override
+  String get cpIntFood => 'स्थानीय भोजन';
+
+  @override
+  String get cpIntHistory => 'इतिहास व संस्कृति';
+
+  @override
+  String get cpIntOther => 'अन्य';
+
+  @override
+  String get cpAccountTitle => 'अकाउंट बनाएँ';
+
+  @override
+  String get cpAccountSub => 'TirthNow पर बनाना और शेयर करना शुरू करने के लिए साइन अप करें';
+
+  @override
+  String get cpWithGoogle => 'Google से जारी रखें';
+
+  @override
+  String get cpWithPhone => 'फ़ोन से जारी रखें';
+
+  @override
+  String get cpWithEmail => 'ईमेल से जारी रखें';
+
+  @override
+  String get cpSignInNote => 'साइन इन के बाद आप यहीं लौट आएँगे।';
+
+  @override
+  String get cpFemale => 'महिला';
+
+  @override
+  String get cpMale => 'पुरुष';
+
+  @override
+  String get cpOther => 'अन्य';
+
+  @override
+  String get cpUndisclosed => 'नहीं बताना';
+
+  @override
+  String get cpDetailsTitle => 'बुनियादी जानकारी';
+
+  @override
+  String get cpDetailsSub => 'अपने बारे में थोड़ा बताइए';
+
+  @override
+  String get cpUsername => 'यूज़रनेम';
+
+  @override
+  String cpUsernameHint(String name) {
+    return 'यह आपका प्रोफ़ाइल लिंक होगा tirthnow.com/@$name';
+  }
+
+  @override
+  String get cpDob => 'जन्म तिथि';
+
+  @override
+  String get cpDobHint => 'अपनी जन्म तिथि चुनें';
+
+  @override
+  String get cpGender => 'लिंग';
+
+  @override
+  String get cpGenderHint => 'लिंग चुनें';
+
+  @override
+  String get cpProfileTitle => 'अपनी प्रोफ़ाइल बनाएँ';
+
+  @override
+  String get cpProfileSub => 'दूसरों को आपको जानने में आसानी हो';
+
+  @override
+  String get cpAddPhoto => 'प्रोफ़ाइल फ़ोटो जोड़ें';
+
+  @override
+  String get cpBio => 'बायो (वैकल्पिक)';
+
+  @override
+  String get cpBioHint => 'जैसे: ब्रज यात्रा, मंदिर, यात्रा व भक्ति कंटेंट 🙏';
+
+  @override
+  String get cpLocation => 'स्थान';
+
+  @override
+  String get cpLocationHint => 'अपना शहर (जैसे मथुरा)';
+
+  @override
+  String get cpInterestsTitle => 'अपनी रुचियाँ चुनें';
+
+  @override
+  String get cpInterestsSub => 'वे विषय चुनें जिन पर आप बनाते या देखते हैं';
+
+  @override
+  String get cpInterests => 'रुचियाँ';
+
+  @override
+  String get cpReviewTitle => 'जाँचें व बनाएँ';
+
+  @override
+  String get cpReviewSub => 'प्रोफ़ाइल बनाने से पहले जानकारी जाँच लें';
+
+  @override
+  String get cpIntroTitle => 'अपनी TirthNow क्रिएटर प्रोफ़ाइल बनाएँ';
+
+  @override
+  String get cpIntroSub => 'अपनी यात्रा, दर्शन, टिप्स और ब्रज के अनुभव सबके साथ शेयर करें।';
+
+  @override
+  String get cpPointVideos => 'छोटे वीडियो बनाएँ व शेयर करें';
+
+  @override
+  String get cpPointCommunity => 'अपना भक्त समुदाय बनाएँ';
+
+  @override
+  String get cpPointFollowers => 'फ़ॉलोअर्स व जुड़ाव पाएँ';
+
+  @override
+  String get cpHaveProfile => 'मेरी प्रोफ़ाइल पहले से है';
+
+  @override
+  String get cpSignIn => 'साइन इन';
+
+  @override
+  String get cpDoneTitle => 'प्रोफ़ाइल बन गई!';
+
+  @override
+  String get cpDoneSub =>
+      'TirthNow क्रिएटर्स समुदाय में स्वागत है। अपनी यात्रा और ब्रज के अनुभव शेयर करना शुरू करें।';
+
+  @override
+  String get cpGoProfile => 'मेरी प्रोफ़ाइल देखें';
+
+  @override
+  String get cpFirstPost => 'पहली पोस्ट बनाएँ';
+
+  @override
+  String get cpStepAccount => 'अकाउंट';
+
+  @override
+  String get cpStepDetails => 'जानकारी';
+
+  @override
+  String get cpStepProfile => 'प्रोफ़ाइल';
+
+  @override
+  String get cpStepInterests => 'रुचियाँ';
 }

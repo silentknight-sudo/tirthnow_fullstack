@@ -3200,6 +3200,384 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Diya & dhoop'**
   String get heroDiya;
+
+  /// No description provided for @heroTravelVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Travel Video'**
+  String get heroTravelVideo;
+
+  /// No description provided for @aiTripPlanner.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Trip Planner'**
+  String get aiTripPlanner;
+
+  /// No description provided for @planYourYatraSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a personalized Braj yatra with stays, travel, darshan, aarti times and more.'**
+  String get planYourYatraSub;
+
+  /// No description provided for @planTravellers.
+  ///
+  /// In en, this message translates to:
+  /// **'Travellers'**
+  String get planTravellers;
+
+  /// No description provided for @planDateDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Date & Days'**
+  String get planDateDays;
+
+  /// No description provided for @planTravel.
+  ///
+  /// In en, this message translates to:
+  /// **'Travel'**
+  String get planTravel;
+
+  /// No description provided for @planPace.
+  ///
+  /// In en, this message translates to:
+  /// **'Pace & Plan'**
+  String get planPace;
+
+  /// No description provided for @planStops.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Stops'**
+  String get planStops;
+
+  /// No description provided for @cpUsernameRule.
+  ///
+  /// In en, this message translates to:
+  /// **'Username: 3-30 lowercase letters, numbers, _ or .'**
+  String get cpUsernameRule;
+
+  /// No description provided for @cpPickInterest.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick at least one interest'**
+  String get cpPickInterest;
+
+  /// No description provided for @cpIntBraj.
+  ///
+  /// In en, this message translates to:
+  /// **'Braj Yatra'**
+  String get cpIntBraj;
+
+  /// No description provided for @cpIntTips.
+  ///
+  /// In en, this message translates to:
+  /// **'Travel Tips'**
+  String get cpIntTips;
+
+  /// No description provided for @cpIntVlogs.
+  ///
+  /// In en, this message translates to:
+  /// **'Yatra Vlogs'**
+  String get cpIntVlogs;
+
+  /// No description provided for @cpIntFestivals.
+  ///
+  /// In en, this message translates to:
+  /// **'Festival & Events'**
+  String get cpIntFestivals;
+
+  /// No description provided for @cpIntBhakti.
+  ///
+  /// In en, this message translates to:
+  /// **'Bhakti / Kirtan'**
+  String get cpIntBhakti;
+
+  /// No description provided for @cpIntFood.
+  ///
+  /// In en, this message translates to:
+  /// **'Local Food'**
+  String get cpIntFood;
+
+  /// No description provided for @cpIntHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'History & Culture'**
+  String get cpIntHistory;
+
+  /// No description provided for @cpIntOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get cpIntOther;
+
+  /// No description provided for @cpAccountTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get cpAccountTitle;
+
+  /// No description provided for @cpAccountSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign up to start creating and sharing on TirthNow'**
+  String get cpAccountSub;
+
+  /// No description provided for @cpWithGoogle.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Google'**
+  String get cpWithGoogle;
+
+  /// No description provided for @cpWithPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Phone'**
+  String get cpWithPhone;
+
+  /// No description provided for @cpWithEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Email'**
+  String get cpWithEmail;
+
+  /// No description provided for @cpSignInNote.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ll come back here after signing in.'**
+  String get cpSignInNote;
+
+  /// No description provided for @cpFemale.
+  ///
+  /// In en, this message translates to:
+  /// **'Female'**
+  String get cpFemale;
+
+  /// No description provided for @cpMale.
+  ///
+  /// In en, this message translates to:
+  /// **'Male'**
+  String get cpMale;
+
+  /// No description provided for @cpOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get cpOther;
+
+  /// No description provided for @cpUndisclosed.
+  ///
+  /// In en, this message translates to:
+  /// **'Prefer not to say'**
+  String get cpUndisclosed;
+
+  /// No description provided for @cpDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic Details'**
+  String get cpDetailsTitle;
+
+  /// No description provided for @cpDetailsSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us a bit about yourself'**
+  String get cpDetailsSub;
+
+  /// No description provided for @cpUsername.
+  ///
+  /// In en, this message translates to:
+  /// **'Username'**
+  String get cpUsername;
+
+  /// No description provided for @cpUsernameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'This will be your unique profile link tirthnow.com/@{name}'**
+  String cpUsernameHint(String name);
+
+  /// No description provided for @cpDob.
+  ///
+  /// In en, this message translates to:
+  /// **'Date of Birth'**
+  String get cpDob;
+
+  /// No description provided for @cpDobHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select your date of birth'**
+  String get cpDobHint;
+
+  /// No description provided for @cpGender.
+  ///
+  /// In en, this message translates to:
+  /// **'Gender'**
+  String get cpGender;
+
+  /// No description provided for @cpGenderHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select gender'**
+  String get cpGenderHint;
+
+  /// No description provided for @cpProfileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Your Profile'**
+  String get cpProfileTitle;
+
+  /// No description provided for @cpProfileSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Make it easy for others to know you'**
+  String get cpProfileSub;
+
+  /// No description provided for @cpAddPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Profile Photo'**
+  String get cpAddPhoto;
+
+  /// No description provided for @cpBio.
+  ///
+  /// In en, this message translates to:
+  /// **'Bio (optional)'**
+  String get cpBio;
+
+  /// No description provided for @cpBioHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Eg. Braj yatra, temples, travel & bhakti content creator 🙏'**
+  String get cpBioHint;
+
+  /// No description provided for @cpLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get cpLocation;
+
+  /// No description provided for @cpLocationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your city (e.g. Mathura)'**
+  String get cpLocationHint;
+
+  /// No description provided for @cpInterestsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Your Interests'**
+  String get cpInterestsTitle;
+
+  /// No description provided for @cpInterestsSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Select topics you create or enjoy'**
+  String get cpInterestsSub;
+
+  /// No description provided for @cpInterests.
+  ///
+  /// In en, this message translates to:
+  /// **'Interests'**
+  String get cpInterests;
+
+  /// No description provided for @cpReviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Review & Create'**
+  String get cpReviewTitle;
+
+  /// No description provided for @cpReviewSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your details before creating your profile'**
+  String get cpReviewSub;
+
+  /// No description provided for @cpIntroTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your TirthNow Creator Profile'**
+  String get cpIntroTitle;
+
+  /// No description provided for @cpIntroSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Share your yatra, darshan, travel tips and Braj experiences with the community.'**
+  String get cpIntroSub;
+
+  /// No description provided for @cpPointVideos.
+  ///
+  /// In en, this message translates to:
+  /// **'Create & share short videos'**
+  String get cpPointVideos;
+
+  /// No description provided for @cpPointCommunity.
+  ///
+  /// In en, this message translates to:
+  /// **'Build your devotee community'**
+  String get cpPointCommunity;
+
+  /// No description provided for @cpPointFollowers.
+  ///
+  /// In en, this message translates to:
+  /// **'Get followers & engagement'**
+  String get cpPointFollowers;
+
+  /// No description provided for @cpHaveProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'I already have a profile'**
+  String get cpHaveProfile;
+
+  /// No description provided for @cpSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign In'**
+  String get cpSignIn;
+
+  /// No description provided for @cpDoneTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile Created Successfully!'**
+  String get cpDoneTitle;
+
+  /// No description provided for @cpDoneSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to the TirthNow Creators community. Start sharing your yatra and Braj experiences.'**
+  String get cpDoneSub;
+
+  /// No description provided for @cpGoProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to My Profile'**
+  String get cpGoProfile;
+
+  /// No description provided for @cpFirstPost.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Your First Post'**
+  String get cpFirstPost;
+
+  /// No description provided for @cpStepAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get cpStepAccount;
+
+  /// No description provided for @cpStepDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get cpStepDetails;
+
+  /// No description provided for @cpStepProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get cpStepProfile;
+
+  /// No description provided for @cpStepInterests.
+  ///
+  /// In en, this message translates to:
+  /// **'Interests'**
+  String get cpStepInterests;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

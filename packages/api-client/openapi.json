@@ -1937,6 +1937,48 @@
         ],
         "type": "object"
       },
+      "CreatorProfileDto": {
+        "properties": {
+          "bio": {
+            "maxLength": 150,
+            "type": "string"
+          },
+          "dateOfBirth": {
+            "example": "1998-04-12",
+            "format": "date",
+            "type": "string"
+          },
+          "gender": {
+            "enum": [
+              "female",
+              "male",
+              "other",
+              "undisclosed"
+            ],
+            "type": "string"
+          },
+          "interests": {
+            "example": [
+              "braj_yatra",
+              "temples"
+            ],
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "location": {
+            "example": "Mathura, Uttar Pradesh",
+            "type": "string"
+          },
+          "username": {
+            "example": "adityakumar",
+            "pattern": "^[a-z0-9_.]{3,30}$",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
       "CreatorProfileResponse": {
         "properties": {
           "avatarUrl": {
@@ -3807,6 +3849,9 @@
             "nullable": true,
             "type": "string"
           },
+          "creator": {
+            "$ref": "#/components/schemas/CreatorProfileDto"
+          },
           "displayName": {
             "nullable": true,
             "type": "string"
@@ -3864,6 +3909,7 @@
           "avatarUrl",
           "accessibility",
           "notificationPrefs",
+          "creator",
           "roles",
           "vendorIds"
         ],
@@ -5974,6 +6020,9 @@
             "description": "Ready media id uploaded with purpose \"avatar\"",
             "format": "uuid",
             "type": "string"
+          },
+          "creator": {
+            "$ref": "#/components/schemas/CreatorProfileDto"
           },
           "displayName": {
             "example": "Radha Krishna Das",

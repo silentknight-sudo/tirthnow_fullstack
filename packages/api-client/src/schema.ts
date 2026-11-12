@@ -3912,6 +3912,27 @@ export interface components {
       nextCursor: string | null;
       profile: components['schemas']['CreatorProfileResponse'];
     };
+    CreatorProfileDto: {
+      bio?: string;
+      /**
+       * Format: date
+       * @example 1998-04-12
+       */
+      dateOfBirth?: string;
+      /** @enum {string} */
+      gender?: 'female' | 'male' | 'other' | 'undisclosed';
+      /**
+       * @example [
+       *       "braj_yatra",
+       *       "temples"
+       *     ]
+       */
+      interests?: string[];
+      /** @example Mathura, Uttar Pradesh */
+      location?: string;
+      /** @example adityakumar */
+      username?: string;
+    };
     CreatorProfileResponse: {
       avatarUrl: string | null;
       displayName: string;
@@ -4464,6 +4485,7 @@ export interface components {
     ProfileResponse: {
       accessibility: Record<string, never>;
       avatarUrl: string | null;
+      creator: components['schemas']['CreatorProfileDto'];
       displayName: string | null;
       email: string | null;
       homeCityId: string | null;
@@ -5129,6 +5151,7 @@ export interface components {
        * @description Ready media id uploaded with purpose "avatar"
        */
       avatarMediaId?: string;
+      creator?: components['schemas']['CreatorProfileDto'];
       /** @example Radha Krishna Das */
       displayName?: string;
       /** Format: uuid */
