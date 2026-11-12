@@ -9,6 +9,7 @@ import '../../../core/api/api_models.dart';
 import '../../../core/format/formatters.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/widgets/common.dart';
+import '../../../core/widgets/place_images.dart';
 import '../../catalog/data/catalog_repository.dart';
 import '../../catalog/presentation/temples_screen.dart' show crowdLabel;
 
@@ -107,14 +108,9 @@ class PlaceAnswerCard extends ConsumerWidget {
     final temple = place.temple;
     final detail = temple == null ? null : ref.watch(templeProvider(temple.id)).value;
     final images = temple != null
-        ? <String>[
-            if (temple.coverUrl != null) temple.coverUrl!,
-            ...?detail?.galleryUrls.where((u) => u != temple.coverUrl),
-          ]
-        : [
-            for (final t in place.cityTemples.take(4))
-              if (t.coverUrl != null) t.coverUrl!,
-          ];
+        ? <String>{temple.coverUrl ?? templeImage(temple.slug), ...?detail?.galleryUrls}.toList()
+        : <String>{for (final t in place.cityTemples.take(4)) t.coverUrl ?? templeImage(t.slug)}
+              .toList();
     final highlights = temple != null
         ? <String>[
             if (detail?.nextAarti != null)
@@ -290,12 +286,7 @@ class _CarouselState extends State<_Carousel> {
               controller: _pages,
               itemCount: n,
               onPageChanged: (i) => setState(() => _i = i),
-              itemBuilder: (_, i) => Image.network(
-                widget.images[i],
-                fit: BoxFit.cover,
-                width: double.infinity,
-                errorBuilder: (_, _, _) => const ColoredBox(color: TnColors.paper2),
-              ),
+              itemBuilder: (_, i) => guideImage(widget.images[i]),
             ),
             if (n > 1) ...[
               Positioned(
@@ -367,9 +358,7 @@ class NearbyCard extends StatelessWidget {
               child: SizedBox(
                 width: 48,
                 height: 48,
-                child: t.coverUrl == null
-                    ? const ColoredBox(color: TnColors.paper2)
-                    : Image.network(t.coverUrl!, fit: BoxFit.cover),
+                child: guideImage(t.coverUrl ?? templeImage(t.slug)),
               ),
             ),
             title: Text(t.name, style: const TextStyle(fontWeight: FontWeight.w700)),
@@ -386,3 +375,13 @@ class NearbyCard extends StatelessWidget {
 }
 
 String formatChatTime(DateTime t) => formatIstTime(t);
+
+/// Network photo or a bundled asset (catalog photos fall back to assets).
+Widget guideImage(String src) => src.startsWith('assets/')
+    ? Image.asset(src, fit: BoxFit.cover, width: double.infinity)
+    : Image.network(
+        src,
+        fit: BoxFit.cover,
+        width: double.infinity,
+        errorBuilder: (_, _, _) => const ColoredBox(color: TnColors.paper2),
+      );

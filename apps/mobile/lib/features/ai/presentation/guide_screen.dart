@@ -12,6 +12,7 @@ import '../../../core/api/api_models.dart';
 import '../../../core/providers.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/widgets/common.dart';
+import '../../../core/widgets/place_images.dart';
 import '../../auth/data/session_controller.dart';
 import '../../catalog/data/catalog_repository.dart';
 import '../../safety/data/location_service.dart';
@@ -450,9 +451,7 @@ class _GuideScreenState extends ConsumerState<GuideScreen> {
                     child: SizedBox(
                       width: 44,
                       height: 44,
-                      child: t.coverUrl == null
-                          ? const ColoredBox(color: TnColors.paper2)
-                          : Image.network(t.coverUrl!, fit: BoxFit.cover),
+                      child: guideImage(t.coverUrl ?? templeImage(t.slug)),
                     ),
                   ),
                   title: Text(t.name),
