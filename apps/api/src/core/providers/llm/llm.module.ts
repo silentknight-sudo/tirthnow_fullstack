@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { APP_CONFIG, type AppConfig } from '../../config';
 import { AnthropicLlmAdapter } from './anthropic.adapter';
+import { GeminiLlmAdapter } from './gemini.adapter';
 import { LLM_PROVIDER } from './llm.provider';
 import { MockLlmAdapter } from './mock.adapter';
 
@@ -11,7 +12,11 @@ import { MockLlmAdapter } from './mock.adapter';
       provide: LLM_PROVIDER,
       inject: [APP_CONFIG, MockLlmAdapter],
       useFactory: (config: AppConfig, mock: MockLlmAdapter) =>
-        config.ai.llmProvider === 'anthropic' ? new AnthropicLlmAdapter(config) : mock,
+        config.ai.llmProvider === 'anthropic'
+          ? new AnthropicLlmAdapter(config)
+          : config.ai.llmProvider === 'gemini'
+            ? new GeminiLlmAdapter(config)
+            : mock,
     },
   ],
   exports: [LLM_PROVIDER, MockLlmAdapter],

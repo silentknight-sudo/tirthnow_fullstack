@@ -95,7 +95,10 @@ export const envSchema = z
     MUX_WEBHOOK_SECRET: optionalString,
     MODERATION_PROVIDER: z.enum(['mock', 'llm']).default('mock'),
 
-    LLM_PROVIDER: z.enum(['mock', 'anthropic']).default('mock'),
+    LLM_PROVIDER: z.enum(['mock', 'anthropic', 'gemini']).default('mock'),
+    GEMINI_API_KEY: optionalString,
+    GEMINI_MODEL_DEFAULT: z.string().default('gemini-2.5-pro'),
+    GEMINI_MODEL_CHEAP: z.string().default('gemini-2.5-flash'),
     ANTHROPIC_API_KEY: optionalString,
     LLM_MODEL_DEFAULT: z.string().default('claude-opus-5-5'),
     LLM_MODEL_CHEAP: z.string().default('claude-haiku-5-5'),
@@ -205,6 +208,7 @@ export const envSchema = z
     }
     const requires: [boolean, string, (keyof typeof env)[]][] = [
       [env.LLM_PROVIDER === 'anthropic', 'LLM_PROVIDER=anthropic', ['ANTHROPIC_API_KEY']],
+      [env.LLM_PROVIDER === 'gemini', 'LLM_PROVIDER=gemini', ['GEMINI_API_KEY']],
       [env.EMBEDDING_PROVIDER === 'openai', 'EMBEDDING_PROVIDER=openai', ['OPENAI_API_KEY']],
       [env.STT_PROVIDER === 'google', 'STT_PROVIDER=google', ['GOOGLE_CLOUD_API_KEY']],
       [env.TTS_PROVIDER === 'google', 'TTS_PROVIDER=google', ['GOOGLE_CLOUD_API_KEY']],

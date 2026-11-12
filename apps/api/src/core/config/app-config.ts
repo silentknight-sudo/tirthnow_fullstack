@@ -81,6 +81,9 @@ export interface AppConfig {
   ai: {
     llmProvider: Env['LLM_PROVIDER'];
     anthropicApiKey: string | undefined;
+    geminiApiKey: string | undefined;
+    geminiModelDefault: string;
+    geminiModelCheap: string;
     modelDefault: string;
     modelCheap: string;
     embeddingProvider: Env['EMBEDDING_PROVIDER'];
@@ -207,6 +210,9 @@ export function loadConfig(source: NodeJS.ProcessEnv): AppConfig {
     ai: {
       llmProvider: e.LLM_PROVIDER,
       anthropicApiKey: e.ANTHROPIC_API_KEY,
+      geminiApiKey: e.GEMINI_API_KEY,
+      geminiModelDefault: e.GEMINI_MODEL_DEFAULT,
+      geminiModelCheap: e.GEMINI_MODEL_CHEAP,
       modelDefault: e.LLM_MODEL_DEFAULT,
       modelCheap: e.LLM_MODEL_CHEAP,
       embeddingProvider: e.EMBEDDING_PROVIDER,

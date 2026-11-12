@@ -13,6 +13,7 @@ Lead times matter: start the slow ones (★) early.
 | 6 | ★ WhatsApp Business (Meta) verification + message templates | SOS + booking messages | `WHATSAPP_*` | Stays mocked until approved. |
 | 7 | Google Cloud project: Maps (Routes API, Maps SDK Android/iOS), Speech-to-Text, Text-to-Speech, Vision | Maps, voice, landmark recognition | `GOOGLE_MAPS_API_KEY`, `GOOGLE_CLOUD_API_KEY` | Separate restricted keys: server Maps key, server key limited to Speech/TTS/Vision, and app keys per platform. |
 | 8 | Anthropic (Claude) API key | AI guide, planner, moderation | `ANTHROPIC_API_KEY`, `LLM_MODEL_*` | Defaults `claude-opus-5-5` / `claude-haiku-5-5` (ADR-0015). |
+| 8b | Google Gemini API key (alternative to Claude) | AI guide, planner, moderation, voice translate | `LLM_PROVIDER=gemini`, `GEMINI_API_KEY`, `GEMINI_MODEL_*` | Create at aistudio.google.com/apikey; set on Render (Environment), never in code. |
 | 9 | OpenAI API key (embeddings only) | RAG knowledge base | `OPENAI_API_KEY` | `text-embedding-3-small`, 1536 dimensions. |
 | 10 | Cloudflare account: R2 buckets (public + private), Stream (or Mux) | Media, reels | `S3_*`, `CF_STREAM_*` / `MUX_*` | |
 | 11 | OpenWeather API key | Weather | `OPENWEATHER_API_KEY` | |
