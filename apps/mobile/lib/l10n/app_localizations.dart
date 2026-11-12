@@ -948,7 +948,7 @@ abstract class AppLocalizations {
   /// No description provided for @guideTitle.
   ///
   /// In en, this message translates to:
-  /// **'Braj Guide'**
+  /// **'Tirth Guide'**
   String get guideTitle;
 
   /// No description provided for @guideHint.
@@ -3626,6 +3626,204 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Listen'**
   String get guideListen;
+
+  /// No description provided for @gTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore • Learn • Experience'**
+  String get gTagline;
+
+  /// No description provided for @gHello.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'m your Tirth Guide AI. How can I help you today?'**
+  String get gHello;
+
+  /// No description provided for @gHelloSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask anything about temples, aarti, darshan, or travel plans.'**
+  String get gHelloSub;
+
+  /// No description provided for @gHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask anything about temples…'**
+  String get gHint;
+
+  /// No description provided for @gTapToSpeak.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to speak'**
+  String get gTapToSpeak;
+
+  /// No description provided for @gAttach.
+  ///
+  /// In en, this message translates to:
+  /// **'Attach'**
+  String get gAttach;
+
+  /// No description provided for @gHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Your chats'**
+  String get gHistory;
+
+  /// No description provided for @gSignInHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to see your chats'**
+  String get gSignInHistory;
+
+  /// No description provided for @gTempleInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Temple Info'**
+  String get gTempleInfo;
+
+  /// No description provided for @gAartiTimings.
+  ///
+  /// In en, this message translates to:
+  /// **'Aarti Timings'**
+  String get gAartiTimings;
+
+  /// No description provided for @gTravelGuide.
+  ///
+  /// In en, this message translates to:
+  /// **'Travel Guide'**
+  String get gTravelGuide;
+
+  /// No description provided for @gMore.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get gMore;
+
+  /// No description provided for @gGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Gallery'**
+  String get gGallery;
+
+  /// No description provided for @gCamera.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera'**
+  String get gCamera;
+
+  /// No description provided for @gLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get gLocation;
+
+  /// No description provided for @gTripPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip PDF'**
+  String get gTripPdf;
+
+  /// No description provided for @gHighlights.
+  ///
+  /// In en, this message translates to:
+  /// **'Key Highlights:'**
+  String get gHighlights;
+
+  /// No description provided for @gViewOnMap.
+  ///
+  /// In en, this message translates to:
+  /// **'View on Map'**
+  String get gViewOnMap;
+
+  /// No description provided for @gTempleDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Temple details'**
+  String get gTempleDetails;
+
+  /// No description provided for @gNearby.
+  ///
+  /// In en, this message translates to:
+  /// **'Temples near you'**
+  String get gNearby;
+
+  /// No description provided for @gNearbyAsk.
+  ///
+  /// In en, this message translates to:
+  /// **'Which temples are near me?'**
+  String get gNearbyAsk;
+
+  /// No description provided for @gPhotoNoMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t recognise this temple. Try a clearer photo of the front.'**
+  String get gPhotoNoMatch;
+
+  /// No description provided for @gPromptAarti.
+  ///
+  /// In en, this message translates to:
+  /// **'Aaj ki aarti timings batao'**
+  String get gPromptAarti;
+
+  /// No description provided for @gPromptTravel.
+  ///
+  /// In en, this message translates to:
+  /// **'How do I travel around Vrindavan, Mathura and Govardhan?'**
+  String get gPromptTravel;
+
+  /// No description provided for @gPromptWear.
+  ///
+  /// In en, this message translates to:
+  /// **'What should I wear for darshan?'**
+  String get gPromptWear;
+
+  /// No description provided for @gPromptParikrama.
+  ///
+  /// In en, this message translates to:
+  /// **'Govardhan parikrama kitne km hai?'**
+  String get gPromptParikrama;
+
+  /// No description provided for @gPromptFood.
+  ///
+  /// In en, this message translates to:
+  /// **'Best sattvik food near Prem Mandir?'**
+  String get gPromptFood;
+
+  /// No description provided for @gPromptFestival.
+  ///
+  /// In en, this message translates to:
+  /// **'Which festivals are coming up in Braj?'**
+  String get gPromptFestival;
+
+  /// No description provided for @gPromptHolyPlaces.
+  ///
+  /// In en, this message translates to:
+  /// **'Show me details about Vrindavan Dham'**
+  String get gPromptHolyPlaces;
+
+  /// No description provided for @gAskAbout.
+  ///
+  /// In en, this message translates to:
+  /// **'Show me details about {name}'**
+  String gAskAbout(String name);
+
+  /// No description provided for @gDham.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} Dham'**
+  String gDham(String name);
+
+  /// No description provided for @gNextAarti.
+  ///
+  /// In en, this message translates to:
+  /// **'Next aarti: {name} at {time}'**
+  String gNextAarti(String name, String time);
+
+  /// No description provided for @gKmAway.
+  ///
+  /// In en, this message translates to:
+  /// **'{km} km away'**
+  String gKmAway(String km);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

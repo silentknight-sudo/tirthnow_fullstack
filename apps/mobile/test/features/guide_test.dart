@@ -46,7 +46,7 @@ class SignedIn extends SessionController {
 }
 
 void main() {
-  testWidgets('a suggestion streams an answer with its citation', (tester) async {
+  testWidgets('the Aarti Timings chip streams an answer with its citation', (tester) async {
     final ai = FakeAi();
     await pumpApp(
       tester,
@@ -56,16 +56,12 @@ void main() {
         sessionProvider.overrideWith(SignedIn.new),
       ],
     );
-    await tester.tap(find.text('ISKCON Vrindavan sandhya aarti kab hai?'));
+    await tester.tap(find.text('Aarti Timings'));
     await tester.pump();
-    expect(
-      find.text('ISKCON Vrindavan sandhya aarti kab hai?'),
-      findsOneWidget,
-      reason: 'user bubble replaces suggestions',
-    );
+    expect(find.text('Aaj ki aarti timings batao'), findsOneWidget, reason: 'user bubble');
     await tester.pump(const Duration(milliseconds: 100));
     await tester.pump();
-    expect(ai.asked.single, 'ISKCON Vrindavan sandhya aarti kab hai?');
+    expect(ai.asked.single, 'Aaj ki aarti timings batao');
     expect(find.text('From the temple schedule: Sandhya Arati 18:30 IST'), findsOneWidget);
     expect(find.text('[1] ISKCON Vrindavan — temple guide'), findsOneWidget);
   });

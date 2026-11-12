@@ -451,7 +451,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get saved => 'सेव किए';
 
   @override
-  String get guideTitle => 'ब्रज गाइड';
+  String get guideTitle => 'तीर्थ गाइड';
 
   @override
   String get guideHint => 'मंदिर, आरती, ठहरने के बारे में पूछें…';
@@ -1855,4 +1855,111 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get guideListen => 'सुनें';
+
+  @override
+  String get gTagline => 'खोजें • जानें • अनुभव करें';
+
+  @override
+  String get gHello => 'मैं आपका तीर्थ गाइड AI हूँ। आज मैं आपकी क्या मदद करूँ?';
+
+  @override
+  String get gHelloSub => 'मंदिर, आरती, दर्शन या यात्रा के बारे में कुछ भी पूछें।';
+
+  @override
+  String get gHint => 'मंदिरों के बारे में कुछ भी पूछें…';
+
+  @override
+  String get gTapToSpeak => 'बोलने के लिए दबाएँ';
+
+  @override
+  String get gAttach => 'जोड़ें';
+
+  @override
+  String get gHistory => 'आपकी बातचीत';
+
+  @override
+  String get gSignInHistory => 'अपनी बातचीत देखने के लिए साइन इन करें';
+
+  @override
+  String get gTempleInfo => 'मंदिर जानकारी';
+
+  @override
+  String get gAartiTimings => 'आरती समय';
+
+  @override
+  String get gTravelGuide => 'यात्रा गाइड';
+
+  @override
+  String get gMore => 'और';
+
+  @override
+  String get gGallery => 'गैलरी';
+
+  @override
+  String get gCamera => 'कैमरा';
+
+  @override
+  String get gLocation => 'लोकेशन';
+
+  @override
+  String get gTripPdf => 'यात्रा PDF';
+
+  @override
+  String get gHighlights => 'मुख्य बातें:';
+
+  @override
+  String get gViewOnMap => 'मैप पर देखें';
+
+  @override
+  String get gTempleDetails => 'मंदिर विवरण';
+
+  @override
+  String get gNearby => 'आपके पास के मंदिर';
+
+  @override
+  String get gNearbyAsk => 'मेरे पास कौन से मंदिर हैं?';
+
+  @override
+  String get gPhotoNoMatch => 'यह मंदिर पहचाना नहीं गया। सामने से साफ़ फ़ोटो लें।';
+
+  @override
+  String get gPromptAarti => 'आज की आरती का समय बताओ';
+
+  @override
+  String get gPromptTravel => 'वृंदावन, मथुरा और गोवर्धन में कैसे घूमें?';
+
+  @override
+  String get gPromptWear => 'दर्शन के लिए क्या पहनें?';
+
+  @override
+  String get gPromptParikrama => 'गोवर्धन परिक्रमा कितने किमी है?';
+
+  @override
+  String get gPromptFood => 'प्रेम मंदिर के पास अच्छा सात्विक भोजन?';
+
+  @override
+  String get gPromptFestival => 'ब्रज में आने वाले त्योहार कौन से हैं?';
+
+  @override
+  String get gPromptHolyPlaces => 'वृंदावन धाम के बारे में बताओ';
+
+  @override
+  String gAskAbout(String name) {
+    return '$name के बारे में बताओ';
+  }
+
+  @override
+  String gDham(String name) {
+    return '$name धाम';
+  }
+
+  @override
+  String gNextAarti(String name, String time) {
+    return 'अगली आरती: $name, $time बजे';
+  }
+
+  @override
+  String gKmAway(String km) {
+    return '$km किमी दूर';
+  }
 }

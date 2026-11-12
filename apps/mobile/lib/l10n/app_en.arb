@@ -177,7 +177,7 @@
   "comments": "Comments",
   "addComment": "Add a comment",
   "saved": "Saved",
-  "guideTitle": "Braj Guide",
+  "guideTitle": "Tirth Guide",
   "guideHint": "Ask about temples, aarti, stays…",
   "guideIntro": "Radhe Radhe! Ask me anything about Braj. Aarti times always come from the temple schedule.",
   "newChat": "New chat",
@@ -757,5 +757,69 @@
   "guideToolPlan": "Plan my yatra",
   "guideToolAarti": "Aarti times",
   "guideTryAsking": "Try asking",
-  "guideListen": "Listen"
+  "guideListen": "Listen",
+  "gTagline": "Explore • Learn • Experience",
+  "gHello": "I'm your Tirth Guide AI. How can I help you today?",
+  "gHelloSub": "Ask anything about temples, aarti, darshan, or travel plans.",
+  "gHint": "Ask anything about temples…",
+  "gTapToSpeak": "Tap to speak",
+  "gAttach": "Attach",
+  "gHistory": "Your chats",
+  "gSignInHistory": "Sign in to see your chats",
+  "gTempleInfo": "Temple Info",
+  "gAartiTimings": "Aarti Timings",
+  "gTravelGuide": "Travel Guide",
+  "gMore": "More",
+  "gGallery": "Gallery",
+  "gCamera": "Camera",
+  "gLocation": "Location",
+  "gTripPdf": "Trip PDF",
+  "gHighlights": "Key Highlights:",
+  "gViewOnMap": "View on Map",
+  "gTempleDetails": "Temple details",
+  "gNearby": "Temples near you",
+  "gNearbyAsk": "Which temples are near me?",
+  "gPhotoNoMatch": "Couldn't recognise this temple. Try a clearer photo of the front.",
+  "gPromptAarti": "Aaj ki aarti timings batao",
+  "gPromptTravel": "How do I travel around Vrindavan, Mathura and Govardhan?",
+  "gPromptWear": "What should I wear for darshan?",
+  "gPromptParikrama": "Govardhan parikrama kitne km hai?",
+  "gPromptFood": "Best sattvik food near Prem Mandir?",
+  "gPromptFestival": "Which festivals are coming up in Braj?",
+  "gPromptHolyPlaces": "Show me details about Vrindavan Dham",
+  "gAskAbout": "Show me details about {name}",
+  "@gAskAbout": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "gDham": "{name} Dham",
+  "@gDham": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "gNextAarti": "Next aarti: {name} at {time}",
+  "@gNextAarti": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "gKmAway": "{km} km away",
+  "@gKmAway": {
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
@@ -7,12 +8,15 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:record/record.dart';
 
+import '../../../core/api/api_models.dart';
 import '../../../core/providers.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/widgets/common.dart';
 import '../../auth/data/session_controller.dart';
+import '../../catalog/data/catalog_repository.dart';
+import '../../safety/data/location_service.dart';
 import '../data/ai_repository.dart';
-import 'identify.dart';
+import 'guide_cards.dart';
 
 /// Chat with the Braj guide. Answers stream in token by token; citations
 /// are listed under each answer; any answer can be read aloud.
@@ -27,6 +31,7 @@ class _GuideScreenState extends ConsumerState<GuideScreen> {
   final _input = TextEditingController();
   final _scroll = ScrollController();
   final _messages = <ChatMessage>[];
+  final _meta = <_Meta>[];
   final _recorder = AudioRecorder();
   final _player = AudioPlayer();
   String? _sessionId;
@@ -83,6 +88,7 @@ class _GuideScreenState extends ConsumerState<GuideScreen> {
     setState(() {
       _busy = true;
       _messages.add(ChatMessage(role: 'user', content: q));
+      _meta.add(_Meta(DateTime.now()));
       _streaming = '';
       _streamCitations.clear();
     });
@@ -124,6 +130,7 @@ class _GuideScreenState extends ConsumerState<GuideScreen> {
         _messages.add(
           ChatMessage(role: 'assistant', content: answer, citations: List.of(_streamCitations)),
         );
+        _meta.add(_Meta(DateTime.now(), place: _placeFor(q, answer)));
         // Spoken reply after a voice question (or always, if chosen).
         if (_autoSpeak && _lastWasVoice) unawaited(_speak(answer));
       }
@@ -207,339 +214,854 @@ class _GuideScreenState extends ConsumerState<GuideScreen> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
+  GuidePlace? _placeFor(String q, String answer) {
+    final temples = ref.read(guideTemplesProvider).value ?? const [];
+    final cities = ref.read(citiesProvider).value ?? const [];
+    return detectPlace(q, answer, temples, cities);
+  }
+
+  void _newChat() => setState(() {
+    _sessionId = null;
+    _messages.clear();
+    _meta.clear();
+  });
+
+  Future<void> _openSession(String id) async {
+    try {
+      final msgs = await _ai.messages(id);
+      if (!mounted) return;
+      setState(() {
+        _sessionId = id;
+        _messages
+          ..clear()
+          ..addAll(msgs);
+        _meta
+          ..clear()
+          ..addAll([
+            for (var i = 0; i < msgs.length; i++)
+              _Meta(
+                null,
+                place: msgs[i].isUser || i == 0
+                    ? null
+                    : _placeFor(msgs[i - 1].content, msgs[i].content),
+              ),
+          ]);
+      });
+      _scrollDown();
+    } on Object catch (e) {
+      if (mounted) showSnack(context, errorText(context, e));
+    }
+  }
+
+  /// Gallery or camera photo → landmark match → ask about that temple.
+  Future<void> _askFromPhoto(ImageSource source) async {
+    final photo = await ImagePicker().pickImage(source: source, maxWidth: 1600, imageQuality: 85);
+    if (photo == null || !mounted) return;
+    setState(() => _busy = true);
+    try {
+      await _ensureSession();
+      final matches = await _ai.identifyLandmark(await photo.readAsBytes(), 'image/jpeg');
+      if (!mounted) return;
+      setState(() => _busy = false);
+      if (matches.isEmpty) {
+        showSnack(context, context.l10n.gPhotoNoMatch);
+        return;
+      }
+      final temples = ref.read(guideTemplesProvider).value ?? const [];
+      final id = matches.first['templeId'];
+      final t = temples.where((x) => x.id == id || x.slug == id).firstOrNull;
+      await _send(context.l10n.gAskAbout(t?.name ?? '${matches.first['name'] ?? ''}'));
+    } on Object catch (e) {
+      if (mounted) {
+        setState(() => _busy = false);
+        showSnack(context, errorText(context, e));
+      }
+    }
+  }
+
+  /// Phone location → nearest temples from the catalog.
+  Future<void> _nearby() async {
+    final fix = await ref.read(locationServiceProvider).current();
+    final temples = await ref.read(guideTemplesProvider.future);
+    if (!mounted) return;
+    double km(TempleSummaryResponse t) {
+      final dLat = (t.lat.toDouble() - fix.lat) * 111.0;
+      final dLng = (t.lng.toDouble() - fix.lng) * 111.0 * 0.885; // cos(27.6°)
+      return math.sqrt(dLat * dLat + dLng * dLng);
+    }
+
+    final list = [for (final t in temples) (t, km(t))]..sort((a, b) => a.$2.compareTo(b.$2));
+    setState(() {
+      _messages.add(ChatMessage(role: 'user', content: context.l10n.gNearbyAsk));
+      _meta.add(_Meta(DateTime.now()));
+      _messages.add(const ChatMessage(role: 'assistant', content: ''));
+      _meta.add(_Meta(DateTime.now(), nearby: list.take(4).toList()));
+    });
+    _scrollDown();
+  }
+
+  void _attachSheet() {
     final l = context.l10n;
-    final suggestions = <(IconData, String)>[
-      (Icons.local_fire_department_rounded, 'ISKCON Vrindavan sandhya aarti kab hai?'),
-      (Icons.checkroom_rounded, 'What should I wear for Banke Bihari darshan?'),
-      (Icons.route_rounded, 'Govardhan parikrama kitne km hai?'),
-      (Icons.restaurant_rounded, 'Best sattvik food near Prem Mandir?'),
-    ];
-    return Scaffold(
-      backgroundColor: const Color(0xFFF7F5EF),
-      appBar: AppBar(
+    unawaited(
+      showModalBottomSheet<void>(
+        context: context,
         backgroundColor: Colors.white,
-        surfaceTintColor: Colors.white,
-        elevation: 0,
-        scrolledUnderElevation: 1,
-        titleSpacing: 12,
-        title: Row(
-          children: [
-            const _GuideAvatar(radius: 20),
-            const SizedBox(width: 10),
-            Expanded(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        ),
+        builder: (sheet) {
+          Widget item(IconData icon, Color color, String label, VoidCallback onTap) => Expanded(
+            child: InkWell(
+              borderRadius: BorderRadius.circular(14),
+              onTap: () {
+                Navigator.pop(sheet);
+                onTap();
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: Column(
+                  children: [
+                    Icon(icon, color: color, size: 30),
+                    const SizedBox(height: 6),
+                    Text(label, style: const TextStyle(fontSize: 12.5, color: TnColors.ink)),
+                  ],
+                ),
+              ),
+            ),
+          );
+          return SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    l.guideTitle,
-                    style: const TextStyle(
-                      fontFamily: 'Cormorant',
-                      fontSize: 22,
-                      fontWeight: FontWeight.w800,
-                      color: TnColors.ink,
+                  Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: TnColors.line,
+                      borderRadius: BorderRadius.circular(2),
                     ),
                   ),
+                  const SizedBox(height: 10),
                   Row(
                     children: [
-                      Container(
-                        width: 7,
-                        height: 7,
-                        decoration: const BoxDecoration(
-                          color: Color(0xFF2F9E44),
-                          shape: BoxShape.circle,
-                        ),
+                      item(
+                        Icons.photo_rounded,
+                        const Color(0xFF1C6FD1),
+                        l.gGallery,
+                        () => unawaited(_askFromPhoto(ImageSource.gallery)),
                       ),
-                      const SizedBox(width: 5),
-                      Text(
-                        _busy ? l.guideTyping : l.guideOnline,
-                        style: const TextStyle(fontSize: 11.5, color: TnColors.muted),
+                      item(
+                        Icons.photo_camera_rounded,
+                        TnColors.navy,
+                        l.gCamera,
+                        () => unawaited(_askFromPhoto(ImageSource.camera)),
+                      ),
+                      item(
+                        Icons.location_on_rounded,
+                        const Color(0xFF1C6FD1),
+                        l.gLocation,
+                        () => unawaited(_nearby()),
+                      ),
+                      item(
+                        Icons.picture_as_pdf_rounded,
+                        const Color(0xFFE03131),
+                        l.gTripPdf,
+                        () => context.push('/guide/planner'),
                       ),
                     ],
                   ),
                 ],
               ),
             ),
-          ],
-        ),
-        actions: [
-          PopupMenuButton<String>(
-            tooltip: l.voiceSettings,
-            icon: Icon(
-              _autoSpeak ? Icons.record_voice_over_rounded : Icons.voice_over_off_rounded,
-              color: TnColors.navy,
-            ),
-            onSelected: (v) => setState(() {
-              if (v == 'auto') {
-                _autoSpeak = !_autoSpeak;
-              } else {
-                _voiceLang = v == 'app' ? null : v;
-              }
-            }),
-            itemBuilder: (_) => [
-              CheckedPopupMenuItem(value: 'auto', checked: _autoSpeak, child: Text(l.voiceReplies)),
-              const PopupMenuDivider(),
-              CheckedPopupMenuItem(
-                value: 'app',
-                checked: _voiceLang == null,
-                child: Text(l.voiceLangApp),
-              ),
-              CheckedPopupMenuItem(
-                value: 'hi',
-                checked: _voiceLang == 'hi',
-                child: const Text('हिन्दी'),
-              ),
-              CheckedPopupMenuItem(
-                value: 'en',
-                checked: _voiceLang == 'en',
-                child: const Text('English'),
-              ),
-            ],
-          ),
-          IconButton(
-            tooltip: l.newChat,
-            icon: const Icon(Icons.edit_square, color: TnColors.navy),
-            onPressed: () => setState(() {
-              _sessionId = null;
-              _messages.clear();
-            }),
-          ),
-          PopupMenuButton<String>(
-            icon: const Icon(Icons.more_vert_rounded, color: TnColors.navy),
-            onSelected: (v) => switch (v) {
-              'scan' => identifyTempleFromCamera(context),
-              'plan' => context.push('/guide/planner'),
-              _ => context.push('/sos'),
-            },
-            itemBuilder: (_) => [
-              PopupMenuItem(
-                value: 'scan',
-                child: ListTile(
-                  leading: const Icon(Icons.photo_camera_outlined),
-                  title: Text(l.identifyTemple),
-                ),
-              ),
-              PopupMenuItem(
-                value: 'plan',
-                child: ListTile(leading: const Icon(Icons.map_outlined), title: Text(l.planner)),
-              ),
-              PopupMenuItem(
-                value: 'sos',
-                child: ListTile(
-                  leading: const Icon(Icons.sos, color: TnColors.sos),
-                  title: Text(l.sosTitle),
-                ),
-              ),
-            ],
-          ),
-        ],
+          );
+        },
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView(
-              controller: _scroll,
-              padding: const EdgeInsets.fromLTRB(14, 14, 14, 8),
-              children: [
-                if (_messages.isEmpty) ...[
-                  _WelcomeCard(text: l.guideIntro),
-                  const SizedBox(height: 14),
-                  Row(
-                    children: [
-                      _ToolCard(
-                        icon: Icons.photo_camera_rounded,
-                        color: const Color(0xFF7B4FC9),
-                        label: l.guideToolScan,
-                        onTap: () => identifyTempleFromCamera(context),
-                      ),
-                      const SizedBox(width: 8),
-                      _ToolCard(
-                        icon: Icons.auto_awesome_rounded,
-                        color: TnColors.saffron,
-                        label: l.guideToolPlan,
-                        onTap: () => context.push('/guide/planner'),
-                      ),
-                      const SizedBox(width: 8),
-                      _ToolCard(
-                        icon: Icons.local_fire_department_rounded,
-                        color: const Color(0xFFE03131),
-                        label: l.guideToolAarti,
-                        onTap: () => context.push('/aarti'),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 18),
-                  Text(
-                    l.guideTryAsking,
-                    style: const TextStyle(
-                      fontFamily: 'Cormorant',
-                      fontSize: 19,
-                      fontWeight: FontWeight.w800,
-                      color: TnColors.ink,
+    );
+  }
+
+  void _moreSheet() {
+    final l = context.l10n;
+    final prompts = [
+      l.gPromptWear,
+      l.gPromptParikrama,
+      l.gPromptFood,
+      l.gPromptFestival,
+      l.gPromptHolyPlaces,
+    ];
+    unawaited(
+      showModalBottomSheet<void>(
+        context: context,
+        backgroundColor: Colors.white,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        ),
+        builder: (sheet) => SafeArea(
+          child: ListView(
+            shrinkWrap: true,
+            padding: const EdgeInsets.all(12),
+            children: [
+              for (final p in prompts)
+                ListTile(
+                  leading: const Icon(Icons.auto_awesome, color: TnColors.saffron),
+                  title: Text(p),
+                  onTap: () {
+                    Navigator.pop(sheet);
+                    unawaited(_send(p));
+                  },
+                ),
+              ListTile(
+                leading: const Icon(Icons.sos, color: TnColors.sos),
+                title: Text(l.sosTitle),
+                onTap: () {
+                  Navigator.pop(sheet);
+                  unawaited(context.push('/sos'));
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _templePicker() {
+    final temples = ref.read(guideTemplesProvider).value ?? const [];
+    unawaited(
+      showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.white,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        ),
+        builder: (sheet) => DraggableScrollableSheet(
+          expand: false,
+          initialChildSize: 0.6,
+          builder: (_, sc) => ListView(
+            controller: sc,
+            padding: const EdgeInsets.all(12),
+            children: [
+              for (final t in temples)
+                ListTile(
+                  leading: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: SizedBox(
+                      width: 44,
+                      height: 44,
+                      child: t.coverUrl == null
+                          ? const ColoredBox(color: TnColors.paper2)
+                          : Image.network(t.coverUrl!, fit: BoxFit.cover),
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  for (final (icon, q) in suggestions)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: Material(
+                  title: Text(t.name),
+                  onTap: () {
+                    Navigator.pop(sheet);
+                    unawaited(_send(context.l10n.gAskAbout(t.name)));
+                  },
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    ref
+      ..watch(guideTemplesProvider)
+      ..watch(citiesProvider);
+    final chips = <(IconData, String, VoidCallback)>[
+      (Icons.temple_hindu_rounded, l.gTempleInfo, _templePicker),
+      (Icons.calendar_month_rounded, l.gAartiTimings, () => unawaited(_send(l.gPromptAarti))),
+      (Icons.directions_car_rounded, l.gTravelGuide, () => unawaited(_send(l.gPromptTravel))),
+      (Icons.more_horiz_rounded, l.gMore, _moreSheet),
+    ];
+    return Scaffold(
+      backgroundColor: const Color(0xFFFFFBF3),
+      drawer: _HistoryDrawer(onOpen: _openSession, onNew: _newChat, current: _sessionId),
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Opacity(
+              opacity: 0.55,
+              child: Image.asset(
+                'assets/images/canva/guide-bg.jpg',
+                fit: BoxFit.cover,
+                alignment: Alignment.topRight,
+              ),
+            ),
+          ),
+          SafeArea(
+            bottom: false,
+            child: Column(
+              children: [
+                // Header: menu (history) · Tirth Guide · map.
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(4, 4, 8, 0),
+                  child: Row(
+                    children: [
+                      Builder(
+                        builder: (c) => IconButton(
+                          tooltip: l.gHistory,
+                          icon: const Icon(Icons.menu_rounded, size: 28, color: TnColors.ink),
+                          onPressed: () => Scaffold.of(c).openDrawer(),
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            const Icon(
+                              Icons.temple_hindu_rounded,
+                              color: Color(0xFFF2A73B),
+                              size: 30,
+                            ),
+                            Text(
+                              l.guideTitle,
+                              style: const TextStyle(
+                                fontFamily: 'Cormorant',
+                                fontSize: 28,
+                                fontWeight: FontWeight.w800,
+                                color: TnColors.navy,
+                                height: 1,
+                              ),
+                            ),
+                            Text(
+                              _busy ? l.guideTyping : l.gTagline,
+                              style: const TextStyle(
+                                fontFamily: 'Cormorant',
+                                fontStyle: FontStyle.italic,
+                                fontSize: 14,
+                                color: TnColors.muted,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      PopupMenuButton<String>(
+                        tooltip: l.voiceSettings,
+                        icon: Icon(
+                          _autoSpeak
+                              ? Icons.record_voice_over_rounded
+                              : Icons.voice_over_off_rounded,
+                          color: TnColors.navy,
+                        ),
+                        onSelected: (v) => setState(() {
+                          if (v == 'auto') {
+                            _autoSpeak = !_autoSpeak;
+                          } else {
+                            _voiceLang = v == 'app' ? null : v;
+                          }
+                        }),
+                        itemBuilder: (_) => [
+                          CheckedPopupMenuItem(
+                            value: 'auto',
+                            checked: _autoSpeak,
+                            child: Text(l.voiceReplies),
+                          ),
+                          const PopupMenuDivider(),
+                          CheckedPopupMenuItem(
+                            value: 'app',
+                            checked: _voiceLang == null,
+                            child: Text(l.voiceLangApp),
+                          ),
+                          CheckedPopupMenuItem(
+                            value: 'hi',
+                            checked: _voiceLang == 'hi',
+                            child: const Text('हिन्दी'),
+                          ),
+                          CheckedPopupMenuItem(
+                            value: 'en',
+                            checked: _voiceLang == 'en',
+                            child: const Text('English'),
+                          ),
+                        ],
+                      ),
+                      Material(
                         color: Colors.white,
+                        elevation: 2,
                         borderRadius: BorderRadius.circular(14),
                         child: InkWell(
                           borderRadius: BorderRadius.circular(14),
-                          onTap: () => _send(q),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(14),
-                              border: Border.all(color: TnColors.line),
+                          onTap: () => context.push('/journey'),
+                          child: const Padding(
+                            padding: EdgeInsets.all(9),
+                            child: Icon(Icons.map_outlined, color: TnColors.navy, size: 26),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: ListView(
+                    controller: _scroll,
+                    padding: const EdgeInsets.fromLTRB(12, 12, 12, 8),
+                    children: [
+                      _Row(
+                        user: false,
+                        time: null,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              l.guideWelcome,
+                              style: const TextStyle(
+                                fontFamily: 'Cormorant',
+                                fontSize: 21,
+                                fontWeight: FontWeight.w800,
+                                color: TnColors.navy,
+                              ),
                             ),
+                            const SizedBox(height: 4),
+                            Text(l.gHello, style: const TextStyle(fontSize: 15.5, height: 1.35)),
+                            const SizedBox(height: 6),
+                            Text(
+                              l.gHelloSub,
+                              style: const TextStyle(
+                                fontFamily: 'Cormorant',
+                                fontStyle: FontStyle.italic,
+                                fontSize: 16,
+                                color: TnColors.muted,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      for (var i = 0; i < _messages.length; i++)
+                        _entry(_messages[i], i < _meta.length ? _meta[i] : const _Meta(null)),
+                      if (_busy)
+                        _streaming.isEmpty
+                            ? const _TypingBubble()
+                            : _Row(
+                                user: false,
+                                time: null,
+                                child: Text(_streaming, style: const TextStyle(height: 1.45)),
+                              ),
+                    ],
+                  ),
+                ),
+                if (_recording || _speaking)
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(12, 0, 12, 6),
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: _recording ? const Color(0xFFFDECEA) : const Color(0xFFFFF3E4),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Row(
+                      children: [
+                        _Pulse(color: _recording ? TnColors.sos : TnColors.saffron),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            _recording ? l.listening : (_paused ? l.speakingPaused : l.speaking),
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              color: _recording ? TnColors.sos : TnColors.accent,
+                            ),
+                          ),
+                        ),
+                        if (_recording)
+                          TextButton(onPressed: _stopRecording, child: Text(l.stopListening))
+                        else ...[
+                          IconButton(
+                            tooltip: _paused ? l.play : l.pause,
+                            icon: Icon(_paused ? Icons.play_arrow_rounded : Icons.pause_rounded),
+                            onPressed: _togglePlayback,
+                          ),
+                          IconButton(
+                            tooltip: l.stop,
+                            icon: const Icon(Icons.stop_rounded),
+                            onPressed: _stopSpeaking,
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                // Quick actions.
+                SizedBox(
+                  height: 46,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    itemCount: chips.length,
+                    separatorBuilder: (_, _) => const SizedBox(width: 8),
+                    itemBuilder: (_, i) {
+                      final (icon, label, onTap) = chips[i];
+                      return Material(
+                        color: Colors.white,
+                        elevation: 1.5,
+                        shadowColor: const Color(0x331C3C6B),
+                        borderRadius: BorderRadius.circular(23),
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(23),
+                          onTap: _busy ? null : onTap,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 14),
                             child: Row(
                               children: [
-                                Icon(icon, color: TnColors.saffron, size: 20),
-                                const SizedBox(width: 10),
-                                Expanded(
-                                  child: Text(
-                                    q,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      color: TnColors.ink,
-                                    ),
-                                  ),
+                                Icon(
+                                  icon,
+                                  size: 20,
+                                  color: i == 3 ? TnColors.navy : const Color(0xFFE8890C),
                                 ),
-                                const Icon(
-                                  Icons.north_east_rounded,
-                                  size: 18,
-                                  color: TnColors.muted,
+                                const SizedBox(width: 6),
+                                Text(
+                                  label,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: TnColors.ink,
+                                  ),
                                 ),
                               ],
                             ),
                           ),
                         ),
+                      );
+                    },
+                  ),
+                ),
+                // Composer.
+                Container(
+                  margin: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+                  padding: const EdgeInsets.fromLTRB(4, 4, 6, 4),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(30),
+                    boxShadow: const [
+                      BoxShadow(color: Color(0x1A1C3C6B), blurRadius: 14, offset: Offset(0, 4)),
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      IconButton(
+                        tooltip: l.gAttach,
+                        icon: const Icon(Icons.attach_file_rounded, color: TnColors.navy),
+                        onPressed: _busy ? null : _attachSheet,
                       ),
-                    ),
-                ],
-                for (final m in _messages)
-                  _Bubble(message: m, onSpeak: m.isUser ? null : () => _speak(m.content)),
-                if (_busy)
-                  _streaming.isEmpty
-                      ? const _TypingBubble()
-                      : _Bubble(
-                          message: ChatMessage(role: 'assistant', content: _streaming),
+                      Expanded(
+                        child: TextField(
+                          controller: _input,
+                          minLines: 1,
+                          maxLines: 4,
+                          maxLength: 1000,
+                          textInputAction: TextInputAction.send,
+                          decoration: InputDecoration(
+                            hintText: l.gHint,
+                            counterText: '',
+                            border: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            filled: false,
+                            isDense: true,
+                          ),
+                          onSubmitted: (_) => _send(),
                         ),
+                      ),
+                      Tooltip(
+                        message: l.gTapToSpeak,
+                        child: GestureDetector(
+                          onTap: _toggleMic,
+                          onLongPressStart: (_) => _startRecording(),
+                          onLongPressEnd: (_) => _stopRecording(),
+                          child: CircleAvatar(
+                            radius: 22,
+                            backgroundColor: _recording ? TnColors.sos : TnColors.navy,
+                            child: const Icon(Icons.mic_rounded, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      IconButton.filled(
+                        tooltip: l.send,
+                        style: IconButton.styleFrom(
+                          backgroundColor: const Color(0xFFEEF0F5),
+                          minimumSize: const Size(44, 44),
+                        ),
+                        onPressed: _busy ? null : _send,
+                        icon: const Icon(Icons.send_rounded, color: TnColors.navy),
+                      ),
+                    ],
+                  ),
+                ),
               ],
-            ),
-          ),
-          if (_recording || _speaking)
-            Container(
-              margin: const EdgeInsets.fromLTRB(12, 0, 12, 6),
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: _recording ? const Color(0xFFFDECEA) : const Color(0xFFFFF3E4),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Row(
-                children: [
-                  _Pulse(color: _recording ? TnColors.sos : TnColors.saffron),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      _recording ? l.listening : (_paused ? l.speakingPaused : l.speaking),
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        color: _recording ? TnColors.sos : TnColors.accent,
-                      ),
-                    ),
-                  ),
-                  if (_recording)
-                    TextButton(onPressed: _stopRecording, child: Text(l.stopListening))
-                  else ...[
-                    IconButton(
-                      tooltip: _paused ? l.play : l.pause,
-                      icon: Icon(_paused ? Icons.play_arrow_rounded : Icons.pause_rounded),
-                      onPressed: _togglePlayback,
-                    ),
-                    IconButton(
-                      tooltip: l.stop,
-                      icon: const Icon(Icons.stop_rounded),
-                      onPressed: _stopSpeaking,
-                    ),
-                  ],
-                ],
-              ),
-            ),
-          SafeArea(
-            top: false,
-            child: Container(
-              margin: const EdgeInsets.fromLTRB(12, 4, 12, 10),
-              padding: const EdgeInsets.fromLTRB(16, 4, 6, 4),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(30),
-                border: Border.all(color: TnColors.line),
-                boxShadow: const [
-                  BoxShadow(color: Color(0x141C3C6B), blurRadius: 14, offset: Offset(0, 4)),
-                ],
-              ),
-              child: Row(
-                children: [
-                  const Icon(Icons.auto_awesome, color: TnColors.saffron, size: 20),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: TextField(
-                      controller: _input,
-                      minLines: 1,
-                      maxLines: 4,
-                      maxLength: 1000,
-                      textInputAction: TextInputAction.send,
-                      decoration: InputDecoration(
-                        hintText: l.guideHint,
-                        counterText: '',
-                        border: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        filled: false,
-                        isDense: true,
-                      ),
-                      onSubmitted: (_) => _send(),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: _toggleMic,
-                    onLongPressStart: (_) => _startRecording(),
-                    onLongPressEnd: (_) => _stopRecording(),
-                    child: Tooltip(
-                      message: l.voiceAsk,
-                      child: CircleAvatar(
-                        radius: 21,
-                        backgroundColor: _recording ? TnColors.sos : const Color(0xFFFFF1E4),
-                        child: Icon(
-                          Icons.mic_rounded,
-                          color: _recording ? Colors.white : TnColors.saffron,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 6),
-                  IconButton.filled(
-                    tooltip: l.send,
-                    style: IconButton.styleFrom(
-                      backgroundColor: TnColors.navy,
-                      minimumSize: const Size(42, 42),
-                    ),
-                    onPressed: _busy ? null : _send,
-                    icon: const Icon(Icons.arrow_upward_rounded, color: Colors.white),
-                  ),
-                ],
-              ),
             ),
           ),
         ],
       ),
     );
   }
+
+  Widget _entry(ChatMessage m, _Meta meta) {
+    if (m.isUser) {
+      return _Row(
+        user: true,
+        time: meta.at,
+        child: Text(m.content, style: const TextStyle(color: Colors.white, fontSize: 15.5)),
+      );
+    }
+    final Widget body;
+    if (meta.nearby != null) {
+      body = NearbyCard(items: meta.nearby!);
+    } else if (meta.place != null) {
+      body = PlaceAnswerCard(place: meta.place!, answer: m.content);
+    } else {
+      body = Text(m.content, style: const TextStyle(height: 1.45, fontSize: 14.5));
+    }
+    return _Row(
+      user: false,
+      time: meta.at,
+      onSpeak: meta.nearby != null ? null : () => _speak(m.content),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          body,
+          if (m.citations.isNotEmpty) ...[
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 6,
+              runSpacing: 6,
+              children: [
+                for (final c in m.citations)
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFFF3E4),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      '[${c.n}] ${c.title}',
+                      style: const TextStyle(
+                        color: TnColors.accent,
+                        fontSize: 11.5,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ],
+        ],
+      ),
+    );
+  }
 }
+
+@immutable
+class _Meta {
+  const _Meta(this.at, {this.place, this.nearby});
+  final DateTime? at;
+  final GuidePlace? place;
+  final List<(TempleSummaryResponse, double)>? nearby;
+}
+
+/// One message row: avatar + bubble (+ time, read tick, listen).
+class _Row extends StatelessWidget {
+  const _Row({required this.user, required this.time, required this.child, this.onSpeak});
+
+  final bool user;
+  final DateTime? time;
+  final Widget child;
+  final VoidCallback? onSpeak;
+
+  @override
+  Widget build(BuildContext context) {
+    final bubble = Container(
+      margin: const EdgeInsets.symmetric(vertical: 6),
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 10),
+      constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.76),
+      decoration: BoxDecoration(
+        gradient: user ? const LinearGradient(colors: [Color(0xFF24497F), TnColors.navy]) : null,
+        color: user ? null : Colors.white,
+        boxShadow: const [
+          BoxShadow(color: Color(0x141C3C6B), blurRadius: 12, offset: Offset(0, 4)),
+        ],
+        borderRadius: BorderRadius.circular(22),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          child,
+          if (onSpeak != null || (!user && time != null))
+            Row(
+              children: [
+                if (onSpeak != null)
+                  InkWell(
+                    borderRadius: BorderRadius.circular(12),
+                    onTap: onSpeak,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 6),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(Icons.volume_up_rounded, size: 17, color: TnColors.saffron),
+                          const SizedBox(width: 4),
+                          Text(
+                            context.l10n.guideListen,
+                            style: const TextStyle(
+                              color: TnColors.saffron,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                const Spacer(),
+                if (time != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 6),
+                    child: Text(
+                      formatChatTime(time!),
+                      style: const TextStyle(fontSize: 11.5, color: TnColors.muted),
+                    ),
+                  ),
+              ],
+            ),
+        ],
+      ),
+    );
+    final avatar = user
+        ? const CircleAvatar(
+            radius: 22,
+            backgroundColor: Color(0xFFE7EDF7),
+            child: Icon(Icons.person_outline_rounded, color: TnColors.navy),
+          )
+        : const _GuideAvatar(radius: 22);
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2),
+      child: Column(
+        crossAxisAlignment: user ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: user ? MainAxisAlignment.end : MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: user
+                ? [Flexible(child: bubble), const SizedBox(width: 8), avatar]
+                : [avatar, const SizedBox(width: 8), Flexible(child: bubble)],
+          ),
+          if (user && time != null)
+            Padding(
+              padding: const EdgeInsets.only(right: 56),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    formatChatTime(time!),
+                    style: const TextStyle(fontSize: 11.5, color: TnColors.ink),
+                  ),
+                  const SizedBox(width: 4),
+                  const Icon(Icons.done_all_rounded, size: 15, color: TnColors.navy),
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Past conversations (GET /ai/chat/sessions).
+class _HistoryDrawer extends ConsumerWidget {
+  const _HistoryDrawer({required this.onOpen, required this.onNew, required this.current});
+
+  final Future<void> Function(String id) onOpen;
+  final VoidCallback onNew;
+  final String? current;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = context.l10n;
+    final sessions = ref.watch(chatSessionsProvider);
+    return Drawer(
+      backgroundColor: Colors.white,
+      child: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+              child: Text(
+                l.gHistory,
+                style: const TextStyle(
+                  fontFamily: 'Cormorant',
+                  fontSize: 26,
+                  fontWeight: FontWeight.w800,
+                  color: TnColors.navy,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: FilledButton.icon(
+                style: FilledButton.styleFrom(backgroundColor: TnColors.navy),
+                onPressed: () {
+                  Navigator.pop(context);
+                  onNew();
+                },
+                icon: const Icon(Icons.add_rounded),
+                label: Text(l.newChat),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Expanded(
+              child: sessions.when(
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (_, _) => Center(child: Text(l.gSignInHistory)),
+                data: (list) => list.isEmpty
+                    ? Center(child: Text(l.emptyList))
+                    : ListView(
+                        children: [
+                          for (final s in list)
+                            ListTile(
+                              selected: s.$1 == current,
+                              leading: const Icon(Icons.chat_bubble_outline_rounded),
+                              title: Text(
+                                s.$2 ?? l.newChat,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              subtitle: s.$3 == null ? null : Text(s.$3!),
+                              onTap: () {
+                                Navigator.pop(context);
+                                unawaited(onOpen(s.$1));
+                              },
+                            ),
+                        ],
+                      ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// (id, title, last activity in IST) of the signed-in user's chats.
+final chatSessionsProvider = FutureProvider.autoDispose<List<(String, String?, String?)>>((
+  ref,
+) async {
+  final s = ref.watch(sessionProvider);
+  if (!s.signedIn) return const [];
+  final page = await ref.watch(apiClientProvider).getJson('/ai/chat/sessions');
+  return [
+    for (final r in (page['data'] as List<dynamic>? ?? const []))
+      if (r is Map)
+        (
+          r['id'] as String,
+          r['title'] as String?,
+          r['lastMessageAt'] is String
+              ? formatChatTime(DateTime.parse(r['lastMessageAt'] as String))
+              : null,
+        ),
+  ];
+});
 
 class _GuideAvatar extends StatelessWidget {
   const _GuideAvatar({this.radius = 15});
@@ -556,125 +1078,6 @@ class _GuideAvatar extends StatelessWidget {
       radius: radius,
       backgroundColor: Colors.white,
       backgroundImage: const AssetImage('assets/images/canva/guide-avatar.jpg'),
-    ),
-  );
-}
-
-class _WelcomeCard extends StatelessWidget {
-  const _WelcomeCard({required this.text});
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    final l = context.l10n;
-    return Container(
-      height: 170,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(22),
-        boxShadow: const [
-          BoxShadow(color: Color(0x261C3C6B), blurRadius: 16, offset: Offset(0, 6)),
-        ],
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          Image.asset(
-            'assets/images/canva/hero-travel.jpg',
-            fit: BoxFit.cover,
-            alignment: Alignment.centerRight,
-          ),
-          const DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xF21C3C6B), Color(0xB31C3C6B), Color(0x001C3C6B)],
-                stops: [0, 0.55, 1],
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 120, 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  l.guideWelcome,
-                  style: const TextStyle(
-                    fontFamily: 'Cormorant',
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w800,
-                    height: 1.05,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Expanded(
-                  child: Text(
-                    text,
-                    overflow: TextOverflow.fade,
-                    style: const TextStyle(color: Colors.white70, fontSize: 12.5, height: 1.35),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ToolCard extends StatelessWidget {
-  const _ToolCard({
-    required this.icon,
-    required this.color,
-    required this.label,
-    required this.onTap,
-  });
-  final IconData icon;
-  final Color color;
-  final String label;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) => Expanded(
-    child: Material(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(16),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(16),
-        onTap: onTap,
-        child: Container(
-          height: 92,
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: TnColors.line),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircleAvatar(
-                radius: 20,
-                backgroundColor: color.withValues(alpha: 0.12),
-                child: Icon(icon, color: color, size: 22),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                label,
-                maxLines: 2,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700,
-                  color: TnColors.ink,
-                  height: 1.1,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
     ),
   );
 }
@@ -733,107 +1136,6 @@ class _TypingBubbleState extends State<_TypingBubble> with SingleTickerProviderS
       ],
     ),
   );
-}
-
-class _Bubble extends StatelessWidget {
-  const _Bubble({required this.message, this.onSpeak});
-
-  final ChatMessage message;
-  final VoidCallback? onSpeak;
-
-  @override
-  Widget build(BuildContext context) {
-    final user = message.isUser;
-    final bubble = Container(
-      margin: const EdgeInsets.symmetric(vertical: 6),
-      padding: const EdgeInsets.fromLTRB(14, 11, 14, 11),
-      constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.74),
-      decoration: BoxDecoration(
-        gradient: user ? const LinearGradient(colors: [Color(0xFF24497F), TnColors.navy]) : null,
-        color: user ? null : Colors.white,
-        border: user ? null : Border.all(color: TnColors.line),
-        boxShadow: const [BoxShadow(color: Color(0x0F1C3C6B), blurRadius: 8, offset: Offset(0, 3))],
-        borderRadius: BorderRadius.only(
-          topLeft: const Radius.circular(18),
-          topRight: const Radius.circular(18),
-          bottomLeft: Radius.circular(user ? 18 : 4),
-          bottomRight: Radius.circular(user ? 4 : 18),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            message.content,
-            style: TextStyle(
-              color: user ? Colors.white : TnColors.ink,
-              height: 1.45,
-              fontSize: 14.5,
-            ),
-          ),
-          if (message.citations.isNotEmpty) ...[
-            const SizedBox(height: 8),
-            Wrap(
-              spacing: 6,
-              runSpacing: 6,
-              children: [
-                for (final c in message.citations)
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFFFF3E4),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Text(
-                      '[${c.n}] ${c.title}',
-                      style: const TextStyle(
-                        color: TnColors.accent,
-                        fontSize: 11.5,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          ],
-          if (onSpeak != null) ...[
-            const SizedBox(height: 4),
-            InkWell(
-              borderRadius: BorderRadius.circular(12),
-              onTap: onSpeak,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 2),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.volume_up_rounded, size: 17, color: TnColors.saffron),
-                    const SizedBox(width: 4),
-                    Text(
-                      context.l10n.guideListen,
-                      style: const TextStyle(
-                        color: TnColors.saffron,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ],
-      ),
-    );
-    if (user) return Align(alignment: Alignment.centerRight, child: bubble);
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        const Padding(padding: EdgeInsets.only(bottom: 8), child: _GuideAvatar()),
-        const SizedBox(width: 8),
-        Flexible(child: bubble),
-      ],
-    );
-  }
 }
 
 /// Pulsing dot for the listening / speaking states.
