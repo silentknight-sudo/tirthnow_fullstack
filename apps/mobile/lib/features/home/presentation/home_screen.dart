@@ -835,15 +835,35 @@ class _Greeting extends ConsumerWidget {
   }
 }
 
-class _Slide {
-  const _Slide(this.image, this.title, this.subtitle, this.route);
-  final String image;
-  final String title;
-  final String subtitle;
+class _HeroTile {
+  const _HeroTile(this.icon, this.label, this.route, this.color);
+  final IconData icon;
+  final String label;
   final String route;
+  final Color color;
 }
 
-/// Auto-advancing photo carousel with soft gradient, title and a CTA.
+class _HeroTab {
+  const _HeroTab({
+    required this.tab,
+    required this.title,
+    required this.subtitle,
+    required this.image,
+    required this.cta,
+    required this.route,
+    required this.tiles,
+  });
+  final String tab;
+  final String title;
+  final String subtitle;
+  final String image;
+  final String cta;
+  final String route;
+  final List<_HeroTile> tiles;
+}
+
+/// Four tabs under the AI Voice bar (Traveling, Pooja, Place, Temple), each
+/// with its own banner, shortcut tiles and a call to action. Swipe or tap.
 class _HeroCarousel extends StatefulWidget {
   const _HeroCarousel();
 
@@ -852,140 +872,139 @@ class _HeroCarousel extends StatefulWidget {
 }
 
 class _HeroCarouselState extends State<_HeroCarousel> {
-  final _pages = PageController(viewportFraction: 0.92);
-  Timer? _timer;
+  final _pages = PageController();
   int _index = 0;
 
   @override
-  void initState() {
-    super.initState();
-    _timer = Timer.periodic(const Duration(seconds: 5), (_) {
-      if (!_pages.hasClients) return;
-      unawaited(
-        _pages.animateToPage(
-          (_index + 1) % 3,
-          duration: const Duration(milliseconds: 600),
-          curve: Curves.easeInOutCubic,
-        ),
-      );
-    });
-  }
-
-  @override
   void dispose() {
-    _timer?.cancel();
     _pages.dispose();
     super.dispose();
+  }
+
+  void _select(int i) {
+    setState(() => _index = i);
+    unawaited(
+      _pages.animateToPage(i, duration: const Duration(milliseconds: 350), curve: Curves.easeOut),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
-    final slides = [
-      _Slide('assets/images/canva/prem-mandir.jpg', l.slide1Title, l.slide1Sub, '/temples'),
-      _Slide('assets/images/canva/planner.jpg', l.slide2Title, l.slide2Sub, '/guide/planner'),
-      _Slide('assets/images/canva/radha-kund.jpg', l.slide3Title, l.slide3Sub, '/reels'),
+    const blue = Color(0xFF1C3C6B);
+    const orange = TnColors.saffron;
+    const purple = Color(0xFF7B4FC9);
+    const green = Color(0xFF2E8B57);
+    final tabs = [
+      _HeroTab(
+        tab: l.heroTabTravel,
+        title: l.heroTravelTitle,
+        subtitle: l.heroTravelSub,
+        image: 'assets/images/canva/krishna-planner.jpg',
+        cta: l.heroTravelCta,
+        route: '/guide/planner',
+        tiles: [
+          _HeroTile(Icons.hotel_rounded, l.stay, '/book/hotels', blue),
+          _HeroTile(Icons.restaurant_rounded, l.food, '/book/restaurants', orange),
+          _HeroTile(Icons.support_agent_rounded, l.heroBrajGuide, '/guide', blue),
+          _HeroTile(Icons.local_taxi_rounded, l.heroPickupDrop, '/book/cabs', orange),
+          _HeroTile(Icons.movie_rounded, l.reels, '/reels', orange),
+          _HeroTile(Icons.route_rounded, l.yatraJourney, '/journey', purple),
+        ],
+      ),
+      _HeroTab(
+        tab: l.heroTabPooja,
+        title: l.heroPoojaTitle,
+        subtitle: l.heroPoojaSub,
+        image: 'assets/images/canva/banke-bihari.jpg',
+        cta: l.heroPoojaCta,
+        route: '/aarti',
+        tiles: [
+          _HeroTile(Icons.local_fire_department_rounded, l.heroAarti, '/aarti', orange),
+          _HeroTile(Icons.lyrics_rounded, l.heroLyrics, '/aarti', purple),
+          _HeroTile(Icons.storefront_rounded, l.poojaItems, '/pooja', orange),
+          _HeroTile(Icons.event_available_rounded, l.heroDarshan, '/book/experiences', blue),
+        ],
+      ),
+      _HeroTab(
+        tab: l.heroTabPlace,
+        title: l.heroPlaceTitle,
+        subtitle: l.heroPlaceSub,
+        image: 'assets/images/canva/govardhan.jpg',
+        cta: l.heroPlaceCta,
+        route: '/journey',
+        tiles: [
+          _HeroTile(Icons.temple_hindu_rounded, l.heroTemples, '/temples', orange),
+          _HeroTile(Icons.route_rounded, l.yatraJourney, '/journey', purple),
+          _HeroTile(Icons.map_rounded, l.heroPlanTrip, '/guide/planner', blue),
+          _HeroTile(Icons.movie_rounded, l.reels, '/reels', orange),
+        ],
+      ),
+      _HeroTab(
+        tab: l.heroTabTemple,
+        title: l.poojaItems,
+        subtitle: l.heroStoreSub,
+        image: 'assets/images/canva/prem-mandir.jpg',
+        cta: l.heroStoreCta,
+        route: '/pooja',
+        tiles: [
+          _HeroTile(Icons.cookie_rounded, l.heroPrasad, '/pooja', orange),
+          _HeroTile(Icons.local_florist_rounded, l.heroGarland, '/pooja', green),
+          _HeroTile(Icons.checkroom_rounded, l.heroPoshak, '/pooja', purple),
+          _HeroTile(Icons.light_mode_rounded, l.heroDiya, '/pooja', orange),
+        ],
+      ),
     ];
     return Column(
       children: [
         SizedBox(
-          height: 168,
-          child: PageView.builder(
-            controller: _pages,
-            itemCount: slides.length,
-            onPageChanged: (i) => setState(() => _index = i),
+          height: 42,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            itemCount: tabs.length,
+            separatorBuilder: (_, _) => const SizedBox(width: 8),
             itemBuilder: (_, i) {
-              final s = slides[i];
+              final on = i == _index;
               return GestureDetector(
-                onTap: () => context.push(s.route),
-                child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
+                onTap: () => _select(i),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  padding: const EdgeInsets.symmetric(horizontal: 18),
+                  alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: const [
-                      BoxShadow(color: Color(0x261C3C6B), blurRadius: 14, offset: Offset(0, 6)),
-                    ],
+                    color: on ? TnColors.navy : Colors.white,
+                    borderRadius: BorderRadius.circular(22),
+                    border: Border.all(color: on ? TnColors.navy : TnColors.line),
                   ),
-                  clipBehavior: Clip.antiAlias,
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      Image.asset(s.image, fit: BoxFit.cover),
-                      const DecoratedBox(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            colors: [Color(0xD90C1A30), Color(0x330C1A30)],
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 16,
-                        top: 16,
-                        right: 110,
-                        bottom: 14,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              s.title,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 19,
-                                fontWeight: FontWeight.w800,
-                                height: 1.15,
-                              ),
-                            ),
-                            const SizedBox(height: 6),
-                            Text(
-                              s.subtitle,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(color: Colors.white70, fontSize: 12.5),
-                            ),
-                            const Spacer(),
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                              decoration: BoxDecoration(
-                                color: TnColors.saffron,
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    l.explore,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 12.5,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 4),
-                                  const Icon(
-                                    Icons.arrow_forward_rounded,
-                                    color: Colors.white,
-                                    size: 15,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                  child: Text(
+                    tabs[i].tab,
+                    style: TextStyle(
+                      color: on ? Colors.white : TnColors.navy,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 13.5,
+                    ),
                   ),
                 ),
               );
             },
           ),
         ),
+        const SizedBox(height: 10),
+        SizedBox(
+          height: 276,
+          child: PageView.builder(
+            controller: _pages,
+            itemCount: tabs.length,
+            onPageChanged: (i) => setState(() => _index = i),
+            itemBuilder: (_, i) => _HeroPanel(tab: tabs[i]),
+          ),
+        ),
         const SizedBox(height: 6),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            for (var i = 0; i < slides.length; i++)
+            for (var i = 0; i < tabs.length; i++)
               AnimatedContainer(
                 duration: const Duration(milliseconds: 250),
                 margin: const EdgeInsets.symmetric(horizontal: 3),
@@ -999,6 +1018,156 @@ class _HeroCarouselState extends State<_HeroCarousel> {
           ],
         ),
       ],
+    );
+  }
+}
+
+class _HeroPanel extends StatelessWidget {
+  const _HeroPanel({required this.tab});
+  final _HeroTab tab;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(color: TnColors.line),
+        boxShadow: const [
+          BoxShadow(color: Color(0x1F1C3C6B), blurRadius: 14, offset: Offset(0, 6)),
+        ],
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Stack(
+        children: [
+          Positioned(
+            right: 0,
+            top: 0,
+            bottom: 0,
+            width: 150,
+            child: ShaderMask(
+              shaderCallback: (r) => const LinearGradient(
+                colors: [Colors.transparent, Colors.black],
+                stops: [0, 0.45],
+              ).createShader(r),
+              blendMode: BlendMode.dstIn,
+              child: Image.asset(tab.image, fit: BoxFit.cover),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 110),
+                  child: Text(
+                    tab.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontFamily: 'Cormorant',
+                      color: TnColors.navy,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Padding(
+                  padding: const EdgeInsets.only(right: 120),
+                  child: Text(
+                    tab.subtitle,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(color: TnColors.muted, fontSize: 12.5),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.only(right: 96),
+                  child: Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [for (final t in tab.tiles) _HeroTileView(tile: t)],
+                  ),
+                ),
+                const Spacer(),
+                GestureDetector(
+                  onTap: () => context.push(tab.route),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: TnColors.navy,
+                      borderRadius: BorderRadius.circular(22),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          tab.cta,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 13,
+                          ),
+                        ),
+                        const SizedBox(width: 6),
+                        const Icon(Icons.arrow_forward_rounded, color: Colors.white, size: 16),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _HeroTileView extends StatelessWidget {
+  const _HeroTileView({required this.tile});
+  final _HeroTile tile;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => context.push(tile.route),
+      child: Container(
+        width: 66,
+        height: 58,
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 5),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: TnColors.line),
+          boxShadow: const [
+            BoxShadow(color: Color(0x141C3C6B), blurRadius: 6, offset: Offset(0, 2)),
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(tile.icon, color: tile.color, size: 20),
+            const SizedBox(height: 3),
+            Text(
+              tile.label,
+              maxLines: 2,
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 9.5,
+                height: 1.1,
+                fontWeight: FontWeight.w600,
+                color: TnColors.navy,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

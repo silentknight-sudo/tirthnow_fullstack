@@ -1383,7 +1383,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get poojaIntro => 'ब्रज में दर्शन और पूजा का ज़रूरी सामान।';
 
   @override
-  String get poojaItems => 'पूजा सामग्री';
+  String get poojaItems => 'मंदिर स्टोर';
 
   @override
   String get poojaOffering => 'भोग व अर्पण';
@@ -1561,4 +1561,82 @@ class AppLocalizationsHi extends AppLocalizations {
   String nextStopIn(String km) {
     return 'अगला पड़ाव $km किमी';
   }
+
+  @override
+  String get heroTabTravel => 'यात्रा';
+
+  @override
+  String get heroTabPooja => 'पूजा';
+
+  @override
+  String get heroTabPlace => 'स्थान';
+
+  @override
+  String get heroTabTemple => 'मंदिर';
+
+  @override
+  String get heroTravelTitle => 'यात्रा';
+
+  @override
+  String get heroTravelSub => 'परिवार या समूह यात्रा की पूरी योजना एक ही जगह।';
+
+  @override
+  String get heroTravelCta => 'यात्रा प्लान करें';
+
+  @override
+  String get heroBrajGuide => 'ब्रज गाइड';
+
+  @override
+  String get heroPickupDrop => 'पिकअप व ड्रॉप';
+
+  @override
+  String get heroPoojaTitle => 'पूजा व आरती';
+
+  @override
+  String get heroPoojaSub => 'आरती का समय, ऑडियो के साथ आरती और दर्शन बुकिंग।';
+
+  @override
+  String get heroPoojaCta => 'आरती देखें';
+
+  @override
+  String get heroAarti => 'आरती समय';
+
+  @override
+  String get heroLyrics => 'आरती व ऑडियो';
+
+  @override
+  String get heroDarshan => 'दर्शन';
+
+  @override
+  String get heroPlaceTitle => 'ब्रज के स्थान';
+
+  @override
+  String get heroPlaceSub => 'वृंदावन, मथुरा और गोवर्धन के मंदिर, कुंड और परिक्रमा मार्ग।';
+
+  @override
+  String get heroPlaceCta => 'यात्रा जर्नी शुरू करें';
+
+  @override
+  String get heroTemples => 'मंदिर';
+
+  @override
+  String get heroPlanTrip => 'यात्रा प्लान';
+
+  @override
+  String get heroStoreSub => 'प्रसाद, माला, पोशाक और पूजा का सामान, मंदिर नगरी से।';
+
+  @override
+  String get heroStoreCta => 'मंदिर स्टोर देखें';
+
+  @override
+  String get heroPrasad => 'प्रसाद';
+
+  @override
+  String get heroGarland => 'माला';
+
+  @override
+  String get heroPoshak => 'पोशाक';
+
+  @override
+  String get heroDiya => 'दीया व धूप';
 }

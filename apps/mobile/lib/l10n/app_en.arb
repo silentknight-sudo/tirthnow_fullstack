@@ -548,7 +548,7 @@
   "poojaAll": "All",
   "poojaDeity": "Thakur ji",
   "poojaIntro": "Essentials for darshan and pooja in Braj.",
-  "poojaItems": "Pooja Items",
+  "poojaItems": "Temple Store",
   "poojaOffering": "Offerings",
   "poojaSoon": "Ordering from local shops is coming soon.",
   "poojaTilak": "Tilak & mala",
@@ -653,5 +653,31 @@
         "type": "String"
       }
     }
-  }
+  },
+  "heroTabTravel": "Traveling",
+  "heroTabPooja": "Pooja",
+  "heroTabPlace": "Place",
+  "heroTabTemple": "Temple",
+  "heroTravelTitle": "Traveling",
+  "heroTravelSub": "Plan a family or group yatra with all your travel needs in one place.",
+  "heroTravelCta": "Plan your yatra",
+  "heroBrajGuide": "Braj Guide",
+  "heroPickupDrop": "Pickup & Drop",
+  "heroPoojaTitle": "Pooja & Aarti",
+  "heroPoojaSub": "Live aarti times, lyrics with audio and darshan bookings.",
+  "heroPoojaCta": "Open aarti",
+  "heroAarti": "Aarti times",
+  "heroLyrics": "Lyrics & audio",
+  "heroDarshan": "Darshan",
+  "heroPlaceTitle": "Places in Braj",
+  "heroPlaceSub": "Temples, kunds and parikrama routes across Vrindavan, Mathura and Govardhan.",
+  "heroPlaceCta": "Start Yatra Journey",
+  "heroTemples": "Temples",
+  "heroPlanTrip": "Plan trip",
+  "heroStoreSub": "Prasad, garlands, poshak and pooja essentials from the temple town.",
+  "heroStoreCta": "Visit Temple Store",
+  "heroPrasad": "Prasad",
+  "heroGarland": "Garlands",
+  "heroPoshak": "Poshak",
+  "heroDiya": "Diya & dhoop"
 }

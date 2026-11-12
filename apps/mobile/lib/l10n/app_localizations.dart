@@ -2724,7 +2724,7 @@ abstract class AppLocalizations {
   /// No description provided for @poojaItems.
   ///
   /// In en, this message translates to:
-  /// **'Pooja Items'**
+  /// **'Temple Store'**
   String get poojaItems;
 
   /// No description provided for @poojaOffering.
@@ -3044,6 +3044,162 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Next stop {km} km'**
   String nextStopIn(String km);
+
+  /// No description provided for @heroTabTravel.
+  ///
+  /// In en, this message translates to:
+  /// **'Traveling'**
+  String get heroTabTravel;
+
+  /// No description provided for @heroTabPooja.
+  ///
+  /// In en, this message translates to:
+  /// **'Pooja'**
+  String get heroTabPooja;
+
+  /// No description provided for @heroTabPlace.
+  ///
+  /// In en, this message translates to:
+  /// **'Place'**
+  String get heroTabPlace;
+
+  /// No description provided for @heroTabTemple.
+  ///
+  /// In en, this message translates to:
+  /// **'Temple'**
+  String get heroTabTemple;
+
+  /// No description provided for @heroTravelTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Traveling'**
+  String get heroTravelTitle;
+
+  /// No description provided for @heroTravelSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan a family or group yatra with all your travel needs in one place.'**
+  String get heroTravelSub;
+
+  /// No description provided for @heroTravelCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan your yatra'**
+  String get heroTravelCta;
+
+  /// No description provided for @heroBrajGuide.
+  ///
+  /// In en, this message translates to:
+  /// **'Braj Guide'**
+  String get heroBrajGuide;
+
+  /// No description provided for @heroPickupDrop.
+  ///
+  /// In en, this message translates to:
+  /// **'Pickup & Drop'**
+  String get heroPickupDrop;
+
+  /// No description provided for @heroPoojaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pooja & Aarti'**
+  String get heroPoojaTitle;
+
+  /// No description provided for @heroPoojaSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Live aarti times, lyrics with audio and darshan bookings.'**
+  String get heroPoojaSub;
+
+  /// No description provided for @heroPoojaCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Open aarti'**
+  String get heroPoojaCta;
+
+  /// No description provided for @heroAarti.
+  ///
+  /// In en, this message translates to:
+  /// **'Aarti times'**
+  String get heroAarti;
+
+  /// No description provided for @heroLyrics.
+  ///
+  /// In en, this message translates to:
+  /// **'Lyrics & audio'**
+  String get heroLyrics;
+
+  /// No description provided for @heroDarshan.
+  ///
+  /// In en, this message translates to:
+  /// **'Darshan'**
+  String get heroDarshan;
+
+  /// No description provided for @heroPlaceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Places in Braj'**
+  String get heroPlaceTitle;
+
+  /// No description provided for @heroPlaceSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Temples, kunds and parikrama routes across Vrindavan, Mathura and Govardhan.'**
+  String get heroPlaceSub;
+
+  /// No description provided for @heroPlaceCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Yatra Journey'**
+  String get heroPlaceCta;
+
+  /// No description provided for @heroTemples.
+  ///
+  /// In en, this message translates to:
+  /// **'Temples'**
+  String get heroTemples;
+
+  /// No description provided for @heroPlanTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan trip'**
+  String get heroPlanTrip;
+
+  /// No description provided for @heroStoreSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Prasad, garlands, poshak and pooja essentials from the temple town.'**
+  String get heroStoreSub;
+
+  /// No description provided for @heroStoreCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Visit Temple Store'**
+  String get heroStoreCta;
+
+  /// No description provided for @heroPrasad.
+  ///
+  /// In en, this message translates to:
+  /// **'Prasad'**
+  String get heroPrasad;
+
+  /// No description provided for @heroGarland.
+  ///
+  /// In en, this message translates to:
+  /// **'Garlands'**
+  String get heroGarland;
+
+  /// No description provided for @heroPoshak.
+  ///
+  /// In en, this message translates to:
+  /// **'Poshak'**
+  String get heroPoshak;
+
+  /// No description provided for @heroDiya.
+  ///
+  /// In en, this message translates to:
+  /// **'Diya & dhoop'**
+  String get heroDiya;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

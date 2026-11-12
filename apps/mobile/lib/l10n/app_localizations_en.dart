@@ -1383,7 +1383,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get poojaIntro => 'Essentials for darshan and pooja in Braj.';
 
   @override
-  String get poojaItems => 'Pooja Items';
+  String get poojaItems => 'Temple Store';
 
   @override
   String get poojaOffering => 'Offerings';
@@ -1562,4 +1562,84 @@ class AppLocalizationsEn extends AppLocalizations {
   String nextStopIn(String km) {
     return 'Next stop $km km';
   }
+
+  @override
+  String get heroTabTravel => 'Traveling';
+
+  @override
+  String get heroTabPooja => 'Pooja';
+
+  @override
+  String get heroTabPlace => 'Place';
+
+  @override
+  String get heroTabTemple => 'Temple';
+
+  @override
+  String get heroTravelTitle => 'Traveling';
+
+  @override
+  String get heroTravelSub =>
+      'Plan a family or group yatra with all your travel needs in one place.';
+
+  @override
+  String get heroTravelCta => 'Plan your yatra';
+
+  @override
+  String get heroBrajGuide => 'Braj Guide';
+
+  @override
+  String get heroPickupDrop => 'Pickup & Drop';
+
+  @override
+  String get heroPoojaTitle => 'Pooja & Aarti';
+
+  @override
+  String get heroPoojaSub => 'Live aarti times, lyrics with audio and darshan bookings.';
+
+  @override
+  String get heroPoojaCta => 'Open aarti';
+
+  @override
+  String get heroAarti => 'Aarti times';
+
+  @override
+  String get heroLyrics => 'Lyrics & audio';
+
+  @override
+  String get heroDarshan => 'Darshan';
+
+  @override
+  String get heroPlaceTitle => 'Places in Braj';
+
+  @override
+  String get heroPlaceSub =>
+      'Temples, kunds and parikrama routes across Vrindavan, Mathura and Govardhan.';
+
+  @override
+  String get heroPlaceCta => 'Start Yatra Journey';
+
+  @override
+  String get heroTemples => 'Temples';
+
+  @override
+  String get heroPlanTrip => 'Plan trip';
+
+  @override
+  String get heroStoreSub => 'Prasad, garlands, poshak and pooja essentials from the temple town.';
+
+  @override
+  String get heroStoreCta => 'Visit Temple Store';
+
+  @override
+  String get heroPrasad => 'Prasad';
+
+  @override
+  String get heroGarland => 'Garlands';
+
+  @override
+  String get heroPoshak => 'Poshak';
+
+  @override
+  String get heroDiya => 'Diya & dhoop';
 }
