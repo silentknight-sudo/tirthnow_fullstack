@@ -17,7 +17,19 @@ const _templeAssets = {
   'yashoda-kund': 'radha-kund',
 };
 
-String templeImage(String slug) => 'assets/images/canva/${_templeAssets[slug] ?? 'temple'}.jpg';
+/// Real CC-licensed photos (Wikimedia Commons), credited in the temple screen
+/// and in docs/IMAGE_CREDITS.md. Preferred over the Canva illustrations.
+const templePhotoCredits = {
+  'kirti-mandir': 'Vikas.jehanabad · CC BY-SA 4.0',
+  'prem-mandir': 'Suyash Dwivedi · CC BY-SA 4.0',
+  'radha-raman-temple': 'Kridha20 · CC BY-SA 4.0',
+  'gokulnath-ji-temple': 'Hidden_macy · CC BY 3.0',
+  'daan-ghati-temple': 'Gyanendrasinghchauhan · CC BY 3.0',
+};
+
+String templeImage(String slug) => templePhotoCredits.containsKey(slug)
+    ? 'assets/images/temples/$slug.jpg'
+    : 'assets/images/canva/${_templeAssets[slug] ?? 'temple'}.jpg';
 
 const stayImage = 'assets/images/canva/stay.jpg';
 const foodImage = 'assets/images/canva/food.jpg';

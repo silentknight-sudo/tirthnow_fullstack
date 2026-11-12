@@ -43,6 +43,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/canva/
+    - assets/images/temples/
     - assets/images/demo-people/
     - assets/images/pooja/
     - assets/aarti/

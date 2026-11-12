@@ -69,3 +69,18 @@ re-record the voice-overs with a voice artist or a licensed commercial TTS
 - **Aarti audio**: currently a recitation with the same free, non-commercial Hindi voice as the demo reels plus a generated drone. Replace with licensed recordings (ideally from the temples) before launch.
 - **Demo pilgrims** (Live Crowd card, People screen): AI-generated sample faces, always labelled DEMO. Remove or replace with real, consented users before launch.
 - **Live crowd counts** shown on Home are sample numbers derived from the temple crowd level until a real footfall source is connected.
+
+## Online vendor KYC (partner app, Nov 2026)
+
+Today the partner app uploads document photos and an admin checks them (auto-approved while
+`VENDOR_AUTO_APPROVE=true`). Fully online verification needs one KYC provider account and a
+payout provider; each would be added as a `core/providers/kyc` adapter (mock + real).
+
+| What | Options | Needs |
+|---|---|---|
+| Aadhaar (consent-based) | DigiLocker via a partner (Surepass, IDfy, Signzy, HyperVerge), or Aadhaar offline XML / OTP e-KYC through a licensed KUA | Provider account + API key; DigiLocker partner onboarding |
+| PAN, GSTIN, FSSAI, RC, driving licence | Same providers' verification APIs (match name and number with government records) | Same account |
+| Bank account | Penny-drop: Razorpay Fund Account Validation or Cashfree Verification | Razorpay/Cashfree account (already listed for payments) |
+| Liveness / selfie match | HyperVerge, IDfy face match | Optional, same provider |
+
+Rough cost: ₹2–10 per check. Send the chosen provider's sandbox keys and we wire it in.

@@ -120,5 +120,9 @@ for (const name of Object.keys(schemas).sort()) {
   out.push('');
 }
 
-writeFileSync(outPath, out.join('\n'));
-console.log(`wrote ${Object.keys(schemas).length} models to ${outPath}`);
+// The partner app (apps/vendor_app) uses the same generated models.
+const vendorOutPath = resolve(here, '../../vendor_app/lib/core/api/api_models.dart');
+for (const p of [outPath, vendorOutPath]) {
+  writeFileSync(p, out.join('\n'));
+  console.log(`wrote ${Object.keys(schemas).length} models to ${p}`);
+}

@@ -135,6 +135,13 @@ Do not use plain `prisma migrate dev` to create migrations (it will offer to dro
 - `VENDOR_AUTO_APPROVE=true` (default until the admin panel) lists a vendor as soon as its KYC is submitted; `false` = admin approval, the vendor app shows "waiting".
 - Vendor dashboard data: `GET /v1/vendors/:vid/analytics?days=7|30|90`.
 
+## Partner app (apps/vendor_app, Nov 2026)
+
+- Flutter app for vendors (the web vendor portal stays for desktop). Same core as `apps/mobile` (ApiClient, session, theme); models come from the same generator (`gen_api_models.mjs` writes both apps).
+- Flow: OTP login → choose service (cab, hotel, dharamshala, restaurant, store) → business details → KYC + bank → waiting / dashboard. Router stage logic in `core/router.dart` (`partnerStage`).
+- Listings per service type in `features/listings`; every price field shows the pilgrim price (`customerPrice`: +18% GST +5% fee). Coupons, reviews with replies, analytics dashboard.
+- Online KYC options and the accounts they need: `docs/CLIENT_SETUP_TODO.md`. Temple photo credits: `docs/IMAGE_CREDITS.md`.
+
 ## How the vendor portal fits (Phase 4)
 
 - Read ADR-0019. Static export (`out/`), client components + TanStack Query; detail pages take `?id=`.

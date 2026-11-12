@@ -1,0 +1,264 @@
+{
+  "@@locale": "en",
+  "appName": "TirthNow Partner",
+  "emptyList": "Nothing here yet",
+  "errorOffline": "You're offline. Check your connection.",
+  "errorGeneric": "Something went wrong. Please try again.",
+  "retry": "Retry",
+  "save": "Save",
+  "cancel": "Cancel",
+  "add": "Add",
+  "edit": "Edit",
+  "next": "Continue",
+  "back": "Back",
+  "saved": "Saved",
+  "required": "Required",
+  "invalidValue": "Check this value",
+  "loginTitle": "Grow your business with pilgrims",
+  "loginSub": "Cabs, stays, restaurants and temple stores — one partner app for Braj.",
+  "phoneLabel": "Mobile number",
+  "phoneHint": "10-digit mobile number",
+  "sendOtp": "Send OTP",
+  "otpLabel": "6-digit OTP",
+  "otpSentTo": "OTP sent to {phone}",
+  "@otpSentTo": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "mockOtpHint": "Demo mode: use 123456",
+  "verify": "Verify & continue",
+  "changeNumber": "Change number",
+  "language": "हिंदी",
+  "obChooseTitle": "Which service do you offer?",
+  "obChooseSub": "Pick one. You can register another business later.",
+  "svcCab": "Cab & Taxi",
+  "svcCabSub": "Bike, auto and car rides",
+  "svcHotel": "Hotel",
+  "svcHotelSub": "Rooms listed under Stay",
+  "svcDharamshala": "Dharamshala",
+  "svcDharamshalaSub": "Pilgrim rest houses, under Stay",
+  "svcRestaurant": "Restaurant",
+  "svcRestaurantSub": "Satvik food, dine-in and orders",
+  "svcStore": "Temple Store",
+  "svcStoreSub": "Pooja items, prasad, poshak",
+  "obBusinessTitle": "Business details",
+  "displayName": "Business name (shown to pilgrims)",
+  "legalName": "Legal name (as on PAN)",
+  "city": "City",
+  "pan": "PAN",
+  "gstin": "GSTIN (optional)",
+  "createAccount": "Create partner account",
+  "kycTitle": "Verify your business",
+  "kycSub": "Upload clear photos. Each document is checked before you go live.",
+  "kycHow": "How verification works",
+  "kycHowBody": "1. PAN and GSTIN are matched with government records.\n2. Aadhaar is verified through DigiLocker / e-KYC with your consent.\n3. Licences (FSSAI, trade licence, RC, driving licence) are checked by our team.\n4. Your bank account is confirmed with a ₹1 test deposit.\nIn demo mode documents are accepted instantly.",
+  "docPan": "PAN card",
+  "docAadhaar": "Aadhaar card",
+  "docGst": "GST certificate",
+  "docFssai": "FSSAI licence",
+  "docTradeLicense": "Trade licence",
+  "docRc": "Vehicle RC",
+  "docDrivingLicence": "Driving licence",
+  "docPermit": "Permit",
+  "docOther": "Other document",
+  "upload": "Upload",
+  "uploaded": "Uploaded",
+  "docApproved": "Verified",
+  "docRejected": "Rejected",
+  "docPending": "In review",
+  "bankTitle": "Payout bank account",
+  "accountHolder": "Account holder name",
+  "accountNumber": "Account number",
+  "ifsc": "IFSC",
+  "addBank": "Add bank account",
+  "submitKyc": "Submit for verification",
+  "missingDocs": "Still needed: {docs}",
+  "@missingDocs": {
+    "placeholders": {
+      "docs": {
+        "type": "String"
+      }
+    }
+  },
+  "waitingTitle": "Waiting for approval",
+  "waitingBody": "Thanks! Our team is reviewing your documents. You'll be listed for pilgrims as soon as you're approved.",
+  "rejectedTitle": "Some documents need attention",
+  "fixDocs": "Fix documents",
+  "suspendedTitle": "Account suspended",
+  "checkStatus": "Check status",
+  "signOut": "Sign out",
+  "tabDashboard": "Dashboard",
+  "tabOrders": "Orders",
+  "tabListings": "Listings",
+  "tabMore": "More",
+  "hello": "Namaste, {name}",
+  "@hello": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "live": "Live for pilgrims",
+  "days7": "7 days",
+  "days30": "30 days",
+  "days90": "90 days",
+  "earnings": "Your earnings",
+  "earningsNote": "After the 5% platform fee. GST collected is paid out to you for filing.",
+  "statOrders": "Orders",
+  "statGross": "Gross sales",
+  "statAvg": "Avg order",
+  "statDiscounts": "Coupon discounts",
+  "salesTrend": "Daily earnings",
+  "topItems": "Best sellers",
+  "ratings": "Customer ratings",
+  "ratingCount": "{count} ratings",
+  "@ratingCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "seeReviews": "See reviews",
+  "ordersPending": "New",
+  "ordersActive": "Active",
+  "ordersDone": "Completed",
+  "ordersCancelled": "Cancelled",
+  "accept": "Accept",
+  "reject": "Reject",
+  "start": "Start",
+  "complete": "Mark complete",
+  "rejectReason": "Reason",
+  "youGet": "You get {amount}",
+  "@youGet": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "customerPays": "Pilgrim pays {amount}",
+  "@customerPays": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "priceNote": "Pilgrims see your price + 18% GST + 5% platform fee.",
+  "basePrice": "Your price (₹)",
+  "vehicles": "Vehicles",
+  "fares": "Fares",
+  "addVehicle": "Add vehicle",
+  "vehicleClass": "Vehicle type",
+  "regNo": "Registration no.",
+  "model": "Model",
+  "seats": "Seats",
+  "driverName": "Driver name",
+  "baseFare": "Base fare (₹)",
+  "perKm": "Per km (₹)",
+  "perMin": "Per minute (₹)",
+  "minFare": "Minimum fare (₹)",
+  "nightPct": "Night surcharge %",
+  "setFare": "Set fare",
+  "cabBike": "Bike",
+  "cabAuto": "Auto",
+  "cabERickshaw": "E-rickshaw",
+  "cabHatchback": "Hatchback",
+  "cabSedan": "Sedan",
+  "cabSuv": "SUV",
+  "cabTempo": "Tempo traveller",
+  "properties": "Properties",
+  "addProperty": "Add property",
+  "propertyName": "Property name",
+  "address": "Address",
+  "roomTypes": "Room types",
+  "addRoomType": "Add room type",
+  "roomName": "Room name",
+  "maxGuests": "Max guests",
+  "totalRooms": "Rooms",
+  "perNight": "per night",
+  "published": "Published",
+  "hidden": "Hidden",
+  "restaurants": "Restaurants",
+  "addRestaurant": "Add restaurant",
+  "restaurantName": "Restaurant name",
+  "pureVeg": "Pure veg",
+  "satvik": "Satvik (no onion-garlic)",
+  "menu": "Menu",
+  "addMenuItem": "Add dish",
+  "dishName": "Dish name",
+  "category": "Category",
+  "jain": "Jain",
+  "available": "Available",
+  "products": "Products",
+  "addProduct": "Add product",
+  "productName": "Product name",
+  "description": "Description",
+  "mrp": "MRP (₹, optional)",
+  "stock": "Stock",
+  "unit": "Unit (piece, pack, kg)",
+  "addPhoto": "Add photo",
+  "inStock": "{n} in stock",
+  "@inStock": {
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "sold": "{n} sold",
+  "@sold": {
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "delete": "Delete",
+  "catPoojaThali": "Pooja thali",
+  "catDiyaDhoop": "Diya & dhoop",
+  "catGarland": "Garlands",
+  "catPrasad": "Prasad",
+  "catPoshak": "Poshak",
+  "catTilakMala": "Tilak & mala",
+  "catIdols": "Idols",
+  "catBooks": "Books",
+  "catOther": "Other",
+  "coupons": "Coupons",
+  "couponsSub": "Offer discounts to bring more pilgrims",
+  "addCoupon": "Create coupon",
+  "couponCode": "Code (e.g. RADHE10)",
+  "percentOff": "% off",
+  "flatOff": "Flat ₹ off",
+  "discountValue": "Discount",
+  "minOrder": "Minimum order (₹)",
+  "maxDiscount": "Max discount (₹, optional)",
+  "usageLimit": "Usage limit (optional)",
+  "validDays": "Valid for days (optional)",
+  "used": "Used {n}",
+  "@used": {
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "active": "Active",
+  "reviews": "Reviews",
+  "reply": "Reply",
+  "yourReply": "Your reply",
+  "profile": "Business profile",
+  "kycStatus": "Verification",
+  "statusActive": "Approved",
+  "statusPending": "Under review",
+  "statusDraft": "Incomplete",
+  "statusRejected": "Needs changes",
+  "statusSuspended": "Suspended",
+  "switchLanguage": "Language",
+  "help": "Partner support"
+}

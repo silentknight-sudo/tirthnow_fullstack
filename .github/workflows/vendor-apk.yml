@@ -1,0 +1,43 @@
+name: Partner APK
+
+# Builds the installable partner (vendor) APK, debug-signed, with mock sign-in (OTP 123456).
+on:
+  push:
+    paths: ['apps/vendor_app/**', '.github/workflows/vendor-apk.yml']
+  workflow_dispatch:
+    inputs:
+      api_base_url:
+        description: API origin the app talks to (without /v1)
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  apk:
+    name: Build APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    defaults:
+      run:
+        working-directory: apps/vendor_app
+    env:
+      API_BASE_URL: ${{ inputs.api_base_url || vars.MOBILE_API_BASE_URL || 'https://tirthnow-api.onrender.com' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.47.7
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: flutter build apk --release --dart-define=API_BASE_URL="$API_BASE_URL"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tirthnow-partner-apk
+          path: apps/vendor_app/build/app/outputs/flutter-apk/*.apk
+          retention-days: 30

@@ -64,11 +64,29 @@ class _Body extends ConsumerWidget {
           expandedHeight: 230,
           backgroundColor: TnColors.paper,
           flexibleSpace: FlexibleSpaceBar(
-            background: CoverImage(
-              temple.coverUrl,
-              height: 270,
-              radius: 0,
-              fallbackAsset: templeImage(temple.slug),
+            background: Stack(
+              fit: StackFit.expand,
+              children: [
+                CoverImage(
+                  temple.coverUrl,
+                  height: 270,
+                  radius: 0,
+                  fallbackAsset: templeImage(temple.slug),
+                ),
+                if (temple.coverUrl == null && templePhotoCredits[temple.slug] != null)
+                  Positioned(
+                    right: 8,
+                    bottom: 6,
+                    child: Text(
+                      '📷 ${templePhotoCredits[temple.slug]}',
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        fontSize: 10,
+                        shadows: [Shadow(blurRadius: 4)],
+                      ),
+                    ),
+                  ),
+              ],
             ),
           ),
         ),
