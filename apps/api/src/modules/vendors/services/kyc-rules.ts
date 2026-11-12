@@ -2,13 +2,15 @@ import { type KycDocType, type VendorType } from '@prisma/client';
 
 /** Documents needed before a vendor can submit for review. */
 export function requiredDocuments(type: VendorType, hasGstin: boolean): KycDocType[] {
-  const docs = new Set<KycDocType>(['pan']);
+  const docs = new Set<KycDocType>(['pan', 'aadhaar']);
   if (hasGstin) docs.add('gst');
   if (type === 'hotel') docs.add('trade_license');
+  if (type === 'dharamshala') docs.add('trade_license');
   if (type === 'restaurant') docs.add('fssai');
+  if (type === 'store') docs.add('trade_license');
   if (type === 'cab') {
     docs.add('rc');
-    docs.add('permit');
+    docs.add('driving_licence');
   }
   return [...docs];
 }

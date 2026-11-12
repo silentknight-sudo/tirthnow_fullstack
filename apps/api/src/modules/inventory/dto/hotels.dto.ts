@@ -38,6 +38,13 @@ export class CreateHotelDto {
   @Min(1)
   @Max(5)
   starRating?: number;
+  @ApiPropertyOptional({
+    enum: ['hotel', 'dharamshala'],
+    description: 'Shown under Stay in the app',
+  })
+  @IsOptional()
+  @IsIn(['hotel', 'dharamshala'])
+  kind?: 'hotel' | 'dharamshala';
   @ApiPropertyOptional({ type: [String] })
   @IsOptional()
   @IsArray()
@@ -114,6 +121,10 @@ export class UpdateCalendarDto extends CalendarQueryDto {
 }
 
 export class HotelSearchQueryDto extends LocalizedQueryDto {
+  @ApiPropertyOptional({ enum: ['hotel', 'dharamshala'] })
+  @IsOptional()
+  @IsIn(['hotel', 'dharamshala'])
+  kind?: 'hotel' | 'dharamshala';
   @ApiPropertyOptional({ example: 'vrindavan' })
   @IsOptional()
   @Matches(/^[a-z0-9-]{2,60}$/)
@@ -208,6 +219,7 @@ export class HotelResponse {
   @ApiProperty() lng!: number;
   @ApiProperty() address!: string;
   @ApiProperty({ type: Number, nullable: true }) starRating!: number | null;
+  @ApiProperty({ enum: ['hotel', 'dharamshala'] }) kind!: string;
   @ApiProperty({ type: [String] }) amenities!: string[];
   @ApiProperty() checkinTime!: string;
   @ApiProperty() checkoutTime!: string;

@@ -151,7 +151,8 @@
               "trade_license",
               "rc",
               "permit",
-              "other"
+              "other",
+              "driving_licence"
             ],
             "type": "string"
           },
@@ -343,7 +344,8 @@
               "sedan",
               "suv",
               "tempo_traveller",
-              "e_rickshaw"
+              "e_rickshaw",
+              "bike"
             ],
             "type": "string"
           },
@@ -372,7 +374,8 @@
               "sedan",
               "suv",
               "tempo_traveller",
-              "e_rickshaw"
+              "e_rickshaw",
+              "bike"
             ],
             "type": "string"
           },
@@ -460,7 +463,8 @@
               "sedan",
               "suv",
               "tempo_traveller",
-              "e_rickshaw"
+              "e_rickshaw",
+              "bike"
             ],
             "type": "string"
           },
@@ -488,7 +492,8 @@
               "sedan",
               "suv",
               "tempo_traveller",
-              "e_rickshaw"
+              "e_rickshaw",
+              "bike"
             ],
             "type": "string"
           },
@@ -665,6 +670,32 @@
         ],
         "type": "object"
       },
+      "CategoryResponse": {
+        "properties": {
+          "count": {
+            "type": "number"
+          },
+          "key": {
+            "enum": [
+              "pooja_thali",
+              "diya_dhoop",
+              "garland",
+              "prasad",
+              "poshak",
+              "tilak_mala",
+              "idols",
+              "books",
+              "other"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "key",
+          "count"
+        ],
+        "type": "object"
+      },
       "ChatMessageDto": {
         "properties": {
           "content": {
@@ -782,7 +813,8 @@
               "cab",
               "food",
               "experience",
-              "transit"
+              "transit",
+              "product"
             ],
             "type": "string"
           },
@@ -846,6 +878,71 @@
           "key",
           "kind",
           "value"
+        ],
+        "type": "object"
+      },
+      "CouponResponse": {
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "endsAt": {
+            "format": "date-time",
+            "nullable": true,
+            "type": "string"
+          },
+          "flatPaise": {
+            "type": "number"
+          },
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "kind": {
+            "enum": [
+              "percent",
+              "flat"
+            ],
+            "type": "string"
+          },
+          "maxDiscountPaise": {
+            "nullable": true,
+            "type": "number"
+          },
+          "minOrderPaise": {
+            "type": "number"
+          },
+          "percentBps": {
+            "type": "number"
+          },
+          "startsAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "usageLimit": {
+            "nullable": true,
+            "type": "number"
+          },
+          "usedCount": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "code",
+          "kind",
+          "percentBps",
+          "flatPaise",
+          "minOrderPaise",
+          "maxDiscountPaise",
+          "startsAt",
+          "endsAt",
+          "usageLimit",
+          "usedCount",
+          "isActive"
         ],
         "type": "object"
       },
@@ -986,6 +1083,59 @@
         },
         "required": [
           "body"
+        ],
+        "type": "object"
+      },
+      "CreateCouponDto": {
+        "properties": {
+          "code": {
+            "example": "RADHE10",
+            "type": "string"
+          },
+          "endsAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "flatPaise": {
+            "description": "For flat coupons, paise off",
+            "example": 5000,
+            "type": "number"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "kind": {
+            "enum": [
+              "percent",
+              "flat"
+            ],
+            "type": "string"
+          },
+          "maxDiscountPaise": {
+            "example": 20000,
+            "type": "number"
+          },
+          "minOrderPaise": {
+            "example": 50000,
+            "type": "number"
+          },
+          "percentBps": {
+            "description": "For percent coupons, basis points (1000 = 10%)",
+            "example": 1000,
+            "type": "number"
+          },
+          "startsAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "usageLimit": {
+            "example": 100,
+            "type": "number"
+          }
+        },
+        "required": [
+          "code",
+          "kind"
         ],
         "type": "object"
       },
@@ -1174,6 +1324,14 @@
           "isPublished": {
             "description": "Visible to travellers (vendor must be active)",
             "type": "boolean"
+          },
+          "kind": {
+            "description": "Shown under Stay in the app",
+            "enum": [
+              "hotel",
+              "dharamshala"
+            ],
+            "type": "string"
           },
           "lat": {
             "type": "number"
@@ -1397,6 +1555,11 @@
           "cab": {
             "$ref": "#/components/schemas/CabOrderDto"
           },
+          "couponCode": {
+            "description": "The vendor's coupon code",
+            "example": "RADHE10",
+            "type": "string"
+          },
           "experience": {
             "$ref": "#/components/schemas/ExperienceOrderDto"
           },
@@ -1406,12 +1569,16 @@
           "hotel": {
             "$ref": "#/components/schemas/HotelOrderDto"
           },
+          "product": {
+            "$ref": "#/components/schemas/ProductOrderDto"
+          },
           "type": {
             "enum": [
               "hotel",
               "cab",
               "food",
-              "experience"
+              "experience",
+              "product"
             ],
             "type": "string"
           }
@@ -1491,6 +1658,70 @@
           "name",
           "lat",
           "lng"
+        ],
+        "type": "object"
+      },
+      "CreateProductDto": {
+        "properties": {
+          "category": {
+            "enum": [
+              "pooja_thali",
+              "diya_dhoop",
+              "garland",
+              "prasad",
+              "poshak",
+              "tilak_mala",
+              "idols",
+              "books",
+              "other"
+            ],
+            "type": "string"
+          },
+          "cityId": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "description": {
+            "maxLength": 600,
+            "type": "string"
+          },
+          "isPublished": {
+            "type": "boolean"
+          },
+          "mediaIds": {
+            "description": "Ready media ids uploaded with purpose \"listing_image\"",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "mrpPaise": {
+            "example": 32000,
+            "type": "number"
+          },
+          "name": {
+            "example": "Pooja thali set",
+            "type": "string"
+          },
+          "pricePaise": {
+            "description": "Vendor base price in paise (GST and platform fee are added at checkout)",
+            "example": 25000,
+            "type": "number"
+          },
+          "stock": {
+            "example": 40,
+            "type": "number"
+          },
+          "unit": {
+            "example": "piece",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "category",
+          "pricePaise",
+          "stock"
         ],
         "type": "object"
       },
@@ -1836,7 +2067,8 @@
               "sedan",
               "suv",
               "tempo_traveller",
-              "e_rickshaw"
+              "e_rickshaw",
+              "bike"
             ],
             "type": "string"
           },
@@ -1902,7 +2134,9 @@
               "cab",
               "restaurant",
               "experience",
-              "multi"
+              "multi",
+              "dharamshala",
+              "store"
             ],
             "type": "string"
           }
@@ -2072,6 +2306,58 @@
         "required": [
           "dayIndex",
           "title"
+        ],
+        "type": "object"
+      },
+      "DailySalesResponse": {
+        "properties": {
+          "date": {
+            "example": "2026-11-12",
+            "type": "string"
+          },
+          "earningsPaise": {
+            "type": "number"
+          },
+          "orders": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "date",
+          "orders",
+          "earningsPaise"
+        ],
+        "type": "object"
+      },
+      "DeliveryAddressDto": {
+        "properties": {
+          "city": {
+            "example": "Vrindavan",
+            "type": "string"
+          },
+          "line1": {
+            "example": "Room 12, Radha Niwas, Raman Reti",
+            "type": "string"
+          },
+          "name": {
+            "example": "Radha Sharma",
+            "type": "string"
+          },
+          "phoneE164": {
+            "example": "+919876543210",
+            "type": "string"
+          },
+          "pincode": {
+            "example": "281121",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "phoneE164",
+          "line1",
+          "city",
+          "pincode"
         ],
         "type": "object"
       },
@@ -2772,6 +3058,13 @@
           "isPublished": {
             "type": "boolean"
           },
+          "kind": {
+            "enum": [
+              "hotel",
+              "dharamshala"
+            ],
+            "type": "string"
+          },
           "lat": {
             "type": "number"
           },
@@ -2812,6 +3105,7 @@
           "lng",
           "address",
           "starRating",
+          "kind",
           "amenities",
           "checkinTime",
           "checkoutTime",
@@ -2892,7 +3186,8 @@
               "trade_license",
               "rc",
               "permit",
-              "other"
+              "other",
+              "driving_licence"
             ],
             "type": "string"
           },
@@ -3351,7 +3646,8 @@
               "cab",
               "food",
               "experience",
-              "transit"
+              "transit",
+              "product"
             ],
             "type": "string"
           },
@@ -3837,6 +4133,203 @@
           "purpose",
           "mimeType",
           "sizeBytes"
+        ],
+        "type": "object"
+      },
+      "PriceQuoteDto": {
+        "properties": {
+          "basePaise": {
+            "example": 50000,
+            "type": "number"
+          },
+          "couponCode": {
+            "example": "RADHE10",
+            "type": "string"
+          },
+          "vendorId": {
+            "format": "uuid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "vendorId",
+          "basePaise"
+        ],
+        "type": "object"
+      },
+      "PriceQuoteResponse": {
+        "properties": {
+          "basePaise": {
+            "type": "number"
+          },
+          "couponCode": {
+            "nullable": true,
+            "type": "string"
+          },
+          "couponError": {
+            "description": "Why the coupon did not apply",
+            "nullable": true,
+            "type": "string"
+          },
+          "discountPaise": {
+            "type": "number"
+          },
+          "feePaise": {
+            "description": "Platform charge on the discounted base",
+            "type": "number"
+          },
+          "taxPaise": {
+            "description": "GST on the discounted base",
+            "type": "number"
+          },
+          "totalPaise": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "basePaise",
+          "discountPaise",
+          "taxPaise",
+          "feePaise",
+          "totalPaise",
+          "couponCode",
+          "couponError"
+        ],
+        "type": "object"
+      },
+      "ProductLineInputDto": {
+        "properties": {
+          "productId": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "quantity": {
+            "example": 2,
+            "type": "number"
+          }
+        },
+        "required": [
+          "productId",
+          "quantity"
+        ],
+        "type": "object"
+      },
+      "ProductOrderDto": {
+        "properties": {
+          "address": {
+            "$ref": "#/components/schemas/DeliveryAddressDto"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ProductLineInputDto"
+            },
+            "type": "array"
+          },
+          "mode": {
+            "enum": [
+              "delivery",
+              "pickup"
+            ],
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "items",
+          "mode"
+        ],
+        "type": "object"
+      },
+      "ProductResponse": {
+        "properties": {
+          "category": {
+            "enum": [
+              "pooja_thali",
+              "diya_dhoop",
+              "garland",
+              "prasad",
+              "poshak",
+              "tilak_mala",
+              "idols",
+              "books",
+              "other"
+            ],
+            "type": "string"
+          },
+          "description": {
+            "nullable": true,
+            "type": "string"
+          },
+          "displayPricePaise": {
+            "description": "Price the customer pays (base + GST + platform fee)",
+            "type": "number"
+          },
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "imageUrls": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "isPublished": {
+            "type": "boolean"
+          },
+          "mrpPaise": {
+            "nullable": true,
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "pricePaise": {
+            "description": "Vendor base price",
+            "type": "number"
+          },
+          "ratingAvg": {
+            "type": "number"
+          },
+          "ratingCount": {
+            "type": "number"
+          },
+          "soldCount": {
+            "type": "number"
+          },
+          "stock": {
+            "type": "number"
+          },
+          "unit": {
+            "type": "string"
+          },
+          "vendorId": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "vendorName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "vendorId",
+          "vendorName",
+          "name",
+          "description",
+          "category",
+          "unit",
+          "pricePaise",
+          "displayPricePaise",
+          "mrpPaise",
+          "stock",
+          "imageUrls",
+          "isPublished",
+          "ratingAvg",
+          "ratingCount",
+          "soldCount"
         ],
         "type": "object"
       },
@@ -5139,6 +5632,25 @@
         ],
         "type": "object"
       },
+      "TopItemResponse": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number"
+          },
+          "salesPaise": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "name",
+          "quantity",
+          "salesPaise"
+        ],
+        "type": "object"
+      },
       "TrainResponse": {
         "properties": {
           "arrivalDayOffset": {
@@ -5707,7 +6219,8 @@
               "cab",
               "food",
               "experience",
-              "transit"
+              "transit",
+              "product"
             ],
             "type": "string"
           },
@@ -5722,6 +6235,55 @@
           "vendorId": {
             "format": "uuid",
             "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "UpdateCouponDto": {
+        "properties": {
+          "code": {
+            "example": "RADHE10",
+            "type": "string"
+          },
+          "endsAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "flatPaise": {
+            "description": "For flat coupons, paise off",
+            "example": 5000,
+            "type": "number"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "kind": {
+            "enum": [
+              "percent",
+              "flat"
+            ],
+            "type": "string"
+          },
+          "maxDiscountPaise": {
+            "example": 20000,
+            "type": "number"
+          },
+          "minOrderPaise": {
+            "example": 50000,
+            "type": "number"
+          },
+          "percentBps": {
+            "description": "For percent coupons, basis points (1000 = 10%)",
+            "example": 1000,
+            "type": "number"
+          },
+          "startsAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "usageLimit": {
+            "example": 100,
+            "type": "number"
           }
         },
         "type": "object"
@@ -5901,6 +6463,14 @@
             "description": "Visible to travellers (vendor must be active)",
             "type": "boolean"
           },
+          "kind": {
+            "description": "Shown under Stay in the app",
+            "enum": [
+              "hotel",
+              "dharamshala"
+            ],
+            "type": "string"
+          },
           "lat": {
             "type": "number"
           },
@@ -6006,6 +6576,64 @@
             "$ref": "#/components/schemas/I18nTextDto"
           },
           "phoneE164": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "UpdateProductDto": {
+        "properties": {
+          "category": {
+            "enum": [
+              "pooja_thali",
+              "diya_dhoop",
+              "garland",
+              "prasad",
+              "poshak",
+              "tilak_mala",
+              "idols",
+              "books",
+              "other"
+            ],
+            "type": "string"
+          },
+          "cityId": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "description": {
+            "maxLength": 600,
+            "type": "string"
+          },
+          "isPublished": {
+            "type": "boolean"
+          },
+          "mediaIds": {
+            "description": "Ready media ids uploaded with purpose \"listing_image\"",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "mrpPaise": {
+            "example": 32000,
+            "type": "number"
+          },
+          "name": {
+            "example": "Pooja thali set",
+            "type": "string"
+          },
+          "pricePaise": {
+            "description": "Vendor base price in paise (GST and platform fee are added at checkout)",
+            "example": 25000,
+            "type": "number"
+          },
+          "stock": {
+            "example": 40,
+            "type": "number"
+          },
+          "unit": {
+            "example": "piece",
             "type": "string"
           }
         },
@@ -6473,7 +7101,8 @@
               "sedan",
               "suv",
               "tempo_traveller",
-              "e_rickshaw"
+              "e_rickshaw",
+              "bike"
             ],
             "type": "string"
           },
@@ -6517,6 +7146,69 @@
           "driverPhoneE164",
           "driverUserId",
           "isActive"
+        ],
+        "type": "object"
+      },
+      "VendorAnalyticsResponse": {
+        "properties": {
+          "avgOrderPaise": {
+            "type": "number"
+          },
+          "daily": {
+            "items": {
+              "$ref": "#/components/schemas/DailySalesResponse"
+            },
+            "type": "array"
+          },
+          "days": {
+            "type": "number"
+          },
+          "discountsPaise": {
+            "type": "number"
+          },
+          "earningsPaise": {
+            "description": "What the vendor keeps (gross − platform fee)",
+            "type": "number"
+          },
+          "grossPaise": {
+            "description": "What customers paid",
+            "type": "number"
+          },
+          "ordersCount": {
+            "type": "number"
+          },
+          "ratingAverage": {
+            "type": "number"
+          },
+          "ratingCount": {
+            "type": "number"
+          },
+          "ratingDistribution": {
+            "type": "object"
+          },
+          "statusCounts": {
+            "type": "object"
+          },
+          "topItems": {
+            "items": {
+              "$ref": "#/components/schemas/TopItemResponse"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "days",
+          "ordersCount",
+          "grossPaise",
+          "earningsPaise",
+          "discountsPaise",
+          "avgOrderPaise",
+          "statusCounts",
+          "daily",
+          "topItems",
+          "ratingAverage",
+          "ratingCount",
+          "ratingDistribution"
         ],
         "type": "object"
       },
@@ -6591,7 +7283,9 @@
               "cab",
               "restaurant",
               "experience",
-              "multi"
+              "multi",
+              "dharamshala",
+              "store"
             ],
             "type": "string"
           }
@@ -8082,7 +8776,8 @@
                 "cab",
                 "food",
                 "experience",
-                "transit"
+                "transit",
+                "product"
               ],
               "type": "string"
             }
@@ -10943,6 +11638,18 @@
           },
           {
             "in": "query",
+            "name": "kind",
+            "required": false,
+            "schema": {
+              "enum": [
+                "hotel",
+                "dharamshala"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
             "name": "city",
             "required": false,
             "schema": {
@@ -11659,7 +12366,8 @@
                 "cab",
                 "food",
                 "experience",
-                "transit"
+                "transit",
+                "product"
               ],
               "type": "string"
             }
@@ -13417,6 +14125,160 @@
         ]
       }
     },
+    "/v1/store/categories": {
+      "get": {
+        "operationId": "StoreController_categories",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CategoryResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "tags": [
+          "store"
+        ]
+      }
+    },
+    "/v1/store/products": {
+      "get": {
+        "operationId": "StoreController_list",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "category",
+            "required": false,
+            "schema": {
+              "enum": [
+                "pooja_thali",
+                "diya_dhoop",
+                "garland",
+                "prasad",
+                "poshak",
+                "tilak_mala",
+                "idols",
+                "books",
+                "other"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "description": "Search in name",
+            "in": "query",
+            "name": "q",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "vendorId",
+            "required": false,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ProductResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Temple Store products from approved vendors",
+        "tags": [
+          "store"
+        ]
+      }
+    },
+    "/v1/store/products/{id}": {
+      "get": {
+        "operationId": "StoreController_detail",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductResponse"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "tags": [
+          "store"
+        ]
+      }
+    },
+    "/v1/store/quote": {
+      "post": {
+        "operationId": "StoreController_quote",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PriceQuoteDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PriceQuoteResponse"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Price breakdown (base, coupon, GST, platform fee) for a vendor",
+        "tags": [
+          "store"
+        ]
+      }
+    },
     "/v1/t/{token}": {
       "get": {
         "operationId": "TripShareController_view",
@@ -14218,6 +15080,55 @@
         ]
       }
     },
+    "/v1/vendors/{vid}/analytics": {
+      "get": {
+        "operationId": "VendorAnalyticsController_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "days",
+            "required": false,
+            "schema": {
+              "default": 30,
+              "enum": [
+                7,
+                30,
+                90
+              ],
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VendorAnalyticsResponse"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "vendor · analytics"
+        ]
+      }
+    },
     "/v1/vendors/{vid}/bank-accounts": {
       "get": {
         "operationId": "VendorsController_listBank",
@@ -14409,6 +15320,140 @@
         ],
         "tags": [
           "vendor · listings"
+        ]
+      }
+    },
+    "/v1/vendors/{vid}/coupons": {
+      "get": {
+        "operationId": "VendorStoreController_coupons",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CouponResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "vendor · store"
+        ]
+      },
+      "post": {
+        "operationId": "VendorStoreController_createCoupon",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCouponDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CouponResponse"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "vendor · store"
+        ]
+      }
+    },
+    "/v1/vendors/{vid}/coupons/{id}": {
+      "patch": {
+        "operationId": "VendorStoreController_updateCoupon",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCouponDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CouponResponse"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "vendor · store"
         ]
       }
     },
@@ -15096,7 +16141,8 @@
                 "cab",
                 "food",
                 "experience",
-                "transit"
+                "transit",
+                "product"
               ],
               "type": "string"
             }
@@ -15486,6 +16532,174 @@
         ],
         "tags": [
           "vendor · finance"
+        ]
+      }
+    },
+    "/v1/vendors/{vid}/products": {
+      "get": {
+        "operationId": "VendorStoreController_products",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ProductResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "vendor · store"
+        ]
+      },
+      "post": {
+        "operationId": "VendorStoreController_createProduct",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProductDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductResponse"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "vendor · store"
+        ]
+      }
+    },
+    "/v1/vendors/{vid}/products/{id}": {
+      "delete": {
+        "operationId": "VendorStoreController_removeProduct",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "vendor · store"
+        ]
+      },
+      "patch": {
+        "operationId": "VendorStoreController_updateProduct",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProductDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductResponse"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "vendor · store"
         ]
       }
     },

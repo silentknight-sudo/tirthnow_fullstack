@@ -6,7 +6,11 @@ import { InventoryModule } from '../inventory';
 import { NotificationsModule } from '../notifications';
 import { OrdersModule } from '../orders';
 import { VendorsModule } from '../vendors';
-import { ReviewsController, VendorReviewsController } from './controllers/reviews.controller';
+import {
+  ReviewsController,
+  VendorAnalyticsController,
+  VendorReviewsController,
+} from './controllers/reviews.controller';
 import { ReviewsFacade } from './reviews.facade';
 import { ReviewsService } from './services/reviews.service';
 import { VendorReviewsService } from './services/vendor-reviews.service';
@@ -21,7 +25,7 @@ import { VendorReviewsService } from './services/vendor-reviews.service';
     VendorsModule,
     NotificationsModule,
   ],
-  controllers: [ReviewsController, VendorReviewsController],
+  controllers: [ReviewsController, VendorReviewsController, VendorAnalyticsController],
   providers: [ReviewsService, VendorReviewsService, ReviewsFacade],
   exports: [ReviewsFacade],
 })

@@ -56,6 +56,9 @@ export class HotelsService {
         lng: dto.lng,
         address: dto.address,
         starRating: dto.starRating ?? null,
+        kind:
+          dto.kind ??
+          ((await this.vendors.vendorType(vendorId)) === 'dharamshala' ? 'dharamshala' : 'hotel'),
         amenities: dto.amenities ?? [],
         checkinTime: dbTime(dto.checkinTime ?? '12:00'),
         checkoutTime: dbTime(dto.checkoutTime ?? '11:00'),
@@ -93,6 +96,7 @@ export class HotelsService {
         lng: dto.lng,
         address: dto.address,
         starRating: dto.starRating,
+        kind: dto.kind,
         amenities: dto.amenities,
         checkinTime: dto.checkinTime ? dbTime(dto.checkinTime) : undefined,
         checkoutTime: dto.checkoutTime ? dbTime(dto.checkoutTime) : undefined,
@@ -253,6 +257,7 @@ export class HotelsService {
         isPublished: true,
         vendorId: { in: await this.vendors.activeVendorIds() },
         ...(cityId ? { cityId } : {}),
+        ...(q.kind ? { kind: q.kind } : {}),
         ...(center ? boundingBox(center, radius) : {}),
       },
       include: { roomTypes: { where: { deletedAt: null } } },
@@ -340,6 +345,7 @@ export class HotelsService {
       lng: h.lng,
       address: h.address,
       starRating: h.starRating,
+      kind: h.kind,
       amenities: h.amenities,
       checkinTime: fromDbTime(h.checkinTime).text,
       checkoutTime: fromDbTime(h.checkoutTime).text,

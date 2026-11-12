@@ -40,6 +40,24 @@ export class VendorReviewsService {
     };
   }
 
+  /** Average and 1–5 star distribution across the vendor and all its listings. */
+  async ratingSummary(vendorId: string) {
+    const rows = await this.prisma.review.groupBy({
+      by: ['rating'],
+      where: await this.scope(vendorId),
+      _count: { _all: true },
+    });
+    const distribution: Record<string, number> = { '1': 0, '2': 0, '3': 0, '4': 0, '5': 0 };
+    let count = 0;
+    let total = 0;
+    for (const r of rows) {
+      distribution[String(r.rating)] = r._count._all;
+      count += r._count._all;
+      total += r.rating * r._count._all;
+    }
+    return { average: count ? Math.round((total / count) * 10) / 10 : 0, count, distribution };
+  }
+
   async list(vendorId: string, q: VendorReviewQueryDto): Promise<Page<ReviewResponse>> {
     const limit = pageSize(q.limit);
     const rows = await this.prisma.review.findMany({

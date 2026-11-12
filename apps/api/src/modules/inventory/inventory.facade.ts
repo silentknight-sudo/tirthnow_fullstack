@@ -13,6 +13,7 @@ import { VendorsFacade } from '../vendors';
 import { type CabQuoteResponse } from './dto/cabs.dto';
 import { type CabQuoteInput, CabsService } from './services/cabs.service';
 import { ExperiencesService } from './services/experiences.service';
+import { StoreService } from './services/store.service';
 import { type CancellationPolicy, parsePolicy } from './services/policy';
 import { type FoodLine, RestaurantsService } from './services/restaurants.service';
 import {
@@ -46,7 +47,30 @@ export class InventoryFacade {
     private readonly cabs: CabsService,
     private readonly restaurants: RestaurantsService,
     private readonly experiences: ExperiencesService,
+    private readonly store: StoreService,
   ) {}
+
+  // ───────────── Temple Store + coupons (ADR-0021) ─────────────
+
+  priceProducts(lines: { productId: string; quantity: number }[]) {
+    return this.store.priceProducts(lines);
+  }
+
+  holdStock(tx: Prisma.TransactionClient, lines: { productId: string; quantity: number }[]) {
+    return this.store.holdStock(tx, lines);
+  }
+
+  releaseStock(tx: Prisma.TransactionClient, lines: { productId: string; quantity: number }[]) {
+    return this.store.releaseStock(tx, lines);
+  }
+
+  redeemCoupon(tx: Prisma.TransactionClient, vendorId: string, code: string, basePaise: number) {
+    return this.store.redeemCoupon(tx, vendorId, code, basePaise);
+  }
+
+  releaseCoupon(tx: Prisma.TransactionClient, vendorId: string, code: string) {
+    return this.store.releaseCoupon(tx, vendorId, code);
+  }
 
   /** Validate a bookable stay and return what the order needs to snapshot. */
   async hotelStayContext(

@@ -26,6 +26,11 @@ import { CursorQueryDto } from '../../../core/http';
 
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
 
+export class ProductLineInputDto {
+  @ApiProperty({ format: 'uuid' }) @IsUUID() productId!: string;
+  @ApiProperty({ example: 2 }) @IsInt() @Min(1) @Max(50) quantity!: number;
+}
+
 export class HotelOrderDto {
   @ApiProperty({ format: 'uuid' }) @IsUUID() roomTypeId!: string;
   @ApiProperty({ example: '2026-10-20' }) @Matches(DATE) checkIn!: string;
@@ -91,11 +96,56 @@ export class ExperienceOrderDto {
   @ApiProperty({ example: 2 }) @IsInt() @Min(1) @Max(500) seats!: number;
 }
 
+export class DeliveryAddressDto {
+  @ApiProperty({ example: 'Radha Sharma' }) @IsString() @MinLength(2) @MaxLength(60) name!: string;
+  @ApiProperty({ example: '+919876543210' }) @Matches(/^\+91[6-9]\d{9}$/) phoneE164!: string;
+  @ApiProperty({ example: 'Room 12, Radha Niwas, Raman Reti' })
+  @IsString()
+  @MinLength(5)
+  @MaxLength(200)
+  line1!: string;
+  @ApiProperty({ example: 'Vrindavan' }) @IsString() @MinLength(2) @MaxLength(60) city!: string;
+  @ApiProperty({ example: '281121' }) @Matches(/^\d{6}$/) pincode!: string;
+}
+
+export class ProductOrderDto {
+  @ApiProperty({ type: [ProductLineInputDto] })
+  @IsArray()
+  @ArrayMinSize(1)
+  @ArrayMaxSize(30)
+  @ValidateNested({ each: true })
+  @Type(() => ProductLineInputDto)
+  items!: ProductLineInputDto[];
+
+  @ApiProperty({ enum: ['delivery', 'pickup'] })
+  @IsIn(['delivery', 'pickup'])
+  mode!: 'delivery' | 'pickup';
+
+  @ApiPropertyOptional({ type: DeliveryAddressDto })
+  @ValidateIf((o: ProductOrderDto) => o.mode === 'delivery')
+  @ValidateNested()
+  @Type(() => DeliveryAddressDto)
+  address?: DeliveryAddressDto;
+
+  @ApiPropertyOptional() @IsOptional() @IsString() @MaxLength(300) notes?: string;
+}
+
 /** One body per booking type; exactly the block matching `type` must be present. */
 export class CreateOrderDto {
-  @ApiProperty({ enum: ['hotel', 'cab', 'food', 'experience'] })
-  @IsIn(['hotel', 'cab', 'food', 'experience'])
+  @ApiProperty({ enum: ['hotel', 'cab', 'food', 'experience', 'product'] })
+  @IsIn(['hotel', 'cab', 'food', 'experience', 'product'])
   type!: Exclude<OrderType, 'transit'>;
+
+  @ApiPropertyOptional({ example: 'RADHE10', description: "The vendor's coupon code" })
+  @IsOptional()
+  @Matches(/^[A-Z0-9]{4,16}$/)
+  couponCode?: string;
+
+  @ApiPropertyOptional({ type: ProductOrderDto })
+  @ValidateIf((o: CreateOrderDto) => o.type === 'product')
+  @ValidateNested()
+  @Type(() => ProductOrderDto)
+  product?: ProductOrderDto;
 
   @ApiPropertyOptional({ type: HotelOrderDto })
   @ValidateIf((o: CreateOrderDto) => o.type === 'hotel')

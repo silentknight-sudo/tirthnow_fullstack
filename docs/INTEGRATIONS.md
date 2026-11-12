@@ -102,3 +102,12 @@ Raw bodies are preserved for these routes (Nest `rawBody: true`).
 | `NEXT_PUBLIC_APK_URL` | apps/website | "Download the app" link. Default: `…/releases/latest/download/tirthnow.apk`, published by `.github/workflows/mobile-apk.yml`. The repository must be public for visitors to download it, or point this at another host. |
 | `NEXT_PUBLIC_PLAY_URL` | apps/website | Google Play listing; the button shows "Coming soon" while empty. |
 | `NEXT_PUBLIC_APPSTORE_URL` | apps/website | App Store listing; "Coming soon" while empty. |
+
+## Checkout pricing and vendor approval (ADR-0021)
+
+| Variable | Default | Meaning |
+|---|---|---|
+| `PRICING_MODEL` | `v2` | `v2` = base + GST + platform fee; `commission` = ADR-0010 |
+| `SALE_GST_BPS` | `1800` | GST added on the vendor's base price (basis points) |
+| `PLATFORM_FEE_BPS` | `500` | Platform charge added on the base price (basis points) |
+| `VENDOR_AUTO_APPROVE` | `true` | List vendors on KYC submit until the admin panel can approve them |

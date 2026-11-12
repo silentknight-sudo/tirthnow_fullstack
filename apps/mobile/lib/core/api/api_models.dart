@@ -167,7 +167,7 @@ class AddKycDocumentDto {
   factory AddKycDocumentDto.fromJson(Map<String, dynamic> json) =>
       AddKycDocumentDto(docType: json['docType'] as String, mediaId: json['mediaId'] as String);
 
-  /// One of: pan, gst, aadhaar, fssai, trade_license, rc, permit, other.
+  /// One of: pan, gst, aadhaar, fssai, trade_license, rc, permit, other, driving_licence.
   final String docType;
 
   /// Ready upload with purpose kyc_document
@@ -350,7 +350,7 @@ class CabEstimateDto {
   /// Pickup time (ISO); default now
   final String? at;
 
-  /// One of: auto, hatchback, sedan, suv, tempo_traveller, e_rickshaw.
+  /// One of: auto, hatchback, sedan, suv, tempo_traveller, e_rickshaw, bike.
   final String? class_;
   final PointDto drop;
   final PointDto pickup;
@@ -391,7 +391,7 @@ class CabFareResponse {
 
   final num baseFarePaise;
 
-  /// One of: auto, hatchback, sedan, suv, tempo_traveller, e_rickshaw.
+  /// One of: auto, hatchback, sedan, suv, tempo_traveller, e_rickshaw, bike.
   final String class_;
   final List<FixedRouteDto> fixedRoutes;
   final String id;
@@ -463,7 +463,7 @@ class CabOrderDto {
   /// Pickup time (ISO)
   final String pickupAt;
 
-  /// One of: auto, hatchback, sedan, suv, tempo_traveller, e_rickshaw.
+  /// One of: auto, hatchback, sedan, suv, tempo_traveller, e_rickshaw, bike.
   final String vehicleClass;
 
   /// Vendor from the chosen estimate
@@ -505,7 +505,7 @@ class CabQuoteResponse {
     vendorName: json['vendorName'] as String,
   );
 
-  /// One of: auto, hatchback, sedan, suv, tempo_traveller, e_rickshaw.
+  /// One of: auto, hatchback, sedan, suv, tempo_traveller, e_rickshaw, bike.
   final String class_;
   final num distanceM;
   final num durationS;
@@ -688,6 +688,21 @@ class CancellationPreviewResponse {
 }
 
 @immutable
+class CategoryResponse {
+  const CategoryResponse({required this.count, required this.key});
+
+  factory CategoryResponse.fromJson(Map<String, dynamic> json) =>
+      CategoryResponse(count: json['count'] as num, key: json['key'] as String);
+
+  final num count;
+
+  /// One of: pooja_thali, diya_dhoop, garland, prasad, poshak, tilak_mala, idols, books, other.
+  final String key;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{'count': count, 'key': key};
+}
+
+@immutable
 class ChatMessageDto {
   const ChatMessageDto({required this.content});
 
@@ -816,7 +831,7 @@ class CommissionRuleDto {
   final num? minPaise;
   final String name;
 
-  /// One of: hotel, cab, food, experience, transit.
+  /// One of: hotel, cab, food, experience, transit, product.
   final String? orderType;
 
   /// Basis points (1000 = 10%)
@@ -882,6 +897,69 @@ class ConfigDto {
     'startsAt': ?startsAt,
     'targeting': ?targeting,
     'value': value,
+  };
+}
+
+@immutable
+class CouponResponse {
+  const CouponResponse({
+    required this.code,
+    this.endsAt,
+    required this.flatPaise,
+    required this.id,
+    required this.isActive,
+    required this.kind,
+    this.maxDiscountPaise,
+    required this.minOrderPaise,
+    required this.percentBps,
+    required this.startsAt,
+    this.usageLimit,
+    required this.usedCount,
+  });
+
+  factory CouponResponse.fromJson(Map<String, dynamic> json) => CouponResponse(
+    code: json['code'] as String,
+    endsAt: json['endsAt'] == null ? null : json['endsAt'] as String,
+    flatPaise: json['flatPaise'] as num,
+    id: json['id'] as String,
+    isActive: json['isActive'] as bool,
+    kind: json['kind'] as String,
+    maxDiscountPaise: json['maxDiscountPaise'] == null ? null : json['maxDiscountPaise'] as num,
+    minOrderPaise: json['minOrderPaise'] as num,
+    percentBps: json['percentBps'] as num,
+    startsAt: json['startsAt'] as String,
+    usageLimit: json['usageLimit'] == null ? null : json['usageLimit'] as num,
+    usedCount: json['usedCount'] as num,
+  );
+
+  final String code;
+  final String? endsAt;
+  final num flatPaise;
+  final String id;
+  final bool isActive;
+
+  /// One of: percent, flat.
+  final String kind;
+  final num? maxDiscountPaise;
+  final num minOrderPaise;
+  final num percentBps;
+  final String startsAt;
+  final num? usageLimit;
+  final num usedCount;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'code': code,
+    'endsAt': ?endsAt,
+    'flatPaise': flatPaise,
+    'id': id,
+    'isActive': isActive,
+    'kind': kind,
+    'maxDiscountPaise': ?maxDiscountPaise,
+    'minOrderPaise': minOrderPaise,
+    'percentBps': percentBps,
+    'startsAt': startsAt,
+    'usageLimit': ?usageLimit,
+    'usedCount': usedCount,
   };
 }
 
@@ -1029,6 +1107,65 @@ class CreateCommentDto {
   final String? parentId;
 
   Map<String, dynamic> toJson() => <String, dynamic>{'body': body, 'parentId': ?parentId};
+}
+
+@immutable
+class CreateCouponDto {
+  const CreateCouponDto({
+    required this.code,
+    this.endsAt,
+    this.flatPaise,
+    this.isActive,
+    required this.kind,
+    this.maxDiscountPaise,
+    this.minOrderPaise,
+    this.percentBps,
+    this.startsAt,
+    this.usageLimit,
+  });
+
+  factory CreateCouponDto.fromJson(Map<String, dynamic> json) => CreateCouponDto(
+    code: json['code'] as String,
+    endsAt: json['endsAt'] == null ? null : json['endsAt'] as String,
+    flatPaise: json['flatPaise'] == null ? null : json['flatPaise'] as num,
+    isActive: json['isActive'] == null ? null : json['isActive'] as bool,
+    kind: json['kind'] as String,
+    maxDiscountPaise: json['maxDiscountPaise'] == null ? null : json['maxDiscountPaise'] as num,
+    minOrderPaise: json['minOrderPaise'] == null ? null : json['minOrderPaise'] as num,
+    percentBps: json['percentBps'] == null ? null : json['percentBps'] as num,
+    startsAt: json['startsAt'] == null ? null : json['startsAt'] as String,
+    usageLimit: json['usageLimit'] == null ? null : json['usageLimit'] as num,
+  );
+
+  final String code;
+  final String? endsAt;
+
+  /// For flat coupons, paise off
+  final num? flatPaise;
+  final bool? isActive;
+
+  /// One of: percent, flat.
+  final String kind;
+  final num? maxDiscountPaise;
+  final num? minOrderPaise;
+
+  /// For percent coupons, basis points (1000 = 10%)
+  final num? percentBps;
+  final String? startsAt;
+  final num? usageLimit;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'code': code,
+    'endsAt': ?endsAt,
+    'flatPaise': ?flatPaise,
+    'isActive': ?isActive,
+    'kind': kind,
+    'maxDiscountPaise': ?maxDiscountPaise,
+    'minOrderPaise': ?minOrderPaise,
+    'percentBps': ?percentBps,
+    'startsAt': ?startsAt,
+    'usageLimit': ?usageLimit,
+  };
 }
 
 @immutable
@@ -1211,6 +1348,7 @@ class CreateHotelDto {
     required this.cityId,
     this.description,
     this.isPublished,
+    this.kind,
     required this.lat,
     required this.lng,
     required this.name,
@@ -1232,6 +1370,7 @@ class CreateHotelDto {
         ? null
         : I18nTextDto.fromJson(_map(json['description'])),
     isPublished: json['isPublished'] == null ? null : json['isPublished'] as bool,
+    kind: json['kind'] == null ? null : json['kind'] as String,
     lat: json['lat'] as num,
     lng: json['lng'] as num,
     name: I18nTextDto.fromJson(_map(json['name'])),
@@ -1248,6 +1387,9 @@ class CreateHotelDto {
 
   /// Visible to travellers (vendor must be active)
   final bool? isPublished;
+
+  /// Shown under Stay in the app One of: hotel, dharamshala.
+  final String? kind;
   final num lat;
   final num lng;
   final I18nTextDto name;
@@ -1262,6 +1404,7 @@ class CreateHotelDto {
     'cityId': cityId,
     'description': ?description?.toJson(),
     'isPublished': ?isPublished,
+    'kind': ?kind,
     'lat': lat,
     'lng': lng,
     'name': name.toJson(),
@@ -1471,31 +1614,47 @@ class CreateMenuItemDto {
 
 @immutable
 class CreateOrderDto {
-  const CreateOrderDto({this.cab, this.experience, this.food, this.hotel, required this.type});
+  const CreateOrderDto({
+    this.cab,
+    this.couponCode,
+    this.experience,
+    this.food,
+    this.hotel,
+    this.product,
+    required this.type,
+  });
 
   factory CreateOrderDto.fromJson(Map<String, dynamic> json) => CreateOrderDto(
     cab: json['cab'] == null ? null : CabOrderDto.fromJson(_map(json['cab'])),
+    couponCode: json['couponCode'] == null ? null : json['couponCode'] as String,
     experience: json['experience'] == null
         ? null
         : ExperienceOrderDto.fromJson(_map(json['experience'])),
     food: json['food'] == null ? null : FoodOrderDto.fromJson(_map(json['food'])),
     hotel: json['hotel'] == null ? null : HotelOrderDto.fromJson(_map(json['hotel'])),
+    product: json['product'] == null ? null : ProductOrderDto.fromJson(_map(json['product'])),
     type: json['type'] as String,
   );
 
   final CabOrderDto? cab;
+
+  /// The vendor's coupon code
+  final String? couponCode;
   final ExperienceOrderDto? experience;
   final FoodOrderDto? food;
   final HotelOrderDto? hotel;
+  final ProductOrderDto? product;
 
-  /// One of: hotel, cab, food, experience.
+  /// One of: hotel, cab, food, experience, product.
   final String type;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
     'cab': ?cab?.toJson(),
+    'couponCode': ?couponCode,
     'experience': ?experience?.toJson(),
     'food': ?food?.toJson(),
     'hotel': ?hotel?.toJson(),
+    'product': ?product?.toJson(),
     'type': type,
   };
 }
@@ -1568,6 +1727,66 @@ class CreatePoiDto {
     'lng': lng,
     'name': name.toJson(),
     'phoneE164': ?phoneE164,
+  };
+}
+
+@immutable
+class CreateProductDto {
+  const CreateProductDto({
+    required this.category,
+    this.cityId,
+    this.description,
+    this.isPublished,
+    this.mediaIds,
+    this.mrpPaise,
+    required this.name,
+    required this.pricePaise,
+    required this.stock,
+    this.unit,
+  });
+
+  factory CreateProductDto.fromJson(Map<String, dynamic> json) => CreateProductDto(
+    category: json['category'] as String,
+    cityId: json['cityId'] == null ? null : json['cityId'] as String,
+    description: json['description'] == null ? null : json['description'] as String,
+    isPublished: json['isPublished'] == null ? null : json['isPublished'] as bool,
+    mediaIds: json['mediaIds'] == null
+        ? null
+        : (json['mediaIds'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+    mrpPaise: json['mrpPaise'] == null ? null : json['mrpPaise'] as num,
+    name: json['name'] as String,
+    pricePaise: json['pricePaise'] as num,
+    stock: json['stock'] as num,
+    unit: json['unit'] == null ? null : json['unit'] as String,
+  );
+
+  /// One of: pooja_thali, diya_dhoop, garland, prasad, poshak, tilak_mala, idols, books, other.
+  final String category;
+  final String? cityId;
+  final String? description;
+  final bool? isPublished;
+
+  /// Ready media ids uploaded with purpose "listing_image"
+  final List<String>? mediaIds;
+  final num? mrpPaise;
+  final String name;
+
+  /// Vendor base price in paise (GST and platform fee are added at checkout)
+  final num pricePaise;
+  final num stock;
+  final String? unit;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'category': category,
+    'cityId': ?cityId,
+    'description': ?description,
+    'isPublished': ?isPublished,
+    'mediaIds': ?mediaIds,
+    'mrpPaise': ?mrpPaise,
+    'name': name,
+    'pricePaise': pricePaise,
+    'stock': stock,
+    'unit': ?unit,
   };
 }
 
@@ -1931,7 +2150,7 @@ class CreateVehicleDto {
     seats: json['seats'] as num,
   );
 
-  /// One of: auto, hatchback, sedan, suv, tempo_traveller, e_rickshaw.
+  /// One of: auto, hatchback, sedan, suv, tempo_traveller, e_rickshaw, bike.
   final String class_;
   final String? driverName;
   final String? driverPhoneE164;
@@ -1981,7 +2200,7 @@ class CreateVendorDto {
   final String legalName;
   final String? pan;
 
-  /// One of: hotel, cab, restaurant, experience, multi.
+  /// One of: hotel, cab, restaurant, experience, multi, dharamshala, store.
   final String type;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -2158,6 +2377,60 @@ class CustomStopDto {
     'templeId': ?templeId,
     'time': ?time,
     'title': title,
+  };
+}
+
+@immutable
+class DailySalesResponse {
+  const DailySalesResponse({required this.date, required this.earningsPaise, required this.orders});
+
+  factory DailySalesResponse.fromJson(Map<String, dynamic> json) => DailySalesResponse(
+    date: json['date'] as String,
+    earningsPaise: json['earningsPaise'] as num,
+    orders: json['orders'] as num,
+  );
+
+  final String date;
+  final num earningsPaise;
+  final num orders;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'date': date,
+    'earningsPaise': earningsPaise,
+    'orders': orders,
+  };
+}
+
+@immutable
+class DeliveryAddressDto {
+  const DeliveryAddressDto({
+    required this.city,
+    required this.line1,
+    required this.name,
+    required this.phoneE164,
+    required this.pincode,
+  });
+
+  factory DeliveryAddressDto.fromJson(Map<String, dynamic> json) => DeliveryAddressDto(
+    city: json['city'] as String,
+    line1: json['line1'] as String,
+    name: json['name'] as String,
+    phoneE164: json['phoneE164'] as String,
+    pincode: json['pincode'] as String,
+  );
+
+  final String city;
+  final String line1;
+  final String name;
+  final String phoneE164;
+  final String pincode;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'city': city,
+    'line1': line1,
+    'name': name,
+    'phoneE164': phoneE164,
+    'pincode': pincode,
   };
 }
 
@@ -2862,6 +3135,7 @@ class HotelResponse {
     this.fromPricePaise,
     required this.id,
     required this.isPublished,
+    required this.kind,
     required this.lat,
     required this.lng,
     required this.name,
@@ -2885,6 +3159,7 @@ class HotelResponse {
     fromPricePaise: json['fromPricePaise'] == null ? null : json['fromPricePaise'] as num,
     id: json['id'] as String,
     isPublished: json['isPublished'] as bool,
+    kind: json['kind'] as String,
     lat: json['lat'] as num,
     lng: json['lng'] as num,
     name: json['name'] as String,
@@ -2913,6 +3188,9 @@ class HotelResponse {
   final num? fromPricePaise;
   final String id;
   final bool isPublished;
+
+  /// One of: hotel, dharamshala.
+  final String kind;
   final num lat;
   final num lng;
   final String name;
@@ -2935,6 +3213,7 @@ class HotelResponse {
     'fromPricePaise': ?fromPricePaise,
     'id': id,
     'isPublished': isPublished,
+    'kind': kind,
     'lat': lat,
     'lng': lng,
     'name': name,
@@ -3014,7 +3293,7 @@ class KycDocumentResponse {
     url: json['url'] == null ? null : json['url'] as String,
   );
 
-  /// One of: pan, gst, aadhaar, fssai, trade_license, rc, permit, other.
+  /// One of: pan, gst, aadhaar, fssai, trade_license, rc, permit, other, driving_licence.
   final String docType;
   final String id;
   final String mediaId;
@@ -3486,7 +3765,7 @@ class OrderResponse {
   final num taxPaise;
   final num totalPaise;
 
-  /// One of: hotel, cab, food, experience, transit.
+  /// One of: hotel, cab, food, experience, transit, product.
   final String type;
   final String userId;
   final String? vendorId;
@@ -3952,6 +4231,199 @@ class PresignUploadDto {
     'mimeType': mimeType,
     'purpose': purpose,
     'sizeBytes': sizeBytes,
+  };
+}
+
+@immutable
+class PriceQuoteDto {
+  const PriceQuoteDto({required this.basePaise, this.couponCode, required this.vendorId});
+
+  factory PriceQuoteDto.fromJson(Map<String, dynamic> json) => PriceQuoteDto(
+    basePaise: json['basePaise'] as num,
+    couponCode: json['couponCode'] == null ? null : json['couponCode'] as String,
+    vendorId: json['vendorId'] as String,
+  );
+
+  final num basePaise;
+  final String? couponCode;
+  final String vendorId;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'basePaise': basePaise,
+    'couponCode': ?couponCode,
+    'vendorId': vendorId,
+  };
+}
+
+@immutable
+class PriceQuoteResponse {
+  const PriceQuoteResponse({
+    required this.basePaise,
+    this.couponCode,
+    this.couponError,
+    required this.discountPaise,
+    required this.feePaise,
+    required this.taxPaise,
+    required this.totalPaise,
+  });
+
+  factory PriceQuoteResponse.fromJson(Map<String, dynamic> json) => PriceQuoteResponse(
+    basePaise: json['basePaise'] as num,
+    couponCode: json['couponCode'] == null ? null : json['couponCode'] as String,
+    couponError: json['couponError'] == null ? null : json['couponError'] as String,
+    discountPaise: json['discountPaise'] as num,
+    feePaise: json['feePaise'] as num,
+    taxPaise: json['taxPaise'] as num,
+    totalPaise: json['totalPaise'] as num,
+  );
+
+  final num basePaise;
+  final String? couponCode;
+
+  /// Why the coupon did not apply
+  final String? couponError;
+  final num discountPaise;
+
+  /// Platform charge on the discounted base
+  final num feePaise;
+
+  /// GST on the discounted base
+  final num taxPaise;
+  final num totalPaise;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'basePaise': basePaise,
+    'couponCode': ?couponCode,
+    'couponError': ?couponError,
+    'discountPaise': discountPaise,
+    'feePaise': feePaise,
+    'taxPaise': taxPaise,
+    'totalPaise': totalPaise,
+  };
+}
+
+@immutable
+class ProductLineInputDto {
+  const ProductLineInputDto({required this.productId, required this.quantity});
+
+  factory ProductLineInputDto.fromJson(Map<String, dynamic> json) => ProductLineInputDto(
+    productId: json['productId'] as String,
+    quantity: json['quantity'] as num,
+  );
+
+  final String productId;
+  final num quantity;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{'productId': productId, 'quantity': quantity};
+}
+
+@immutable
+class ProductOrderDto {
+  const ProductOrderDto({this.address, required this.items, required this.mode, this.notes});
+
+  factory ProductOrderDto.fromJson(Map<String, dynamic> json) => ProductOrderDto(
+    address: json['address'] == null ? null : DeliveryAddressDto.fromJson(_map(json['address'])),
+    items: (json['items'] as List<dynamic>)
+        .map((dynamic x) => ProductLineInputDto.fromJson(_map(x)))
+        .toList(),
+    mode: json['mode'] as String,
+    notes: json['notes'] == null ? null : json['notes'] as String,
+  );
+
+  final DeliveryAddressDto? address;
+  final List<ProductLineInputDto> items;
+
+  /// One of: delivery, pickup.
+  final String mode;
+  final String? notes;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'address': ?address?.toJson(),
+    'items': items.map((x) => x.toJson()).toList(),
+    'mode': mode,
+    'notes': ?notes,
+  };
+}
+
+@immutable
+class ProductResponse {
+  const ProductResponse({
+    required this.category,
+    this.description,
+    required this.displayPricePaise,
+    required this.id,
+    required this.imageUrls,
+    required this.isPublished,
+    this.mrpPaise,
+    required this.name,
+    required this.pricePaise,
+    required this.ratingAvg,
+    required this.ratingCount,
+    required this.soldCount,
+    required this.stock,
+    required this.unit,
+    required this.vendorId,
+    required this.vendorName,
+  });
+
+  factory ProductResponse.fromJson(Map<String, dynamic> json) => ProductResponse(
+    category: json['category'] as String,
+    description: json['description'] == null ? null : json['description'] as String,
+    displayPricePaise: json['displayPricePaise'] as num,
+    id: json['id'] as String,
+    imageUrls: (json['imageUrls'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+    isPublished: json['isPublished'] as bool,
+    mrpPaise: json['mrpPaise'] == null ? null : json['mrpPaise'] as num,
+    name: json['name'] as String,
+    pricePaise: json['pricePaise'] as num,
+    ratingAvg: json['ratingAvg'] as num,
+    ratingCount: json['ratingCount'] as num,
+    soldCount: json['soldCount'] as num,
+    stock: json['stock'] as num,
+    unit: json['unit'] as String,
+    vendorId: json['vendorId'] as String,
+    vendorName: json['vendorName'] as String,
+  );
+
+  /// One of: pooja_thali, diya_dhoop, garland, prasad, poshak, tilak_mala, idols, books, other.
+  final String category;
+  final String? description;
+
+  /// Price the customer pays (base + GST + platform fee)
+  final num displayPricePaise;
+  final String id;
+  final List<String> imageUrls;
+  final bool isPublished;
+  final num? mrpPaise;
+  final String name;
+
+  /// Vendor base price
+  final num pricePaise;
+  final num ratingAvg;
+  final num ratingCount;
+  final num soldCount;
+  final num stock;
+  final String unit;
+  final String vendorId;
+  final String vendorName;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'category': category,
+    'description': ?description,
+    'displayPricePaise': displayPricePaise,
+    'id': id,
+    'imageUrls': imageUrls,
+    'isPublished': isPublished,
+    'mrpPaise': ?mrpPaise,
+    'name': name,
+    'pricePaise': pricePaise,
+    'ratingAvg': ratingAvg,
+    'ratingCount': ratingCount,
+    'soldCount': soldCount,
+    'stock': stock,
+    'unit': unit,
+    'vendorId': vendorId,
+    'vendorName': vendorName,
   };
 }
 
@@ -5225,6 +5697,27 @@ class TempleSummaryResponse {
 }
 
 @immutable
+class TopItemResponse {
+  const TopItemResponse({required this.name, required this.quantity, required this.salesPaise});
+
+  factory TopItemResponse.fromJson(Map<String, dynamic> json) => TopItemResponse(
+    name: json['name'] as String,
+    quantity: json['quantity'] as num,
+    salesPaise: json['salesPaise'] as num,
+  );
+
+  final String name;
+  final num quantity;
+  final num salesPaise;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'name': name,
+    'quantity': quantity,
+    'salesPaise': salesPaise,
+  };
+}
+
+@immutable
 class TrainResponse {
   const TrainResponse({
     required this.arrivalDayOffset,
@@ -5804,7 +6297,7 @@ class UpdateCommissionRuleDto {
   final num? minPaise;
   final String? name;
 
-  /// One of: hotel, cab, food, experience, transit.
+  /// One of: hotel, cab, food, experience, transit, product.
   final String? orderType;
 
   /// Basis points (1000 = 10%)
@@ -5825,6 +6318,65 @@ class UpdateCommissionRuleDto {
     'percentBps': ?percentBps,
     'priority': ?priority,
     'vendorId': ?vendorId,
+  };
+}
+
+@immutable
+class UpdateCouponDto {
+  const UpdateCouponDto({
+    this.code,
+    this.endsAt,
+    this.flatPaise,
+    this.isActive,
+    this.kind,
+    this.maxDiscountPaise,
+    this.minOrderPaise,
+    this.percentBps,
+    this.startsAt,
+    this.usageLimit,
+  });
+
+  factory UpdateCouponDto.fromJson(Map<String, dynamic> json) => UpdateCouponDto(
+    code: json['code'] == null ? null : json['code'] as String,
+    endsAt: json['endsAt'] == null ? null : json['endsAt'] as String,
+    flatPaise: json['flatPaise'] == null ? null : json['flatPaise'] as num,
+    isActive: json['isActive'] == null ? null : json['isActive'] as bool,
+    kind: json['kind'] == null ? null : json['kind'] as String,
+    maxDiscountPaise: json['maxDiscountPaise'] == null ? null : json['maxDiscountPaise'] as num,
+    minOrderPaise: json['minOrderPaise'] == null ? null : json['minOrderPaise'] as num,
+    percentBps: json['percentBps'] == null ? null : json['percentBps'] as num,
+    startsAt: json['startsAt'] == null ? null : json['startsAt'] as String,
+    usageLimit: json['usageLimit'] == null ? null : json['usageLimit'] as num,
+  );
+
+  final String? code;
+  final String? endsAt;
+
+  /// For flat coupons, paise off
+  final num? flatPaise;
+  final bool? isActive;
+
+  /// One of: percent, flat.
+  final String? kind;
+  final num? maxDiscountPaise;
+  final num? minOrderPaise;
+
+  /// For percent coupons, basis points (1000 = 10%)
+  final num? percentBps;
+  final String? startsAt;
+  final num? usageLimit;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'code': ?code,
+    'endsAt': ?endsAt,
+    'flatPaise': ?flatPaise,
+    'isActive': ?isActive,
+    'kind': ?kind,
+    'maxDiscountPaise': ?maxDiscountPaise,
+    'minOrderPaise': ?minOrderPaise,
+    'percentBps': ?percentBps,
+    'startsAt': ?startsAt,
+    'usageLimit': ?usageLimit,
   };
 }
 
@@ -6030,6 +6582,7 @@ class UpdateHotelDto {
     this.cityId,
     this.description,
     this.isPublished,
+    this.kind,
     this.lat,
     this.lng,
     this.name,
@@ -6051,6 +6604,7 @@ class UpdateHotelDto {
         ? null
         : I18nTextDto.fromJson(_map(json['description'])),
     isPublished: json['isPublished'] == null ? null : json['isPublished'] as bool,
+    kind: json['kind'] == null ? null : json['kind'] as String,
     lat: json['lat'] == null ? null : json['lat'] as num,
     lng: json['lng'] == null ? null : json['lng'] as num,
     name: json['name'] == null ? null : I18nTextDto.fromJson(_map(json['name'])),
@@ -6067,6 +6621,9 @@ class UpdateHotelDto {
 
   /// Visible to travellers (vendor must be active)
   final bool? isPublished;
+
+  /// Shown under Stay in the app One of: hotel, dharamshala.
+  final String? kind;
   final num? lat;
   final num? lng;
   final I18nTextDto? name;
@@ -6081,6 +6638,7 @@ class UpdateHotelDto {
     'cityId': ?cityId,
     'description': ?description?.toJson(),
     'isPublished': ?isPublished,
+    'kind': ?kind,
     'lat': ?lat,
     'lng': ?lng,
     'name': ?name?.toJson(),
@@ -6199,6 +6757,66 @@ class UpdatePoiDto {
     'lng': ?lng,
     'name': ?name?.toJson(),
     'phoneE164': ?phoneE164,
+  };
+}
+
+@immutable
+class UpdateProductDto {
+  const UpdateProductDto({
+    this.category,
+    this.cityId,
+    this.description,
+    this.isPublished,
+    this.mediaIds,
+    this.mrpPaise,
+    this.name,
+    this.pricePaise,
+    this.stock,
+    this.unit,
+  });
+
+  factory UpdateProductDto.fromJson(Map<String, dynamic> json) => UpdateProductDto(
+    category: json['category'] == null ? null : json['category'] as String,
+    cityId: json['cityId'] == null ? null : json['cityId'] as String,
+    description: json['description'] == null ? null : json['description'] as String,
+    isPublished: json['isPublished'] == null ? null : json['isPublished'] as bool,
+    mediaIds: json['mediaIds'] == null
+        ? null
+        : (json['mediaIds'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+    mrpPaise: json['mrpPaise'] == null ? null : json['mrpPaise'] as num,
+    name: json['name'] == null ? null : json['name'] as String,
+    pricePaise: json['pricePaise'] == null ? null : json['pricePaise'] as num,
+    stock: json['stock'] == null ? null : json['stock'] as num,
+    unit: json['unit'] == null ? null : json['unit'] as String,
+  );
+
+  /// One of: pooja_thali, diya_dhoop, garland, prasad, poshak, tilak_mala, idols, books, other.
+  final String? category;
+  final String? cityId;
+  final String? description;
+  final bool? isPublished;
+
+  /// Ready media ids uploaded with purpose "listing_image"
+  final List<String>? mediaIds;
+  final num? mrpPaise;
+  final String? name;
+
+  /// Vendor base price in paise (GST and platform fee are added at checkout)
+  final num? pricePaise;
+  final num? stock;
+  final String? unit;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'category': ?category,
+    'cityId': ?cityId,
+    'description': ?description,
+    'isPublished': ?isPublished,
+    'mediaIds': ?mediaIds,
+    'mrpPaise': ?mrpPaise,
+    'name': ?name,
+    'pricePaise': ?pricePaise,
+    'stock': ?stock,
+    'unit': ?unit,
   };
 }
 
@@ -6763,7 +7381,7 @@ class VehicleResponse {
     seats: json['seats'] as num,
   );
 
-  /// One of: auto, hatchback, sedan, suv, tempo_traveller, e_rickshaw.
+  /// One of: auto, hatchback, sedan, suv, tempo_traveller, e_rickshaw, bike.
   final String class_;
   final String? driverName;
   final String? driverPhoneE164;
@@ -6784,6 +7402,75 @@ class VehicleResponse {
     'model': ?model,
     'registrationNo': registrationNo,
     'seats': seats,
+  };
+}
+
+@immutable
+class VendorAnalyticsResponse {
+  const VendorAnalyticsResponse({
+    required this.avgOrderPaise,
+    required this.daily,
+    required this.days,
+    required this.discountsPaise,
+    required this.earningsPaise,
+    required this.grossPaise,
+    required this.ordersCount,
+    required this.ratingAverage,
+    required this.ratingCount,
+    required this.ratingDistribution,
+    required this.statusCounts,
+    required this.topItems,
+  });
+
+  factory VendorAnalyticsResponse.fromJson(Map<String, dynamic> json) => VendorAnalyticsResponse(
+    avgOrderPaise: json['avgOrderPaise'] as num,
+    daily: (json['daily'] as List<dynamic>)
+        .map((dynamic x) => DailySalesResponse.fromJson(_map(x)))
+        .toList(),
+    days: json['days'] as num,
+    discountsPaise: json['discountsPaise'] as num,
+    earningsPaise: json['earningsPaise'] as num,
+    grossPaise: json['grossPaise'] as num,
+    ordersCount: json['ordersCount'] as num,
+    ratingAverage: json['ratingAverage'] as num,
+    ratingCount: json['ratingCount'] as num,
+    ratingDistribution: _map(json['ratingDistribution']),
+    statusCounts: _map(json['statusCounts']),
+    topItems: (json['topItems'] as List<dynamic>)
+        .map((dynamic x) => TopItemResponse.fromJson(_map(x)))
+        .toList(),
+  );
+
+  final num avgOrderPaise;
+  final List<DailySalesResponse> daily;
+  final num days;
+  final num discountsPaise;
+
+  /// What the vendor keeps (gross − platform fee)
+  final num earningsPaise;
+
+  /// What customers paid
+  final num grossPaise;
+  final num ordersCount;
+  final num ratingAverage;
+  final num ratingCount;
+  final Map<String, dynamic> ratingDistribution;
+  final Map<String, dynamic> statusCounts;
+  final List<TopItemResponse> topItems;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'avgOrderPaise': avgOrderPaise,
+    'daily': daily.map((x) => x.toJson()).toList(),
+    'days': days,
+    'discountsPaise': discountsPaise,
+    'earningsPaise': earningsPaise,
+    'grossPaise': grossPaise,
+    'ordersCount': ordersCount,
+    'ratingAverage': ratingAverage,
+    'ratingCount': ratingCount,
+    'ratingDistribution': ratingDistribution,
+    'statusCounts': statusCounts,
+    'topItems': topItems.map((x) => x.toJson()).toList(),
   };
 }
 
@@ -6846,7 +7533,7 @@ class VendorResponse {
   /// One of: draft, kyc_pending, kyc_rejected, active, suspended.
   final String status;
 
-  /// One of: hotel, cab, restaurant, experience, multi.
+  /// One of: hotel, cab, restaurant, experience, multi, dharamshala, store.
   final String type;
 
   Map<String, dynamic> toJson() => <String, dynamic>{

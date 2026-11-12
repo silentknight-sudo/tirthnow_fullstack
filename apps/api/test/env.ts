@@ -37,4 +37,7 @@ Object.assign(process.env, {
   THROTTLE_DEFAULT_PER_MIN: '10000',
   THROTTLE_AUTH_PER_MIN: '10000',
   CORS_ORIGINS: 'http://localhost:3001',
+  VENDOR_AUTO_APPROVE: 'false',
+  // Suites written for the ADR-0010 commission model; store.e2e-spec runs v2 (ADR-0021).
+  PRICING_MODEL: 'commission',
 });

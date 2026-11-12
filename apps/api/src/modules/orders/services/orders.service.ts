@@ -14,6 +14,7 @@ import {
   toPage,
 } from '../../../core/http';
 import { t } from '../../../core/i18n';
+import { priceBreakdown } from '../../../core/pricing';
 import { PrismaService } from '../../../core/prisma';
 import { SettingsService } from '../../../core/settings';
 import { fromDbTime, istToUtc } from '../../../core/time';
@@ -87,13 +88,24 @@ export class OrdersService {
   ): Promise<CreateOrderResponse> {
     const draft = await this.draft(dto);
     draft.details.cityId ??= draft.cityId;
-    const fees = await this.settings.get<Record<string, number>>('fees.convenience_paise', {});
-    const feePaise = Number.isInteger(fees[dto.type]) ? (fees[dto.type] as number) : 0;
+    const v2 = this.config.payments.pricingModel === 'v2';
+    if (v2) draft.details.pricing = 'v2';
+    draft.details.couponCode = dto.couponCode ?? null;
+    const saleGstBps = v2 ? this.config.payments.saleGstBps : 0;
+    const platformFeeBps = v2 ? this.config.payments.platformFeeBps : 0;
+    const fees = v2
+      ? {}
+      : await this.settings.get<Record<string, number>>('fees.convenience_paise', {});
+    const legacyFee = Number.isInteger(fees[dto.type]) ? (fees[dto.type] as number) : 0;
 
     const order = await this.withUniqueCode(async (code) =>
       this.prisma.$transaction(async (tx) => {
         const lines = await draft.hold(tx);
         const subtotal = lines.reduce((s, l) => s + l.unitPricePaise * l.quantity, 0);
+        const discount = dto.couponCode
+          ? await this.inventory.redeemCoupon(tx, draft.vendorId, dto.couponCode, subtotal)
+          : 0;
+        const price = priceBreakdown(subtotal, discount, saleGstBps, platformFeeBps);
         const created = await tx.order.create({
           data: {
             code,
@@ -102,8 +114,10 @@ export class OrdersService {
             type: dto.type,
             status: 'pending',
             subtotalPaise: subtotal,
-            feePaise,
-            totalPaise: subtotal + feePaise,
+            discountPaise: price.discountPaise,
+            taxPaise: price.taxPaise,
+            feePaise: price.feePaise + legacyFee,
+            totalPaise: price.totalPaise + legacyFee,
             serviceStartsAt: draft.serviceStartsAt,
             serviceEndsAt: draft.serviceEndsAt,
             holdExpiresAt: new Date(Date.now() + this.config.payments.orderHoldMinutes * 60_000),
@@ -330,6 +344,54 @@ export class OrdersService {
                 snapshot: { name: l.name },
               })),
             ),
+        };
+      }
+
+      case 'product': {
+        const p = dto.product;
+        if (!p) throw AppException.badRequest('product details are required');
+        if (p.mode === 'delivery' && !p.address)
+          throw AppException.badRequest('A delivery address is required');
+        const priced = await this.inventory.priceProducts(p.items);
+        const now = new Date();
+        return {
+          vendorId: priced.vendorId,
+          cityId: priced.cityId,
+          serviceStartsAt: now,
+          serviceEndsAt: new Date(now.getTime() + 3 * 86_400_000),
+          details: {
+            cityId: priced.cityId,
+            vendorName: priced.vendorName,
+            cancellationPolicy: { freeUntilHoursBefore: 0, penaltyPctAfter: 0, noShowPct: 0 },
+            product: {
+              storeName: priced.vendorName,
+              mode: p.mode,
+              lines: priced.lines.map((l) => ({ productId: l.productId, quantity: l.quantity })),
+              ...(p.address
+                ? {
+                    address: {
+                      name: p.address.name,
+                      phoneE164: p.address.phoneE164,
+                      line1: p.address.line1,
+                      city: p.address.city,
+                      pincode: p.address.pincode,
+                    },
+                  }
+                : {}),
+              ...(p.notes ? { notes: p.notes } : {}),
+            },
+          },
+          hold: async (tx) => {
+            await this.inventory.holdStock(tx, priced.lines);
+            return priced.lines.map((l) => ({
+              itemType: 'product',
+              refId: l.productId,
+              stayDate: null,
+              quantity: l.quantity,
+              unitPricePaise: l.unitPricePaise,
+              snapshot: { name: l.name },
+            }));
+          },
         };
       }
 

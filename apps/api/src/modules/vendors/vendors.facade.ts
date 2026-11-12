@@ -34,6 +34,14 @@ export class VendorsFacade {
     return (await this.activeVendorIds()).includes(vendorId);
   }
 
+  async vendorType(vendorId: string): Promise<Vendor['type'] | null> {
+    const v = await this.prisma.vendor.findUnique({
+      where: { id: vendorId },
+      select: { type: true },
+    });
+    return v?.type ?? null;
+  }
+
   get(vendorId: string): Promise<Vendor | null> {
     return this.prisma.vendor.findFirst({ where: { id: vendorId, deletedAt: null } });
   }

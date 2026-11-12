@@ -4,6 +4,7 @@ import {
   ArrayMaxSize,
   IsArray,
   IsEnum,
+  IsIn,
   IsInt,
   IsOptional,
   IsString,
@@ -124,4 +125,40 @@ export class ReviewPageResponse {
 export class VendorReviewPageResponse {
   @ApiProperty({ type: [ReviewResponse] }) data!: ReviewResponse[];
   @ApiProperty({ nullable: true, type: String }) nextCursor!: string | null;
+}
+
+export class AnalyticsQueryDto {
+  @ApiPropertyOptional({ enum: [7, 30, 90], default: 30 })
+  @IsOptional()
+  @Type(() => Number)
+  @IsIn([7, 30, 90])
+  days?: number;
+}
+
+export class DailySalesResponse {
+  @ApiProperty({ example: '2026-11-12' }) date!: string;
+  @ApiProperty() orders!: number;
+  @ApiProperty() earningsPaise!: number;
+}
+
+export class TopItemResponse {
+  @ApiProperty() name!: string;
+  @ApiProperty() quantity!: number;
+  @ApiProperty() salesPaise!: number;
+}
+
+export class VendorAnalyticsResponse {
+  @ApiProperty() days!: number;
+  @ApiProperty() ordersCount!: number;
+  @ApiProperty({ description: 'What customers paid' }) grossPaise!: number;
+  @ApiProperty({ description: 'What the vendor keeps (gross − platform fee)' })
+  earningsPaise!: number;
+  @ApiProperty() discountsPaise!: number;
+  @ApiProperty() avgOrderPaise!: number;
+  @ApiProperty({ type: Object }) statusCounts!: Record<string, number>;
+  @ApiProperty({ type: [DailySalesResponse] }) daily!: DailySalesResponse[];
+  @ApiProperty({ type: [TopItemResponse] }) topItems!: TopItemResponse[];
+  @ApiProperty() ratingAverage!: number;
+  @ApiProperty() ratingCount!: number;
+  @ApiProperty({ type: Object }) ratingDistribution!: Record<string, number>;
 }

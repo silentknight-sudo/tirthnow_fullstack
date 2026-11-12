@@ -127,6 +127,14 @@ Do not use plain `prisma migrate dev` to create migrations (it will offer to dro
 - Yatra Journey (`/journey`): the website's journey tool in Flutter; data in `apps/mobile/assets/journey/journey.json`, regenerated from `apps/website/lib/journey*.ts` with `npx tsx apps/mobile/tool/export_journey.ts`. Voice guide uses the phone's own TTS (`flutter_tts`).
 - AI Guide voice: tap or hold the mic, spoken replies after voice questions, play/pause/stop, and `POST /v1/ai/voice/translate` to hear answers in Hindi or English.
 
+## Checkout pricing, Temple Store and vendor onboarding (Nov 2026)
+
+- Read ADR-0021. New orders: `total = base − coupon + GST (SALE_GST_BPS) + platform fee (PLATFORM_FEE_BPS)`; pure maths in `core/pricing`. The platform keeps the fee, the vendor gets the rest. `PRICING_MODEL=commission` keeps ADR-0010 (older e2e suites run with it; `store.e2e-spec` runs v2).
+- Temple Store: `products` + order type `product` (one store per order, stock held/released). Coupons are per vendor (`/vendors/:vid/coupons`), previewed with `POST /v1/store/quote`.
+- Stay: `hotels.kind` = hotel | dharamshala (`GET /v1/hotels?kind=`). Cabs: `bike` class added.
+- `VENDOR_AUTO_APPROVE=true` (default until the admin panel) lists a vendor as soon as its KYC is submitted; `false` = admin approval, the vendor app shows "waiting".
+- Vendor dashboard data: `GET /v1/vendors/:vid/analytics?days=7|30|90`.
+
 ## How the vendor portal fits (Phase 4)
 
 - Read ADR-0019. Static export (`out/`), client components + TanStack Query; detail pages take `?id=`.

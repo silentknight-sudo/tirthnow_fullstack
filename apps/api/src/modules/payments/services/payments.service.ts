@@ -515,8 +515,22 @@ export class PaymentsService {
       cityId: string | null;
       orderType: Parameters<CommissionService['resolveRule']>[1]['orderType'];
       grossPaise: number;
+      /** ADR-0021 orders: the platform's share is exactly this fee; no commission rule. */
+      platformFeePaise?: number;
     },
   ) {
+    if (input.platformFeePaise !== undefined) {
+      const fee = Math.min(input.platformFeePaise, input.grossPaise);
+      const split = {
+        grossPaise: input.grossPaise,
+        commissionPaise: fee,
+        gstPaise: 0,
+        vendorPaise: input.grossPaise - fee,
+        ruleId: null,
+      };
+      await this.ledger.recordSale(tx, input, split);
+      return split;
+    }
     const rule = await this.commission.resolveRule(tx, {
       vendorId: input.vendorId,
       cityId: input.cityId,

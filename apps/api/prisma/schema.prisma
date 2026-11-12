@@ -105,6 +105,8 @@ enum VendorType {
   restaurant
   experience
   multi
+  dharamshala
+  store
 
   @@map("vendor_type")
 }
@@ -128,6 +130,7 @@ enum KycDocType {
   rc
   permit
   other
+  driving_licence
 
   @@map("kyc_doc_type")
 }
@@ -147,8 +150,23 @@ enum VehicleClass {
   suv
   tempo_traveller
   e_rickshaw
+  bike
 
   @@map("vehicle_class")
+}
+
+enum StayKind {
+  hotel
+  dharamshala
+
+  @@map("stay_kind")
+}
+
+enum CouponKind {
+  percent
+  flat
+
+  @@map("coupon_kind")
 }
 
 enum ExperienceKind {
@@ -168,6 +186,7 @@ enum OrderType {
   food
   experience
   transit
+  product
 
   @@map("order_type")
 }
@@ -802,6 +821,8 @@ model Vendor {
   cabFares       CabFare[]
   restaurants    Restaurant[]
   experiences    Experience[]
+  products       Product[]
+  coupons        Coupon[]
   orders         Order[]
   ledgerEntries  LedgerEntry[]
   payouts        Payout[]
@@ -878,6 +899,7 @@ model Hotel {
   lng                Float
   address            String
   starRating         Int?      @map("star_rating") @db.SmallInt
+  kind               StayKind  @default(hotel)
   amenities          String[]  @default([])
   checkinTime        DateTime  @map("checkin_time") @db.Time(0)
   checkoutTime       DateTime  @map("checkout_time") @db.Time(0)
@@ -933,6 +955,60 @@ model RoomInventory {
 
   @@id([roomTypeId, stayDate])
   @@map("room_inventory")
+}
+
+/// Temple Store item sold by a `store` vendor. Price is the vendor's base price (before GST and the platform fee).
+model Product {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  vendorId      String    @map("vendor_id") @db.Uuid
+  cityId        String?   @map("city_id") @db.Uuid
+  name          String
+  description   String?
+  category      String
+  unit          String    @default("piece")
+  pricePaise    Int       @map("price_paise")
+  mrpPaise      Int?      @map("mrp_paise")
+  stock         Int       @default(0)
+  mediaIds      String[]  @default([]) @map("media_ids") @db.Uuid
+  /// Ready-to-serve image URLs (seeded demo photos or a vendor CDN).
+  imageUrls     String[]  @default([]) @map("image_urls")
+  isPublished   Boolean   @default(true) @map("is_published")
+  ratingAvg     Decimal   @default(0) @map("rating_avg") @db.Decimal(3, 2)
+  ratingCount   Int       @default(0) @map("rating_count")
+  soldCount     Int       @default(0) @map("sold_count")
+  createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt     DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt     DateTime? @map("deleted_at") @db.Timestamptz(3)
+
+  vendor Vendor @relation(fields: [vendorId], references: [id])
+
+  @@index([vendorId])
+  @@index([category, isPublished])
+  @@map("products")
+}
+
+/// Vendor-run discount code, applied to the base price of that vendor's orders.
+model Coupon {
+  id               String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  vendorId         String     @map("vendor_id") @db.Uuid
+  code             String
+  kind             CouponKind
+  percentBps       Int        @default(0) @map("percent_bps")
+  flatPaise        Int        @default(0) @map("flat_paise")
+  minOrderPaise    Int        @default(0) @map("min_order_paise")
+  maxDiscountPaise Int?       @map("max_discount_paise")
+  startsAt         DateTime   @default(now()) @map("starts_at") @db.Timestamptz(3)
+  endsAt           DateTime?  @map("ends_at") @db.Timestamptz(3)
+  usageLimit       Int?       @map("usage_limit")
+  usedCount        Int        @default(0) @map("used_count")
+  isActive         Boolean    @default(true) @map("is_active")
+  createdAt        DateTime   @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt        DateTime   @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  vendor Vendor @relation(fields: [vendorId], references: [id])
+
+  @@unique([vendorId, code])
+  @@map("coupons")
 }
 
 model Vehicle {

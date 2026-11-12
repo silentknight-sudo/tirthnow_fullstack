@@ -67,6 +67,17 @@ export const envSchema = z
     PAYOUT_SETTLEMENT_HOLD_DAYS: z.coerce.number().int().min(0).max(30).default(3),
     PAYOUT_MIN_PAISE: z.coerce.number().int().min(0).default(10_000),
     PLATFORM_GST_BPS: z.coerce.number().int().min(0).max(5000).default(1800),
+    /** 'v2' = base + GST + platform fee (ADR-0021); 'commission' = the older ADR-0010 model. */
+    PRICING_MODEL: z.enum(['v2', 'commission']).default('v2'),
+    /** GST added on the vendor's base price at checkout (ADR-0021). */
+    SALE_GST_BPS: z.coerce.number().int().min(0).max(5000).default(1800),
+    /** Platform charge added on the vendor's base price at checkout (ADR-0021). */
+    PLATFORM_FEE_BPS: z.coerce.number().int().min(0).max(5000).default(500),
+    /** List vendors as soon as they submit KYC, until the admin panel can approve them. */
+    VENDOR_AUTO_APPROVE: z
+      .enum(['true', 'false'])
+      .default('true')
+      .transform((v) => v === 'true'),
 
     MAPS_PROVIDER: z.enum(['mock', 'google']).default('mock'),
     GOOGLE_MAPS_API_KEY: optionalString,

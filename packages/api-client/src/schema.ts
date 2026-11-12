@@ -2324,6 +2324,72 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/v1/store/categories': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['StoreController_categories'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/v1/store/products': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Temple Store products from approved vendors */
+    get: operations['StoreController_list'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/v1/store/products/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['StoreController_detail'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/v1/store/quote': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Price breakdown (base, coupon, GST, platform fee) for a vendor */
+    post: operations['StoreController_quote'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/v1/t/{token}': {
     parameters: {
       query?: never;
@@ -2592,6 +2658,22 @@ export interface paths {
     patch: operations['VendorsController_update'];
     trace?: never;
   };
+  '/v1/vendors/{vid}/analytics': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['VendorAnalyticsController_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/v1/vendors/{vid}/bank-accounts': {
     parameters: {
       query?: never;
@@ -2654,6 +2736,38 @@ export interface paths {
     options?: never;
     head?: never;
     patch?: never;
+    trace?: never;
+  };
+  '/v1/vendors/{vid}/coupons': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['VendorStoreController_coupons'];
+    put?: never;
+    post: operations['VendorStoreController_createCoupon'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/v1/vendors/{vid}/coupons/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch: operations['VendorStoreController_updateCoupon'];
     trace?: never;
   };
   '/v1/vendors/{vid}/earnings': {
@@ -2977,6 +3091,38 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/v1/vendors/{vid}/products': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['VendorStoreController_products'];
+    put?: never;
+    post: operations['VendorStoreController_createProduct'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/v1/vendors/{vid}/products/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete: operations['VendorStoreController_removeProduct'];
+    options?: never;
+    head?: never;
+    patch: operations['VendorStoreController_updateProduct'];
+    trace?: never;
+  };
   '/v1/vendors/{vid}/restaurants': {
     parameters: {
       query?: never;
@@ -3275,7 +3421,16 @@ export interface components {
     };
     AddKycDocumentDto: {
       /** @enum {string} */
-      docType: 'pan' | 'gst' | 'aadhaar' | 'fssai' | 'trade_license' | 'rc' | 'permit' | 'other';
+      docType:
+        | 'pan'
+        | 'gst'
+        | 'aadhaar'
+        | 'fssai'
+        | 'trade_license'
+        | 'rc'
+        | 'permit'
+        | 'other'
+        | 'driving_licence';
       /**
        * Format: uuid
        * @description Ready upload with purpose kyc_document
@@ -3336,14 +3491,14 @@ export interface components {
       /** @description Pickup time (ISO); default now */
       at?: string;
       /** @enum {string} */
-      class?: 'auto' | 'hatchback' | 'sedan' | 'suv' | 'tempo_traveller' | 'e_rickshaw';
+      class?: 'auto' | 'hatchback' | 'sedan' | 'suv' | 'tempo_traveller' | 'e_rickshaw' | 'bike';
       drop: components['schemas']['PointDto'];
       pickup: components['schemas']['PointDto'];
     };
     CabFareResponse: {
       baseFarePaise: number;
       /** @enum {string} */
-      class: 'auto' | 'hatchback' | 'sedan' | 'suv' | 'tempo_traveller' | 'e_rickshaw';
+      class: 'auto' | 'hatchback' | 'sedan' | 'suv' | 'tempo_traveller' | 'e_rickshaw' | 'bike';
       fixedRoutes: components['schemas']['FixedRouteDto'][];
       /** Format: uuid */
       id: string;
@@ -3367,7 +3522,8 @@ export interface components {
       /** @description Pickup time (ISO) */
       pickupAt: string;
       /** @enum {string} */
-      vehicleClass: 'auto' | 'hatchback' | 'sedan' | 'suv' | 'tempo_traveller' | 'e_rickshaw';
+      vehicleClass:
+        'auto' | 'hatchback' | 'sedan' | 'suv' | 'tempo_traveller' | 'e_rickshaw' | 'bike';
       /**
        * Format: uuid
        * @description Vendor from the chosen estimate
@@ -3376,7 +3532,7 @@ export interface components {
     };
     CabQuoteResponse: {
       /** @enum {string} */
-      class: 'auto' | 'hatchback' | 'sedan' | 'suv' | 'tempo_traveller' | 'e_rickshaw';
+      class: 'auto' | 'hatchback' | 'sedan' | 'suv' | 'tempo_traveller' | 'e_rickshaw' | 'bike';
       distanceM: number;
       durationS: number;
       farePaise: number;
@@ -3433,6 +3589,20 @@ export interface components {
       reasonCode: string;
       reasonText?: string;
     };
+    CategoryResponse: {
+      count: number;
+      /** @enum {string} */
+      key:
+        | 'pooja_thali'
+        | 'diya_dhoop'
+        | 'garland'
+        | 'prasad'
+        | 'poshak'
+        | 'tilak_mala'
+        | 'idols'
+        | 'books'
+        | 'other';
+    };
     ChatMessageDto: {
       content: string;
     };
@@ -3467,7 +3637,7 @@ export interface components {
       /** @example Default commission */
       name: string;
       /** @enum {string} */
-      orderType?: 'hotel' | 'cab' | 'food' | 'experience' | 'transit';
+      orderType?: 'hotel' | 'cab' | 'food' | 'experience' | 'transit' | 'product';
       /**
        * @description Basis points (1000 = 10%)
        * @example 1000
@@ -3496,6 +3666,24 @@ export interface components {
       targeting?: Record<string, never>;
       /** @description Any JSON value */
       value: Record<string, never>;
+    };
+    CouponResponse: {
+      code: string;
+      /** Format: date-time */
+      endsAt: string | null;
+      flatPaise: number;
+      /** Format: uuid */
+      id: string;
+      isActive: boolean;
+      /** @enum {string} */
+      kind: 'percent' | 'flat';
+      maxDiscountPaise: number | null;
+      minOrderPaise: number;
+      percentBps: number;
+      /** Format: date-time */
+      startsAt: string;
+      usageLimit: number | null;
+      usedCount: number;
     };
     CreateAartiReminderDto: {
       /** Format: uuid */
@@ -3552,6 +3740,33 @@ export interface components {
        * @description Reply to a top-level comment
        */
       parentId?: string;
+    };
+    CreateCouponDto: {
+      /** @example RADHE10 */
+      code: string;
+      /** Format: date-time */
+      endsAt?: string;
+      /**
+       * @description For flat coupons, paise off
+       * @example 5000
+       */
+      flatPaise?: number;
+      isActive?: boolean;
+      /** @enum {string} */
+      kind: 'percent' | 'flat';
+      /** @example 20000 */
+      maxDiscountPaise?: number;
+      /** @example 50000 */
+      minOrderPaise?: number;
+      /**
+       * @description For percent coupons, basis points (1000 = 10%)
+       * @example 1000
+       */
+      percentBps?: number;
+      /** Format: date-time */
+      startsAt?: string;
+      /** @example 100 */
+      usageLimit?: number;
     };
     CreateExperienceDto: {
       cancellationPolicy?: components['schemas']['CancellationPolicyDto'];
@@ -3618,6 +3833,11 @@ export interface components {
       description?: components['schemas']['I18nTextDto'];
       /** @description Visible to travellers (vendor must be active) */
       isPublished?: boolean;
+      /**
+       * @description Shown under Stay in the app
+       * @enum {string}
+       */
+      kind?: 'hotel' | 'dharamshala';
       lat: number;
       lng: number;
       name: components['schemas']['I18nTextDto'];
@@ -3701,11 +3921,17 @@ export interface components {
     };
     CreateOrderDto: {
       cab?: components['schemas']['CabOrderDto'];
+      /**
+       * @description The vendor's coupon code
+       * @example RADHE10
+       */
+      couponCode?: string;
       experience?: components['schemas']['ExperienceOrderDto'];
       food?: components['schemas']['FoodOrderDto'];
       hotel?: components['schemas']['HotelOrderDto'];
+      product?: components['schemas']['ProductOrderDto'];
       /** @enum {string} */
-      type: 'hotel' | 'cab' | 'food' | 'experience';
+      type: 'hotel' | 'cab' | 'food' | 'experience' | 'product';
     };
     CreateOrderResponse: {
       order: components['schemas']['OrderResponse'];
@@ -3733,6 +3959,38 @@ export interface components {
       lng: number;
       name: components['schemas']['I18nTextDto'];
       phoneE164?: string;
+    };
+    CreateProductDto: {
+      /** @enum {string} */
+      category:
+        | 'pooja_thali'
+        | 'diya_dhoop'
+        | 'garland'
+        | 'prasad'
+        | 'poshak'
+        | 'tilak_mala'
+        | 'idols'
+        | 'books'
+        | 'other';
+      /** Format: uuid */
+      cityId?: string;
+      description?: string;
+      isPublished?: boolean;
+      /** @description Ready media ids uploaded with purpose "listing_image" */
+      mediaIds?: string[];
+      /** @example 32000 */
+      mrpPaise?: number;
+      /** @example Pooja thali set */
+      name: string;
+      /**
+       * @description Vendor base price in paise (GST and platform fee are added at checkout)
+       * @example 25000
+       */
+      pricePaise: number;
+      /** @example 40 */
+      stock: number;
+      /** @example piece */
+      unit?: string;
     };
     CreateReelDto: {
       caption?: string;
@@ -3877,7 +4135,7 @@ export interface components {
     };
     CreateVehicleDto: {
       /** @enum {string} */
-      class: 'auto' | 'hatchback' | 'sedan' | 'suv' | 'tempo_traveller' | 'e_rickshaw';
+      class: 'auto' | 'hatchback' | 'sedan' | 'suv' | 'tempo_traveller' | 'e_rickshaw' | 'bike';
       driverName?: string;
       driverPhoneE164?: string;
       /**
@@ -3905,7 +4163,7 @@ export interface components {
       /** @example ABCDE1234F */
       pan?: string;
       /** @enum {string} */
-      type: 'hotel' | 'cab' | 'restaurant' | 'experience' | 'multi';
+      type: 'hotel' | 'cab' | 'restaurant' | 'experience' | 'multi' | 'dharamshala' | 'store';
     };
     CreatorPageResponse: {
       data: components['schemas']['ReelResponse'][];
@@ -3958,6 +4216,24 @@ export interface components {
       /** @example 10:00 */
       time?: string;
       title: string;
+    };
+    DailySalesResponse: {
+      /** @example 2026-11-12 */
+      date: string;
+      earningsPaise: number;
+      orders: number;
+    };
+    DeliveryAddressDto: {
+      /** @example Vrindavan */
+      city: string;
+      /** @example Room 12, Radha Niwas, Raman Reti */
+      line1: string;
+      /** @example Radha Sharma */
+      name: string;
+      /** @example +919876543210 */
+      phoneE164: string;
+      /** @example 281121 */
+      pincode: string;
     };
     DeviceInfoDto: {
       /** @example 1.0.0+12 */
@@ -4173,6 +4449,8 @@ export interface components {
       /** Format: uuid */
       id: string;
       isPublished: boolean;
+      /** @enum {string} */
+      kind: 'hotel' | 'dharamshala';
       lat: number;
       lng: number;
       name: string;
@@ -4204,7 +4482,16 @@ export interface components {
     };
     KycDocumentResponse: {
       /** @enum {string} */
-      docType: 'pan' | 'gst' | 'aadhaar' | 'fssai' | 'trade_license' | 'rc' | 'permit' | 'other';
+      docType:
+        | 'pan'
+        | 'gst'
+        | 'aadhaar'
+        | 'fssai'
+        | 'trade_license'
+        | 'rc'
+        | 'permit'
+        | 'other'
+        | 'driving_licence';
       /** Format: uuid */
       id: string;
       /** Format: uuid */
@@ -4333,7 +4620,7 @@ export interface components {
       taxPaise: number;
       totalPaise: number;
       /** @enum {string} */
-      type: 'hotel' | 'cab' | 'food' | 'experience' | 'transit';
+      type: 'hotel' | 'cab' | 'food' | 'experience' | 'transit' | 'product';
       /** Format: uuid */
       userId: string;
       vendorId: string | null;
@@ -4481,6 +4768,71 @@ export interface components {
        * @example 524288
        */
       sizeBytes: number;
+    };
+    PriceQuoteDto: {
+      /** @example 50000 */
+      basePaise: number;
+      /** @example RADHE10 */
+      couponCode?: string;
+      /** Format: uuid */
+      vendorId: string;
+    };
+    PriceQuoteResponse: {
+      basePaise: number;
+      couponCode: string | null;
+      /** @description Why the coupon did not apply */
+      couponError: string | null;
+      discountPaise: number;
+      /** @description Platform charge on the discounted base */
+      feePaise: number;
+      /** @description GST on the discounted base */
+      taxPaise: number;
+      totalPaise: number;
+    };
+    ProductLineInputDto: {
+      /** Format: uuid */
+      productId: string;
+      /** @example 2 */
+      quantity: number;
+    };
+    ProductOrderDto: {
+      address?: components['schemas']['DeliveryAddressDto'];
+      items: components['schemas']['ProductLineInputDto'][];
+      /** @enum {string} */
+      mode: 'delivery' | 'pickup';
+      notes?: string;
+    };
+    ProductResponse: {
+      /** @enum {string} */
+      category:
+        | 'pooja_thali'
+        | 'diya_dhoop'
+        | 'garland'
+        | 'prasad'
+        | 'poshak'
+        | 'tilak_mala'
+        | 'idols'
+        | 'books'
+        | 'other';
+      description: string | null;
+      /** @description Price the customer pays (base + GST + platform fee) */
+      displayPricePaise: number;
+      /** Format: uuid */
+      id: string;
+      imageUrls: string[];
+      isPublished: boolean;
+      mrpPaise: number | null;
+      name: string;
+      /** @description Vendor base price */
+      pricePaise: number;
+      ratingAvg: number;
+      ratingCount: number;
+      soldCount: number;
+      stock: number;
+      unit: string;
+      /** Format: uuid */
+      vendorId: string;
+      vendorName: string;
     };
     ProfileResponse: {
       accessibility: Record<string, never>;
@@ -4825,6 +5177,11 @@ export interface components {
       slug: string;
       tags: string[];
     };
+    TopItemResponse: {
+      name: string;
+      quantity: number;
+      salesPaise: number;
+    };
     TrainResponse: {
       arrivalDayOffset: number;
       /** @example 07:19 */
@@ -5021,7 +5378,7 @@ export interface components {
       /** @example Default commission */
       name?: string;
       /** @enum {string} */
-      orderType?: 'hotel' | 'cab' | 'food' | 'experience' | 'transit';
+      orderType?: 'hotel' | 'cab' | 'food' | 'experience' | 'transit' | 'product';
       /**
        * @description Basis points (1000 = 10%)
        * @example 1000
@@ -5030,6 +5387,33 @@ export interface components {
       priority?: number;
       /** Format: uuid */
       vendorId?: string;
+    };
+    UpdateCouponDto: {
+      /** @example RADHE10 */
+      code?: string;
+      /** Format: date-time */
+      endsAt?: string;
+      /**
+       * @description For flat coupons, paise off
+       * @example 5000
+       */
+      flatPaise?: number;
+      isActive?: boolean;
+      /** @enum {string} */
+      kind?: 'percent' | 'flat';
+      /** @example 20000 */
+      maxDiscountPaise?: number;
+      /** @example 50000 */
+      minOrderPaise?: number;
+      /**
+       * @description For percent coupons, basis points (1000 = 10%)
+       * @example 1000
+       */
+      percentBps?: number;
+      /** Format: date-time */
+      startsAt?: string;
+      /** @example 100 */
+      usageLimit?: number;
     };
     UpdateEmergencyContactDto: {
       name?: string;
@@ -5099,6 +5483,11 @@ export interface components {
       description?: components['schemas']['I18nTextDto'];
       /** @description Visible to travellers (vendor must be active) */
       isPublished?: boolean;
+      /**
+       * @description Shown under Stay in the app
+       * @enum {string}
+       */
+      kind?: 'hotel' | 'dharamshala';
       lat?: number;
       lng?: number;
       name?: components['schemas']['I18nTextDto'];
@@ -5143,6 +5532,38 @@ export interface components {
       lng?: number;
       name?: components['schemas']['I18nTextDto'];
       phoneE164?: string;
+    };
+    UpdateProductDto: {
+      /** @enum {string} */
+      category?:
+        | 'pooja_thali'
+        | 'diya_dhoop'
+        | 'garland'
+        | 'prasad'
+        | 'poshak'
+        | 'tilak_mala'
+        | 'idols'
+        | 'books'
+        | 'other';
+      /** Format: uuid */
+      cityId?: string;
+      description?: string;
+      isPublished?: boolean;
+      /** @description Ready media ids uploaded with purpose "listing_image" */
+      mediaIds?: string[];
+      /** @example 32000 */
+      mrpPaise?: number;
+      /** @example Pooja thali set */
+      name?: string;
+      /**
+       * @description Vendor base price in paise (GST and platform fee are added at checkout)
+       * @example 25000
+       */
+      pricePaise?: number;
+      /** @example 40 */
+      stock?: number;
+      /** @example piece */
+      unit?: string;
     };
     UpdateProfileDto: {
       accessibility?: components['schemas']['AccessibilityDto'];
@@ -5330,7 +5751,7 @@ export interface components {
     };
     VehicleResponse: {
       /** @enum {string} */
-      class: 'auto' | 'hatchback' | 'sedan' | 'suv' | 'tempo_traveller' | 'e_rickshaw';
+      class: 'auto' | 'hatchback' | 'sedan' | 'suv' | 'tempo_traveller' | 'e_rickshaw' | 'bike';
       driverName: string | null;
       driverPhoneE164: string | null;
       driverUserId: string | null;
@@ -5340,6 +5761,22 @@ export interface components {
       model: string | null;
       registrationNo: string;
       seats: number;
+    };
+    VendorAnalyticsResponse: {
+      avgOrderPaise: number;
+      daily: components['schemas']['DailySalesResponse'][];
+      days: number;
+      discountsPaise: number;
+      /** @description What the vendor keeps (gross − platform fee) */
+      earningsPaise: number;
+      /** @description What customers paid */
+      grossPaise: number;
+      ordersCount: number;
+      ratingAverage: number;
+      ratingCount: number;
+      ratingDistribution: Record<string, never>;
+      statusCounts: Record<string, never>;
+      topItems: components['schemas']['TopItemResponse'][];
     };
     VendorResponse: {
       approvedAt: string | null;
@@ -5359,7 +5796,7 @@ export interface components {
       /** @enum {string} */
       status: 'draft' | 'kyc_pending' | 'kyc_rejected' | 'active' | 'suspended';
       /** @enum {string} */
-      type: 'hotel' | 'cab' | 'restaurant' | 'experience' | 'multi';
+      type: 'hotel' | 'cab' | 'restaurant' | 'experience' | 'multi' | 'dharamshala' | 'store';
     };
     VendorReviewPageResponse: {
       data: components['schemas']['ReviewResponse'][];
@@ -6196,7 +6633,7 @@ export interface operations {
         cursor?: string;
         limit?: number;
         status?: 'pending' | 'confirmed' | 'in_progress' | 'completed' | 'cancelled' | 'refunded';
-        type?: 'hotel' | 'cab' | 'food' | 'experience' | 'transit';
+        type?: 'hotel' | 'cab' | 'food' | 'experience' | 'transit' | 'product';
         vendorId?: string;
         userId?: string;
         code?: string;
@@ -7955,6 +8392,7 @@ export interface operations {
       query?: {
         /** @description Response language (also read from Accept-Language) */
         lang?: 'en' | 'hi';
+        kind?: 'hotel' | 'dharamshala';
         city?: string;
         checkIn?: string;
         checkOut?: string;
@@ -8342,7 +8780,7 @@ export interface operations {
         cursor?: string;
         limit?: number;
         status?: 'pending' | 'confirmed' | 'in_progress' | 'completed' | 'cancelled' | 'refunded';
-        type?: 'hotel' | 'cab' | 'food' | 'experience' | 'transit';
+        type?: 'hotel' | 'cab' | 'food' | 'experience' | 'transit' | 'product';
       };
       header?: never;
       path?: never;
@@ -9293,6 +9731,102 @@ export interface operations {
       };
     };
   };
+  StoreController_categories: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['CategoryResponse'][];
+        };
+      };
+    };
+  };
+  StoreController_list: {
+    parameters: {
+      query?: {
+        category?:
+          | 'pooja_thali'
+          | 'diya_dhoop'
+          | 'garland'
+          | 'prasad'
+          | 'poshak'
+          | 'tilak_mala'
+          | 'idols'
+          | 'books'
+          | 'other';
+        /** @description Search in name */
+        q?: string;
+        vendorId?: string;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ProductResponse'][];
+        };
+      };
+    };
+  };
+  StoreController_detail: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ProductResponse'];
+        };
+      };
+    };
+  };
+  StoreController_quote: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['PriceQuoteDto'];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['PriceQuoteResponse'];
+        };
+      };
+    };
+  };
   TripShareController_view: {
     parameters: {
       query?: never;
@@ -9737,6 +10271,29 @@ export interface operations {
       };
     };
   };
+  VendorAnalyticsController_get: {
+    parameters: {
+      query?: {
+        days?: 7 | 30 | 90;
+      };
+      header?: never;
+      path: {
+        vid: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['VendorAnalyticsResponse'];
+        };
+      };
+    };
+  };
   VendorsController_listBank: {
     parameters: {
       query?: never;
@@ -9843,6 +10400,78 @@ export interface operations {
           [name: string]: unknown;
         };
         content?: never;
+      };
+    };
+  };
+  VendorStoreController_coupons: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        vid: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['CouponResponse'][];
+        };
+      };
+    };
+  };
+  VendorStoreController_createCoupon: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        vid: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateCouponDto'];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['CouponResponse'];
+        };
+      };
+    };
+  };
+  VendorStoreController_updateCoupon: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        vid: string;
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateCouponDto'];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['CouponResponse'];
+        };
       };
     };
   };
@@ -10205,7 +10834,7 @@ export interface operations {
         cursor?: string;
         limit?: number;
         status?: 'pending' | 'confirmed' | 'in_progress' | 'completed' | 'cancelled' | 'refunded';
-        type?: 'hotel' | 'cab' | 'food' | 'experience' | 'transit';
+        type?: 'hotel' | 'cab' | 'food' | 'experience' | 'transit' | 'product';
       };
       header?: never;
       path: {
@@ -10406,6 +11035,98 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['PayoutPageResponse'];
+        };
+      };
+    };
+  };
+  VendorStoreController_products: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        vid: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ProductResponse'][];
+        };
+      };
+    };
+  };
+  VendorStoreController_createProduct: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        vid: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateProductDto'];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ProductResponse'];
+        };
+      };
+    };
+  };
+  VendorStoreController_removeProduct: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        vid: string;
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  VendorStoreController_updateProduct: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        vid: string;
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateProductDto'];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ProductResponse'];
         };
       };
     };

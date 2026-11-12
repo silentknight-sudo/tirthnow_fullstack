@@ -33,6 +33,7 @@ const DOC_TYPES: DocType[] = [
   'trade_license',
   'rc',
   'permit',
+  'driving_licence',
   'other',
 ];
 const DOC_LABEL: Record<DocType, string> = {
@@ -43,6 +44,7 @@ const DOC_LABEL: Record<DocType, string> = {
   trade_license: 'Trade licence',
   rc: 'Vehicle RC',
   permit: 'Tourist permit',
+  driving_licence: 'Driving licence',
   other: 'Other document',
 };
 const docTone = { pending: 'orange', approved: 'green', rejected: 'red' } as const;

@@ -14,6 +14,7 @@ import {
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { type AuthPrincipal, CurrentUser, NoGuests, Public } from '../../../core/auth';
 import { CursorQueryDto, type Page } from '../../../core/http';
+import { OrdersFacade } from '../../orders';
 import { VendorAccessGuard, VendorPermissionRequired } from '../../vendors';
 import {
   CreateReviewDto,
@@ -24,6 +25,8 @@ import {
   ReviewResponse,
   UpdateReviewDto,
   VendorReviewQueryDto,
+  AnalyticsQueryDto,
+  VendorAnalyticsResponse,
 } from '../dto/reviews.dto';
 import { ReviewsService } from '../services/reviews.service';
 import { VendorReviewsService } from '../services/vendor-reviews.service';
@@ -104,5 +107,35 @@ export class VendorReviewsController {
     @Body() dto: ReplyDto,
   ): Promise<ReviewResponse> {
     return this.vendorReviews.reply(vid, id, dto.reply);
+  }
+}
+
+@ApiTags('vendor · analytics')
+@ApiBearerAuth()
+@UseGuards(VendorAccessGuard)
+@Controller('vendors/:vid/analytics')
+export class VendorAnalyticsController {
+  constructor(
+    private readonly vendorReviews: VendorReviewsService,
+    private readonly orders: OrdersFacade,
+  ) {}
+
+  @Get()
+  @VendorPermissionRequired(null)
+  @ApiOkResponse({ type: VendorAnalyticsResponse })
+  async get(
+    @Param('vid', ParseUUIDPipe) vid: string,
+    @Query() q: AnalyticsQueryDto,
+  ): Promise<VendorAnalyticsResponse> {
+    const [sales, rating] = await Promise.all([
+      this.orders.salesSummary(vid, q.days ?? 30),
+      this.vendorReviews.ratingSummary(vid),
+    ]);
+    return {
+      ...sales,
+      ratingAverage: rating.average,
+      ratingCount: rating.count,
+      ratingDistribution: rating.distribution,
+    };
   }
 }

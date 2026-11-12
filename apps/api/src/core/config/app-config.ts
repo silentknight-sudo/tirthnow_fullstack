@@ -49,6 +49,10 @@ export interface AppConfig {
     payoutHoldDays: number;
     payoutMinPaise: number;
     gstOnCommissionBps: number;
+    pricingModel: 'v2' | 'commission';
+    saleGstBps: number;
+    platformFeeBps: number;
+    vendorAutoApprove: boolean;
   };
   maps: { provider: Env['MAPS_PROVIDER']; googleApiKey: string | undefined };
   messaging: {
@@ -178,6 +182,10 @@ export function loadConfig(source: NodeJS.ProcessEnv): AppConfig {
       payoutHoldDays: e.PAYOUT_SETTLEMENT_HOLD_DAYS,
       payoutMinPaise: e.PAYOUT_MIN_PAISE,
       gstOnCommissionBps: e.PLATFORM_GST_BPS,
+      pricingModel: e.PRICING_MODEL,
+      saleGstBps: e.SALE_GST_BPS,
+      platformFeeBps: e.PLATFORM_FEE_BPS,
+      vendorAutoApprove: e.VENDOR_AUTO_APPROVE,
     },
     maps: { provider: e.MAPS_PROVIDER, googleApiKey: e.GOOGLE_MAPS_API_KEY },
     messaging: {

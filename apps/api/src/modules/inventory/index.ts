@@ -8,3 +8,4 @@ export {
   type StayNight,
 } from './inventory.facade';
 export { InventoryModule } from './inventory.module';
+export type { ProductLine } from './services/store.service';

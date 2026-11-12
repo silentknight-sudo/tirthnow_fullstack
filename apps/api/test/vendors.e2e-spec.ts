@@ -59,7 +59,7 @@ describe('vendors', () => {
     expect(created.body).toMatchObject({
       status: 'draft',
       myRole: 'owner',
-      missingDocuments: ['pan', 'gst', 'trade_license'],
+      missingDocuments: ['pan', 'aadhaar', 'gst', 'trade_license'],
     });
 
     // The new vendor role arrives with the next refresh.
@@ -76,7 +76,7 @@ describe('vendors', () => {
       .expect(400);
     expect(early.body.error).toMatchObject({
       code: 'KYC_INCOMPLETE',
-      details: { missing: ['pan', 'gst', 'trade_license'] },
+      details: { missing: ['pan', 'aadhaar', 'gst', 'trade_license'] },
     });
 
     // KYC uploads need the vendor claim, so the portal refreshes after creating the vendor.
@@ -85,7 +85,7 @@ describe('vendors', () => {
       .set(...bearer(owner.token))
       .send({ purpose: 'kyc_document', mimeType: 'application/pdf', sizeBytes: 100 });
     expect(presignBefore.status).toBe(403);
-    for (const docType of ['pan', 'gst', 'trade_license']) {
+    for (const docType of ['pan', 'aadhaar', 'gst', 'trade_license']) {
       const mediaId = await kycUpload(refreshed.token);
       await t.http
         .post(`/v1/vendors/${vid}/kyc-documents`)
@@ -120,7 +120,7 @@ describe('vendors', () => {
       .get(`/v1/admin/vendors/${vid}`)
       .set(...bearer(admin))
       .expect(200);
-    expect(detail.body.kycDocuments).toHaveLength(3);
+    expect(detail.body.kycDocuments).toHaveLength(4);
 
     const tooSoon = await t.http
       .post(`/v1/admin/vendors/${vid}/approve`)
@@ -187,7 +187,7 @@ describe('vendors', () => {
         .expect(201)
     ).body.id as string;
     Object.assign(owner, await signInPortal(t, 'cab@owner.test', 'Password-123'));
-    for (const docType of ['pan', 'rc', 'permit']) {
+    for (const docType of ['pan', 'aadhaar', 'rc', 'driving_licence']) {
       await t.http
         .post(`/v1/vendors/${vid}/kyc-documents`)
         .set(...bearer(owner.token))

@@ -145,6 +145,8 @@ export class OrderTransitionService {
           cityId: details.cityId ?? null,
           orderType: order.type,
           grossPaise: order.totalPaise,
+          // v2 pricing: the platform keeps its fee, the vendor gets base − discount + GST.
+          ...(details.pricing === 'v2' ? { platformFeePaise: order.feePaise } : {}),
         });
         return {
           holdExpiresAt: null,
@@ -219,5 +221,8 @@ export class OrderTransitionService {
     if (d.hotel)
       await this.inventory.releaseRooms(tx, d.hotel.roomTypeId, d.hotel.nights, d.hotel.rooms);
     if (d.experience) await this.inventory.releaseSlot(tx, d.experience.slotId, d.experience.seats);
+    if (d.product) await this.inventory.releaseStock(tx, d.product.lines);
+    if (d.couponCode && order.vendorId && order.status === 'pending')
+      await this.inventory.releaseCoupon(tx, order.vendorId, d.couponCode);
   }
 }

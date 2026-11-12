@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { type Prisma, type VendorKycDocument } from '@prisma/client';
 import { ERROR_CODES } from '@tirth-now/shared-types';
 import { AuditService } from '../../../core/audit';
 import { type AuthPrincipal } from '../../../core/auth';
+import { CacheService } from '../../../core/cache';
+import { APP_CONFIG, type AppConfig } from '../../../core/config';
 import { AppException } from '../../../core/http';
 import { PrismaService } from '../../../core/prisma';
 import { FilesFacade } from '../../files';
@@ -17,6 +19,7 @@ import {
 } from '../dto/vendors.dto';
 import { VENDOR_EVENTS, type VendorStatusEvent } from '../events';
 import { missingDocuments } from './kyc-rules';
+import { ACTIVE_VENDORS_CACHE_KEY } from './vendor-admin.service';
 import { type VendorAccess, VendorAccessService } from './vendor-access.service';
 
 type VendorWithDocs = Prisma.VendorGetPayload<{
@@ -34,6 +37,8 @@ export class VendorsService {
     private readonly access: VendorAccessService,
     private readonly audit: AuditService,
     private readonly events: EventEmitter2,
+    private readonly cache: CacheService,
+    @Inject(APP_CONFIG) private readonly config: AppConfig,
   ) {}
 
   async create(user: AuthPrincipal, dto: CreateVendorDto): Promise<VendorResponse> {
@@ -199,6 +204,22 @@ export class VendorsService {
     });
     const event: VendorStatusEvent = { vendorId, ownerUserId: vendor.ownerUserId };
     this.events.emit(VENDOR_EVENTS.submitted, event);
+    // Until the admin panel ships, a complete application goes live at once
+    // (VENDOR_AUTO_APPROVE); the documents stay pending for a later review.
+    if (this.config.payments.vendorAutoApprove) {
+      await this.prisma.vendor.update({
+        where: { id: vendorId },
+        data: { status: 'active', approvedAt: new Date() },
+      });
+      await this.audit.record({
+        actor: user,
+        action: 'vendor.auto_approve',
+        entityType: 'vendor',
+        entityId: vendorId,
+      });
+      await this.cache.del(ACTIVE_VENDORS_CACHE_KEY);
+      this.events.emit(VENDOR_EVENTS.approved, event);
+    }
     return this.detail(user, vendorId);
   }
 

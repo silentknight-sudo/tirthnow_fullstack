@@ -30,6 +30,7 @@ type Fare = Schemas['CabFareResponse'];
 type VehicleClass = Vehicle['class'];
 const CLASSES: VehicleClass[] = [
   'e_rickshaw',
+  'bike',
   'auto',
   'hatchback',
   'sedan',
@@ -38,7 +39,7 @@ const CLASSES: VehicleClass[] = [
 ];
 
 const vehicleSchema = z.object({
-  class: z.enum(['auto', 'hatchback', 'sedan', 'suv', 'tempo_traveller', 'e_rickshaw']),
+  class: z.enum(['auto', 'hatchback', 'sedan', 'suv', 'tempo_traveller', 'e_rickshaw', 'bike']),
   registrationNo: z
     .string()
     .trim()

@@ -42,6 +42,16 @@ export interface OrderDetails {
     };
   };
   food?: { restaurantId: string; restaurantName: string; mode: string; notes?: string };
+  product?: {
+    storeName: string;
+    mode: 'delivery' | 'pickup';
+    lines: { productId: string; quantity: number }[];
+    address?: { name: string; phoneE164: string; line1: string; city: string; pincode: string };
+    notes?: string;
+  };
+  /** 'v2' = base + GST + platform fee (ADR-0021); absent on older orders. */
+  pricing?: 'v2';
+  couponCode?: string | null;
   experience?: {
     experienceId: string;
     title: string;

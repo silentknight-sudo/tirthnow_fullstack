@@ -292,6 +292,227 @@ async function seedHotelVendor(adminId: string, password: string): Promise<void>
   }
 }
 
+/** A dharamshala (listed under Stay, separately from hotels) and a Temple Store vendor. */
+async function seedDharamshalaAndStore(adminId: string, password: string): Promise<void> {
+  const trustOwner = await upsertPortalUser({
+    key: 'dharamshala-owner',
+    email: 'dharamshala.owner@tirthnow.local',
+    password,
+    displayName: 'Shri Radha Seva Trust',
+    roles: [{ key: 'user' }],
+  });
+  const trustId = await upsertVendor('radha-seva-dharamshala', {
+    ownerUserId: trustOwner,
+    type: 'dharamshala',
+    legalName: 'Shri Radha Seva Trust',
+    displayName: 'Radha Seva Dharamshala',
+    cityId: sid('city:vrindavan'),
+    status: 'active',
+    approvedAt: new Date(),
+    approvedById: adminId,
+  });
+  await grantRoles(trustOwner, [{ key: 'vendor_owner', vendorId: trustId }]);
+  const dharamshalas = [
+    {
+      key: 'radha-seva',
+      en: 'Radha Seva Dharamshala',
+      hi: 'राधा सेवा धर्मशाला',
+      lat: 27.5812,
+      lng: 77.6975,
+      address: 'Parikrama Marg, near Banke Bihari, Vrindavan',
+      price: 600_00,
+    },
+    {
+      key: 'govardhan-ashram',
+      en: 'Giriraj Ashram Dharamshala',
+      hi: 'गिरिराज आश्रम धर्मशाला',
+      lat: 27.4982,
+      lng: 77.4637,
+      address: 'Daan Ghati Road, Govardhan',
+      price: 450_00,
+    },
+  ];
+  for (const d of dharamshalas) {
+    const hotelId = sid(`hotel:${d.key}`);
+    const data = {
+      vendorId: trustId,
+      cityId: sid(`city:${d.key === 'govardhan-ashram' ? 'goverdhan' : 'vrindavan'}`),
+      nameI18n: i18n(d.en, d.hi),
+      descriptionI18n: i18n('Simple, clean rooms run by a temple trust. Satvik bhojan available.'),
+      lat: d.lat,
+      lng: d.lng,
+      address: d.address,
+      starRating: null,
+      kind: 'dharamshala' as const,
+      amenities: ['satvik-kitchen', 'hot-water', 'temple-nearby'],
+      checkinTime: timeOf('10:00'),
+      checkoutTime: timeOf('09:00'),
+      cancellationPolicy: { freeUntilHoursBefore: 24, penaltyPctAfter: 25, noShowPct: 50 },
+      isPublished: true,
+    };
+    await prisma.hotel.upsert({
+      where: { id: hotelId },
+      create: { id: hotelId, ...data },
+      update: data,
+    });
+    const roomTypeId = sid(`room-type:${d.key}:family`);
+    const rt = {
+      hotelId,
+      nameI18n: i18n('Family Room', 'फैमिली रूम'),
+      maxGuests: 4,
+      basePricePaise: d.price,
+      totalRooms: 12,
+      amenities: ['fan', 'hot-water'],
+    };
+    await prisma.roomType.upsert({
+      where: { id: roomTypeId },
+      create: { id: roomTypeId, ...rt },
+      update: rt,
+    });
+    await prisma.roomInventory.createMany({
+      skipDuplicates: true,
+      data: Array.from({ length: 60 }, (_, n) => ({
+        roomTypeId,
+        stayDate: utcMidnight(n),
+        total: 12,
+        available: 12,
+        pricePaise: d.price,
+      })),
+    });
+  }
+
+  const storeOwner = await upsertPortalUser({
+    key: 'store-owner',
+    email: 'store.owner@tirthnow.local',
+    password,
+    displayName: 'Gopal Agarwal',
+    roles: [{ key: 'user' }],
+  });
+  const storeId = await upsertVendor('braj-pooja-bhandar', {
+    ownerUserId: storeOwner,
+    type: 'store',
+    legalName: 'Braj Pooja Bhandar',
+    displayName: 'Braj Pooja Bhandar',
+    cityId: sid('city:vrindavan'),
+    status: 'active',
+    approvedAt: new Date(),
+    approvedById: adminId,
+  });
+  await grantRoles(storeOwner, [{ key: 'vendor_owner', vendorId: storeId }]);
+  const products = [
+    {
+      key: 'thali',
+      name: 'Brass pooja thali set',
+      category: 'pooja_thali',
+      price: 450_00,
+      mrp: 599_00,
+      stock: 40,
+      img: 'thali',
+      desc: 'Brass thali with diya, bell, kalash, roli dish and agarbatti stand.',
+    },
+    {
+      key: 'diya',
+      name: 'Pure ghee diya (pack of 12)',
+      category: 'diya_dhoop',
+      price: 120_00,
+      mrp: 150_00,
+      stock: 120,
+      img: 'diya',
+      desc: 'Ready-to-light cotton wick diyas in pure cow ghee.',
+    },
+    {
+      key: 'agarbatti',
+      name: 'Vrindavan chandan agarbatti',
+      category: 'diya_dhoop',
+      price: 80_00,
+      mrp: 99_00,
+      stock: 200,
+      img: 'agarbatti',
+      desc: 'Hand-rolled sandalwood incense, 100 sticks.',
+    },
+    {
+      key: 'garland',
+      name: 'Fresh marigold & rose garland',
+      category: 'garland',
+      price: 60_00,
+      mrp: null,
+      stock: 60,
+      img: 'garland',
+      desc: 'Made fresh every morning for Thakur ji. Pickup near Banke Bihari.',
+    },
+    {
+      key: 'prasad',
+      name: 'Banke Bihari peda prasad (500 g)',
+      category: 'prasad',
+      price: 250_00,
+      mrp: null,
+      stock: 80,
+      img: 'prasad',
+      desc: 'Mathura peda prepared in pure khoya and desi ghee.',
+    },
+    {
+      key: 'poshak',
+      name: 'Laddu Gopal poshak (size 3)',
+      category: 'poshak',
+      price: 350_00,
+      mrp: 450_00,
+      stock: 25,
+      img: 'poshak',
+      desc: 'Silk poshak with mukut and bansuri, handmade in Vrindavan.',
+    },
+    {
+      key: 'mala',
+      name: 'Tulsi kanthi mala (108 beads)',
+      category: 'tilak_mala',
+      price: 150_00,
+      mrp: 199_00,
+      stock: 90,
+      img: 'mala',
+      desc: 'Original Vrindavan tulsi japa mala with bag.',
+    },
+    {
+      key: 'kumkum',
+      name: 'Roli, chandan & haldi set',
+      category: 'tilak_mala',
+      price: 90_00,
+      mrp: 120_00,
+      stock: 150,
+      img: 'kumkum',
+      desc: 'Kumkum, chandan and haldi for tilak and pooja.',
+    },
+  ];
+  for (const p of products) {
+    const id = sid(`product:${p.key}`);
+    const data = {
+      vendorId: storeId,
+      cityId: sid('city:vrindavan'),
+      name: p.name,
+      description: p.desc,
+      category: p.category,
+      pricePaise: p.price,
+      mrpPaise: p.mrp,
+      stock: p.stock,
+      imageUrls: [`/demo-media/products/${p.img}.jpg`],
+      isPublished: true,
+    };
+    await prisma.product.upsert({ where: { id }, create: { id, ...data }, update: data });
+  }
+  const couponId = sid('coupon:radhe10');
+  const coupon = {
+    vendorId: storeId,
+    code: 'RADHE10',
+    kind: 'percent' as const,
+    percentBps: 1000,
+    minOrderPaise: 300_00,
+    maxDiscountPaise: 150_00,
+  };
+  await prisma.coupon.upsert({
+    where: { id: couponId },
+    create: { id: couponId, ...coupon },
+    update: coupon,
+  });
+}
+
 async function seedTransportAndFoodVendor(adminId: string, password: string): Promise<void> {
   const ownerId = await upsertPortalUser({
     key: 'cab-owner',
@@ -328,6 +549,8 @@ async function seedTransportAndFoodVendor(adminId: string, password: string): Pr
       driver: 'Suresh Singh',
     },
     { reg: 'UP85ER3003', cls: 'e_rickshaw', model: 'Mahindra Treo', seats: 4, driver: 'Gopal Das' },
+    { reg: 'UP85AR4004', cls: 'auto', model: 'Bajaj RE Compact', seats: 3, driver: 'Kishan Lal' },
+    { reg: 'UP85BK5005', cls: 'bike', model: 'Honda Shine', seats: 1, driver: 'Raju Yadav' },
   ];
   for (const v of vehicles) {
     const id = sid(`vehicle:${v.reg}`);
@@ -344,6 +567,8 @@ async function seedTransportAndFoodVendor(adminId: string, password: string): Pr
 
   const fares: { cls: VehicleClass; base: number; km: number; min: number; floor: number }[] = [
     { cls: 'e_rickshaw', base: 20_00, km: 10_00, min: 0, floor: 30_00 },
+    { cls: 'bike', base: 15_00, km: 6_00, min: 0, floor: 25_00 },
+    { cls: 'auto', base: 25_00, km: 11_00, min: 0, floor: 40_00 },
     { cls: 'sedan', base: 100_00, km: 14_00, min: 1_00, floor: 250_00 },
     { cls: 'suv', base: 150_00, km: 19_00, min: 1_50, floor: 400_00 },
   ];
@@ -357,7 +582,7 @@ async function seedTransportAndFoodVendor(adminId: string, password: string): Pr
       minFarePaise: f.floor,
       nightSurchargePct: 25,
       fixedRoutes:
-        f.cls === 'e_rickshaw'
+        f.cls === 'e_rickshaw' || f.cls === 'bike' || f.cls === 'auto'
           ? []
           : [{ from: 'mathura', to: 'vrindavan', farePaise: f.cls === 'sedan' ? 450_00 : 700_00 }],
     };
@@ -683,6 +908,7 @@ async function main(): Promise<void> {
   });
   await seedHotelVendor(adminId, vendorPassword);
   await seedTransportAndFoodVendor(adminId, vendorPassword);
+  await seedDharamshalaAndStore(adminId, vendorPassword);
   await seedPlatform();
   await seedDemoUser();
   await seedDemoCreator();
