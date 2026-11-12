@@ -3533,6 +3533,8 @@ export interface components {
     CabQuoteResponse: {
       /** @enum {string} */
       class: 'auto' | 'hatchback' | 'sedan' | 'suv' | 'tempo_traveller' | 'e_rickshaw' | 'bike';
+      /** @description Fare incl. GST and platform fee (ADR-0021) */
+      displayFarePaise: number;
       distanceM: number;
       durationS: number;
       farePaise: number;
@@ -4443,6 +4445,8 @@ export interface components {
       cityId: string;
       coverUrl: string | null;
       description: string | null;
+      /** @description fromPricePaise incl. GST and platform fee */
+      displayFromPricePaise: number | null;
       distanceKm?: number;
       /** @description Lowest nightly price per room for the query, paise */
       fromPricePaise: number | null;
@@ -4541,6 +4545,8 @@ export interface components {
     };
     MenuItemResponse: {
       category: string;
+      /** @description Price incl. GST and platform fee */
+      displayPricePaise: number;
       /** Format: uuid */
       id: string;
       imageUrl: string | null;
@@ -5005,6 +5011,8 @@ export interface components {
       /** @description With dates: bookable for the whole stay */
       available?: boolean;
       basePricePaise: number;
+      /** @description Nightly price incl. GST and platform fee */
+      displayPricePaise: number;
       /** Format: uuid */
       id: string;
       imageUrls: string[];

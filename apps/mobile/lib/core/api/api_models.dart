@@ -483,6 +483,7 @@ class CabOrderDto {
 class CabQuoteResponse {
   const CabQuoteResponse({
     required this.class_,
+    required this.displayFarePaise,
     required this.distanceM,
     required this.durationS,
     required this.farePaise,
@@ -495,6 +496,7 @@ class CabQuoteResponse {
 
   factory CabQuoteResponse.fromJson(Map<String, dynamic> json) => CabQuoteResponse(
     class_: json['class'] as String,
+    displayFarePaise: json['displayFarePaise'] as num,
     distanceM: json['distanceM'] as num,
     durationS: json['durationS'] as num,
     farePaise: json['farePaise'] as num,
@@ -507,6 +509,9 @@ class CabQuoteResponse {
 
   /// One of: auto, hatchback, sedan, suv, tempo_traveller, e_rickshaw, bike.
   final String class_;
+
+  /// Fare incl. GST and platform fee (ADR-0021)
+  final num displayFarePaise;
   final num distanceM;
   final num durationS;
   final num farePaise;
@@ -518,6 +523,7 @@ class CabQuoteResponse {
 
   Map<String, dynamic> toJson() => <String, dynamic>{
     'class': class_,
+    'displayFarePaise': displayFarePaise,
     'distanceM': distanceM,
     'durationS': durationS,
     'farePaise': farePaise,
@@ -3131,6 +3137,7 @@ class HotelResponse {
     required this.cityId,
     this.coverUrl,
     this.description,
+    this.displayFromPricePaise,
     this.distanceKm,
     this.fromPricePaise,
     required this.id,
@@ -3155,6 +3162,9 @@ class HotelResponse {
     cityId: json['cityId'] as String,
     coverUrl: json['coverUrl'] == null ? null : json['coverUrl'] as String,
     description: json['description'] == null ? null : json['description'] as String,
+    displayFromPricePaise: json['displayFromPricePaise'] == null
+        ? null
+        : json['displayFromPricePaise'] as num,
     distanceKm: json['distanceKm'] == null ? null : json['distanceKm'] as num,
     fromPricePaise: json['fromPricePaise'] == null ? null : json['fromPricePaise'] as num,
     id: json['id'] as String,
@@ -3182,6 +3192,9 @@ class HotelResponse {
   final String cityId;
   final String? coverUrl;
   final String? description;
+
+  /// fromPricePaise incl. GST and platform fee
+  final num? displayFromPricePaise;
   final num? distanceKm;
 
   /// Lowest nightly price per room for the query, paise
@@ -3209,6 +3222,7 @@ class HotelResponse {
     'cityId': cityId,
     'coverUrl': ?coverUrl,
     'description': ?description,
+    'displayFromPricePaise': ?displayFromPricePaise,
     'distanceKm': ?distanceKm,
     'fromPricePaise': ?fromPricePaise,
     'id': id,
@@ -3439,6 +3453,7 @@ class MemberTripResponse {
 class MenuItemResponse {
   const MenuItemResponse({
     required this.category,
+    required this.displayPricePaise,
     required this.id,
     this.imageUrl,
     required this.isAvailable,
@@ -3449,6 +3464,7 @@ class MenuItemResponse {
 
   factory MenuItemResponse.fromJson(Map<String, dynamic> json) => MenuItemResponse(
     category: json['category'] as String,
+    displayPricePaise: json['displayPricePaise'] as num,
     id: json['id'] as String,
     imageUrl: json['imageUrl'] == null ? null : json['imageUrl'] as String,
     isAvailable: json['isAvailable'] as bool,
@@ -3458,6 +3474,9 @@ class MenuItemResponse {
   );
 
   final String category;
+
+  /// Price incl. GST and platform fee
+  final num displayPricePaise;
   final String id;
   final String? imageUrl;
   final bool isAvailable;
@@ -3467,6 +3486,7 @@ class MenuItemResponse {
 
   Map<String, dynamic> toJson() => <String, dynamic>{
     'category': category,
+    'displayPricePaise': displayPricePaise,
     'id': id,
     'imageUrl': ?imageUrl,
     'isAvailable': isAvailable,
@@ -5037,6 +5057,7 @@ class RoomTypeResponse {
     required this.amenities,
     this.available,
     required this.basePricePaise,
+    required this.displayPricePaise,
     required this.id,
     required this.imageUrls,
     required this.maxGuests,
@@ -5051,6 +5072,7 @@ class RoomTypeResponse {
     amenities: (json['amenities'] as List<dynamic>).map((dynamic x) => x as String).toList(),
     available: json['available'] == null ? null : json['available'] as bool,
     basePricePaise: json['basePricePaise'] as num,
+    displayPricePaise: json['displayPricePaise'] as num,
     id: json['id'] as String,
     imageUrls: (json['imageUrls'] as List<dynamic>).map((dynamic x) => x as String).toList(),
     maxGuests: json['maxGuests'] as num,
@@ -5070,6 +5092,9 @@ class RoomTypeResponse {
   /// With dates: bookable for the whole stay
   final bool? available;
   final num basePricePaise;
+
+  /// Nightly price incl. GST and platform fee
+  final num displayPricePaise;
   final String id;
   final List<String> imageUrls;
   final num maxGuests;
@@ -5087,6 +5112,7 @@ class RoomTypeResponse {
     'amenities': amenities,
     'available': ?available,
     'basePricePaise': basePricePaise,
+    'displayPricePaise': displayPricePaise,
     'id': id,
     'imageUrls': imageUrls,
     'maxGuests': maxGuests,

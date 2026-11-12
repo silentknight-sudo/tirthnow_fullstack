@@ -5,6 +5,7 @@ import '../../../core/api/api_models.dart';
 import '../../../core/format/formatters.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/widgets/common.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../catalog/data/catalog_repository.dart';
 import '../data/bookings_repository.dart';
 import 'checkout_flow.dart';
@@ -31,6 +32,7 @@ class _CabScreenState extends ConsumerState<CabScreen> {
   _Place? _drop;
   List<CabQuoteResponse>? _quotes;
   bool _loading = false;
+  String _group = 'all';
 
   Future<void> _estimate() async {
     final p = _pickup;
@@ -95,8 +97,30 @@ class _CabScreenState extends ConsumerState<CabScreen> {
                 const Padding(padding: EdgeInsets.all(16), child: LinearProgressIndicator()),
               if (_quotes != null) ...[
                 const SizedBox(height: 16),
-                if (_quotes!.isEmpty) const EmptyState(icon: Icons.local_taxi_outlined),
-                for (final q in _quotes!) _QuoteTile(quote: q, pickup: _pickup!, drop: _drop!),
+                Wrap(
+                  spacing: 8,
+                  children: [
+                    for (final (g, icon, label) in [
+                      ('all', Icons.apps_rounded, context.l10n.cabAll),
+                      ('bike', Icons.two_wheeler_rounded, context.l10n.cabBike),
+                      ('auto', Icons.electric_rickshaw_rounded, context.l10n.cabAuto),
+                      ('car', Icons.local_taxi_rounded, context.l10n.cabCar),
+                    ])
+                      ChoiceChip(
+                        avatar: Icon(icon, size: 18),
+                        label: Text(label),
+                        selected: _group == g,
+                        onSelected: (_) => setState(() => _group = g),
+                      ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                if (_quotes!.where((q) => _group == 'all' || cabGroup(q.class_) == _group).isEmpty)
+                  const EmptyState(icon: Icons.local_taxi_outlined),
+                for (final q in _quotes!.where(
+                  (q) => _group == 'all' || cabGroup(q.class_) == _group,
+                ))
+                  _QuoteTile(quote: q, pickup: _pickup!, drop: _drop!),
               ],
             ],
           );
@@ -154,13 +178,11 @@ class _QuoteTile extends ConsumerWidget {
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       child: ListTile(
-        leading: Icon(
-          quote.class_ == 'e_rickshaw' || quote.class_ == 'auto'
-              ? Icons.electric_rickshaw
-              : Icons.local_taxi,
-          color: TnColors.navy,
+        leading: CircleAvatar(
+          backgroundColor: const Color(0xFFFFF1E4),
+          child: Icon(cabIcon(quote.class_), color: TnColors.saffron),
         ),
-        title: Text('${quote.class_.replaceAll('_', ' ')} · ${quote.vendorName}'),
+        title: Text('${cabLabel(l, quote.class_)} · ${quote.vendorName}'),
         subtitle: Text(
           '$km km · $mins min · ${l.seats}: ${quote.seats}${quote.nightSurchargeApplied ? ' · ${l.nightFare}' : ''}',
         ),
@@ -180,9 +202,32 @@ class _QuoteTile extends ConsumerWidget {
             ),
             description: '${pickup.name} → ${drop.name}',
           ),
-          child: Text(formatRupees(quote.farePaise, locale: context.lang)),
+          child: Text(formatRupees(quote.displayFarePaise, locale: context.lang)),
         ),
       ),
     );
   }
 }
+
+/// Bike, auto (incl. e-rickshaw) or car (hatchback, sedan, SUV, tempo traveller).
+String cabGroup(String cls) => switch (cls) {
+  'bike' => 'bike',
+  'auto' || 'e_rickshaw' => 'auto',
+  _ => 'car',
+};
+
+IconData cabIcon(String cls) => switch (cabGroup(cls)) {
+  'bike' => Icons.two_wheeler_rounded,
+  'auto' => Icons.electric_rickshaw_rounded,
+  _ => Icons.local_taxi_rounded,
+};
+
+String cabLabel(AppLocalizations l, String cls) => switch (cls) {
+  'bike' => l.cabBike,
+  'auto' => l.cabAuto,
+  'e_rickshaw' => l.cabERickshaw,
+  'hatchback' => l.cabHatchback,
+  'sedan' => l.cabSedan,
+  'suv' => l.cabSuv,
+  _ => l.cabTempo,
+};

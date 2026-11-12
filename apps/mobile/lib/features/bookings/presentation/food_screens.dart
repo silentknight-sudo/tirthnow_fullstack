@@ -83,7 +83,7 @@ class _RestaurantDetailScreenState extends ConsumerState<RestaurantDetailScreen>
       onRetry: () => ref.invalidate(restaurantProvider(widget.id)),
       builder: (r) {
         final menu = (r.menu ?? const <MenuItemResponse>[]).where((m) => m.isAvailable).toList();
-        final total = menu.fold<num>(0, (sum, m) => sum + m.pricePaise * (_cart[m.id] ?? 0));
+        final total = menu.fold<num>(0, (sum, m) => sum + m.displayPricePaise * (_cart[m.id] ?? 0));
         final byCategory = <String, List<MenuItemResponse>>{};
         for (final m in menu) {
           byCategory.putIfAbsent(m.category, () => []).add(m);
@@ -98,7 +98,7 @@ class _RestaurantDetailScreenState extends ConsumerState<RestaurantDetailScreen>
                 for (final m in entry.value)
                   ListTile(
                     title: Text(m.name),
-                    subtitle: Text(formatRupees(m.pricePaise, locale: context.lang)),
+                    subtitle: Text(formatRupees(m.displayPricePaise, locale: context.lang)),
                     trailing: _Qty(
                       value: _cart[m.id] ?? 0,
                       onChanged: r.acceptsOrders

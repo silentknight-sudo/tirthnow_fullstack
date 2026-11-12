@@ -18,7 +18,6 @@ import '../../features/catalog/presentation/temple_detail_screen.dart';
 import '../../features/catalog/presentation/temples_screen.dart';
 import '../../features/content/presentation/aarti_screen.dart';
 import '../../features/content/presentation/people_screen.dart';
-import '../../features/content/presentation/pooja_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
 import '../../features/journey/presentation/journey_screen.dart';
 import '../../features/notifications/presentation/notifications_screen.dart';
@@ -30,6 +29,8 @@ import '../../features/reels/presentation/my_reels_screen.dart';
 import '../../features/reels/presentation/reel_composer_screen.dart';
 import '../../features/reels/presentation/reels_screen.dart';
 import '../../features/safety/presentation/sos_screen.dart';
+import '../../features/store/presentation/cart_screen.dart';
+import '../../features/store/presentation/store_screen.dart';
 import '../../features/travel/presentation/weather_screen.dart';
 import '../../features/trips/presentation/family_screen.dart';
 import '../../features/trips/presentation/trips_screen.dart';
@@ -203,7 +204,12 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           ),
         ],
       ),
-      GoRoute(path: '/pooja', builder: (_, _) => const PoojaItemsScreen()),
+      GoRoute(path: '/pooja', builder: (_, _) => const StoreScreen()),
+      GoRoute(
+        path: '/store',
+        builder: (_, _) => const StoreScreen(),
+        routes: [GoRoute(path: 'cart', builder: (_, _) => const CartScreen())],
+      ),
       GoRoute(path: '/journey', builder: (_, _) => const JourneyScreen()),
       GoRoute(path: '/people', builder: (_, _) => const PeopleScreen()),
       GoRoute(

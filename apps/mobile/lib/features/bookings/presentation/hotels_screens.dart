@@ -58,11 +58,27 @@ class StayQueryController extends Notifier<StayQuery> {
 
 final stayQueryProvider = NotifierProvider<StayQueryController, StayQuery>(StayQueryController.new);
 
+/// Stay tab: 'hotel' or 'dharamshala' (both listed under Stay).
+final stayKindProvider = NotifierProvider<StayKind, String>(StayKind.new);
+
+class StayKind extends Notifier<String> {
+  @override
+  String build() => 'hotel';
+
+  void set(String v) => state = v;
+}
+
 final hotelsProvider = FutureProvider<List<HotelResponse>>((ref) {
   final q = ref.watch(stayQueryProvider);
   return ref
       .watch(bookingsRepositoryProvider)
-      .hotels(checkIn: q.checkInStr, checkOut: q.checkOutStr, guests: q.guests, rooms: q.rooms);
+      .hotels(
+        checkIn: q.checkInStr,
+        checkOut: q.checkOutStr,
+        guests: q.guests,
+        rooms: q.rooms,
+        kind: ref.watch(stayKindProvider),
+      );
 });
 
 final hotelProvider = FutureProvider.family<HotelResponse, String>((ref, id) {
@@ -165,10 +181,33 @@ class HotelsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l = context.l10n;
     final hotels = ref.watch(hotelsProvider);
+    final kind = ref.watch(stayKindProvider);
     return Scaffold(
       appBar: AppBar(title: Text(l.stays)),
       body: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
+            child: SizedBox(
+              width: double.infinity,
+              child: SegmentedButton<String>(
+                segments: [
+                  ButtonSegment(
+                    value: 'hotel',
+                    icon: const Icon(Icons.hotel_rounded),
+                    label: Text(l.stayHotels),
+                  ),
+                  ButtonSegment(
+                    value: 'dharamshala',
+                    icon: const Icon(Icons.temple_hindu_rounded),
+                    label: Text(l.stayDharamshala),
+                  ),
+                ],
+                selected: {kind},
+                onSelectionChanged: (s) => ref.read(stayKindProvider.notifier).set(s.first),
+              ),
+            ),
+          ),
           const _StayBar(),
           Expanded(
             child: AsyncView(
@@ -198,7 +237,7 @@ class _HotelCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
-    final price = hotel.fromPricePaise;
+    final price = hotel.displayFromPricePaise ?? hotel.fromPricePaise;
     return Card(
       clipBehavior: Clip.antiAlias,
       child: InkWell(
@@ -245,6 +284,10 @@ class _HotelCard extends StatelessWidget {
                         Text(
                           l.perNight,
                           style: const TextStyle(color: TnColors.muted, fontSize: 12),
+                        ),
+                        Text(
+                          l.stInclTax,
+                          style: const TextStyle(color: TnColors.muted, fontSize: 10),
                         ),
                       ],
                     ),
@@ -323,7 +366,11 @@ class _RoomTile extends ConsumerWidget {
     final l = context.l10n;
     final q = ref.watch(stayQueryProvider);
     final available = room.available ?? true;
-    final total = room.stayTotalPaise ?? room.basePricePaise * q.nights * q.rooms;
+    final base = room.stayTotalPaise ?? room.basePricePaise * q.nights * q.rooms;
+    // Show what the guest pays: the API's GST + platform-fee ratio for this room.
+    final total = room.basePricePaise > 0
+        ? (base * room.displayPricePaise / room.basePricePaise).round()
+        : base;
     return Card(
       margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
       child: Padding(

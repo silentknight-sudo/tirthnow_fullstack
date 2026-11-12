@@ -3824,6 +3824,390 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{km} km away'**
   String gKmAway(String km);
+
+  /// No description provided for @stCatThali.
+  ///
+  /// In en, this message translates to:
+  /// **'Pooja thali'**
+  String get stCatThali;
+
+  /// No description provided for @stCatDiya.
+  ///
+  /// In en, this message translates to:
+  /// **'Diya & dhoop'**
+  String get stCatDiya;
+
+  /// No description provided for @stCatGarland.
+  ///
+  /// In en, this message translates to:
+  /// **'Garlands'**
+  String get stCatGarland;
+
+  /// No description provided for @stCatPrasad.
+  ///
+  /// In en, this message translates to:
+  /// **'Prasad'**
+  String get stCatPrasad;
+
+  /// No description provided for @stCatPoshak.
+  ///
+  /// In en, this message translates to:
+  /// **'Poshak'**
+  String get stCatPoshak;
+
+  /// No description provided for @stCatTilak.
+  ///
+  /// In en, this message translates to:
+  /// **'Tilak & mala'**
+  String get stCatTilak;
+
+  /// No description provided for @stCatIdols.
+  ///
+  /// In en, this message translates to:
+  /// **'Idols'**
+  String get stCatIdols;
+
+  /// No description provided for @stCatBooks.
+  ///
+  /// In en, this message translates to:
+  /// **'Books'**
+  String get stCatBooks;
+
+  /// No description provided for @stCatOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get stCatOther;
+
+  /// No description provided for @stHeroTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pooja essentials from Braj'**
+  String get stHeroTitle;
+
+  /// No description provided for @stHeroSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Prasad, poshak, diya and more from verified Vrindavan stores'**
+  String get stHeroSub;
+
+  /// No description provided for @stSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search prasad, mala, poshak…'**
+  String get stSearch;
+
+  /// No description provided for @stTrust.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified local stores · Prices include 18% GST + 5% platform charge'**
+  String get stTrust;
+
+  /// No description provided for @stEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No items here yet'**
+  String get stEmpty;
+
+  /// No description provided for @stCart.
+  ///
+  /// In en, this message translates to:
+  /// **'Your cart'**
+  String get stCart;
+
+  /// No description provided for @stAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'ADD'**
+  String get stAdd;
+
+  /// No description provided for @stAddToCart.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to cart'**
+  String get stAddToCart;
+
+  /// No description provided for @stViewCart.
+  ///
+  /// In en, this message translates to:
+  /// **'View cart'**
+  String get stViewCart;
+
+  /// No description provided for @stInclTax.
+  ///
+  /// In en, this message translates to:
+  /// **'incl. GST & charges'**
+  String get stInclTax;
+
+  /// No description provided for @stSoldOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sold out'**
+  String get stSoldOut;
+
+  /// No description provided for @stPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Store price'**
+  String get stPrice;
+
+  /// No description provided for @stTaxAndFee.
+  ///
+  /// In en, this message translates to:
+  /// **'GST 18% + platform charge 5%'**
+  String get stTaxAndFee;
+
+  /// No description provided for @stYouPay.
+  ///
+  /// In en, this message translates to:
+  /// **'You pay'**
+  String get stYouPay;
+
+  /// No description provided for @stReplaceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Start a new cart?'**
+  String get stReplaceTitle;
+
+  /// No description provided for @stReplaceOk.
+  ///
+  /// In en, this message translates to:
+  /// **'Start new cart'**
+  String get stReplaceOk;
+
+  /// No description provided for @stCartEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Your cart is empty'**
+  String get stCartEmpty;
+
+  /// No description provided for @stHowGet.
+  ///
+  /// In en, this message translates to:
+  /// **'How do you want it?'**
+  String get stHowGet;
+
+  /// No description provided for @stDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery'**
+  String get stDelivery;
+
+  /// No description provided for @stPickup.
+  ///
+  /// In en, this message translates to:
+  /// **'Pickup'**
+  String get stPickup;
+
+  /// No description provided for @stPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile number'**
+  String get stPhone;
+
+  /// No description provided for @stPhoneInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid 10-digit mobile number'**
+  String get stPhoneInvalid;
+
+  /// No description provided for @stAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'House / room, street, landmark'**
+  String get stAddress;
+
+  /// No description provided for @stAddressInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your full address'**
+  String get stAddressInvalid;
+
+  /// No description provided for @stCity.
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get stCity;
+
+  /// No description provided for @stPincode.
+  ///
+  /// In en, this message translates to:
+  /// **'Pincode'**
+  String get stPincode;
+
+  /// No description provided for @stPickupNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Collect from the store; you\'ll get a message when it is ready.'**
+  String get stPickupNote;
+
+  /// No description provided for @stNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Note for the store (optional)'**
+  String get stNotes;
+
+  /// No description provided for @stCouponHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter coupon code'**
+  String get stCouponHint;
+
+  /// No description provided for @stApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get stApply;
+
+  /// No description provided for @stRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get stRemove;
+
+  /// No description provided for @stBill.
+  ///
+  /// In en, this message translates to:
+  /// **'Bill details'**
+  String get stBill;
+
+  /// No description provided for @stItemTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Item total'**
+  String get stItemTotal;
+
+  /// No description provided for @stCouponDiscount.
+  ///
+  /// In en, this message translates to:
+  /// **'Coupon discount'**
+  String get stCouponDiscount;
+
+  /// No description provided for @stGst.
+  ///
+  /// In en, this message translates to:
+  /// **'GST (18%)'**
+  String get stGst;
+
+  /// No description provided for @stPlatformFee.
+  ///
+  /// In en, this message translates to:
+  /// **'Platform charge (5%)'**
+  String get stPlatformFee;
+
+  /// No description provided for @stToPay.
+  ///
+  /// In en, this message translates to:
+  /// **'To pay'**
+  String get stToPay;
+
+  /// No description provided for @stPlaceOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Place order'**
+  String get stPlaceOrder;
+
+  /// No description provided for @stItems.
+  ///
+  /// In en, this message translates to:
+  /// **'{n} items'**
+  String stItems(int n);
+
+  /// No description provided for @stOnlyLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Only {n} left'**
+  String stOnlyLeft(int n);
+
+  /// No description provided for @stOff.
+  ///
+  /// In en, this message translates to:
+  /// **'{n}% OFF'**
+  String stOff(int n);
+
+  /// No description provided for @stSold.
+  ///
+  /// In en, this message translates to:
+  /// **'{n} sold'**
+  String stSold(int n);
+
+  /// No description provided for @stCouponApplied.
+  ///
+  /// In en, this message translates to:
+  /// **'{code} applied'**
+  String stCouponApplied(String code);
+
+  /// No description provided for @stReplaceBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your cart has items from {a}. Start a new cart for {b}?'**
+  String stReplaceBody(String a, String b);
+
+  /// No description provided for @stayHotels.
+  ///
+  /// In en, this message translates to:
+  /// **'Hotels'**
+  String get stayHotels;
+
+  /// No description provided for @stayDharamshala.
+  ///
+  /// In en, this message translates to:
+  /// **'Dharamshala'**
+  String get stayDharamshala;
+
+  /// No description provided for @cabBike.
+  ///
+  /// In en, this message translates to:
+  /// **'Bike'**
+  String get cabBike;
+
+  /// No description provided for @cabAuto.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto'**
+  String get cabAuto;
+
+  /// No description provided for @cabERickshaw.
+  ///
+  /// In en, this message translates to:
+  /// **'E-rickshaw'**
+  String get cabERickshaw;
+
+  /// No description provided for @cabHatchback.
+  ///
+  /// In en, this message translates to:
+  /// **'Car (hatchback)'**
+  String get cabHatchback;
+
+  /// No description provided for @cabSedan.
+  ///
+  /// In en, this message translates to:
+  /// **'Car (sedan)'**
+  String get cabSedan;
+
+  /// No description provided for @cabSuv.
+  ///
+  /// In en, this message translates to:
+  /// **'Car (SUV)'**
+  String get cabSuv;
+
+  /// No description provided for @cabTempo.
+  ///
+  /// In en, this message translates to:
+  /// **'Tempo traveller'**
+  String get cabTempo;
+
+  /// No description provided for @cabAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get cabAll;
+
+  /// No description provided for @cabCar.
+  ///
+  /// In en, this message translates to:
+  /// **'Car'**
+  String get cabCar;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

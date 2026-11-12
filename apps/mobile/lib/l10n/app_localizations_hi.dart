@@ -1962,4 +1962,208 @@ class AppLocalizationsHi extends AppLocalizations {
   String gKmAway(String km) {
     return '$km किमी दूर';
   }
+
+  @override
+  String get stCatThali => 'पूजा थाली';
+
+  @override
+  String get stCatDiya => 'दीया व धूप';
+
+  @override
+  String get stCatGarland => 'माला (फूल)';
+
+  @override
+  String get stCatPrasad => 'प्रसाद';
+
+  @override
+  String get stCatPoshak => 'पोशाक';
+
+  @override
+  String get stCatTilak => 'तिलक व माला';
+
+  @override
+  String get stCatIdols => 'मूर्तियाँ';
+
+  @override
+  String get stCatBooks => 'पुस्तकें';
+
+  @override
+  String get stCatOther => 'अन्य';
+
+  @override
+  String get stHeroTitle => 'ब्रज से पूजा का सामान';
+
+  @override
+  String get stHeroSub => 'वृंदावन की सत्यापित दुकानों से प्रसाद, पोशाक, दीया और बहुत कुछ';
+
+  @override
+  String get stSearch => 'प्रसाद, माला, पोशाक खोजें…';
+
+  @override
+  String get stTrust => 'सत्यापित स्थानीय दुकानें · दाम में 18% GST + 5% प्लेटफ़ॉर्म शुल्क शामिल';
+
+  @override
+  String get stEmpty => 'अभी यहाँ कुछ नहीं है';
+
+  @override
+  String get stCart => 'आपका कार्ट';
+
+  @override
+  String get stAdd => 'जोड़ें';
+
+  @override
+  String get stAddToCart => 'कार्ट में जोड़ें';
+
+  @override
+  String get stViewCart => 'कार्ट देखें';
+
+  @override
+  String get stInclTax => 'GST व शुल्क सहित';
+
+  @override
+  String get stSoldOut => 'स्टॉक ख़त्म';
+
+  @override
+  String get stPrice => 'दुकान का दाम';
+
+  @override
+  String get stTaxAndFee => 'GST 18% + प्लेटफ़ॉर्म शुल्क 5%';
+
+  @override
+  String get stYouPay => 'आप देंगे';
+
+  @override
+  String get stReplaceTitle => 'नया कार्ट शुरू करें?';
+
+  @override
+  String get stReplaceOk => 'नया कार्ट';
+
+  @override
+  String get stCartEmpty => 'आपका कार्ट ख़ाली है';
+
+  @override
+  String get stHowGet => 'कैसे लेना चाहेंगे?';
+
+  @override
+  String get stDelivery => 'डिलीवरी';
+
+  @override
+  String get stPickup => 'दुकान से लें';
+
+  @override
+  String get stPhone => 'मोबाइल नंबर';
+
+  @override
+  String get stPhoneInvalid => 'सही 10 अंकों का मोबाइल नंबर डालें';
+
+  @override
+  String get stAddress => 'मकान / कमरा, गली, पहचान';
+
+  @override
+  String get stAddressInvalid => 'पूरा पता डालें';
+
+  @override
+  String get stCity => 'शहर';
+
+  @override
+  String get stPincode => 'पिनकोड';
+
+  @override
+  String get stPickupNote => 'दुकान से लें; तैयार होने पर आपको संदेश मिलेगा।';
+
+  @override
+  String get stNotes => 'दुकान के लिए नोट (वैकल्पिक)';
+
+  @override
+  String get stCouponHint => 'कूपन कोड डालें';
+
+  @override
+  String get stApply => 'लगाएँ';
+
+  @override
+  String get stRemove => 'हटाएँ';
+
+  @override
+  String get stBill => 'बिल';
+
+  @override
+  String get stItemTotal => 'सामान का कुल';
+
+  @override
+  String get stCouponDiscount => 'कूपन छूट';
+
+  @override
+  String get stGst => 'GST (18%)';
+
+  @override
+  String get stPlatformFee => 'प्लेटफ़ॉर्म शुल्क (5%)';
+
+  @override
+  String get stToPay => 'कुल भुगतान';
+
+  @override
+  String get stPlaceOrder => 'ऑर्डर करें';
+
+  @override
+  String stItems(int n) {
+    return '$n सामान';
+  }
+
+  @override
+  String stOnlyLeft(int n) {
+    return 'सिर्फ़ $n बचे';
+  }
+
+  @override
+  String stOff(int n) {
+    return '$n% छूट';
+  }
+
+  @override
+  String stSold(int n) {
+    return '$n बिके';
+  }
+
+  @override
+  String stCouponApplied(String code) {
+    return '$code लगा';
+  }
+
+  @override
+  String stReplaceBody(String a, String b) {
+    return 'आपके कार्ट में $a का सामान है। $b के लिए नया कार्ट शुरू करें?';
+  }
+
+  @override
+  String get stayHotels => 'होटल';
+
+  @override
+  String get stayDharamshala => 'धर्मशाला';
+
+  @override
+  String get cabBike => 'बाइक';
+
+  @override
+  String get cabAuto => 'ऑटो';
+
+  @override
+  String get cabERickshaw => 'ई-रिक्शा';
+
+  @override
+  String get cabHatchback => 'कार (हैचबैक)';
+
+  @override
+  String get cabSedan => 'कार (सेडान)';
+
+  @override
+  String get cabSuv => 'कार (SUV)';
+
+  @override
+  String get cabTempo => 'टेम्पो ट्रैवलर';
+
+  @override
+  String get cabAll => 'सभी';
+
+  @override
+  String get cabCar => 'कार';
 }

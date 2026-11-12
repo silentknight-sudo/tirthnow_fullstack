@@ -197,6 +197,8 @@ export class RoomTypeResponse {
   @ApiProperty() name!: string;
   @ApiProperty() maxGuests!: number;
   @ApiProperty() basePricePaise!: number;
+  @ApiProperty({ description: 'Nightly price incl. GST and platform fee' })
+  displayPricePaise!: number;
   @ApiProperty() totalRooms!: number;
   @ApiProperty({ type: [String] }) amenities!: string[];
   @ApiProperty({ type: [String] }) imageUrls!: string[];
@@ -234,6 +236,12 @@ export class HotelResponse {
     description: 'Lowest nightly price per room for the query, paise',
   })
   fromPricePaise!: number | null;
+  @ApiProperty({
+    type: Number,
+    nullable: true,
+    description: 'fromPricePaise incl. GST and platform fee',
+  })
+  displayFromPricePaise!: number | null;
   @ApiPropertyOptional() distanceKm?: number;
   @ApiPropertyOptional({ type: [RoomTypeResponse] }) roomTypes?: RoomTypeResponse[];
 }

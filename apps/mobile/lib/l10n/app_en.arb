@@ -821,5 +821,114 @@
         "type": "String"
       }
     }
-  }
+  },
+  "stCatThali": "Pooja thali",
+  "stCatDiya": "Diya & dhoop",
+  "stCatGarland": "Garlands",
+  "stCatPrasad": "Prasad",
+  "stCatPoshak": "Poshak",
+  "stCatTilak": "Tilak & mala",
+  "stCatIdols": "Idols",
+  "stCatBooks": "Books",
+  "stCatOther": "Other",
+  "stHeroTitle": "Pooja essentials from Braj",
+  "stHeroSub": "Prasad, poshak, diya and more from verified Vrindavan stores",
+  "stSearch": "Search prasad, mala, poshak…",
+  "stTrust": "Verified local stores · Prices include 18% GST + 5% platform charge",
+  "stEmpty": "No items here yet",
+  "stCart": "Your cart",
+  "stAdd": "ADD",
+  "stAddToCart": "Add to cart",
+  "stViewCart": "View cart",
+  "stInclTax": "incl. GST & charges",
+  "stSoldOut": "Sold out",
+  "stPrice": "Store price",
+  "stTaxAndFee": "GST 18% + platform charge 5%",
+  "stYouPay": "You pay",
+  "stReplaceTitle": "Start a new cart?",
+  "stReplaceOk": "Start new cart",
+  "stCartEmpty": "Your cart is empty",
+  "stHowGet": "How do you want it?",
+  "stDelivery": "Delivery",
+  "stPickup": "Pickup",
+  "stPhone": "Mobile number",
+  "stPhoneInvalid": "Enter a valid 10-digit mobile number",
+  "stAddress": "House / room, street, landmark",
+  "stAddressInvalid": "Enter your full address",
+  "stCity": "City",
+  "stPincode": "Pincode",
+  "stPickupNote": "Collect from the store; you'll get a message when it is ready.",
+  "stNotes": "Note for the store (optional)",
+  "stCouponHint": "Enter coupon code",
+  "stApply": "Apply",
+  "stRemove": "Remove",
+  "stBill": "Bill details",
+  "stItemTotal": "Item total",
+  "stCouponDiscount": "Coupon discount",
+  "stGst": "GST (18%)",
+  "stPlatformFee": "Platform charge (5%)",
+  "stToPay": "To pay",
+  "stPlaceOrder": "Place order",
+  "stItems": "{n} items",
+  "@stItems": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "stOnlyLeft": "Only {n} left",
+  "@stOnlyLeft": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "stOff": "{n}% OFF",
+  "@stOff": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "stSold": "{n} sold",
+  "@stSold": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "stCouponApplied": "{code} applied",
+  "@stCouponApplied": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "stReplaceBody": "Your cart has items from {a}. Start a new cart for {b}?",
+  "@stReplaceBody": {
+    "placeholders": {
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      }
+    }
+  },
+  "stayHotels": "Hotels",
+  "stayDharamshala": "Dharamshala",
+  "cabBike": "Bike",
+  "cabAuto": "Auto",
+  "cabERickshaw": "E-rickshaw",
+  "cabHatchback": "Car (hatchback)",
+  "cabSedan": "Car (sedan)",
+  "cabSuv": "Car (SUV)",
+  "cabTempo": "Tempo traveller",
+  "cabAll": "All",
+  "cabCar": "Car"
 }

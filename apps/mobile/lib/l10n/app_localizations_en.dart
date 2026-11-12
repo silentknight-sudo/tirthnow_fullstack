@@ -1967,4 +1967,208 @@ class AppLocalizationsEn extends AppLocalizations {
   String gKmAway(String km) {
     return '$km km away';
   }
+
+  @override
+  String get stCatThali => 'Pooja thali';
+
+  @override
+  String get stCatDiya => 'Diya & dhoop';
+
+  @override
+  String get stCatGarland => 'Garlands';
+
+  @override
+  String get stCatPrasad => 'Prasad';
+
+  @override
+  String get stCatPoshak => 'Poshak';
+
+  @override
+  String get stCatTilak => 'Tilak & mala';
+
+  @override
+  String get stCatIdols => 'Idols';
+
+  @override
+  String get stCatBooks => 'Books';
+
+  @override
+  String get stCatOther => 'Other';
+
+  @override
+  String get stHeroTitle => 'Pooja essentials from Braj';
+
+  @override
+  String get stHeroSub => 'Prasad, poshak, diya and more from verified Vrindavan stores';
+
+  @override
+  String get stSearch => 'Search prasad, mala, poshak…';
+
+  @override
+  String get stTrust => 'Verified local stores · Prices include 18% GST + 5% platform charge';
+
+  @override
+  String get stEmpty => 'No items here yet';
+
+  @override
+  String get stCart => 'Your cart';
+
+  @override
+  String get stAdd => 'ADD';
+
+  @override
+  String get stAddToCart => 'Add to cart';
+
+  @override
+  String get stViewCart => 'View cart';
+
+  @override
+  String get stInclTax => 'incl. GST & charges';
+
+  @override
+  String get stSoldOut => 'Sold out';
+
+  @override
+  String get stPrice => 'Store price';
+
+  @override
+  String get stTaxAndFee => 'GST 18% + platform charge 5%';
+
+  @override
+  String get stYouPay => 'You pay';
+
+  @override
+  String get stReplaceTitle => 'Start a new cart?';
+
+  @override
+  String get stReplaceOk => 'Start new cart';
+
+  @override
+  String get stCartEmpty => 'Your cart is empty';
+
+  @override
+  String get stHowGet => 'How do you want it?';
+
+  @override
+  String get stDelivery => 'Delivery';
+
+  @override
+  String get stPickup => 'Pickup';
+
+  @override
+  String get stPhone => 'Mobile number';
+
+  @override
+  String get stPhoneInvalid => 'Enter a valid 10-digit mobile number';
+
+  @override
+  String get stAddress => 'House / room, street, landmark';
+
+  @override
+  String get stAddressInvalid => 'Enter your full address';
+
+  @override
+  String get stCity => 'City';
+
+  @override
+  String get stPincode => 'Pincode';
+
+  @override
+  String get stPickupNote => 'Collect from the store; you\'ll get a message when it is ready.';
+
+  @override
+  String get stNotes => 'Note for the store (optional)';
+
+  @override
+  String get stCouponHint => 'Enter coupon code';
+
+  @override
+  String get stApply => 'Apply';
+
+  @override
+  String get stRemove => 'Remove';
+
+  @override
+  String get stBill => 'Bill details';
+
+  @override
+  String get stItemTotal => 'Item total';
+
+  @override
+  String get stCouponDiscount => 'Coupon discount';
+
+  @override
+  String get stGst => 'GST (18%)';
+
+  @override
+  String get stPlatformFee => 'Platform charge (5%)';
+
+  @override
+  String get stToPay => 'To pay';
+
+  @override
+  String get stPlaceOrder => 'Place order';
+
+  @override
+  String stItems(int n) {
+    return '$n items';
+  }
+
+  @override
+  String stOnlyLeft(int n) {
+    return 'Only $n left';
+  }
+
+  @override
+  String stOff(int n) {
+    return '$n% OFF';
+  }
+
+  @override
+  String stSold(int n) {
+    return '$n sold';
+  }
+
+  @override
+  String stCouponApplied(String code) {
+    return '$code applied';
+  }
+
+  @override
+  String stReplaceBody(String a, String b) {
+    return 'Your cart has items from $a. Start a new cart for $b?';
+  }
+
+  @override
+  String get stayHotels => 'Hotels';
+
+  @override
+  String get stayDharamshala => 'Dharamshala';
+
+  @override
+  String get cabBike => 'Bike';
+
+  @override
+  String get cabAuto => 'Auto';
+
+  @override
+  String get cabERickshaw => 'E-rickshaw';
+
+  @override
+  String get cabHatchback => 'Car (hatchback)';
+
+  @override
+  String get cabSedan => 'Car (sedan)';
+
+  @override
+  String get cabSuv => 'Car (SUV)';
+
+  @override
+  String get cabTempo => 'Tempo traveller';
+
+  @override
+  String get cabAll => 'All';
+
+  @override
+  String get cabCar => 'Car';
 }

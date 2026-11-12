@@ -15,9 +15,16 @@ class BookingsRepository {
     String? checkOut,
     int guests = 2,
     int rooms = 1,
+    String? kind,
   }) async => (await _api.getList(
     '/hotels',
-    query: {'checkIn': checkIn, 'checkOut': checkOut, 'guests': guests, 'rooms': rooms},
+    query: {
+      'checkIn': checkIn,
+      'checkOut': checkOut,
+      'guests': guests,
+      'rooms': rooms,
+      'kind': kind,
+    },
   )).map(HotelResponse.fromJson).toList();
 
   Future<HotelResponse> hotel(

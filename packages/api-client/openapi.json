@@ -497,6 +497,10 @@
             ],
             "type": "string"
           },
+          "displayFarePaise": {
+            "description": "Fare incl. GST and platform fee (ADR-0021)",
+            "type": "number"
+          },
           "distanceM": {
             "type": "number"
           },
@@ -528,6 +532,7 @@
           "vendorId",
           "vendorName",
           "farePaise",
+          "displayFarePaise",
           "distanceM",
           "durationS",
           "nightSurchargeApplied",
@@ -3043,6 +3048,11 @@
             "nullable": true,
             "type": "string"
           },
+          "displayFromPricePaise": {
+            "description": "fromPricePaise incl. GST and platform fee",
+            "nullable": true,
+            "type": "number"
+          },
           "distanceKm": {
             "type": "number"
           },
@@ -3114,7 +3124,8 @@
           "ratingCount",
           "isPublished",
           "coverUrl",
-          "fromPricePaise"
+          "fromPricePaise",
+          "displayFromPricePaise"
         ],
         "type": "object"
       },
@@ -3344,6 +3355,10 @@
           "category": {
             "type": "string"
           },
+          "displayPricePaise": {
+            "description": "Price incl. GST and platform fee",
+            "type": "number"
+          },
           "id": {
             "format": "uuid",
             "type": "string"
@@ -3370,6 +3385,7 @@
           "name",
           "category",
           "pricePaise",
+          "displayPricePaise",
           "isAvailable",
           "isJain",
           "imageUrl"
@@ -4989,6 +5005,10 @@
           "basePricePaise": {
             "type": "number"
           },
+          "displayPricePaise": {
+            "description": "Nightly price incl. GST and platform fee",
+            "type": "number"
+          },
           "id": {
             "format": "uuid",
             "type": "string"
@@ -5028,6 +5048,7 @@
           "name",
           "maxGuests",
           "basePricePaise",
+          "displayPricePaise",
           "totalRooms",
           "amenities",
           "imageUrls"

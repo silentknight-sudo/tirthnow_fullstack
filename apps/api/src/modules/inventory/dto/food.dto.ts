@@ -95,6 +95,7 @@ export class MenuItemResponse {
   @ApiProperty() name!: string;
   @ApiProperty() category!: string;
   @ApiProperty() pricePaise!: number;
+  @ApiProperty({ description: 'Price incl. GST and platform fee' }) displayPricePaise!: number;
   @ApiProperty() isAvailable!: boolean;
   @ApiProperty() isJain!: boolean;
   @ApiProperty({ type: String, nullable: true }) imageUrl!: string | null;

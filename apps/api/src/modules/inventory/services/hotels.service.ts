@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { type Prisma } from '@prisma/client';
 import { type Lang } from '@tirth-now/shared-types';
 import { AuditService } from '../../../core/audit';
@@ -6,6 +6,8 @@ import { type AuthPrincipal } from '../../../core/auth';
 import { boundingBox, haversineKm, round1 } from '../../../core/geo';
 import { AppException } from '../../../core/http';
 import { i18nJson, t, tOrNull } from '../../../core/i18n';
+import { APP_CONFIG, type AppConfig } from '../../../core/config';
+import { displayPrice } from '../../../core/pricing';
 import { PrismaService } from '../../../core/prisma';
 import { dbTime, fromDbTime } from '../../../core/time';
 import { CatalogFacade } from '../../catalog';
@@ -36,7 +38,14 @@ export class HotelsService {
     private readonly catalog: CatalogFacade,
     private readonly files: FilesFacade,
     private readonly audit: AuditService,
+    @Inject(APP_CONFIG) private readonly config: AppConfig,
   ) {}
+
+  private display(paise: number): number {
+    return this.config.payments.pricingModel === 'v2'
+      ? displayPrice(paise, this.config.payments.saleGstBps, this.config.payments.platformFeeBps)
+      : paise;
+  }
 
   // ───────────── vendor side ─────────────
 
@@ -286,7 +295,7 @@ export class HotelsService {
       results.push(
         Object.assign(
           await this.toResponse(h, lang, { withRooms: false }),
-          { fromPricePaise: fromPrice },
+          { fromPricePaise: fromPrice, displayFromPricePaise: this.display(fromPrice) },
           distanceKm !== undefined ? { distanceKm } : {},
         ),
       );
@@ -356,6 +365,10 @@ export class HotelsService {
       coverUrl: cover ? await this.files.url(cover, 'medium') : null,
       fromPricePaise:
         available.length > 0 ? Math.min(...available.map((r) => r.basePricePaise)) : null,
+      displayFromPricePaise:
+        available.length > 0
+          ? this.display(Math.min(...available.map((r) => r.basePricePaise)))
+          : null,
       ...(roomTypes ? { roomTypes } : {}),
     };
   }
@@ -378,6 +391,7 @@ export class HotelsService {
       name: t(rt.nameI18n, lang),
       maxGuests: rt.maxGuests,
       basePricePaise: rt.basePricePaise,
+      displayPricePaise: this.display(rt.basePricePaise),
       totalRooms: rt.totalRooms,
       amenities: rt.amenities,
       imageUrls: await Promise.all(media.map((m) => this.files.url(m, 'medium'))),

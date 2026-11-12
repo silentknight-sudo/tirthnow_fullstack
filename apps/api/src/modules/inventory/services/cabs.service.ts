@@ -5,6 +5,8 @@ import { AuditService } from '../../../core/audit';
 import { type AuthPrincipal } from '../../../core/auth';
 import { haversineKm, type LatLng } from '../../../core/geo';
 import { AppException } from '../../../core/http';
+import { APP_CONFIG, type AppConfig } from '../../../core/config';
+import { displayPrice } from '../../../core/pricing';
 import { PrismaService } from '../../../core/prisma';
 import { MAPS_PROVIDER, type MapsProvider } from '../../../core/providers';
 import { CatalogFacade } from '../../catalog';
@@ -39,7 +41,14 @@ export class CabsService {
     private readonly catalog: CatalogFacade,
     private readonly audit: AuditService,
     @Inject(MAPS_PROVIDER) private readonly maps: MapsProvider,
+    @Inject(APP_CONFIG) private readonly config: AppConfig,
   ) {}
+
+  private display(paise: number): number {
+    return this.config.payments.pricingModel === 'v2'
+      ? displayPrice(paise, this.config.payments.saleGstBps, this.config.payments.platformFeeBps)
+      : paise;
+  }
 
   // ───────────── vehicles ─────────────
 
@@ -208,6 +217,7 @@ export class CabsService {
         vendorId: fare.vendorId,
         vendorName: fare.vendor.displayName,
         farePaise: fixed ?? metered.farePaise,
+        displayFarePaise: this.display(fixed ?? metered.farePaise),
         distanceM: route.distanceM,
         durationS: route.durationS,
         nightSurchargeApplied: fixed === null && metered.night,

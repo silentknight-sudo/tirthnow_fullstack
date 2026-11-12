@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { type MenuItem, type Prisma, type Restaurant } from '@prisma/client';
 import { ERROR_CODES, type Lang } from '@tirth-now/shared-types';
 import { AuditService } from '../../../core/audit';
@@ -6,6 +6,8 @@ import { type AuthPrincipal } from '../../../core/auth';
 import { boundingBox, withinRadius } from '../../../core/geo';
 import { AppException, definedFields } from '../../../core/http';
 import { i18nJson, t } from '../../../core/i18n';
+import { APP_CONFIG, type AppConfig } from '../../../core/config';
+import { displayPrice } from '../../../core/pricing';
 import { PrismaService } from '../../../core/prisma';
 import { CatalogFacade } from '../../catalog';
 import { FilesFacade } from '../../files';
@@ -41,6 +43,7 @@ export class RestaurantsService {
     private readonly catalog: CatalogFacade,
     private readonly files: FilesFacade,
     private readonly audit: AuditService,
+    @Inject(APP_CONFIG) private readonly config: AppConfig,
   ) {}
 
   // ───────────── vendor side ─────────────
@@ -346,6 +349,14 @@ export class RestaurantsService {
       name: t(m.nameI18n, lang),
       category: m.category,
       pricePaise: m.pricePaise,
+      displayPricePaise:
+        this.config.payments.pricingModel === 'v2'
+          ? displayPrice(
+              m.pricePaise,
+              this.config.payments.saleGstBps,
+              this.config.payments.platformFeeBps,
+            )
+          : m.pricePaise,
       isAvailable: m.isAvailable,
       isJain: m.isJain,
       imageUrl:

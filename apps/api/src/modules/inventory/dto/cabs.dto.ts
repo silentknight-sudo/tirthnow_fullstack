@@ -106,6 +106,8 @@ export class CabQuoteResponse {
   @ApiProperty({ format: 'uuid' }) vendorId!: string;
   @ApiProperty() vendorName!: string;
   @ApiProperty() farePaise!: number;
+  @ApiProperty({ description: 'Fare incl. GST and platform fee (ADR-0021)' })
+  displayFarePaise!: number;
   @ApiProperty() distanceM!: number;
   @ApiProperty() durationS!: number;
   @ApiProperty() nightSurchargeApplied!: boolean;
