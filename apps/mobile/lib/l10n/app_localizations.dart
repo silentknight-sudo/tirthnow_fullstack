@@ -948,7 +948,7 @@ abstract class AppLocalizations {
   /// No description provided for @guideTitle.
   ///
   /// In en, this message translates to:
-  /// **'Tirth Guide'**
+  /// **'Tirth AI'**
   String get guideTitle;
 
   /// No description provided for @guideHint.
@@ -1146,7 +1146,7 @@ abstract class AppLocalizations {
   /// No description provided for @askGuide.
   ///
   /// In en, this message translates to:
-  /// **'Ask Braj Guide anything…'**
+  /// **'Ask Tirth AI anything…'**
   String get askGuide;
 
   /// No description provided for @aiVoice.
@@ -1380,7 +1380,7 @@ abstract class AppLocalizations {
   /// No description provided for @aiGuide.
   ///
   /// In en, this message translates to:
-  /// **'AI Guide'**
+  /// **'Tirth AI'**
   String get aiGuide;
 
   /// No description provided for @newReel.
@@ -3090,7 +3090,7 @@ abstract class AppLocalizations {
   /// No description provided for @heroBrajGuide.
   ///
   /// In en, this message translates to:
-  /// **'Braj Guide'**
+  /// **'Tirth AI'**
   String get heroBrajGuide;
 
   /// No description provided for @heroPickupDrop.
@@ -3636,7 +3636,7 @@ abstract class AppLocalizations {
   /// No description provided for @gHello.
   ///
   /// In en, this message translates to:
-  /// **'I\'m your Tirth Guide AI. How can I help you today?'**
+  /// **'I\'m Tirth AI. How can I help you today?'**
   String get gHello;
 
   /// No description provided for @gHelloSub.

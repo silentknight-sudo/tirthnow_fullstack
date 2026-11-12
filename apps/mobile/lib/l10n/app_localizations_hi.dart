@@ -451,7 +451,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get saved => 'सेव किए';
 
   @override
-  String get guideTitle => 'तीर्थ गाइड';
+  String get guideTitle => 'तीर्थ AI';
 
   @override
   String get guideHint => 'मंदिर, आरती, ठहरने के बारे में पूछें…';
@@ -571,7 +571,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get tagline => 'आपका तीर्थ साथी';
 
   @override
-  String get askGuide => 'ब्रज गाइड से कुछ भी पूछें…';
+  String get askGuide => 'तीर्थ AI से कुछ भी पूछें…';
 
   @override
   String get aiVoice => 'AI आवाज़';
@@ -690,7 +690,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get myTrips => 'मेरी यात्राएँ';
 
   @override
-  String get aiGuide => 'AI गाइड';
+  String get aiGuide => 'तीर्थ AI';
 
   @override
   String get newReel => 'नई रील';
@@ -1584,7 +1584,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get heroTravelCta => 'यात्रा प्लान करें';
 
   @override
-  String get heroBrajGuide => 'ब्रज गाइड';
+  String get heroBrajGuide => 'तीर्थ AI';
 
   @override
   String get heroPickupDrop => 'पिकअप व ड्रॉप';
@@ -1860,7 +1860,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get gTagline => 'खोजें • जानें • अनुभव करें';
 
   @override
-  String get gHello => 'मैं आपका तीर्थ गाइड AI हूँ। आज मैं आपकी क्या मदद करूँ?';
+  String get gHello => 'मैं तीर्थ AI हूँ। आज मैं आपकी क्या मदद करूँ?';
 
   @override
   String get gHelloSub => 'मंदिर, आरती, दर्शन या यात्रा के बारे में कुछ भी पूछें।';

@@ -451,7 +451,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get saved => 'Saved';
 
   @override
-  String get guideTitle => 'Tirth Guide';
+  String get guideTitle => 'Tirth AI';
 
   @override
   String get guideHint => 'Ask about temples, aarti, stays…';
@@ -571,7 +571,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tagline => 'Your tirth companion';
 
   @override
-  String get askGuide => 'Ask Braj Guide anything…';
+  String get askGuide => 'Ask Tirth AI anything…';
 
   @override
   String get aiVoice => 'AI Voice';
@@ -690,7 +690,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get myTrips => 'My Trips';
 
   @override
-  String get aiGuide => 'AI Guide';
+  String get aiGuide => 'Tirth AI';
 
   @override
   String get newReel => 'New reel';
@@ -1586,7 +1586,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get heroTravelCta => 'Plan your yatra';
 
   @override
-  String get heroBrajGuide => 'Braj Guide';
+  String get heroBrajGuide => 'Tirth AI';
 
   @override
   String get heroPickupDrop => 'Pickup & Drop';
@@ -1865,7 +1865,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gTagline => 'Explore • Learn • Experience';
 
   @override
-  String get gHello => 'I\'m your Tirth Guide AI. How can I help you today?';
+  String get gHello => 'I\'m Tirth AI. How can I help you today?';
 
   @override
   String get gHelloSub => 'Ask anything about temples, aarti, darshan, or travel plans.';
