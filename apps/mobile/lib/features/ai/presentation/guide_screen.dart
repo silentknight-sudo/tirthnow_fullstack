@@ -522,7 +522,7 @@ class _GuideScreenState extends ConsumerState<GuideScreen> {
                               l.guideTitle,
                               style: const TextStyle(
                                 fontFamily: 'Cormorant',
-                                fontSize: 28,
+                                fontSize: 24,
                                 fontWeight: FontWeight.w800,
                                 color: TnColors.navy,
                                 height: 1,
@@ -610,20 +610,20 @@ class _GuideScreenState extends ConsumerState<GuideScreen> {
                               l.guideWelcome,
                               style: const TextStyle(
                                 fontFamily: 'Cormorant',
-                                fontSize: 21,
+                                fontSize: 18,
                                 fontWeight: FontWeight.w800,
                                 color: TnColors.navy,
                               ),
                             ),
                             const SizedBox(height: 4),
-                            Text(l.gHello, style: const TextStyle(fontSize: 15.5, height: 1.35)),
+                            Text(l.gHello, style: const TextStyle(fontSize: 14, height: 1.35)),
                             const SizedBox(height: 6),
                             Text(
                               l.gHelloSub,
                               style: const TextStyle(
                                 fontFamily: 'Cormorant',
                                 fontStyle: FontStyle.italic,
-                                fontSize: 16,
+                                fontSize: 14,
                                 color: TnColors.muted,
                               ),
                             ),
@@ -683,7 +683,7 @@ class _GuideScreenState extends ConsumerState<GuideScreen> {
                   ),
                 // Quick actions.
                 SizedBox(
-                  height: 46,
+                  height: 40,
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
                     padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -768,7 +768,7 @@ class _GuideScreenState extends ConsumerState<GuideScreen> {
                           onLongPressStart: (_) => _startRecording(),
                           onLongPressEnd: (_) => _stopRecording(),
                           child: CircleAvatar(
-                            radius: 22,
+                            radius: 18,
                             backgroundColor: _recording ? TnColors.sos : TnColors.navy,
                             child: const Icon(Icons.mic_rounded, color: Colors.white),
                           ),
@@ -779,7 +779,7 @@ class _GuideScreenState extends ConsumerState<GuideScreen> {
                         tooltip: l.send,
                         style: IconButton.styleFrom(
                           backgroundColor: const Color(0xFFEEF0F5),
-                          minimumSize: const Size(44, 44),
+                          minimumSize: const Size(40, 40),
                         ),
                         onPressed: _busy ? null : _send,
                         icon: const Icon(Icons.send_rounded, color: TnColors.navy),
@@ -871,7 +871,7 @@ class _Row extends StatelessWidget {
   Widget build(BuildContext context) {
     final bubble = Container(
       margin: const EdgeInsets.symmetric(vertical: 6),
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 10),
+      padding: const EdgeInsets.fromLTRB(13, 10, 13, 8),
       constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.76),
       decoration: BoxDecoration(
         gradient: user ? const LinearGradient(colors: [Color(0xFF24497F), TnColors.navy]) : null,
@@ -927,11 +927,11 @@ class _Row extends StatelessWidget {
     );
     final avatar = user
         ? const CircleAvatar(
-            radius: 22,
+            radius: 18,
             backgroundColor: Color(0xFFE7EDF7),
             child: Icon(Icons.person_outline_rounded, color: TnColors.navy),
           )
-        : const _GuideAvatar(radius: 22);
+        : const _GuideAvatar(radius: 18);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: Column(
@@ -989,7 +989,7 @@ class _HistoryDrawer extends ConsumerWidget {
                 l.gHistory,
                 style: const TextStyle(
                   fontFamily: 'Cormorant',
-                  fontSize: 26,
+                  fontSize: 22,
                   fontWeight: FontWeight.w800,
                   color: TnColors.navy,
                 ),

@@ -128,7 +128,7 @@ class PlaceAnswerCard extends ConsumerWidget {
           title,
           style: const TextStyle(
             fontFamily: 'Cormorant',
-            fontSize: 24,
+            fontSize: 21,
             fontWeight: FontWeight.w800,
             color: TnColors.navy,
             height: 1.1,
@@ -147,7 +147,7 @@ class PlaceAnswerCard extends ConsumerWidget {
                 l.gHighlights,
                 style: const TextStyle(
                   fontFamily: 'Cormorant',
-                  fontSize: 18,
+                  fontSize: 16,
                   fontWeight: FontWeight.w800,
                   color: TnColors.ink,
                 ),
@@ -279,7 +279,7 @@ class _CarouselState extends State<_Carousel> {
     return ClipRRect(
       borderRadius: BorderRadius.circular(14),
       child: SizedBox(
-        height: 170,
+        height: 150,
         child: Stack(
           children: [
             PageView.builder(
@@ -343,7 +343,7 @@ class NearbyCard extends StatelessWidget {
           l.gNearby,
           style: const TextStyle(
             fontFamily: 'Cormorant',
-            fontSize: 22,
+            fontSize: 19,
             fontWeight: FontWeight.w800,
             color: TnColors.navy,
           ),

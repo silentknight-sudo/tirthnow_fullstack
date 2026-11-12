@@ -25,6 +25,16 @@ class TirthNowApp extends ConsumerWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       routerConfig: ref.watch(appRouterProvider),
+      // Compact type: 90% of the phone's text size, and large system font
+      // settings are capped so screens still fit.
+      builder: (context, child) {
+        final mq = MediaQuery.of(context);
+        final system = mq.textScaler.scale(100) / 100;
+        return MediaQuery(
+          data: mq.copyWith(textScaler: TextScaler.linear(system.clamp(0.85, 1.15) * 0.9)),
+          child: child ?? const SizedBox.shrink(),
+        );
+      },
     );
   }
 }
