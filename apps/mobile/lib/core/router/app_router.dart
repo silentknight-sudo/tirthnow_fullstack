@@ -30,6 +30,7 @@ import '../../features/reels/presentation/my_reels_screen.dart';
 import '../../features/reels/presentation/reel_composer_screen.dart';
 import '../../features/reels/presentation/reels_screen.dart';
 import '../../features/safety/presentation/sos_screen.dart';
+import '../../features/travel/presentation/weather_screen.dart';
 import '../../features/trips/presentation/family_screen.dart';
 import '../../features/trips/presentation/trips_screen.dart';
 import '../theme/app_theme.dart';
@@ -211,6 +212,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         routes: [GoRoute(path: 'family', builder: (_, _) => const FamilyScreen())],
       ),
       GoRoute(path: '/account/edit', builder: (_, _) => const EditProfileScreen()),
+      GoRoute(path: '/weather', builder: (_, _) => const WeatherScreen()),
       GoRoute(path: '/creator/create', builder: (_, _) => const CreateCreatorScreen()),
     ],
   );
@@ -288,7 +290,7 @@ class _Splash extends StatelessWidget {
   }
 }
 
-/// Bottom navigation plus an always-visible SOS button.
+/// Bottom navigation. SOS lives in the home header and the guide's app bar.
 class _Shell extends StatelessWidget {
   const _Shell({required this.shell});
 
@@ -299,18 +301,6 @@ class _Shell extends StatelessWidget {
     final l = context.l10n;
     return Scaffold(
       body: shell,
-      // Hidden on the guide tab, whose composer sits where the button would;
-      // the guide's app bar carries its own SOS action.
-      floatingActionButton: shell.currentIndex == 3
-          ? null
-          : FloatingActionButton(
-              heroTag: 'sos',
-              tooltip: l.sosTitle,
-              backgroundColor: TnColors.sos,
-              foregroundColor: Colors.white,
-              onPressed: () => context.push('/sos'),
-              child: const Text('SOS', style: TextStyle(fontWeight: FontWeight.w800)),
-            ),
       // Home · AI Guide · Reels · My Trips · Profile. Temples and Book
       // stay as branches, reached from Home's quick access.
       bottomNavigationBar: _BottomBar(

@@ -580,5 +580,13 @@
   "cpStepAccount": "अकाउंट",
   "cpStepDetails": "जानकारी",
   "cpStepProfile": "प्रोफ़ाइल",
-  "cpStepInterests": "रुचियाँ"
+  "cpStepInterests": "रुचियाँ",
+  "guideOnline": "ऑनलाइन · हिन्दी व English",
+  "guideTyping": "लिख रहे हैं…",
+  "guideWelcome": "राधे राधे! 🙏",
+  "guideToolScan": "मंदिर पहचानें",
+  "guideToolPlan": "यात्रा प्लान करें",
+  "guideToolAarti": "आरती समय",
+  "guideTryAsking": "ऐसे पूछें",
+  "guideListen": "सुनें"
 }

@@ -3578,6 +3578,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Interests'**
   String get cpStepInterests;
+
+  /// No description provided for @guideOnline.
+  ///
+  /// In en, this message translates to:
+  /// **'Online · Hindi & English'**
+  String get guideOnline;
+
+  /// No description provided for @guideTyping.
+  ///
+  /// In en, this message translates to:
+  /// **'Typing…'**
+  String get guideTyping;
+
+  /// No description provided for @guideWelcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Radhe Radhe! 🙏'**
+  String get guideWelcome;
+
+  /// No description provided for @guideToolScan.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan a temple'**
+  String get guideToolScan;
+
+  /// No description provided for @guideToolPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan my yatra'**
+  String get guideToolPlan;
+
+  /// No description provided for @guideToolAarti.
+  ///
+  /// In en, this message translates to:
+  /// **'Aarti times'**
+  String get guideToolAarti;
+
+  /// No description provided for @guideTryAsking.
+  ///
+  /// In en, this message translates to:
+  /// **'Try asking'**
+  String get guideTryAsking;
+
+  /// No description provided for @guideListen.
+  ///
+  /// In en, this message translates to:
+  /// **'Listen'**
+  String get guideListen;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

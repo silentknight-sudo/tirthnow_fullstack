@@ -749,5 +749,13 @@
         "type": "String"
       }
     }
-  }
+  },
+  "guideOnline": "Online · Hindi & English",
+  "guideTyping": "Typing…",
+  "guideWelcome": "Radhe Radhe! 🙏",
+  "guideToolScan": "Scan a temple",
+  "guideToolPlan": "Plan my yatra",
+  "guideToolAarti": "Aarti times",
+  "guideTryAsking": "Try asking",
+  "guideListen": "Listen"
 }

@@ -1831,4 +1831,28 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get cpStepInterests => 'रुचियाँ';
+
+  @override
+  String get guideOnline => 'ऑनलाइन · हिन्दी व English';
+
+  @override
+  String get guideTyping => 'लिख रहे हैं…';
+
+  @override
+  String get guideWelcome => 'राधे राधे! 🙏';
+
+  @override
+  String get guideToolScan => 'मंदिर पहचानें';
+
+  @override
+  String get guideToolPlan => 'यात्रा प्लान करें';
+
+  @override
+  String get guideToolAarti => 'आरती समय';
+
+  @override
+  String get guideTryAsking => 'ऐसे पूछें';
+
+  @override
+  String get guideListen => 'सुनें';
 }

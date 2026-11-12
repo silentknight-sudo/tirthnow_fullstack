@@ -138,6 +138,29 @@ class _Header extends StatelessWidget {
               ],
             ),
           ),
+          Tooltip(
+            message: l.sosTitle,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(16),
+              onTap: () => context.push('/sos'),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFDECEA),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: const Color(0x33B3261E)),
+                ),
+                child: const Text(
+                  'SOS',
+                  style: TextStyle(
+                    color: TnColors.sos,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 12.5,
+                  ),
+                ),
+              ),
+            ),
+          ),
           IconButton(
             tooltip: l.notifications,
             icon: const Icon(Icons.notifications_none_rounded, color: TnColors.navy, size: 28),
