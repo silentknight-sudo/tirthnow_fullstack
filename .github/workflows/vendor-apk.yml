@@ -1,6 +1,10 @@
 name: Partner APK
 
-# Builds the installable partner (vendor) APK, debug-signed, with mock sign-in (OTP 123456).
+# Builds the installable TirthNow Partner (vendor) APK and attaches it to the run.
+# Signed with the debug key (fine for sideloading and testing, not for Google Play),
+# demo sign-in (OTP 123456). The APK is also published to the `partner-latest`
+# GitHub release as `tirthnow-partner.apk`, a stable download link for partners:
+# https://github.com/<owner>/<repo>/releases/download/partner-latest/tirthnow-partner.apk
 on:
   push:
     paths: ['apps/vendor_app/**', '.github/workflows/vendor-apk.yml']
@@ -11,7 +15,7 @@ on:
         required: false
 
 permissions:
-  contents: read
+  contents: write # publish the APK to the partner-latest release
 
 jobs:
   apk:
@@ -41,3 +45,12 @@ jobs:
           name: tirthnow-partner-apk
           path: apps/vendor_app/build/app/outputs/flutter-apk/*.apk
           retention-days: 30
+      - name: Publish to the partner-latest release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp build/app/outputs/flutter-apk/app-release.apk tirthnow-partner.apk
+          gh release view partner-latest >/dev/null 2>&1 || gh release create partner-latest \
+            --title "TirthNow Partner app (latest build)" --prerelease \
+            --notes "Latest Android build of the TirthNow Partner app for vendors. Test build: debug-signed, demo sign-in (OTP 123456)."
+          gh release upload partner-latest tirthnow-partner.apk --clobber
