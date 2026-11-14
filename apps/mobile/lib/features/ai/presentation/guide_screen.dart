@@ -2,11 +2,16 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
+import 'package:speech_to_text/speech_recognition_result.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 
 import '../../../core/api/api_models.dart';
 import '../../../core/providers.dart';
@@ -35,6 +40,14 @@ class _GuideScreenState extends ConsumerState<GuideScreen> {
   final _meta = <_Meta>[];
   final _recorder = AudioRecorder();
   final _player = AudioPlayer();
+  // On-device speech (free, works offline for Hindi/English on most phones).
+  final _stt = SpeechToText();
+  final _tts = FlutterTts();
+  bool? _sttReady;
+  bool _ttsActive = false;
+  String _heard = '';
+  bool _sentHeard = false;
+  String _lastSpoken = '';
   String? _sessionId;
   String _streaming = '';
   final _streamCitations = <Citation>[];
@@ -58,6 +71,44 @@ class _GuideScreenState extends ConsumerState<GuideScreen> {
         _paused = s == PlayerState.paused;
       });
     });
+    _tts
+      ..setStartHandler(() {
+        if (mounted) setState(() => _speaking = true);
+      })
+      ..setCompletionHandler(_ttsDone)
+      ..setCancelHandler(_ttsDone)
+      ..setErrorHandler((_) => _ttsDone())
+      ..setPauseHandler(() {
+        if (mounted) setState(() => _paused = true);
+      })
+      ..setContinueHandler(() {
+        if (mounted) setState(() => _paused = false);
+      });
+  }
+
+  void _ttsDone() {
+    _ttsActive = false;
+    if (mounted) setState(() => _speaking = _paused = false);
+  }
+
+  String _langTag(String lang) => lang == 'hi' ? 'hi-IN' : 'en-IN';
+
+  /// Speaks with the phone's own voice; false when the device has none.
+  Future<bool> _speakOnDevice(String text, String lang) async {
+    try {
+      final tag = _langTag(lang);
+      final ok = await _tts.isLanguageAvailable(tag);
+      await _tts.setLanguage(ok == true ? tag : 'en-IN');
+      await _tts.setSpeechRate(0.48);
+      await _tts.awaitSpeakCompletion(false);
+      _ttsActive = true;
+      _lastSpoken = text;
+      final r = await _tts.speak(text);
+      return r == 1 || r == true;
+    } on Object {
+      _ttsActive = false;
+      return false;
+    }
   }
 
   @override
@@ -68,6 +119,8 @@ class _GuideScreenState extends ConsumerState<GuideScreen> {
     _scroll.dispose();
     unawaited(_recorder.dispose());
     unawaited(_player.dispose());
+    unawaited(_stt.cancel());
+    unawaited(_tts.stop());
     super.dispose();
   }
 
@@ -153,11 +206,18 @@ class _GuideScreenState extends ConsumerState<GuideScreen> {
   });
 
   Future<void> _speak(String text) async {
+    final lang = _voiceLang ?? ref.read(localeProvider).languageCode;
+    setState(() => _speaking = true);
+    // Voice translation: hear the answer in the chosen language. If the
+    // translation service is unavailable, speak the original answer.
+    var spoken = text;
     try {
-      final lang = _voiceLang ?? ref.read(localeProvider).languageCode;
-      setState(() => _speaking = true);
-      // Voice translation: hear the answer in the chosen language.
-      final spoken = await _ai.translate(text, lang);
+      spoken = await _ai.translate(text, lang);
+    } on Object {
+      spoken = text;
+    }
+    if (await _speakOnDevice(spoken, lang)) return;
+    try {
       final url = await _ai.speak(spoken, lang);
       await _player.play(UrlSource(url));
     } on Object catch (e) {
@@ -169,6 +229,16 @@ class _GuideScreenState extends ConsumerState<GuideScreen> {
   }
 
   Future<void> _togglePlayback() async {
+    if (_ttsActive) {
+      if (_paused) {
+        setState(() => _paused = false);
+        await _tts.speak(_lastSpoken);
+      } else {
+        await _tts.pause();
+        if (mounted) setState(() => _paused = true);
+      }
+      return;
+    }
     if (_paused) {
       await _player.resume();
     } else {
@@ -177,8 +247,10 @@ class _GuideScreenState extends ConsumerState<GuideScreen> {
   }
 
   Future<void> _stopSpeaking() async {
+    await _tts.stop();
+    _ttsActive = false;
     await _player.stop();
-    if (mounted) setState(() => _speaking = false);
+    if (mounted) setState(() => _speaking = _paused = false);
   }
 
   Future<void> _toggleMic() async {
@@ -190,24 +262,74 @@ class _GuideScreenState extends ConsumerState<GuideScreen> {
   }
 
   Future<void> _startRecording() async {
+    if (_recording) return;
+    await _stopSpeaking();
+    _sttReady ??= await _stt.initialize(
+      onError: (_) {
+        if (mounted && _recording) unawaited(_stopRecording());
+      },
+      onStatus: (status) {
+        if (status == SpeechToText.doneStatus && _recording) unawaited(_stopRecording());
+      },
+    );
+    if (_sttReady == true) {
+      final lang = _voiceLang ?? ref.read(localeProvider).languageCode;
+      _heard = '';
+      _sentHeard = false;
+      setState(() => _recording = true);
+      await _stt.listen(
+        onResult: _onHeard,
+        listenOptions: SpeechListenOptions(
+          localeId: lang == 'hi' ? 'hi_IN' : 'en_IN',
+          partialResults: true,
+          cancelOnError: true,
+          pauseFor: const Duration(seconds: 3),
+          listenFor: const Duration(seconds: 45),
+        ),
+      );
+      return;
+    }
+    // Fallback: record and let the server transcribe.
     if (!await _recorder.hasPermission()) {
       if (mounted) showSnack(context, context.l10n.micPermission);
       return;
     }
-    await _player.stop();
-    await _recorder.start(const RecordConfig(encoder: AudioEncoder.opus), path: '');
+    final path = kIsWeb
+        ? ''
+        : '${(await getTemporaryDirectory()).path}/tn_voice_${DateTime.now().millisecondsSinceEpoch}.m4a';
+    await _recorder.start(
+      const RecordConfig(encoder: kIsWeb ? AudioEncoder.opus : AudioEncoder.aacLc),
+      path: path,
+    );
     setState(() => _recording = true);
+  }
+
+  void _onHeard(SpeechRecognitionResult r) {
+    if (!mounted) return;
+    _heard = r.recognizedWords;
+    setState(() => _input.text = _heard);
+    if (r.finalResult) unawaited(_stopRecording());
   }
 
   Future<void> _stopRecording() async {
     if (!_recording) return;
     setState(() => _recording = false);
+    if (_sttReady == true) {
+      await _stt.stop();
+      final text = _heard.trim();
+      if (text.isEmpty || _sentHeard) return;
+      _sentHeard = true;
+      _input.clear();
+      _lastWasVoice = true;
+      await _send(text);
+      return;
+    }
     final path = await _recorder.stop();
     if (path == null) return;
     try {
       await _ensureSession();
       final bytes = await XFile(path).readAsBytes();
-      final text = await _ai.transcribe(bytes, 'audio/webm');
+      final text = await _ai.transcribe(bytes, kIsWeb ? 'audio/webm' : 'audio/mp4');
       _lastWasVoice = true;
       await _send(text);
     } on Object catch (e) {
