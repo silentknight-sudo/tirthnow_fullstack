@@ -108,8 +108,8 @@ export const envSchema = z
 
     LLM_PROVIDER: z.enum(['mock', 'anthropic', 'gemini']).default('mock'),
     GEMINI_API_KEY: optionalString,
-    GEMINI_MODEL_DEFAULT: z.string().default('gemini-2.5-pro'),
-    GEMINI_MODEL_CHEAP: z.string().default('gemini-2.5-flash'),
+    GEMINI_MODEL_DEFAULT: z.string().default('gemini-3-flash-preview'),
+    GEMINI_MODEL_CHEAP: z.string().default('gemini-3.1-flash-lite'),
     ANTHROPIC_API_KEY: optionalString,
     LLM_MODEL_DEFAULT: z.string().default('claude-opus-5-5'),
     LLM_MODEL_CHEAP: z.string().default('claude-haiku-5-5'),

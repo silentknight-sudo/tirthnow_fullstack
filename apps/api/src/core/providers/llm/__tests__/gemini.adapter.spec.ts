@@ -42,7 +42,7 @@ describe('GeminiLlmAdapter', () => {
       tools: [{ name: 'get_aarti_schedule', description: 'd', inputSchema: { properties: {} } }],
     });
     const [url, init] = fetchMock.mock.calls[0] as [string, RequestInit];
-    expect(url).toContain('gemini-2.5-pro:generateContent');
+    expect(url).toContain('gemini-3-flash-preview:generateContent');
     expect((init.headers as Record<string, string>)['x-goog-api-key']).toBe('gemini-test');
     expect(res.stopReason).toBe('tool_use');
     expect(res.toolCalls).toEqual([
