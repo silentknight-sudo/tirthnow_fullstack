@@ -812,4 +812,33 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settings => 'Settings';
+
+  @override
+  String get radheRadhe => 'RADHE RADHE 🙏';
+
+  @override
+  String needsAction(String n) {
+    return '$n new orders are waiting for you';
+  }
+
+  @override
+  String get total => 'total';
+
+  @override
+  String get quickActions => 'Quick actions';
+
+  @override
+  String get tabAccount => 'Account';
+
+  @override
+  String get orderPlaced => 'Placed';
+
+  @override
+  String get orderAccepted => 'Accepted';
+
+  @override
+  String get orderStarted => 'Started';
+
+  @override
+  String get orderDone => 'Done';
 }

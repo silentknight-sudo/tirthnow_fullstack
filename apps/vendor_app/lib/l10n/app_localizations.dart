@@ -1628,6 +1628,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Settings'**
   String get settings;
+
+  /// No description provided for @radheRadhe.
+  ///
+  /// In en, this message translates to:
+  /// **'RADHE RADHE 🙏'**
+  String get radheRadhe;
+
+  /// No description provided for @needsAction.
+  ///
+  /// In en, this message translates to:
+  /// **'{n} new orders are waiting for you'**
+  String needsAction(String n);
+
+  /// No description provided for @total.
+  ///
+  /// In en, this message translates to:
+  /// **'total'**
+  String get total;
+
+  /// No description provided for @quickActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick actions'**
+  String get quickActions;
+
+  /// No description provided for @tabAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get tabAccount;
+
+  /// No description provided for @orderPlaced.
+  ///
+  /// In en, this message translates to:
+  /// **'Placed'**
+  String get orderPlaced;
+
+  /// No description provided for @orderAccepted.
+  ///
+  /// In en, this message translates to:
+  /// **'Accepted'**
+  String get orderAccepted;
+
+  /// No description provided for @orderStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Started'**
+  String get orderStarted;
+
+  /// No description provided for @orderDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get orderDone;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

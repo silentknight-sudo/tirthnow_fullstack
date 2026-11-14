@@ -255,5 +255,14 @@
   "docsSecure": "आपके दस्तावेज़ एन्क्रिप्टेड हैं और केवल सत्यापन के लिए उपयोग होते हैं।",
   "businessType": "व्यवसाय का प्रकार",
   "account": "मेरा खाता",
-  "settings": "सेटिंग्स"
+  "settings": "सेटिंग्स",
+  "radheRadhe": "राधे राधे 🙏",
+  "needsAction": "{n} नए ऑर्डर आपका इंतज़ार कर रहे हैं",
+  "total": "कुल",
+  "quickActions": "त्वरित कार्य",
+  "tabAccount": "खाता",
+  "orderPlaced": "मिला",
+  "orderAccepted": "स्वीकृत",
+  "orderStarted": "शुरू",
+  "orderDone": "पूरा"
 }

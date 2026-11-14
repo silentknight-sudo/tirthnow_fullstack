@@ -11,6 +11,7 @@ import '../growth/analytics_screen.dart';
 import '../growth/marketing_screen.dart';
 import '../growth/support_screen.dart';
 import '../shared/partner_ui.dart';
+import '../shared/signature.dart';
 import 'reviews_screen.dart';
 
 /// Coupons, reviews, business profile, language, sign out.
@@ -24,7 +25,7 @@ class MoreScreen extends ConsumerWidget {
     final l = context.l10n;
     final svc = serviceFor(vendor.type);
     final lang = ref.watch(localeProvider).languageCode;
-    final (statusText, statusColor) = switch (vendor.status) {
+    final (statusText, _) = switch (vendor.status) {
       'active' => (l.statusActive, TnColors.success),
       'kyc_pending' => (l.statusPending, TnColors.accent),
       'kyc_rejected' => (l.statusRejected, TnColors.sos),
@@ -37,46 +38,53 @@ class MoreScreen extends ConsumerWidget {
       body: ListView(
         padding: EdgeInsets.zero,
         children: [
-          NightHeader(title: l.account, subtitle: l.settings),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+          DuskHeader(
+            title: l.account,
+            subtitle: l.settings,
+            bottom: Row(
               children: [
-                PanelCard(
-                  child: Row(
+                ArchFrame(image: AssetImage(svc.image), width: 66, height: 82),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(14),
-                        child: Image.asset(svc.image, width: 68, height: 54, fit: BoxFit.cover),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              vendor.displayName,
-                              style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
-                            ),
-                            Text(
-                              vendor.legalName,
-                              style: const TextStyle(color: TnColors.muted, fontSize: 12.5),
-                            ),
-                            const SizedBox(height: 4),
-                            Wrap(
-                              spacing: 6,
-                              children: [
-                                Pill(svc.title(l), color: TnColors.navy, icon: svc.icon),
-                                Pill(statusText, color: statusColor, icon: Icons.verified_rounded),
-                              ],
-                            ),
-                          ],
+                      Text(
+                        vendor.displayName,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w800,
+                          fontSize: 17,
                         ),
+                      ),
+                      Text(
+                        vendor.legalName,
+                        style: const TextStyle(color: Dusk.text2, fontSize: 12.5),
+                      ),
+                      const SizedBox(height: 8),
+                      Wrap(
+                        spacing: 6,
+                        runSpacing: 6,
+                        children: [
+                          Pill(svc.title(l), color: PColors.gold, icon: svc.icon),
+                          Pill(
+                            statusText,
+                            color: const Color(0xFF7BE0A5),
+                            icon: Icons.verified_rounded,
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 120),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
                 const SizedBox(height: 16),
                 _Tile(
                   icon: Icons.insights_rounded,

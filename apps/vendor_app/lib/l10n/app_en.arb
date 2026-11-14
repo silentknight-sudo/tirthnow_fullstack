@@ -360,5 +360,21 @@
   "docsSecure": "Your documents are encrypted and used only for verification.",
   "businessType": "Business type",
   "account": "My account",
-  "settings": "Settings"
+  "settings": "Settings",
+  "radheRadhe": "RADHE RADHE 🙏",
+  "needsAction": "{n} new orders are waiting for you",
+  "@needsAction": {
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "total": "total",
+  "quickActions": "Quick actions",
+  "tabAccount": "Account",
+  "orderPlaced": "Placed",
+  "orderAccepted": "Accepted",
+  "orderStarted": "Started",
+  "orderDone": "Done"
 }

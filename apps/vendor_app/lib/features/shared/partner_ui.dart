@@ -4,6 +4,7 @@ import '../../core/format/formatters.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/widgets/common.dart';
 import '../../l10n/app_localizations.dart';
+import 'signature.dart';
 
 /// The five partner services. `type` is the API's vendor type.
 class Service {
@@ -349,6 +350,12 @@ class NightBackground extends StatelessWidget {
         // Soft glows.
         const Positioned(top: -80, right: -60, child: _Glow(color: Color(0x557B5CFF), size: 260)),
         const Positioned(
+          top: 30,
+          left: -120,
+          right: -120,
+          child: Center(child: Mandala(size: 420, opacity: 0.1)),
+        ),
+        const Positioned(
           bottom: -100,
           left: -80,
           child: _Glow(color: Color(0x44F2B544), size: 280),
@@ -534,28 +541,38 @@ double? percentChange(num now, num before) =>
 
 /// Smooth area line chart for a daily series.
 class AreaChart extends StatelessWidget {
-  const AreaChart({required this.values, this.height = 170, super.key});
+  const AreaChart({
+    required this.values,
+    this.height = 170,
+    this.color = PColors.violet,
+    this.onDark = false,
+    super.key,
+  });
 
   final List<double> values;
   final double height;
+  final Color color;
+  final bool onDark;
 
   @override
   Widget build(BuildContext context) => SizedBox(
     height: height,
     width: double.infinity,
-    child: CustomPaint(painter: _AreaPainter(values)),
+    child: CustomPaint(painter: _AreaPainter(values, color, onDark)),
   );
 }
 
 class _AreaPainter extends CustomPainter {
-  _AreaPainter(this.values);
+  _AreaPainter(this.values, this.color, this.onDark);
 
   final List<double> values;
+  final Color color;
+  final bool onDark;
 
   @override
   void paint(Canvas canvas, Size size) {
     final grid = Paint()
-      ..color = const Color(0x14232C6B)
+      ..color = onDark ? const Color(0x14FFFFFF) : const Color(0x14232C6B)
       ..strokeWidth = 1;
     for (var i = 1; i <= 3; i++) {
       final y = size.height * i / 4;
@@ -582,16 +599,16 @@ class _AreaPainter extends CustomPainter {
     canvas.drawPath(
       area,
       Paint()
-        ..shader = const LinearGradient(
+        ..shader = LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [Color(0x557B5CFF), Color(0x007B5CFF)],
+          colors: [color.withValues(alpha: 0.38), color.withValues(alpha: 0)],
         ).createShader(Offset.zero & size),
     );
     canvas.drawPath(
       line,
       Paint()
-        ..color = PColors.violet
+        ..color = color
         ..style = PaintingStyle.stroke
         ..strokeWidth = 3
         ..strokeCap = StrokeCap.round,
@@ -603,11 +620,11 @@ class _AreaPainter extends CustomPainter {
     }
     canvas
       ..drawCircle(pts[best], 7, Paint()..color = Colors.white)
-      ..drawCircle(pts[best], 4.5, Paint()..color = PColors.violet);
+      ..drawCircle(pts[best], 4.5, Paint()..color = color);
   }
 
   @override
-  bool shouldRepaint(_AreaPainter old) => old.values != values;
+  bool shouldRepaint(_AreaPainter old) => old.values != values || old.color != color;
 }
 
 /// Round icon tile used for quick actions and feature grids.

@@ -7,6 +7,7 @@ import '../../core/format/formatters.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/widgets/common.dart';
 import '../shared/partner_ui.dart';
+import '../shared/signature.dart';
 import '../vendor/data/vendor_repository.dart';
 
 final _productsProvider = FutureProvider.family<List<ProductResponse>, String>(
@@ -74,12 +75,11 @@ class _StoreListingsState extends ConsumerState<_StoreListings> {
     final items = list.value ?? const <ProductResponse>[];
     final active = items.where((p) => p.isPublished).length;
     return Scaffold(
-      appBar: AppBar(title: Text('${l.tabListings} (${items.length})')),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 14, 16, 4),
-            child: Row(
+          DuskHeader(
+            title: l.tabListings,
+            bottom: Row(
               children: [
                 for (final (key, label) in [
                   ('all', '${l.all} (${items.length})'),

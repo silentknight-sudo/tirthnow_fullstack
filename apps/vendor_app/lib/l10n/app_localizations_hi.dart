@@ -813,4 +813,33 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get settings => 'सेटिंग्स';
+
+  @override
+  String get radheRadhe => 'राधे राधे 🙏';
+
+  @override
+  String needsAction(String n) {
+    return '$n नए ऑर्डर आपका इंतज़ार कर रहे हैं';
+  }
+
+  @override
+  String get total => 'कुल';
+
+  @override
+  String get quickActions => 'त्वरित कार्य';
+
+  @override
+  String get tabAccount => 'खाता';
+
+  @override
+  String get orderPlaced => 'मिला';
+
+  @override
+  String get orderAccepted => 'स्वीकृत';
+
+  @override
+  String get orderStarted => 'शुरू';
+
+  @override
+  String get orderDone => 'पूरा';
 }
