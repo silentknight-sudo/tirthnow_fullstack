@@ -51,6 +51,36 @@ describe('GeminiLlmAdapter', () => {
     expect(res.usage).toEqual({ inputTokens: 50, outputTokens: 8 });
   });
 
+  it('falls back to the next model when one is retired or overloaded', async () => {
+    const adapter = new GeminiLlmAdapter(
+      loadConfig({
+        ...base,
+        GEMINI_MODEL_DEFAULT: 'gemini-2.5-pro',
+        GEMINI_MODEL_CHEAP: 'gemini-2.5-flash',
+      }),
+    );
+    const ok = reply({
+      candidates: [
+        { content: { role: 'model', parts: [{ text: 'नमस्ते' }] }, finishReason: 'STOP' },
+      ],
+    });
+    const fetchMock = jest
+      .spyOn(global, 'fetch')
+      .mockResolvedValueOnce(reply({ error: { code: 404 } }, 404))
+      .mockResolvedValueOnce(reply({ error: { code: 503 } }, 503))
+      .mockResolvedValueOnce(ok);
+    const res = await adapter.complete({
+      tier: 'default',
+      system: 's',
+      messages: [{ role: 'user', text: 'hi' }],
+    });
+    const urls = fetchMock.mock.calls.map((c) => c[0] as string);
+    expect(urls[0]).toContain('gemini-2.5-pro:');
+    expect(urls[1]).toContain('gemini-2.5-flash:');
+    expect(urls[2]).toContain('gemini-3-flash-preview:');
+    expect(res.text).toBe('नमस्ते');
+  });
+
   it('turns rate limits into a provider-unavailable error', async () => {
     const adapter = new GeminiLlmAdapter(loadConfig(base));
     jest.spyOn(global, 'fetch').mockResolvedValue(reply({}, 429));

@@ -39,6 +39,18 @@ const toolName = (id: string): string => id.split('#')[0] ?? id;
  * Google Gemini (generateContent REST API, AI Studio key): tool use via function calling,
  * structured output via responseJsonSchema, SSE streaming.
  */
+/** Tried after the configured models (both available to new keys in Nov 2026). */
+const FALLBACK_MODELS = ['gemini-3-flash-preview', 'gemini-3.1-flash-lite'];
+
+class ModelUnavailableError extends Error {
+  constructor(
+    readonly status: number,
+    detail: string,
+  ) {
+    super(`Gemini model unavailable (${String(status)}): ${detail}`);
+  }
+}
+
 @Injectable()
 export class GeminiLlmAdapter implements LlmProvider {
   readonly name = 'gemini';
@@ -56,15 +68,46 @@ export class GeminiLlmAdapter implements LlmProvider {
     return this.models[tier];
   }
 
+  /**
+   * Models to try in order: the tier's model, the other tier's, then known
+   * fallbacks. Google retires models for new keys and returns 503 under load,
+   * so one unavailable model should not take the guide down.
+   */
+  private candidates(tier: LlmTier): string[] {
+    const other = tier === 'default' ? this.models.cheap : this.models.default;
+    return [...new Set([this.models[tier], other, ...FALLBACK_MODELS])];
+  }
+
+  /** POSTs to the first model that answers; returns the response and that model. */
+  private async postAny(
+    tier: LlmTier,
+    action: string,
+    req: LlmRequest,
+  ): Promise<[Response, string]> {
+    let lastError: unknown;
+    for (const model of this.candidates(tier)) {
+      try {
+        return [await this.post(`${model}:${action}`, req), model];
+      } catch (err) {
+        if (!(err instanceof ModelUnavailableError)) throw err;
+        this.logger.warn(
+          { model, status: err.status },
+          'Gemini model unavailable, trying the next one',
+        );
+        lastError = err;
+      }
+    }
+    this.logger.error({ err: lastError }, 'No Gemini model available');
+    throw new ProviderUnavailableError('gemini');
+  }
+
   async complete(req: LlmRequest): Promise<LlmResult> {
-    const model = this.models[req.tier];
-    const res = await this.post(`${model}:generateContent`, req);
+    const [res, model] = await this.postAny(req.tier, 'generateContent', req);
     return this.toResult((await res.json()) as GeminiResponse, model);
   }
 
   async stream(req: LlmRequest, onText: (delta: string) => void): Promise<LlmResult> {
-    const model = this.models[req.tier];
-    const res = await this.post(`${model}:streamGenerateContent?alt=sse`, req);
+    const [res, model] = await this.postAny(req.tier, 'streamGenerateContent?alt=sse', req);
     if (!res.body) return this.complete(req);
     const parts: GeminiPart[] = [];
     let last: GeminiResponse = {};
@@ -117,9 +160,9 @@ export class GeminiLlmAdapter implements LlmProvider {
       this.logger.warn({ err }, 'Gemini API unreachable');
       throw new ProviderUnavailableError('gemini');
     }
-    if (res.status === 429 || res.status >= 500) {
-      this.logger.warn({ status: res.status }, 'Gemini API unavailable');
-      throw new ProviderUnavailableError('gemini');
+    // 404: model retired for this key; 429 / 5xx: quota or overload.
+    if (res.status === 404 || res.status === 429 || res.status >= 500) {
+      throw new ModelUnavailableError(res.status, (await res.text()).slice(0, 300));
     }
     if (!res.ok) throw new Error(`Gemini API ${String(res.status)}: ${await res.text()}`);
     return res;
