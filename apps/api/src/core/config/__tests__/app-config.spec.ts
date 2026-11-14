@@ -1,4 +1,4 @@
-import { ConfigValidationError, loadConfig } from '../app-config';
+import { ConfigValidationError, loadConfig, normalizePublicUrl } from '../app-config';
 import { parseDurationSeconds } from '../duration';
 
 const base = {
@@ -91,5 +91,15 @@ describe('parseDurationSeconds', () => {
 
   it('rejects garbage', () => {
     expect(() => parseDurationSeconds('15 minutes')).toThrow();
+  });
+});
+
+describe('normalizePublicUrl', () => {
+  it('drops trailing slashes and a trailing dot on the host', () => {
+    expect(normalizePublicUrl('https://tirthnow-api.onrender.com.')).toBe(
+      'https://tirthnow-api.onrender.com',
+    );
+    expect(normalizePublicUrl('https://api.example.com/')).toBe('https://api.example.com');
+    expect(normalizePublicUrl(' http://localhost:4000 ')).toBe('http://localhost:4000');
   });
 });

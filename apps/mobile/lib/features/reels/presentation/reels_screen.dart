@@ -189,6 +189,8 @@ class _ReelPagerState extends State<ReelPager> {
   Widget build(BuildContext context) => PageView.builder(
     controller: _pages,
     scrollDirection: Axis.vertical,
+    // Builds the next reel off-screen so its video is ready before the swipe.
+    allowImplicitScrolling: true,
     itemCount: widget.reels.length,
     onPageChanged: (i) => setState(() => _current = i),
     itemBuilder: (_, i) => _ReelPage(
@@ -237,10 +239,22 @@ class _ReelPageState extends ConsumerState<_ReelPage> with TickerProviderStateMi
   @override
   void initState() {
     super.initState();
+    _load();
+    if (widget.active) _markViewed();
+  }
+
+  bool _failed = false;
+  (bool, bool, bool, bool)? _lastState;
+
+  void _load() {
     final url = widget.reel.playbackUrl;
     if (url == null) return;
-    final v = VideoPlayerController.networkUrl(Uri.parse(url));
+    final v = VideoPlayerController.networkUrl(
+      Uri.parse(url),
+      videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
+    );
     _video = v;
+    _failed = false;
     v
       ..setLooping(true)
       ..addListener(_tick)
@@ -253,8 +267,21 @@ class _ReelPageState extends ConsumerState<_ReelPage> with TickerProviderStateMi
             if (widget.active) await v.play();
             if (mounted) setState(() {});
           })
-          .catchError((Object _) {});
-    if (widget.active) _markViewed();
+          .catchError((Object _) {
+            if (mounted) setState(() => _failed = true);
+          });
+  }
+
+  void _retry() {
+    final old = _video;
+    _playback?.detach();
+    _playback = null;
+    if (old != null) {
+      old.removeListener(_tick);
+      unawaited(old.dispose());
+    }
+    setState(() => _video = null);
+    _load();
   }
 
   @override
@@ -280,8 +307,15 @@ class _ReelPageState extends ConsumerState<_ReelPage> with TickerProviderStateMi
 
   Future<void> _applyVolume() async => _video?.setVolume(widget.muted || _edits.muted ? 0 : 1);
 
+  /// Rebuild only when play / buffer / ready / error state changes, not on
+  /// every position update (the progress bar listens on its own).
   void _tick() {
-    if (mounted) setState(() {});
+    final v = _video;
+    if (v == null || !mounted) return;
+    final st = (v.value.isInitialized, v.value.isPlaying, v.value.isBuffering, v.value.hasError);
+    if (st == _lastState) return;
+    _lastState = st;
+    setState(() => _failed = v.value.hasError);
   }
 
   @override
@@ -513,7 +547,15 @@ class _ReelPageState extends ConsumerState<_ReelPage> with TickerProviderStateMi
                         ),
                       ),
                     ReelOverlays(overlays: _edits.overlays),
-                    if (r.playbackUrl != null && widget.active)
+                    if (_failed)
+                      Center(
+                        child: FilledButton.icon(
+                          onPressed: _retry,
+                          icon: const Icon(Icons.refresh_rounded),
+                          label: Text(l.retry),
+                        ),
+                      )
+                    else if (r.playbackUrl != null && widget.active)
                       const Center(
                         child: SizedBox(
                           width: 34,
@@ -789,16 +831,29 @@ class _ReelPageState extends ConsumerState<_ReelPage> with TickerProviderStateMi
             ],
           ),
         ),
+        if (ready && v.value.isBuffering && widget.active)
+          const IgnorePointer(
+            child: Center(
+              child: SizedBox(
+                width: 34,
+                height: 34,
+                child: CircularProgressIndicator(strokeWidth: 2.5, color: Colors.white70),
+              ),
+            ),
+          ),
         if (ready && _playback != null)
           Positioned(
             left: 0,
             right: 0,
             bottom: 0,
-            child: LinearProgressIndicator(
-              value: _playback!.progress,
-              minHeight: 2.5,
-              backgroundColor: Colors.white24,
-              color: TnColors.saffron,
+            child: ValueListenableBuilder<VideoPlayerValue>(
+              valueListenable: v,
+              builder: (_, _, _) => LinearProgressIndicator(
+                value: _playback?.progress ?? 0,
+                minHeight: 2.5,
+                backgroundColor: Colors.white24,
+                color: TnColors.saffron,
+              ),
             ),
           ),
       ],

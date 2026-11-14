@@ -138,9 +138,8 @@ export function loadConfig(source: NodeJS.ProcessEnv): AppConfig {
     processRole: e.PROCESS_ROLE,
     port: e.API_PORT,
     workerPort: e.WORKER_PORT,
-    publicUrl: (e.API_PUBLIC_URL ?? e.RENDER_EXTERNAL_URL ?? 'http://localhost:4000').replace(
-      /\/$/,
-      '',
+    publicUrl: normalizePublicUrl(
+      e.API_PUBLIC_URL ?? e.RENDER_EXTERNAL_URL ?? 'http://localhost:4000',
     ),
     logLevel: e.LOG_LEVEL,
     corsOrigins: e.CORS_ORIGINS,
@@ -249,4 +248,14 @@ export function loadConfig(source: NodeJS.ProcessEnv): AppConfig {
       maxVideoBytes: Math.round(e.UPLOAD_MAX_VIDEO_MB * 1024 * 1024),
     },
   };
+}
+
+/**
+ * Origin used to build absolute links (media, share and tracking URLs). Drops a
+ * trailing slash or dot, e.g. "https://api.example.com." pasted into a dashboard.
+ */
+export function normalizePublicUrl(url: string): string {
+  const u = new URL(url.trim());
+  u.hostname = u.hostname.replace(/\.+$/, '');
+  return u.toString().replace(/\/+$/, '');
 }
