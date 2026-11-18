@@ -441,7 +441,7 @@
   "poojaItems": "मंदिर स्टोर",
   "poojaOffering": "भोग व अर्पण",
   "poojaSoon": "स्थानीय दुकानों से ऑर्डर जल्द आ रहा है।",
-  "poojaTilak": "तिलक व माला",
+  "poojaTilak": "तुलसी माला",
   "profilePublicNote": "आपका नाम और फ़ोटो आपकी रील्स और टिप्पणियों पर दिखते हैं।",
   "profileSaved": "प्रोफ़ाइल सहेजी गई",
   "repeat": "दोहराएँ",
@@ -627,7 +627,7 @@
   "stCatGarland": "माला (फूल)",
   "stCatPrasad": "प्रसाद",
   "stCatPoshak": "पोशाक",
-  "stCatTilak": "तिलक व माला",
+  "stCatTilak": "तुलसी माला",
   "stCatIdols": "मूर्तियाँ",
   "stCatBooks": "पुस्तकें",
   "stCatOther": "अन्य",
@@ -685,5 +685,12 @@
   "cabSuv": "कार (SUV)",
   "cabTempo": "टेम्पो ट्रैवलर",
   "cabAll": "सभी",
-  "cabCar": "कार"
+  "cabCar": "कार",
+  "heroAudio": "आरती ऑडियो",
+  "placeMathura": "मथुरा",
+  "placeVrindavan": "वृंदावन",
+  "placeGovardhan": "गोवर्धन",
+  "placeBarsana": "बरसाना",
+  "placeGokul": "गोकुल",
+  "placeNandgaon": "नंदगाँव"
 }

@@ -1392,7 +1392,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get poojaSoon => 'स्थानीय दुकानों से ऑर्डर जल्द आ रहा है।';
 
   @override
-  String get poojaTilak => 'तिलक व माला';
+  String get poojaTilak => 'तुलसी माला';
 
   @override
   String get profilePublicNote => 'आपका नाम और फ़ोटो आपकी रील्स और टिप्पणियों पर दिखते हैं।';
@@ -1979,7 +1979,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get stCatPoshak => 'पोशाक';
 
   @override
-  String get stCatTilak => 'तिलक व माला';
+  String get stCatTilak => 'तुलसी माला';
 
   @override
   String get stCatIdols => 'मूर्तियाँ';
@@ -2166,4 +2166,25 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get cabCar => 'कार';
+
+  @override
+  String get heroAudio => 'आरती ऑडियो';
+
+  @override
+  String get placeMathura => 'मथुरा';
+
+  @override
+  String get placeVrindavan => 'वृंदावन';
+
+  @override
+  String get placeGovardhan => 'गोवर्धन';
+
+  @override
+  String get placeBarsana => 'बरसाना';
+
+  @override
+  String get placeGokul => 'गोकुल';
+
+  @override
+  String get placeNandgaon => 'नंदगाँव';
 }

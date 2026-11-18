@@ -23,6 +23,43 @@ String storeCategoryLabel(AppLocalizations l, String key) => switch (key) {
   _ => l.stCatOther,
 };
 
+/// Photo icons for categories that no Material icon depicts well.
+String? storeCategoryArt(String key) => switch (key) {
+  'diya_dhoop' => 'assets/images/pooja/diya.jpg',
+  'poshak' => 'assets/images/pooja/poshak.jpg',
+  'tilak_mala' => 'assets/images/pooja/mala.jpg',
+  _ => null,
+};
+
+/// Category icon: a small round photo where we have one, else a Material icon.
+class StoreCategoryIcon extends StatelessWidget {
+  const StoreCategoryIcon(
+    this.category, {
+    this.size = 17,
+    this.color = TnColors.saffron,
+    super.key,
+  });
+
+  final String category;
+  final double size;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    final art = storeCategoryArt(category);
+    if (art == null) return Icon(storeCategoryIcon(category), size: size, color: color);
+    return Container(
+      width: size + 3,
+      height: size + 3,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(color: Colors.white, width: 1.2),
+        image: DecorationImage(image: AssetImage(art), fit: BoxFit.cover),
+      ),
+    );
+  }
+}
+
 IconData storeCategoryIcon(String key) => switch (key) {
   'pooja_thali' => Icons.brightness_7_rounded,
   'diya_dhoop' => Icons.local_fire_department_rounded,
@@ -154,6 +191,7 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
                       _CatChip(
                         label: storeCategoryLabel(l, c.key),
                         icon: storeCategoryIcon(c.key),
+                        category: c.key,
                         selected: selected == c.key,
                         onTap: () => ref.read(storeCategoryProvider.notifier).set(c.key),
                       ),
@@ -240,9 +278,11 @@ class _CatChip extends StatelessWidget {
     required this.icon,
     required this.selected,
     required this.onTap,
+    this.category,
   });
   final String label;
   final IconData icon;
+  final String? category;
   final bool selected;
   final VoidCallback onTap;
 
@@ -259,7 +299,10 @@ class _CatChip extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 14),
           child: Row(
             children: [
-              Icon(icon, size: 17, color: selected ? Colors.white : TnColors.saffron),
+              if (category != null)
+                StoreCategoryIcon(category!, color: selected ? Colors.white : TnColors.saffron)
+              else
+                Icon(icon, size: 17, color: selected ? Colors.white : TnColors.saffron),
               const SizedBox(width: 6),
               Text(
                 label,
@@ -606,7 +649,7 @@ class _ProductSheet extends ConsumerWidget {
               children: [
                 Row(
                   children: [
-                    Icon(storeCategoryIcon(p.category), size: 16, color: TnColors.saffron),
+                    StoreCategoryIcon(p.category, size: 16),
                     const SizedBox(width: 6),
                     Text(
                       storeCategoryLabel(l, p.category),

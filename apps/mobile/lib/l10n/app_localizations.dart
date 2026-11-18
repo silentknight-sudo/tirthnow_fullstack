@@ -2742,7 +2742,7 @@ abstract class AppLocalizations {
   /// No description provided for @poojaTilak.
   ///
   /// In en, this message translates to:
-  /// **'Tilak & mala'**
+  /// **'Tulsi mala'**
   String get poojaTilak;
 
   /// No description provided for @profilePublicNote.
@@ -3858,7 +3858,7 @@ abstract class AppLocalizations {
   /// No description provided for @stCatTilak.
   ///
   /// In en, this message translates to:
-  /// **'Tilak & mala'**
+  /// **'Tulsi mala'**
   String get stCatTilak;
 
   /// No description provided for @stCatIdols.
@@ -4208,6 +4208,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Car'**
   String get cabCar;
+
+  /// No description provided for @heroAudio.
+  ///
+  /// In en, this message translates to:
+  /// **'Aarti audio'**
+  String get heroAudio;
+
+  /// No description provided for @placeMathura.
+  ///
+  /// In en, this message translates to:
+  /// **'Mathura'**
+  String get placeMathura;
+
+  /// No description provided for @placeVrindavan.
+  ///
+  /// In en, this message translates to:
+  /// **'Vrindavan'**
+  String get placeVrindavan;
+
+  /// No description provided for @placeGovardhan.
+  ///
+  /// In en, this message translates to:
+  /// **'Govardhan'**
+  String get placeGovardhan;
+
+  /// No description provided for @placeBarsana.
+  ///
+  /// In en, this message translates to:
+  /// **'Barsana'**
+  String get placeBarsana;
+
+  /// No description provided for @placeGokul.
+  ///
+  /// In en, this message translates to:
+  /// **'Gokul'**
+  String get placeGokul;
+
+  /// No description provided for @placeNandgaon.
+  ///
+  /// In en, this message translates to:
+  /// **'Nandgaon'**
+  String get placeNandgaon;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

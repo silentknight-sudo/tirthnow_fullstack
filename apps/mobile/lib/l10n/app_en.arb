@@ -551,7 +551,7 @@
   "poojaItems": "Temple Store",
   "poojaOffering": "Offerings",
   "poojaSoon": "Ordering from local shops is coming soon.",
-  "poojaTilak": "Tilak & mala",
+  "poojaTilak": "Tulsi mala",
   "profilePublicNote": "Your name and photo appear on your reels and comments.",
   "profileSaved": "Profile saved",
   "repeat": "Repeat",
@@ -827,7 +827,7 @@
   "stCatGarland": "Garlands",
   "stCatPrasad": "Prasad",
   "stCatPoshak": "Poshak",
-  "stCatTilak": "Tilak & mala",
+  "stCatTilak": "Tulsi mala",
   "stCatIdols": "Idols",
   "stCatBooks": "Books",
   "stCatOther": "Other",
@@ -930,5 +930,12 @@
   "cabSuv": "Car (SUV)",
   "cabTempo": "Tempo traveller",
   "cabAll": "All",
-  "cabCar": "Car"
+  "cabCar": "Car",
+  "heroAudio": "Aarti audio",
+  "placeMathura": "Mathura",
+  "placeVrindavan": "Vrindavan",
+  "placeGovardhan": "Govardhan",
+  "placeBarsana": "Barsana",
+  "placeGokul": "Gokul",
+  "placeNandgaon": "Nandgaon"
 }

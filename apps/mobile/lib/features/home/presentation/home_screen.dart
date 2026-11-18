@@ -858,12 +858,17 @@ class _Greeting extends ConsumerWidget {
   }
 }
 
+/// A label shown inside a home banner. Display only: the banner itself is
+/// the tap target (client brief, Nov 2026).
 class _HeroTile {
-  const _HeroTile(this.icon, this.label, this.route, this.color);
+  const _HeroTile(this.icon, this.label, this.route, this.color, {this.art});
   final IconData icon;
   final String label;
   final String route;
   final Color color;
+
+  /// Optional round photo used instead of [icon] (e.g. diya, poshak, mala).
+  final String? art;
 }
 
 class _HeroTab {
@@ -953,10 +958,10 @@ class _HeroCarouselState extends State<_HeroCarousel> {
         tiles: [
           _HeroTile(Icons.local_fire_department_rounded, l.heroAarti, '/aarti', orange),
           _HeroTile(Icons.lyrics_rounded, l.heroLyrics, '/aarti', purple),
-          _HeroTile(Icons.storefront_rounded, l.poojaItems, '/pooja', orange),
+          _HeroTile(Icons.headphones_rounded, l.heroAudio, '/aarti', blue),
           _HeroTile(Icons.event_available_rounded, l.heroDarshan, '/book/experiences', blue),
           _HeroTile(Icons.temple_hindu_rounded, l.heroTemples, '/temples', orange),
-          _HeroTile(Icons.movie_filter_rounded, l.reels, '/reels', orange),
+          _HeroTile(Icons.celebration_rounded, l.festivals, '/aarti', purple),
         ],
       ),
       _HeroTab(
@@ -969,12 +974,12 @@ class _HeroCarouselState extends State<_HeroCarousel> {
         cta: l.heroPlaceCta,
         route: '/journey',
         tiles: [
-          _HeroTile(Icons.temple_hindu_rounded, l.heroTemples, '/temples', orange),
-          _HeroTile(Icons.route_rounded, l.yatraJourney, '/journey', purple),
-          _HeroTile(Icons.map_rounded, l.heroPlanTrip, '/guide/planner', blue),
-          _HeroTile(Icons.hotel_rounded, l.stay, '/book/hotels', blue),
-          _HeroTile(Icons.local_taxi_rounded, l.cabs, '/book/cabs', green),
-          _HeroTile(Icons.movie_filter_rounded, l.reels, '/reels', orange),
+          _HeroTile(Icons.place_rounded, l.placeMathura, '/journey', orange),
+          _HeroTile(Icons.place_rounded, l.placeVrindavan, '/journey', purple),
+          _HeroTile(Icons.place_rounded, l.placeGovardhan, '/journey', green),
+          _HeroTile(Icons.place_rounded, l.placeBarsana, '/journey', orange),
+          _HeroTile(Icons.place_rounded, l.placeGokul, '/journey', blue),
+          _HeroTile(Icons.place_rounded, l.placeNandgaon, '/journey', purple),
         ],
       ),
       _HeroTab(
@@ -989,9 +994,27 @@ class _HeroCarouselState extends State<_HeroCarousel> {
         tiles: [
           _HeroTile(Icons.cookie_rounded, l.heroPrasad, '/pooja', orange),
           _HeroTile(Icons.local_florist_rounded, l.heroGarland, '/pooja', green),
-          _HeroTile(Icons.checkroom_rounded, l.heroPoshak, '/pooja', purple),
-          _HeroTile(Icons.light_mode_rounded, l.heroDiya, '/pooja', orange),
-          _HeroTile(Icons.spa_rounded, l.poojaTilak, '/pooja', purple),
+          _HeroTile(
+            Icons.checkroom_rounded,
+            l.heroPoshak,
+            '/pooja',
+            purple,
+            art: 'assets/images/pooja/poshak.jpg',
+          ),
+          _HeroTile(
+            Icons.light_mode_rounded,
+            l.heroDiya,
+            '/pooja',
+            orange,
+            art: 'assets/images/pooja/diya.jpg',
+          ),
+          _HeroTile(
+            Icons.spa_rounded,
+            l.poojaTilak,
+            '/pooja',
+            green,
+            art: 'assets/images/pooja/mala.jpg',
+          ),
           _HeroTile(Icons.volunteer_activism_rounded, l.poojaOffering, '/pooja', green),
         ],
       ),
@@ -1192,8 +1215,8 @@ class _HeroTileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => context.push(tile.route),
+    // Not a button: taps fall through to the banner.
+    return IgnorePointer(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 5),
         decoration: BoxDecoration(
@@ -1207,7 +1230,17 @@ class _HeroTileView extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(tile.icon, color: tile.color, size: 22),
+            if (tile.art != null)
+              Container(
+                width: 24,
+                height: 24,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(image: AssetImage(tile.art!), fit: BoxFit.cover),
+                ),
+              )
+            else
+              Icon(tile.icon, color: tile.color, size: 22),
             const SizedBox(height: 3),
             Text(
               tile.label,
