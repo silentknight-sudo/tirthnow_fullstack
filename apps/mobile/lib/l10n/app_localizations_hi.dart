@@ -2187,4 +2187,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get placeNandgaon => 'नंदगाँव';
+
+  @override
+  String get plannerHeading => 'तीर्थनाउ के साथ अपनी यात्रा प्लान करें';
 }

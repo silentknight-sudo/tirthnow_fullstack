@@ -2192,4 +2192,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get placeNandgaon => 'Nandgaon';
+
+  @override
+  String get plannerHeading => 'Plan your Yatra with TirthNow';
 }

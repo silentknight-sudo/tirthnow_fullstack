@@ -4250,6 +4250,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Nandgaon'**
   String get placeNandgaon;
+
+  /// No description provided for @plannerHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan your Yatra with TirthNow'**
+  String get plannerHeading;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

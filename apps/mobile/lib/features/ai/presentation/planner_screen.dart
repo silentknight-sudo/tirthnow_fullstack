@@ -744,7 +744,8 @@ class _PlannerHero extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    l.planYourYatra,
+                    l.plannerHeading,
+                    maxLines: 2,
                     style: const TextStyle(
                       fontFamily: 'Cormorant',
                       color: Colors.white,
@@ -756,7 +757,7 @@ class _PlannerHero extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     l.plannerHeroHint,
-                    maxLines: 3,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(color: Colors.white70, fontSize: 11.5, height: 1.3),
                   ),
