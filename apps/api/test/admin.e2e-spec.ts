@@ -203,6 +203,17 @@ describe('admin', () => {
     ]);
   });
 
+  it('switches a feature flag with a plain boolean value', async () => {
+    for (const value of [false, true]) {
+      const res = await t.http
+        .put('/v1/admin/config')
+        .set(...bearer(admin))
+        .send({ key: 'feature.reels', kind: 'feature_flag', value })
+        .expect(200);
+      expect((res.body as { value: unknown }).value).toBe(value);
+    }
+  });
+
   it('manages runtime config that the public config endpoint serves', async () => {
     await t.http
       .put('/v1/admin/config')

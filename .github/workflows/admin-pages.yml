@@ -1,0 +1,53 @@
+name: Admin panel (GitHub Pages)
+
+# Builds the admin panel (apps/admin-portal, static export) and publishes it to
+# GitHub Pages: https://<owner>.github.io/<repo>/
+# One-time setup: repo Settings → Pages → Source: "GitHub Actions".
+# The API must list the Pages origin (https://<owner>.github.io) in CORS_ORIGINS.
+on:
+  push:
+    paths:
+      - 'apps/admin-portal/**'
+      - 'packages/api-client/**'
+      - '.github/workflows/admin-pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: admin-pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NEXT_PUBLIC_API_BASE_URL: ${{ vars.MOBILE_API_BASE_URL || 'https://tirthnow-api.onrender.com' }}
+      NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile --filter @tirth-now/admin-portal...
+      - run: pnpm --filter @tirth-now/admin-portal build
+      - run: touch apps/admin-portal/out/.nojekyll
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/admin-portal/out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

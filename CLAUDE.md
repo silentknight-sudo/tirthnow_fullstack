@@ -12,7 +12,7 @@ structural changes. Keep this file updated as phases land.
 | 2 | Backend modules (all 16 modules, 227 routes, realtime, workers) | Done |
 | 3 | Mobile app (Flutter): auth, home, temples + aarti, bookings + payments, SOS, notifications, reels, AI guide + planner | Done |
 | 4 | Vendor portal (Next.js static, typed API client, Playwright) | Done |
-| 5 | Admin portal | Not started |
+| 5 | Admin portal (KYC, orders, payouts, SOS, moderation, aarti, users, settings; GitHub Pages) | In progress |
 | 6 | Hardening & release | Not started |
 
 ## Repo map
@@ -141,6 +141,12 @@ Do not use plain `prisma migrate dev` to create migrations (it will offer to dro
 - Flow: OTP login → choose service (cab, hotel, dharamshala, restaurant, store) → business details → KYC + bank → waiting / dashboard. Router stage logic in `core/router.dart` (`partnerStage`).
 - Listings per service type in `features/listings`; every price field shows the pilgrim price (`customerPrice`: +18% GST +5% fee). Coupons, reviews with replies, analytics dashboard.
 - Online KYC options and the accounts they need: `docs/CLIENT_SETUP_TODO.md`. Image sources: `docs/IMAGE_CREDITS.md`.
+
+## Admin panel (apps/admin-portal, Nov 2026)
+
+- Static Next.js export like the vendor portal; dev on :3004. Hosted on GitHub Pages by `.github/workflows/admin-pages.yml` (`NEXT_PUBLIC_BASE_PATH=/<repo>`); the API must allow `https://<owner>.github.io` in `CORS_ORIGINS`.
+- Admin responses the OpenAPI document leaves untyped are described in `lib/types.ts` and read with `as<T>()`; payment, refund, cancel, payout and broadcast calls send `idem()` keys.
+- Keep list `limit` ≤ 50 (API maximum).
 
 ## How the vendor portal fits (Phase 4)
 

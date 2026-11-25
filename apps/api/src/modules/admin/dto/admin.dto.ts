@@ -1,6 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
+  IsDefined,
   IsBoolean,
   IsDateString,
   IsEnum,
@@ -63,7 +64,10 @@ export class PlatformRoleDto {
 export class ConfigDto {
   @ApiProperty({ example: 'banner.diwali' }) @Matches(/^[a-z0-9_.-]{2,80}$/) key!: string;
   @ApiProperty({ enum: ConfigKind }) @IsEnum(ConfigKind) kind!: ConfigKind;
-  @ApiProperty({ description: 'Any JSON value' }) @IsObject() value!: Record<string, unknown>;
+  /** Any JSON value: a feature flag is true/false, a setting can be an object or list. */
+  @ApiProperty({ description: 'Any JSON value (boolean for feature flags)' })
+  @IsDefined()
+  value!: boolean | number | string | unknown[] | Record<string, unknown>;
   @ApiPropertyOptional({ example: { platforms: ['android'], cityIds: [] } })
   @IsOptional()
   @IsObject()

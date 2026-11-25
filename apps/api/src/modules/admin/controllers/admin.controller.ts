@@ -153,7 +153,7 @@ export class AdminController {
   async upsertConfig(@CurrentUser() u: AuthPrincipal, @Body() dto: ConfigDto) {
     const data = {
       kind: dto.kind,
-      value: dto.value as Prisma.InputJsonObject,
+      value: dto.value as Prisma.InputJsonValue,
       targeting: (dto.targeting ?? {}) as Prisma.InputJsonObject,
       isActive: dto.isActive ?? true,
       startsAt: dto.startsAt ? new Date(dto.startsAt) : null,
