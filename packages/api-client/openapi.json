@@ -875,7 +875,7 @@
             "type": "object"
           },
           "value": {
-            "description": "Any JSON value",
+            "description": "Any JSON value (boolean for feature flags)",
             "type": "object"
           }
         },

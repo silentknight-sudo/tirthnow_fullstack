@@ -3666,7 +3666,7 @@ export interface components {
        *     }
        */
       targeting?: Record<string, never>;
-      /** @description Any JSON value */
+      /** @description Any JSON value (boolean for feature flags) */
       value: Record<string, never>;
     };
     CouponResponse: {

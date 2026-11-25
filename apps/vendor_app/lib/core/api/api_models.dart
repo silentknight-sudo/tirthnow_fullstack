@@ -892,7 +892,7 @@ class ConfigDto {
   final String? startsAt;
   final Map<String, dynamic>? targeting;
 
-  /// Any JSON value
+  /// Any JSON value (boolean for feature flags)
   final Map<String, dynamic> value;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
