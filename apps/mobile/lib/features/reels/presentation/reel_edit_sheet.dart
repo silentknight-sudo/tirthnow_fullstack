@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -137,8 +138,8 @@ class _EditSheetState extends ConsumerState<_EditSheet> {
                     child: _cover != null
                         ? Image.memory(_cover!, fit: BoxFit.cover)
                         : poster != null
-                        ? Image.network(
-                            poster,
+                        ? Image(
+                            image: CachedNetworkImageProvider(poster),
                             fit: BoxFit.cover,
                             errorBuilder: (_, _, _) => const ColoredBox(color: TnColors.night),
                           )

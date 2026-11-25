@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -298,7 +299,7 @@ class _MemberRow extends StatelessWidget {
     return ListTile(
       leading: CircleAvatar(
         backgroundColor: TnColors.saffron,
-        backgroundImage: m.avatarUrl == null ? null : NetworkImage(m.avatarUrl!),
+        backgroundImage: m.avatarUrl == null ? null : CachedNetworkImageProvider(m.avatarUrl!),
         child: m.avatarUrl == null
             ? Text(
                 m.name.characters.first.toUpperCase(),

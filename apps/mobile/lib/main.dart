@@ -11,6 +11,10 @@ import 'core/providers.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Keep more decoded images in memory so scrolling back does not re-decode.
+  PaintingBinding.instance.imageCache
+    ..maximumSize = 300
+    ..maximumSizeBytes = 150 << 20;
   final config = AppConfig.fromEnvironment();
   // Formatters without an explicit locale would otherwise use the device
   // locale, and an unusual one (e.g. "en-US@posix") throws at start-up.

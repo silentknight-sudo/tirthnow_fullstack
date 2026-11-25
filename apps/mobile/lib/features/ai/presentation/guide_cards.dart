@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -379,8 +380,8 @@ String formatChatTime(DateTime t) => formatIstTime(t);
 /// Network photo or a bundled asset (catalog photos fall back to assets).
 Widget guideImage(String src) => src.startsWith('assets/')
     ? Image.asset(src, fit: BoxFit.cover, width: double.infinity)
-    : Image.network(
-        src,
+    : Image(
+        image: CachedNetworkImageProvider(src),
         fit: BoxFit.cover,
         width: double.infinity,
         errorBuilder: (_, _, _) => const ColoredBox(color: TnColors.paper2),

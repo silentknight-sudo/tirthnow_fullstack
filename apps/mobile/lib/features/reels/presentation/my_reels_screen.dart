@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -152,7 +153,7 @@ class _HeaderState extends ConsumerState<_Header> {
                 backgroundColor: TnColors.saffron,
                 backgroundImage: profile.avatarUrl == null
                     ? null
-                    : NetworkImage(profile.avatarUrl!),
+                    : CachedNetworkImageProvider(profile.avatarUrl!),
                 child: profile.avatarUrl == null
                     ? Text(
                         profile.displayName.isEmpty ? '🙏' : profile.displayName[0],
@@ -223,8 +224,8 @@ class _Tile extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           if (reel.posterUrl != null)
-            Image.network(
-              reel.posterUrl!,
+            Image(
+              image: CachedNetworkImageProvider(reel.posterUrl!),
               fit: BoxFit.cover,
               errorBuilder: (_, _, _) => const ColoredBox(color: TnColors.night),
             )

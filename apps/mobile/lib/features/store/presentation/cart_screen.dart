@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -164,7 +165,10 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                               height: 52,
                               child: line.$1.imageUrls.isEmpty
                                   ? const ColoredBox(color: TnColors.paper2)
-                                  : Image.network(line.$1.imageUrls.first, fit: BoxFit.cover),
+                                  : Image(
+                                      image: CachedNetworkImageProvider(line.$1.imageUrls.first),
+                                      fit: BoxFit.cover,
+                                    ),
                             ),
                           ),
                           const SizedBox(width: 10),

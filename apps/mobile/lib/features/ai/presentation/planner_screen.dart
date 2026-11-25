@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -1290,8 +1291,8 @@ class _HotelChoice extends StatelessWidget {
           fit: StackFit.expand,
           children: [
             if (hotel.coverUrl != null)
-              Image.network(
-                hotel.coverUrl!,
+              Image(
+                image: CachedNetworkImageProvider(hotel.coverUrl!),
                 fit: BoxFit.cover,
                 errorBuilder: (_, _, _) =>
                     Image.asset('assets/images/canva/stay.jpg', fit: BoxFit.cover),

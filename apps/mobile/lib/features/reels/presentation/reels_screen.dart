@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -530,8 +531,8 @@ class _ReelPageState extends ConsumerState<_ReelPage> with TickerProviderStateMi
                     if (r.posterUrl != null)
                       withReelFilter(
                         _edits.filter,
-                        Image.network(
-                          r.posterUrl!,
+                        Image(
+                          image: CachedNetworkImageProvider(r.posterUrl!),
                           fit: BoxFit.cover,
                           errorBuilder: (_, _, _) => const ColoredBox(color: TnColors.night),
                         ),
@@ -927,12 +928,12 @@ class _Avatar extends StatelessWidget {
               color: TnColors.saffron,
               child: Center(child: initial),
             )
-          : Image.network(url, fit: BoxFit.cover);
+          : Image(image: CachedNetworkImageProvider(url), fit: BoxFit.cover);
     }
     return CircleAvatar(
       radius: radius,
       backgroundColor: TnColors.saffron,
-      backgroundImage: url == null ? null : NetworkImage(url),
+      backgroundImage: url == null ? null : CachedNetworkImageProvider(url),
       child: url == null ? initial : null,
     );
   }

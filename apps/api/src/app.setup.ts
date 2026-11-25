@@ -3,6 +3,7 @@ import { join } from 'node:path';
 import { RequestMethod } from '@nestjs/common';
 import { type NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, type OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
+import compression from 'compression';
 import helmet from 'helmet';
 import { Logger } from 'nestjs-pino';
 import { type AppConfig } from './core/config';
@@ -17,6 +18,18 @@ export function configureApp(app: NestExpressApplication, config: AppConfig): vo
   app.set('trust proxy', config.trustProxy);
   app.disable('x-powered-by');
   app.use(helmet());
+  // Gzip JSON and text responses (a temple list shrinks ~5x on mobile data).
+  // Never buffer server-sent events: the AI guide streams its answer.
+  app.use(
+    compression({
+      threshold: 1024,
+      filter: (req, res) => {
+        if ((req.headers.accept ?? '').includes('text/event-stream')) return false;
+        if (String(res.getHeader('Content-Type') ?? '').includes('text/event-stream')) return false;
+        return compression.filter(req, res);
+      },
+    }),
+  );
   app.enableCors({
     origin: config.corsOrigins,
     credentials: true,

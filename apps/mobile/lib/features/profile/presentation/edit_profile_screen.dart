@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -122,7 +123,8 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                       backgroundColor: TnColors.paper2,
                       backgroundImage: _photo != null
                           ? MemoryImage(_photo!)
-                          : (avatarUrl != null ? NetworkImage(avatarUrl) : null) as ImageProvider?,
+                          : (avatarUrl != null ? CachedNetworkImageProvider(avatarUrl) : null)
+                                as ImageProvider?,
                       child: _photo == null && avatarUrl == null
                           ? const Icon(Icons.person_rounded, size: 56, color: TnColors.muted)
                           : null,
