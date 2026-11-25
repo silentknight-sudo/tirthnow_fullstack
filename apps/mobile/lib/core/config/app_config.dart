@@ -23,7 +23,7 @@ class AppConfig {
     const pay = String.fromEnvironment('PAYMENT_PROVIDER', defaultValue: 'mock');
     const rzp = String.fromEnvironment('RAZORPAY_KEY_ID');
     return AppConfig(
-      apiBaseUrl: base.isNotEmpty ? base : _defaultBaseUrl(),
+      apiBaseUrl: apiOrigin(base.isNotEmpty ? base : _defaultBaseUrl()),
       authProvider: auth == 'firebase' ? AuthProviderKind.firebase : AuthProviderKind.mock,
       paymentProvider: pay == 'razorpay' ? PaymentProviderKind.razorpay : PaymentProviderKind.mock,
       razorpayKeyId: rzp,
@@ -43,4 +43,16 @@ class AppConfig {
     }
     return 'http://localhost:4000';
   }
+}
+
+/// Keeps only scheme://host[:port] of the configured API address, so a value
+/// pasted with a path (e.g. ".../v1/auth/portal/login") still works: the
+/// client adds `/v1/...` itself.
+String apiOrigin(String url) {
+  final u = Uri.tryParse(url.trim());
+  if (u == null || !u.hasScheme || u.host.isEmpty) return url.trim();
+  return u
+      .replace(path: '', query: null, fragment: null)
+      .toString()
+      .replaceAll(RegExp(r'[/?#]+$'), '');
 }

@@ -1,6 +1,15 @@
 import { type AuthResult, type TokenStore, ApiError, createApiClient } from '@tirth-now/api-client';
 
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:4000';
+/** Only the origin: a value pasted with a path (".../v1/auth/...") still works. */
+function origin(url: string): string {
+  try {
+    return new URL(url.trim()).origin;
+  } catch {
+    return url.trim().replace(/\/+$/, '');
+  }
+}
+
+export const API_BASE_URL = origin(process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:4000');
 
 const KEY = 'tn.admin.session';
 
