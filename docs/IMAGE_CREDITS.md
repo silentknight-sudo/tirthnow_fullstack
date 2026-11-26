@@ -11,6 +11,6 @@ in Canva.
 
 ## Temple Store category photos (Nov 2026)
 
-`apps/mobile/assets/images/store/*.jpg` were generated in Canva for this project. Categories
-without their own photo yet reuse the bundled pooja/Canva images (mapping in
+`apps/mobile/assets/images/store/*.jpg` (13 categories) were generated in Canva for this project;
+the other seven categories use the bundled `assets/images/pooja/` photos (mapping in
 `apps/mobile/lib/features/store/presentation/store_screen.dart`, `storeCategoryArt`).
