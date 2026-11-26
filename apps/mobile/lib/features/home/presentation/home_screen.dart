@@ -860,8 +860,8 @@ class _Greeting extends ConsumerWidget {
   }
 }
 
-/// A label shown inside a home banner. Display only: the banner itself is
-/// the tap target (client brief, Nov 2026).
+/// A label shown inside a home banner. Display only: neither it nor the
+/// banner opens anything (client brief, Nov 2026).
 class _HeroTile {
   const _HeroTile(this.icon, this.label, this.route, this.color, {this.art});
   final IconData icon;
@@ -1160,8 +1160,9 @@ class _HeroPanel extends StatelessWidget {
         ),
       ),
     );
-    return GestureDetector(
-      onTap: () => context.push(tab.route),
+    // Showcase only (client brief): neither the banner nor its tiles open anything.
+    // Swiping still changes banners because the PageView handles the drag.
+    return IgnorePointer(
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         decoration: BoxDecoration(
