@@ -21,6 +21,8 @@ import '../../features/content/presentation/people_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
 import '../../features/journey/presentation/journey_screen.dart';
 import '../../features/notifications/presentation/notifications_screen.dart';
+import '../../features/pandit/presentation/pandit_book_screen.dart';
+import '../../features/pandit/presentation/pandit_screen.dart';
 import '../../features/profile/presentation/contacts_screen.dart';
 import '../../features/profile/presentation/create_creator_screen.dart';
 import '../../features/profile/presentation/edit_profile_screen.dart';
@@ -205,6 +207,16 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         ],
       ),
       GoRoute(path: '/pooja', builder: (_, _) => const StoreScreen()),
+      GoRoute(
+        path: '/pandit',
+        builder: (_, _) => const PanditScreen(),
+        routes: [
+          GoRoute(
+            path: ':id',
+            builder: (_, s) => PanditBookScreen(id: s.pathParameters['id']!),
+          ),
+        ],
+      ),
       GoRoute(
         path: '/store',
         builder: (_, _) => const StoreScreen(),

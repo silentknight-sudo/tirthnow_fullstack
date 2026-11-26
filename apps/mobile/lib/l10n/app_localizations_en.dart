@@ -2278,4 +2278,119 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get heroMurti => 'Murti';
+
+  @override
+  String get panditJi => 'Pandit Ji';
+
+  @override
+  String get panditHeroSub => 'Book a learned pandit for puja, path, jyotish and more';
+
+  @override
+  String get panditPuja => 'Puja';
+
+  @override
+  String get panditPath => 'Path';
+
+  @override
+  String get panditJyotish => 'Jyotish';
+
+  @override
+  String get panditPalmistry => 'Palmistry';
+
+  @override
+  String get panditAstrology => 'Astrology';
+
+  @override
+  String get panditPujaSub => 'Katha, havan, griha pravesh';
+
+  @override
+  String get panditPathSub => 'Sundarkand, Bhagwat, Gita';
+
+  @override
+  String get panditJyotishSub => 'Kundli, milan, muhurat';
+
+  @override
+  String get panditPalmistrySub => 'Hast rekha reading';
+
+  @override
+  String get panditAstrologySub => 'Rashi, numerology, remedies';
+
+  @override
+  String get panditTrust => 'Verified pandits of Braj · Prices + 18% GST + 5% platform charge';
+
+  @override
+  String get panditEmpty => 'No pandit services here yet.';
+
+  @override
+  String panditHours(String h) {
+    return '$h hr';
+  }
+
+  @override
+  String panditMinutes(String m) {
+    return '$m min';
+  }
+
+  @override
+  String get panditChooseDate => 'Choose date and time';
+
+  @override
+  String get panditNoSlots => 'No free times in the next two weeks.';
+
+  @override
+  String get panditWhere => 'Where';
+
+  @override
+  String get panditAtHome => 'At home';
+
+  @override
+  String get panditAtTemple => 'At temple';
+
+  @override
+  String get panditOnline => 'Video call';
+
+  @override
+  String get panditAddress => 'Address for the puja';
+
+  @override
+  String get panditAddressRequired => 'Add the full address';
+
+  @override
+  String get panditSankalp => 'Sankalp details';
+
+  @override
+  String get panditSankalpHint => 'Names of family members, gotra, occasion';
+
+  @override
+  String get panditBirthDetails => 'Birth details';
+
+  @override
+  String get panditBirthHint => 'Date, time and place of birth for each person';
+
+  @override
+  String get panditSamagriNote =>
+      'The pandit will call you after booking and share the samagri list.';
+
+  @override
+  String panditBook(String price) {
+    return 'Book for $price';
+  }
+
+  @override
+  String get quickPandit => 'Pandit Ji';
+
+  @override
+  String get heroTabPandit => 'Pandit Ji';
+
+  @override
+  String get heroPanditTitle => 'Pandit Ji';
+
+  @override
+  String get heroPanditSub => 'Puja, path and jyotish by learned pandits of Braj.';
+
+  @override
+  String get heroKundli => 'Kundli';
+
+  @override
+  String get heroHavan => 'Havan';
 }

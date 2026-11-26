@@ -611,6 +611,13 @@ class _QuickAccess extends StatelessWidget {
         const Color(0xFFFFF0E0),
       ),
       (
+        Icons.self_improvement_rounded,
+        l.quickPandit,
+        '/pandit',
+        const Color(0xFFC2410C),
+        const Color(0xFFFFEDD5),
+      ),
+      (
         Icons.king_bed_rounded,
         l.stays,
         '/book/hotels',
@@ -921,7 +928,7 @@ class _HeroCarouselState extends State<_HeroCarousel> {
     _auto?.cancel();
     _auto = Timer.periodic(const Duration(seconds: 4), (_) {
       if (!mounted || !_pages.hasClients) return;
-      final next = (_index + 1) % 4;
+      final next = (_index + 1) % 5;
       unawaited(
         _pages.animateToPage(
           next,
@@ -1060,6 +1067,60 @@ class _HeroCarouselState extends State<_HeroCarousel> {
             '/pooja',
             orange,
             art: 'assets/images/store/idols.jpg',
+          ),
+        ],
+      ),
+      _HeroTab(
+        tab: l.heroTabPandit,
+        title: l.heroPanditTitle,
+        subtitle: l.heroPanditSub,
+        image: 'assets/images/pandit/hero.jpg',
+        icon: Icons.self_improvement_rounded,
+        photos: const ['temple', 'banke-bihari', 'prem-mandir'],
+        cta: l.panditJi,
+        route: '/pandit',
+        tiles: [
+          _HeroTile(
+            Icons.local_fire_department_rounded,
+            l.panditPuja,
+            '/pandit',
+            orange,
+            art: 'assets/images/pandit/puja.jpg',
+          ),
+          _HeroTile(
+            Icons.menu_book_rounded,
+            l.panditPath,
+            '/pandit',
+            purple,
+            art: 'assets/images/pandit/path.jpg',
+          ),
+          _HeroTile(
+            Icons.whatshot_rounded,
+            l.heroHavan,
+            '/pandit',
+            orange,
+            art: 'assets/images/store/havan.jpg',
+          ),
+          _HeroTile(
+            Icons.auto_awesome_rounded,
+            l.heroKundli,
+            '/pandit',
+            blue,
+            art: 'assets/images/pandit/jyotish.jpg',
+          ),
+          _HeroTile(
+            Icons.back_hand_rounded,
+            l.panditPalmistry,
+            '/pandit',
+            green,
+            art: 'assets/images/pandit/palmistry.jpg',
+          ),
+          _HeroTile(
+            Icons.brightness_4_rounded,
+            l.panditAstrology,
+            '/pandit',
+            purple,
+            art: 'assets/images/pandit/astrology.jpg',
           ),
         ],
       ),

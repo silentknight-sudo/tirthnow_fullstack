@@ -630,6 +630,58 @@ describe('orders and payments', () => {
     expect(
       (await t.prisma.experienceSlot.findUniqueOrThrow({ where: { id: slotId } })).booked,
     ).toBe(0);
+
+    // Pandit Ji: a puja at home needs an address; mode and notes are kept on the order.
+    const pandit = await createActiveVendor(t, {
+      email: 'pandit@ord.test',
+      type: 'pandit',
+      cityId: fx.vrindavan,
+      adminToken: admin,
+    });
+    const puja = await t.http
+      .post(`/v1/vendors/${pandit.vendorId}/experiences`)
+      .set(...bearer(pandit.token))
+      .send({
+        cityId: fx.vrindavan,
+        kind: 'puja',
+        title: { en: 'Satyanarayan Katha' },
+        pricePaise: 2100_00,
+        durationMin: 150,
+        maxGroupSize: 50,
+        isPublished: true,
+      })
+      .expect(201);
+    const pujaSlots = await t.http
+      .post(`/v1/vendors/${pandit.vendorId}/experiences/${puja.body.id as string}/slots`)
+      .set(...bearer(pandit.token))
+      .send({ dates: [d(6)], times: ['08:00'], capacity: 1 })
+      .expect(201);
+    const pujaSlot = pujaSlots.body[0].id as string;
+    const listed = await t.http.get('/v1/experiences?group=pandit').expect(200);
+    expect(listed.body.map((x: { kind: string }) => x.kind)).toEqual(['puja']);
+    expect(listed.body[0].vendorName).toBeTruthy();
+    const others = await t.http.get('/v1/experiences?group=experiences').expect(200);
+    expect(others.body.map((x: { kind: string }) => x.kind)).toEqual(['boat_ride']);
+    await book({
+      type: 'experience',
+      experience: { slotId: pujaSlot, seats: 1, mode: 'at_home' },
+    }).expect(400);
+    const pujaOrder = await book({
+      type: 'experience',
+      experience: {
+        slotId: pujaSlot,
+        seats: 1,
+        mode: 'at_home',
+        address: 'Radha Niwas, Raman Reti, Vrindavan',
+        notes: 'Sharma parivar, gotra Kashyap',
+      },
+    }).expect(201);
+    const saved = await t.prisma.order.findUniqueOrThrow({
+      where: { id: pujaOrder.body.order.id as string },
+    });
+    expect(saved.details).toMatchObject({
+      experience: { kind: 'puja', mode: 'at_home', notes: 'Sharma parivar, gotra Kashyap' },
+    });
   });
 
   it('enforces the state machine and validation', async () => {

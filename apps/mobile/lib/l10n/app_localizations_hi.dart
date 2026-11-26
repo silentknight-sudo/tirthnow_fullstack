@@ -2271,4 +2271,118 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get heroMurti => 'मूर्ति';
+
+  @override
+  String get panditJi => 'पंडित जी';
+
+  @override
+  String get panditHeroSub => 'पूजा, पाठ, ज्योतिष के लिए विद्वान पंडित जी बुक करें';
+
+  @override
+  String get panditPuja => 'पूजा';
+
+  @override
+  String get panditPath => 'पाठ';
+
+  @override
+  String get panditJyotish => 'ज्योतिष';
+
+  @override
+  String get panditPalmistry => 'हस्तरेखा';
+
+  @override
+  String get panditAstrology => 'राशिफल';
+
+  @override
+  String get panditPujaSub => 'कथा, हवन, गृह प्रवेश';
+
+  @override
+  String get panditPathSub => 'सुंदरकांड, भागवत, गीता';
+
+  @override
+  String get panditJyotishSub => 'कुंडली, मिलान, मुहूर्त';
+
+  @override
+  String get panditPalmistrySub => 'हस्तरेखा विचार';
+
+  @override
+  String get panditAstrologySub => 'राशि, अंक ज्योतिष, उपाय';
+
+  @override
+  String get panditTrust => 'ब्रज के सत्यापित पंडित · मूल्य + 18% GST + 5% प्लेटफ़ॉर्म शुल्क';
+
+  @override
+  String get panditEmpty => 'यहाँ अभी कोई सेवा नहीं है।';
+
+  @override
+  String panditHours(String h) {
+    return '$h घंटे';
+  }
+
+  @override
+  String panditMinutes(String m) {
+    return '$m मिनट';
+  }
+
+  @override
+  String get panditChooseDate => 'तारीख और समय चुनें';
+
+  @override
+  String get panditNoSlots => 'अगले दो हफ़्तों में कोई समय खाली नहीं।';
+
+  @override
+  String get panditWhere => 'कहाँ';
+
+  @override
+  String get panditAtHome => 'घर पर';
+
+  @override
+  String get panditAtTemple => 'मंदिर में';
+
+  @override
+  String get panditOnline => 'वीडियो कॉल';
+
+  @override
+  String get panditAddress => 'पूजा का पता';
+
+  @override
+  String get panditAddressRequired => 'पूरा पता लिखें';
+
+  @override
+  String get panditSankalp => 'संकल्प विवरण';
+
+  @override
+  String get panditSankalpHint => 'परिवार के सदस्यों के नाम, गोत्र, अवसर';
+
+  @override
+  String get panditBirthDetails => 'जन्म विवरण';
+
+  @override
+  String get panditBirthHint => 'हर व्यक्ति की जन्म तिथि, समय और स्थान';
+
+  @override
+  String get panditSamagriNote => 'बुकिंग के बाद पंडित जी आपको फ़ोन करके सामग्री सूची बताएँगे।';
+
+  @override
+  String panditBook(String price) {
+    return '$price में बुक करें';
+  }
+
+  @override
+  String get quickPandit => 'पंडित जी';
+
+  @override
+  String get heroTabPandit => 'पंडित जी';
+
+  @override
+  String get heroPanditTitle => 'पंडित जी';
+
+  @override
+  String get heroPanditSub => 'ब्रज के विद्वान पंडितों से पूजा, पाठ और ज्योतिष।';
+
+  @override
+  String get heroKundli => 'कुंडली';
+
+  @override
+  String get heroHavan => 'हवन';
 }

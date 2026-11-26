@@ -14,3 +14,8 @@ in Canva.
 `apps/mobile/assets/images/store/*.jpg` (13 categories) were generated in Canva for this project;
 the other seven categories use the bundled `assets/images/pooja/` photos (mapping in
 `apps/mobile/lib/features/store/presentation/store_screen.dart`, `storeCategoryArt`).
+
+## Pandit Ji (Nov 2026)
+
+`apps/mobile/assets/images/pandit/*.jpg` (hero, puja, path, jyotish, palmistry, astrology) were
+generated in Canva for this project.

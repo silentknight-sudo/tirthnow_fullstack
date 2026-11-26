@@ -1213,7 +1213,12 @@
               "parikrama_guide",
               "cooking",
               "workshop",
-              "other"
+              "other",
+              "puja",
+              "path",
+              "jyotish",
+              "palmistry",
+              "astrology"
             ],
             "type": "string"
           },
@@ -2258,7 +2263,8 @@
               "experience",
               "multi",
               "dharamshala",
-              "store"
+              "store",
+              "pandit"
             ],
             "type": "string"
           }
@@ -2650,6 +2656,25 @@
       },
       "ExperienceOrderDto": {
         "properties": {
+          "address": {
+            "description": "Address for an at-home puja",
+            "maxLength": 200,
+            "type": "string"
+          },
+          "mode": {
+            "description": "Pandit Ji services: where the puja or consultation happens",
+            "enum": [
+              "at_home",
+              "at_temple",
+              "online"
+            ],
+            "type": "string"
+          },
+          "notes": {
+            "description": "Sankalp names and gotra, or birth date, time and place for jyotish",
+            "maxLength": 500,
+            "type": "string"
+          },
           "seats": {
             "example": 2,
             "type": "number"
@@ -2695,7 +2720,12 @@
               "parikrama_guide",
               "cooking",
               "workshop",
-              "other"
+              "other",
+              "puja",
+              "path",
+              "jyotish",
+              "palmistry",
+              "astrology"
             ],
             "type": "string"
           },
@@ -2716,6 +2746,10 @@
           },
           "vendorId": {
             "format": "uuid",
+            "type": "string"
+          },
+          "vendorName": {
+            "description": "Business name of the provider (e.g. the pandit)",
             "type": "string"
           }
         },
@@ -6569,7 +6603,12 @@
               "parikrama_guide",
               "cooking",
               "workshop",
-              "other"
+              "other",
+              "puja",
+              "path",
+              "jyotish",
+              "palmistry",
+              "astrology"
             ],
             "type": "string"
           },
@@ -7595,7 +7634,8 @@
               "experience",
               "multi",
               "dharamshala",
-              "store"
+              "store",
+              "pandit"
             ],
             "type": "string"
           }
@@ -11460,7 +11500,25 @@
                 "parikrama_guide",
                 "cooking",
                 "workshop",
-                "other"
+                "other",
+                "puja",
+                "path",
+                "jyotish",
+                "palmistry",
+                "astrology"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "description": "pandit = Pandit Ji services (puja, path, jyotish, palmistry, astrology); experiences = everything else",
+            "in": "query",
+            "name": "group",
+            "required": false,
+            "schema": {
+              "enum": [
+                "pandit",
+                "experiences"
               ],
               "type": "string"
             }

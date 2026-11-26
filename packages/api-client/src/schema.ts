@@ -3831,7 +3831,18 @@ export interface components {
       durationMin: number;
       isPublished?: boolean;
       /** @enum {string} */
-      kind: 'guided_tour' | 'boat_ride' | 'parikrama_guide' | 'cooking' | 'workshop' | 'other';
+      kind:
+        | 'guided_tour'
+        | 'boat_ride'
+        | 'parikrama_guide'
+        | 'cooking'
+        | 'workshop'
+        | 'other'
+        | 'puja'
+        | 'path'
+        | 'jyotish'
+        | 'palmistry'
+        | 'astrology';
       /** @example 8 */
       maxGroupSize: number;
       /**
@@ -4290,7 +4301,15 @@ export interface components {
       /** @example ABCDE1234F */
       pan?: string;
       /** @enum {string} */
-      type: 'hotel' | 'cab' | 'restaurant' | 'experience' | 'multi' | 'dharamshala' | 'store';
+      type:
+        | 'hotel'
+        | 'cab'
+        | 'restaurant'
+        | 'experience'
+        | 'multi'
+        | 'dharamshala'
+        | 'store'
+        | 'pandit';
     };
     CreatorPageResponse: {
       data: components['schemas']['ReelResponse'][];
@@ -4419,6 +4438,15 @@ export interface components {
       relation: string | null;
     };
     ExperienceOrderDto: {
+      /** @description Address for an at-home puja */
+      address?: string;
+      /**
+       * @description Pandit Ji services: where the puja or consultation happens
+       * @enum {string}
+       */
+      mode?: 'at_home' | 'at_temple' | 'online';
+      /** @description Sankalp names and gotra, or birth date, time and place for jyotish */
+      notes?: string;
       /** @example 2 */
       seats: number;
       /** Format: uuid */
@@ -4434,13 +4462,26 @@ export interface components {
       id: string;
       isPublished: boolean;
       /** @enum {string} */
-      kind: 'guided_tour' | 'boat_ride' | 'parikrama_guide' | 'cooking' | 'workshop' | 'other';
+      kind:
+        | 'guided_tour'
+        | 'boat_ride'
+        | 'parikrama_guide'
+        | 'cooking'
+        | 'workshop'
+        | 'other'
+        | 'puja'
+        | 'path'
+        | 'jyotish'
+        | 'palmistry'
+        | 'astrology';
       maxGroupSize: number;
       pricePaise: number;
       slots?: components['schemas']['SlotResponse'][];
       title: string;
       /** Format: uuid */
       vendorId: string;
+      /** @description Business name of the provider (e.g. the pandit) */
+      vendorName?: string;
     };
     ExploreItemResponse: {
       body: string | null;
@@ -5596,7 +5637,18 @@ export interface components {
       durationMin?: number;
       isPublished?: boolean;
       /** @enum {string} */
-      kind?: 'guided_tour' | 'boat_ride' | 'parikrama_guide' | 'cooking' | 'workshop' | 'other';
+      kind?:
+        | 'guided_tour'
+        | 'boat_ride'
+        | 'parikrama_guide'
+        | 'cooking'
+        | 'workshop'
+        | 'other'
+        | 'puja'
+        | 'path'
+        | 'jyotish'
+        | 'palmistry'
+        | 'astrology';
       /** @example 8 */
       maxGroupSize?: number;
       /**
@@ -6035,7 +6087,15 @@ export interface components {
       /** @enum {string} */
       status: 'draft' | 'kyc_pending' | 'kyc_rejected' | 'active' | 'suspended';
       /** @enum {string} */
-      type: 'hotel' | 'cab' | 'restaurant' | 'experience' | 'multi' | 'dharamshala' | 'store';
+      type:
+        | 'hotel'
+        | 'cab'
+        | 'restaurant'
+        | 'experience'
+        | 'multi'
+        | 'dharamshala'
+        | 'store'
+        | 'pandit';
     };
     VendorReviewPageResponse: {
       data: components['schemas']['ReviewResponse'][];
@@ -8376,7 +8436,20 @@ export interface operations {
         /** @description Response language (also read from Accept-Language) */
         lang?: 'en' | 'hi';
         city?: string;
-        kind?: 'guided_tour' | 'boat_ride' | 'parikrama_guide' | 'cooking' | 'workshop' | 'other';
+        kind?:
+          | 'guided_tour'
+          | 'boat_ride'
+          | 'parikrama_guide'
+          | 'cooking'
+          | 'workshop'
+          | 'other'
+          | 'puja'
+          | 'path'
+          | 'jyotish'
+          | 'palmistry'
+          | 'astrology';
+        /** @description pandit = Pandit Ji services (puja, path, jyotish, palmistry, astrology); experiences = everything else */
+        group?: 'pandit' | 'experiences';
       };
       header?: never;
       path?: never;

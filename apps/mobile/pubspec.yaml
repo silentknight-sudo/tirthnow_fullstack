@@ -50,6 +50,7 @@ flutter:
     - assets/images/demo-people/
     - assets/images/pooja/
     - assets/images/store/
+    - assets/images/pandit/
     - assets/aarti/
     - assets/journey/
   fonts:

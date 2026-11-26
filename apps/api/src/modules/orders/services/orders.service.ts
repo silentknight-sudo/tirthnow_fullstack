@@ -398,6 +398,8 @@ export class OrdersService {
       case 'experience': {
         const e = dto.experience;
         if (!e) throw AppException.badRequest('experience details are required');
+        if (e.mode === 'at_home' && !e.address)
+          throw AppException.badRequest('Add the address for an at-home puja');
         const ctx = await this.inventory.experienceForSlot(e.slotId);
         return {
           vendorId: ctx.experience.vendorId,
@@ -415,6 +417,10 @@ export class OrdersService {
               slotId: e.slotId,
               startsAt: ctx.slot.startsAt.toISOString(),
               seats: e.seats,
+              kind: ctx.experience.kind,
+              ...(e.mode ? { mode: e.mode } : {}),
+              ...(e.address ? { address: e.address } : {}),
+              ...(e.notes ? { notes: e.notes } : {}),
             },
           },
           hold: async (tx) => {

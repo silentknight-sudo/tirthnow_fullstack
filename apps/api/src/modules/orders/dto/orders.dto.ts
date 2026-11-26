@@ -94,6 +94,30 @@ export class FoodOrderDto {
 export class ExperienceOrderDto {
   @ApiProperty({ format: 'uuid' }) @IsUUID() slotId!: string;
   @ApiProperty({ example: 2 }) @IsInt() @Min(1) @Max(500) seats!: number;
+
+  @ApiPropertyOptional({
+    enum: ['at_home', 'at_temple', 'online'],
+    description: 'Pandit Ji services: where the puja or consultation happens',
+  })
+  @IsOptional()
+  @IsIn(['at_home', 'at_temple', 'online'])
+  mode?: 'at_home' | 'at_temple' | 'online';
+
+  @ApiPropertyOptional({ description: 'Address for an at-home puja', maxLength: 200 })
+  @IsOptional()
+  @IsString()
+  @MinLength(5)
+  @MaxLength(200)
+  address?: string;
+
+  @ApiPropertyOptional({
+    description: 'Sankalp names and gotra, or birth date, time and place for jyotish',
+    maxLength: 500,
+  })
+  @IsOptional()
+  @IsString()
+  @MaxLength(500)
+  notes?: string;
 }
 
 export class DeliveryAddressDto {

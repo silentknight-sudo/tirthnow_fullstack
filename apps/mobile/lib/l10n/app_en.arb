@@ -965,5 +965,62 @@
   "popularPlaces": "Popular places",
   "temples": "Temples",
   "heroMorpankh": "Morpankh",
-  "heroMurti": "Murti"
+  "heroMurti": "Murti",
+  "panditJi": "Pandit Ji",
+  "panditHeroSub": "Book a learned pandit for puja, path, jyotish and more",
+  "panditPuja": "Puja",
+  "panditPath": "Path",
+  "panditJyotish": "Jyotish",
+  "panditPalmistry": "Palmistry",
+  "panditAstrology": "Astrology",
+  "panditPujaSub": "Katha, havan, griha pravesh",
+  "panditPathSub": "Sundarkand, Bhagwat, Gita",
+  "panditJyotishSub": "Kundli, milan, muhurat",
+  "panditPalmistrySub": "Hast rekha reading",
+  "panditAstrologySub": "Rashi, numerology, remedies",
+  "panditTrust": "Verified pandits of Braj · Prices + 18% GST + 5% platform charge",
+  "panditEmpty": "No pandit services here yet.",
+  "panditHours": "{h} hr",
+  "panditMinutes": "{m} min",
+  "panditChooseDate": "Choose date and time",
+  "panditNoSlots": "No free times in the next two weeks.",
+  "panditWhere": "Where",
+  "panditAtHome": "At home",
+  "panditAtTemple": "At temple",
+  "panditOnline": "Video call",
+  "panditAddress": "Address for the puja",
+  "panditAddressRequired": "Add the full address",
+  "panditSankalp": "Sankalp details",
+  "panditSankalpHint": "Names of family members, gotra, occasion",
+  "panditBirthDetails": "Birth details",
+  "panditBirthHint": "Date, time and place of birth for each person",
+  "panditSamagriNote": "The pandit will call you after booking and share the samagri list.",
+  "panditBook": "Book for {price}",
+  "quickPandit": "Pandit Ji",
+  "heroTabPandit": "Pandit Ji",
+  "heroPanditTitle": "Pandit Ji",
+  "heroPanditSub": "Puja, path and jyotish by learned pandits of Braj.",
+  "heroKundli": "Kundli",
+  "heroHavan": "Havan",
+  "@panditHours": {
+    "placeholders": {
+      "h": {
+        "type": "String"
+      }
+    }
+  },
+  "@panditMinutes": {
+    "placeholders": {
+      "m": {
+        "type": "String"
+      }
+    }
+  },
+  "@panditBook": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  }
 }

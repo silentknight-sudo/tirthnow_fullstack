@@ -14,6 +14,7 @@ import {
   type CreateSlotsDto,
   type ExperienceQueryDto,
   type ExperienceResponse,
+  PANDIT_KINDS,
   type SlotQueryDto,
   type SlotResponse,
   type UpdateExperienceDto,
@@ -185,11 +186,14 @@ export class ExperiencesService {
         vendorId: { in: await this.vendors.activeVendorIds() },
         ...(cityId ? { cityId } : {}),
         ...(q.kind ? { kind: q.kind } : {}),
+        ...(q.group === 'pandit' ? { kind: { in: PANDIT_KINDS } } : {}),
+        ...(q.group === 'experiences' && !q.kind ? { kind: { notIn: PANDIT_KINDS } } : {}),
       },
+      include: { vendor: { select: { displayName: true } } },
       orderBy: { pricePaise: 'asc' },
       take: 200,
     });
-    return rows.map((e) => this.toResponse(e, lang, null));
+    return rows.map((e) => this.toResponse(e, lang, null, e.vendor.displayName));
   }
 
   async detail(id: string, q: SlotQueryDto, lang: Lang): Promise<ExperienceResponse> {
@@ -202,7 +206,8 @@ export class ExperiencesService {
       },
     });
     if (!e) throw AppException.notFound('Experience not found');
-    return this.toResponse(e, lang, await this.slots(id, q));
+    const vendor = await this.vendors.get(e.vendorId);
+    return this.toResponse(e, lang, await this.slots(id, q), vendor?.displayName);
   }
 
   async slots(experienceId: string, q: { from?: string; days?: number }): Promise<SlotResponse[]> {
@@ -247,7 +252,12 @@ export class ExperiencesService {
     await tx.$executeRaw`UPDATE experience_slots SET booked = GREATEST(0, booked - ${seats}), updated_at = now() WHERE id = ${slotId}::uuid`;
   }
 
-  toResponse(e: Experience, lang: Lang, slots: SlotResponse[] | null): ExperienceResponse {
+  toResponse(
+    e: Experience,
+    lang: Lang,
+    slots: SlotResponse[] | null,
+    vendorName?: string,
+  ): ExperienceResponse {
     return {
       id: e.id,
       vendorId: e.vendorId,
@@ -260,6 +270,7 @@ export class ExperiencesService {
       maxGroupSize: e.maxGroupSize,
       cancellationPolicy: parsePolicy(e.cancellationPolicy),
       isPublished: e.isPublished,
+      ...(vendorName ? { vendorName } : {}),
       ...(slots ? { slots } : {}),
     };
   }

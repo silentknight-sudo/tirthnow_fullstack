@@ -4418,6 +4418,222 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Murti'**
   String get heroMurti;
+
+  /// No description provided for @panditJi.
+  ///
+  /// In en, this message translates to:
+  /// **'Pandit Ji'**
+  String get panditJi;
+
+  /// No description provided for @panditHeroSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Book a learned pandit for puja, path, jyotish and more'**
+  String get panditHeroSub;
+
+  /// No description provided for @panditPuja.
+  ///
+  /// In en, this message translates to:
+  /// **'Puja'**
+  String get panditPuja;
+
+  /// No description provided for @panditPath.
+  ///
+  /// In en, this message translates to:
+  /// **'Path'**
+  String get panditPath;
+
+  /// No description provided for @panditJyotish.
+  ///
+  /// In en, this message translates to:
+  /// **'Jyotish'**
+  String get panditJyotish;
+
+  /// No description provided for @panditPalmistry.
+  ///
+  /// In en, this message translates to:
+  /// **'Palmistry'**
+  String get panditPalmistry;
+
+  /// No description provided for @panditAstrology.
+  ///
+  /// In en, this message translates to:
+  /// **'Astrology'**
+  String get panditAstrology;
+
+  /// No description provided for @panditPujaSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Katha, havan, griha pravesh'**
+  String get panditPujaSub;
+
+  /// No description provided for @panditPathSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Sundarkand, Bhagwat, Gita'**
+  String get panditPathSub;
+
+  /// No description provided for @panditJyotishSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Kundli, milan, muhurat'**
+  String get panditJyotishSub;
+
+  /// No description provided for @panditPalmistrySub.
+  ///
+  /// In en, this message translates to:
+  /// **'Hast rekha reading'**
+  String get panditPalmistrySub;
+
+  /// No description provided for @panditAstrologySub.
+  ///
+  /// In en, this message translates to:
+  /// **'Rashi, numerology, remedies'**
+  String get panditAstrologySub;
+
+  /// No description provided for @panditTrust.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified pandits of Braj · Prices + 18% GST + 5% platform charge'**
+  String get panditTrust;
+
+  /// No description provided for @panditEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No pandit services here yet.'**
+  String get panditEmpty;
+
+  /// No description provided for @panditHours.
+  ///
+  /// In en, this message translates to:
+  /// **'{h} hr'**
+  String panditHours(String h);
+
+  /// No description provided for @panditMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{m} min'**
+  String panditMinutes(String m);
+
+  /// No description provided for @panditChooseDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose date and time'**
+  String get panditChooseDate;
+
+  /// No description provided for @panditNoSlots.
+  ///
+  /// In en, this message translates to:
+  /// **'No free times in the next two weeks.'**
+  String get panditNoSlots;
+
+  /// No description provided for @panditWhere.
+  ///
+  /// In en, this message translates to:
+  /// **'Where'**
+  String get panditWhere;
+
+  /// No description provided for @panditAtHome.
+  ///
+  /// In en, this message translates to:
+  /// **'At home'**
+  String get panditAtHome;
+
+  /// No description provided for @panditAtTemple.
+  ///
+  /// In en, this message translates to:
+  /// **'At temple'**
+  String get panditAtTemple;
+
+  /// No description provided for @panditOnline.
+  ///
+  /// In en, this message translates to:
+  /// **'Video call'**
+  String get panditOnline;
+
+  /// No description provided for @panditAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Address for the puja'**
+  String get panditAddress;
+
+  /// No description provided for @panditAddressRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Add the full address'**
+  String get panditAddressRequired;
+
+  /// No description provided for @panditSankalp.
+  ///
+  /// In en, this message translates to:
+  /// **'Sankalp details'**
+  String get panditSankalp;
+
+  /// No description provided for @panditSankalpHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Names of family members, gotra, occasion'**
+  String get panditSankalpHint;
+
+  /// No description provided for @panditBirthDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Birth details'**
+  String get panditBirthDetails;
+
+  /// No description provided for @panditBirthHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Date, time and place of birth for each person'**
+  String get panditBirthHint;
+
+  /// No description provided for @panditSamagriNote.
+  ///
+  /// In en, this message translates to:
+  /// **'The pandit will call you after booking and share the samagri list.'**
+  String get panditSamagriNote;
+
+  /// No description provided for @panditBook.
+  ///
+  /// In en, this message translates to:
+  /// **'Book for {price}'**
+  String panditBook(String price);
+
+  /// No description provided for @quickPandit.
+  ///
+  /// In en, this message translates to:
+  /// **'Pandit Ji'**
+  String get quickPandit;
+
+  /// No description provided for @heroTabPandit.
+  ///
+  /// In en, this message translates to:
+  /// **'Pandit Ji'**
+  String get heroTabPandit;
+
+  /// No description provided for @heroPanditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pandit Ji'**
+  String get heroPanditTitle;
+
+  /// No description provided for @heroPanditSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Puja, path and jyotish by learned pandits of Braj.'**
+  String get heroPanditSub;
+
+  /// No description provided for @heroKundli.
+  ///
+  /// In en, this message translates to:
+  /// **'Kundli'**
+  String get heroKundli;
+
+  /// No description provided for @heroHavan.
+  ///
+  /// In en, this message translates to:
+  /// **'Havan'**
+  String get heroHavan;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

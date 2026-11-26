@@ -56,8 +56,10 @@ class BookingsRepository {
   Future<RestaurantResponse> restaurant(String id) async =>
       RestaurantResponse.fromJson(await _api.getJson('/restaurants/$id'));
 
-  Future<List<ExperienceResponse>> experiences() async =>
-      (await _api.getList('/experiences')).map(ExperienceResponse.fromJson).toList();
+  Future<List<ExperienceResponse>> experiences() async => (await _api.getList(
+    '/experiences',
+    query: {'group': 'experiences'},
+  )).map(ExperienceResponse.fromJson).toList();
 
   Future<ExperienceResponse> experience(String id) async =>
       ExperienceResponse.fromJson(await _api.getJson('/experiences/$id', query: {'days': 14}));

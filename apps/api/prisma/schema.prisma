@@ -107,6 +107,7 @@ enum VendorType {
   multi
   dharamshala
   store
+  pandit
 
   @@map("vendor_type")
 }
@@ -176,6 +177,12 @@ enum ExperienceKind {
   cooking
   workshop
   other
+  /// Pandit Ji services (puja, path) and consultations (jyotish, palmistry, astrology).
+  puja
+  path
+  jyotish
+  palmistry
+  astrology
 
   @@map("experience_kind")
 }

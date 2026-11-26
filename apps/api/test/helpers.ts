@@ -214,7 +214,7 @@ export async function createActiveVendor(
   t: TestApp,
   opts: {
     email: string;
-    type: 'hotel' | 'cab' | 'restaurant' | 'experience' | 'multi';
+    type: 'hotel' | 'cab' | 'restaurant' | 'experience' | 'multi' | 'pandit';
     cityId?: string;
     adminToken: string;
   },

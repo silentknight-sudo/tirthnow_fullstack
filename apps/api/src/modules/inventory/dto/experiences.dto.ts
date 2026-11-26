@@ -1,6 +1,7 @@
 import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
+  IsIn,
   ArrayMaxSize,
   ArrayMinSize,
   IsArray,
@@ -71,7 +72,19 @@ export class ExperienceQueryDto extends LocalizedQueryDto {
   @IsOptional()
   @IsEnum(ExperienceKind)
   kind?: ExperienceKind;
+
+  @ApiPropertyOptional({
+    enum: ['pandit', 'experiences'],
+    description:
+      'pandit = Pandit Ji services (puja, path, jyotish, palmistry, astrology); experiences = everything else',
+  })
+  @IsOptional()
+  @IsIn(['pandit', 'experiences'])
+  group?: 'pandit' | 'experiences';
 }
+
+/** Kinds offered under "Pandit Ji". */
+export const PANDIT_KINDS: ExperienceKind[] = ['puja', 'path', 'jyotish', 'palmistry', 'astrology'];
 
 export class SlotQueryDto extends LocalizedQueryDto {
   @ApiPropertyOptional({ description: 'From (ISO), default now' })
@@ -107,5 +120,7 @@ export class ExperienceResponse {
   @ApiProperty() maxGroupSize!: number;
   @ApiProperty({ type: CancellationPolicyDto }) cancellationPolicy!: CancellationPolicyDto;
   @ApiProperty() isPublished!: boolean;
+  @ApiPropertyOptional({ description: 'Business name of the provider (e.g. the pandit)' })
+  vendorName?: string;
   @ApiPropertyOptional({ type: [SlotResponse] }) slots?: SlotResponse[];
 }

@@ -1247,7 +1247,7 @@ class CreateExperienceDto {
   final num durationMin;
   final bool? isPublished;
 
-  /// One of: guided_tour, boat_ride, parikrama_guide, cooking, workshop, other.
+  /// One of: guided_tour, boat_ride, parikrama_guide, cooking, workshop, other, puja, path, jyotish, palmistry, astrology.
   final String kind;
   final num maxGroupSize;
 
@@ -2249,7 +2249,7 @@ class CreateVendorDto {
   final String legalName;
   final String? pan;
 
-  /// One of: hotel, cab, restaurant, experience, multi, dharamshala, store.
+  /// One of: hotel, cab, restaurant, experience, multi, dharamshala, store, pandit.
   final String type;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -2671,15 +2671,40 @@ class EmergencyContactResponse {
 
 @immutable
 class ExperienceOrderDto {
-  const ExperienceOrderDto({required this.seats, required this.slotId});
+  const ExperienceOrderDto({
+    this.address,
+    this.mode,
+    this.notes,
+    required this.seats,
+    required this.slotId,
+  });
 
-  factory ExperienceOrderDto.fromJson(Map<String, dynamic> json) =>
-      ExperienceOrderDto(seats: json['seats'] as num, slotId: json['slotId'] as String);
+  factory ExperienceOrderDto.fromJson(Map<String, dynamic> json) => ExperienceOrderDto(
+    address: json['address'] == null ? null : json['address'] as String,
+    mode: json['mode'] == null ? null : json['mode'] as String,
+    notes: json['notes'] == null ? null : json['notes'] as String,
+    seats: json['seats'] as num,
+    slotId: json['slotId'] as String,
+  );
 
+  /// Address for an at-home puja
+  final String? address;
+
+  /// Pandit Ji services: where the puja or consultation happens One of: at_home, at_temple, online.
+  final String? mode;
+
+  /// Sankalp names and gotra, or birth date, time and place for jyotish
+  final String? notes;
   final num seats;
   final String slotId;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{'seats': seats, 'slotId': slotId};
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'address': ?address,
+    'mode': ?mode,
+    'notes': ?notes,
+    'seats': seats,
+    'slotId': slotId,
+  };
 }
 
 @immutable
@@ -2697,6 +2722,7 @@ class ExperienceResponse {
     this.slots,
     required this.title,
     required this.vendorId,
+    this.vendorName,
   });
 
   factory ExperienceResponse.fromJson(Map<String, dynamic> json) => ExperienceResponse(
@@ -2716,6 +2742,7 @@ class ExperienceResponse {
               .toList(),
     title: json['title'] as String,
     vendorId: json['vendorId'] as String,
+    vendorName: json['vendorName'] == null ? null : json['vendorName'] as String,
   );
 
   final CancellationPolicyDto cancellationPolicy;
@@ -2725,13 +2752,16 @@ class ExperienceResponse {
   final String id;
   final bool isPublished;
 
-  /// One of: guided_tour, boat_ride, parikrama_guide, cooking, workshop, other.
+  /// One of: guided_tour, boat_ride, parikrama_guide, cooking, workshop, other, puja, path, jyotish, palmistry, astrology.
   final String kind;
   final num maxGroupSize;
   final num pricePaise;
   final List<SlotResponse>? slots;
   final String title;
   final String vendorId;
+
+  /// Business name of the provider (e.g. the pandit)
+  final String? vendorName;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
     'cancellationPolicy': cancellationPolicy.toJson(),
@@ -2746,6 +2776,7 @@ class ExperienceResponse {
     'slots': ?slots?.map((x) => x.toJson()).toList(),
     'title': title,
     'vendorId': vendorId,
+    'vendorName': ?vendorName,
   };
 }
 
@@ -6600,7 +6631,7 @@ class UpdateExperienceDto {
   final num? durationMin;
   final bool? isPublished;
 
-  /// One of: guided_tour, boat_ride, parikrama_guide, cooking, workshop, other.
+  /// One of: guided_tour, boat_ride, parikrama_guide, cooking, workshop, other, puja, path, jyotish, palmistry, astrology.
   final String? kind;
   final num? maxGroupSize;
 
@@ -7689,7 +7720,7 @@ class VendorResponse {
   /// One of: draft, kyc_pending, kyc_rejected, active, suspended.
   final String status;
 
-  /// One of: hotel, cab, restaurant, experience, multi, dharamshala, store.
+  /// One of: hotel, cab, restaurant, experience, multi, dharamshala, store, pandit.
   final String type;
 
   Map<String, dynamic> toJson() => <String, dynamic>{

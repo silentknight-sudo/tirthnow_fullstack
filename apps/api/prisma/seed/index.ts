@@ -694,6 +694,247 @@ async function seedTransportAndFoodVendor(adminId: string, password: string): Pr
   }
 }
 
+/** Pandit Ji: two demo pandits offering puja, path and jyotish/palmistry consultations. */
+async function seedPandits(adminId: string, password: string): Promise<void> {
+  const pandits = [
+    {
+      key: 'pandit-radheshyam',
+      email: 'pandit.radheshyam@tirthnow.local',
+      phone: '+919876500088',
+      owner: 'Pt. Radheshyam Shastri',
+      name: 'Pt. Radheshyam Shastri (Vrindavan)',
+      city: 'vrindavan',
+    },
+    {
+      key: 'pandit-keshav',
+      email: 'pandit.keshav@tirthnow.local',
+      phone: '+919876500099',
+      owner: 'Acharya Keshav Dev Mishra',
+      name: 'Acharya Keshav Dev Mishra (Mathura)',
+      city: 'mathura',
+    },
+  ];
+  const ids: Record<string, { vendorId: string; cityId: string }> = {};
+  for (const p of pandits) {
+    const owner = await upsertPortalUser({
+      key: p.key,
+      email: p.email,
+      password,
+      displayName: p.owner,
+      phone: p.phone,
+      roles: [{ key: 'user' }],
+    });
+    const vendorId = await upsertVendor(p.key, {
+      ownerUserId: owner,
+      type: 'pandit',
+      legalName: p.owner,
+      displayName: p.name,
+      cityId: sid(`city:${p.city}`),
+      status: 'active',
+      approvedAt: new Date(),
+      approvedById: adminId,
+    });
+    await grantRoles(owner, [{ key: 'vendor_owner', vendorId }]);
+    ids[p.key] = { vendorId, cityId: sid(`city:${p.city}`) };
+  }
+  type Kind = 'puja' | 'path' | 'jyotish' | 'palmistry' | 'astrology';
+  const services: {
+    key: string;
+    pandit: string;
+    kind: Kind;
+    en: string;
+    hi: string;
+    desc: [string, string];
+    price: number;
+    min: number;
+    times: number[]; // IST hours
+  }[] = [
+    {
+      key: 'satyanarayan',
+      pandit: 'pandit-radheshyam',
+      kind: 'puja',
+      en: 'Satyanarayan Katha & Puja',
+      hi: 'सत्यनारायण कथा एवं पूजा',
+      desc: [
+        'Full katha with havan and prasad vidhi. Samagri list shared after booking.',
+        'हवन और प्रसाद विधि सहित पूर्ण कथा। बुकिंग के बाद सामग्री सूची भेजी जाएगी।',
+      ],
+      price: 2100_00,
+      min: 150,
+      times: [8, 16],
+    },
+    {
+      key: 'griha-pravesh',
+      pandit: 'pandit-keshav',
+      kind: 'puja',
+      en: 'Griha Pravesh Puja',
+      hi: 'गृह प्रवेश पूजा',
+      desc: [
+        'Vastu shanti, Ganesh puja and havan for a new home.',
+        'नए घर के लिए वास्तु शांति, गणेश पूजा और हवन।',
+      ],
+      price: 5100_00,
+      min: 180,
+      times: [7, 10],
+    },
+    {
+      key: 'rudrabhishek',
+      pandit: 'pandit-keshav',
+      kind: 'puja',
+      en: 'Rudrabhishek',
+      hi: 'रुद्राभिषेक',
+      desc: [
+        'Abhishek of Shivling with Rudri path — at home or at Bhuteshwar Mahadev.',
+        'रुद्री पाठ सहित शिवलिंग अभिषेक — घर पर या भूतेश्वर महादेव में।',
+      ],
+      price: 3100_00,
+      min: 120,
+      times: [6, 17],
+    },
+    {
+      key: 'navgrah-shanti',
+      pandit: 'pandit-radheshyam',
+      kind: 'puja',
+      en: 'Navgrah Shanti Puja',
+      hi: 'नवग्रह शांति पूजा',
+      desc: [
+        'Puja and havan for the nine planets, with sankalp in your family name.',
+        'आपके परिवार के नाम से संकल्प सहित नवग्रह पूजा और हवन।',
+      ],
+      price: 3500_00,
+      min: 150,
+      times: [8],
+    },
+    {
+      key: 'sundarkand',
+      pandit: 'pandit-radheshyam',
+      kind: 'path',
+      en: 'Sundarkand Path',
+      hi: 'सुंदरकांड पाठ',
+      desc: [
+        'Sung path of Sundarkand with harmonium and dholak, followed by Hanuman aarti.',
+        'हारमोनियम और ढोलक के साथ सुंदरकांड पाठ, फिर हनुमान आरती।',
+      ],
+      price: 2500_00,
+      min: 180,
+      times: [9, 17],
+    },
+    {
+      key: 'bhagwat-path',
+      pandit: 'pandit-keshav',
+      kind: 'path',
+      en: 'Shrimad Bhagwat Path (1 day)',
+      hi: 'श्रीमद् भागवत पाठ (1 दिन)',
+      desc: [
+        'One-day moolpath of the Bhagwat by two Vrindavan acharyas.',
+        'वृंदावन के दो आचार्यों द्वारा एक दिवसीय भागवत मूलपाठ।',
+      ],
+      price: 7100_00,
+      min: 360,
+      times: [7],
+    },
+    {
+      key: 'gita-path',
+      pandit: 'pandit-radheshyam',
+      kind: 'path',
+      en: 'Gita Path (all 18 chapters)',
+      hi: 'गीता पाठ (सभी 18 अध्याय)',
+      desc: [
+        'Complete Bhagavad Gita recitation with meaning explained in Hindi.',
+        'हिंदी अर्थ सहित संपूर्ण भगवद् गीता पाठ।',
+      ],
+      price: 1500_00,
+      min: 120,
+      times: [8, 15],
+    },
+    {
+      key: 'kundli',
+      pandit: 'pandit-keshav',
+      kind: 'jyotish',
+      en: 'Kundli Reading (Vedic Jyotish)',
+      hi: 'कुंडली विचार (वैदिक ज्योतिष)',
+      desc: [
+        'Birth chart reading: career, marriage, health and remedies. Share birth date, time and place.',
+        'जन्म कुंडली विचार: करियर, विवाह, स्वास्थ्य और उपाय। जन्म तिथि, समय और स्थान बताएँ।',
+      ],
+      price: 1100_00,
+      min: 45,
+      times: [11, 14, 18],
+    },
+    {
+      key: 'kundli-milan',
+      pandit: 'pandit-keshav',
+      kind: 'jyotish',
+      en: 'Kundli Milan (Marriage Matching)',
+      hi: 'कुंडली मिलान (विवाह)',
+      desc: [
+        'Guna milan, manglik check and muhurat suggestions for both families.',
+        'गुण मिलान, मांगलिक विचार और विवाह मुहूर्त।',
+      ],
+      price: 1500_00,
+      min: 60,
+      times: [11, 16],
+    },
+    {
+      key: 'palm-reading',
+      pandit: 'pandit-radheshyam',
+      kind: 'palmistry',
+      en: 'Palmistry (Hast Rekha) Reading',
+      hi: 'हस्तरेखा विचार',
+      desc: [
+        'Reading of the life, heart and fate lines with practical guidance. In person or by video.',
+        'जीवन, हृदय और भाग्य रेखा का विचार और मार्गदर्शन। प्रत्यक्ष या वीडियो कॉल पर।',
+      ],
+      price: 700_00,
+      min: 30,
+      times: [10, 12, 17],
+    },
+    {
+      key: 'horoscope',
+      pandit: 'pandit-keshav',
+      kind: 'astrology',
+      en: 'Astrology Consultation & Numerology',
+      hi: 'ज्योतिष परामर्श और अंक ज्योतिष',
+      desc: [
+        'Rashi, gochar and numerology guidance with gemstone and mantra remedies.',
+        'राशि, गोचर और अंक ज्योतिष परामर्श, रत्न और मंत्र उपाय सहित।',
+      ],
+      price: 900_00,
+      min: 30,
+      times: [12, 15, 19],
+    },
+  ];
+  for (const sv of services) {
+    const id = sid(`experience:${sv.key}`);
+    const owner = ids[sv.pandit];
+    if (!owner) continue;
+    const data = {
+      vendorId: owner.vendorId,
+      cityId: owner.cityId,
+      kind: sv.kind,
+      titleI18n: i18n(sv.en, sv.hi),
+      descriptionI18n: i18n(sv.desc[0], sv.desc[1]),
+      pricePaise: sv.price,
+      durationMin: sv.min,
+      maxGroupSize: 50,
+      cancellationPolicy: { freeUntilHoursBefore: 24 },
+      isPublished: true,
+    };
+    await prisma.experience.upsert({ where: { id }, create: { id, ...data }, update: data });
+    // One booking per slot: a pandit serves one family at a time. IST = UTC + 5:30.
+    for (let d = 1; d <= 14; d++) {
+      for (const h of sv.times) {
+        const startsAt = new Date(utcMidnight(d).getTime() + (h * 60 - 330) * 60_000);
+        await prisma.experienceSlot.upsert({
+          where: { experienceId_startsAt: { experienceId: id, startsAt } },
+          create: { experienceId: id, startsAt, capacity: 1 },
+          update: {},
+        });
+      }
+    }
+  }
+}
+
 async function seedPlatform(): Promise<void> {
   const rules: {
     key: string;
@@ -935,6 +1176,7 @@ async function main(): Promise<void> {
   await seedHotelVendor(adminId, vendorPassword);
   await seedTransportAndFoodVendor(adminId, vendorPassword);
   await seedDharamshalaAndStore(adminId, vendorPassword);
+  await seedPandits(adminId, vendorPassword);
   await seedPlatform();
   await seedDemoUser();
   await seedDemoCreator();

@@ -58,6 +58,10 @@ export interface OrderDetails {
     slotId: string;
     startsAt: string;
     seats: number;
+    kind?: string;
+    mode?: 'at_home' | 'at_temple' | 'online';
+    address?: string;
+    notes?: string;
   };
 }
 
