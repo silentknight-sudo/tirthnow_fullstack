@@ -99,7 +99,7 @@ describe('temple store and v2 pricing', () => {
     const product = await t.http
       .post(`/v1/vendors/${v.vendorId}/products`)
       .set(...bearer(v.token))
-      .send({ name: 'Pooja thali set', category: 'pooja_thali', pricePaise: 50_000, stock: 5 })
+      .send({ name: 'Pooja thali set', category: 'puja_utensils', pricePaise: 50_000, stock: 5 })
       .expect(201);
     // 500 + 18 % GST (90) + 5 % platform fee (25) = 615
     expect(product.body).toMatchObject({
@@ -119,11 +119,29 @@ describe('temple store and v2 pricing', () => {
       })
       .expect(201);
 
-    const catalog = await t.http.get('/v1/store/products?category=pooja_thali').expect(200);
+    const catalog = await t.http.get('/v1/store/products?category=puja_utensils').expect(200);
     expect(catalog.body.map((p: { id: string }) => p.id)).toEqual([product.body.id]);
-    expect((await t.http.get('/v1/store/categories').expect(200)).body).toEqual([
-      { key: 'pooja_thali', count: 1 },
-    ]);
+    const cats = (await t.http.get('/v1/store/categories').expect(200)).body as {
+      key: string;
+      count: number;
+      subcategories: { key: string; count: number }[];
+    }[];
+    expect(cats).toHaveLength(21);
+    expect(cats.find((c) => c.key === 'puja_utensils')?.count).toBe(1);
+    expect(cats.find((c) => c.key === 'krishna_shringar')?.subcategories.length).toBeGreaterThan(0);
+
+    // A sub-category from another category is refused.
+    await t.http
+      .post(`/v1/vendors/${v.vendorId}/products`)
+      .set(...bearer(v.token))
+      .send({
+        name: 'Wrong sub',
+        category: 'puja_utensils',
+        subcategory: 'mala_types',
+        pricePaise: 10_000,
+        stock: 1,
+      })
+      .expect(400);
 
     const user = await signInMobile(t, 'buyer-1', '+919811100001');
     const quote = await t.http
@@ -218,7 +236,7 @@ describe('temple store and v2 pricing', () => {
     const product = await t.http
       .post(`/v1/vendors/${v.vendorId}/products`)
       .set(...bearer(v.token))
-      .send({ name: 'Diya set', category: 'diya_dhoop', pricePaise: 20_000, stock: 2 })
+      .send({ name: 'Diya set', category: 'puja_samagri', pricePaise: 20_000, stock: 2 })
       .expect(201);
     await t.http
       .post(`/v1/vendors/${v.vendorId}/coupons`)

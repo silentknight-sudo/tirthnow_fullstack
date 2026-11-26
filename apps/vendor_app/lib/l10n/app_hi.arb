@@ -264,5 +264,7 @@
   "orderPlaced": "मिला",
   "orderAccepted": "स्वीकृत",
   "orderStarted": "शुरू",
-  "orderDone": "पूरा"
+  "orderDone": "पूरा",
+  "subCategory": "उप-श्रेणी",
+  "examples": "उदाहरण"
 }

@@ -14,7 +14,6 @@ import {
   type CouponResponse,
   type CreateCouponDto,
   type CreateProductDto,
-  PRODUCT_CATEGORIES,
   type PriceQuoteDto,
   type PriceQuoteResponse,
   type ProductLineDto,
@@ -23,6 +22,7 @@ import {
   type UpdateCouponDto,
   type UpdateProductDto,
 } from '../dto/store.dto';
+import { STORE_CATALOGUE, subcategoryFits } from '../store-catalogue';
 import { assertCanPublish } from './listing-guard';
 
 type Tx = Prisma.TransactionClient;
@@ -56,6 +56,7 @@ export class StoreService {
         isPublished: true,
         vendor: { status: 'active', deletedAt: null },
         ...(q.category ? { category: q.category } : {}),
+        ...(q.subcategory ? { subcategory: q.subcategory } : {}),
         ...(q.vendorId ? { vendorId: q.vendorId } : {}),
         ...(q.q ? { name: { contains: q.q, mode: 'insensitive' as const } } : {}),
       },
@@ -75,16 +76,30 @@ export class StoreService {
     return this.toResponse(p);
   }
 
+  /** The whole master catalogue with live product counts (empty categories included). */
   async categories(): Promise<CategoryResponse[]> {
     const rows = await this.prisma.product.groupBy({
-      by: ['category'],
+      by: ['category', 'subcategory'],
       where: { deletedAt: null, isPublished: true, vendor: { status: 'active' } },
       _count: { _all: true },
     });
-    const counts = new Map(rows.map((r) => [r.category, r._count._all]));
-    return PRODUCT_CATEGORIES.map((key) => ({ key, count: counts.get(key) ?? 0 })).filter(
-      (c) => c.count > 0,
-    );
+    const count = (cat: string, sub?: string) =>
+      rows
+        .filter((r) => r.category === cat && (sub === undefined || r.subcategory === sub))
+        .reduce((n, r) => n + r._count._all, 0);
+    return STORE_CATALOGUE.map((c) => ({
+      key: c.key,
+      name: c.en,
+      nameHi: c.hi,
+      count: count(c.key),
+      subcategories: c.subcategories.map((s) => ({
+        key: s.key,
+        name: s.en,
+        nameHi: s.hi,
+        examples: s.examples,
+        count: count(c.key, s.key),
+      })),
+    }));
   }
 
   // ───────────── vendor side ─────────────
@@ -104,6 +119,7 @@ export class StoreService {
     dto: CreateProductDto,
   ): Promise<ProductResponse> {
     await this.assertStoreVendor(vendorId);
+    this.assertSubcategory(dto.category, dto.subcategory);
     await assertCanPublish(this.vendors, vendorId, dto.isPublished ?? true);
     await this.assertMedia(actor, dto.mediaIds);
     const p = await this.prisma.product.create({
@@ -113,6 +129,7 @@ export class StoreService {
         name: dto.name,
         description: dto.description ?? null,
         category: dto.category,
+        subcategory: dto.subcategory ?? null,
         unit: dto.unit ?? 'piece',
         pricePaise: dto.pricePaise,
         mrpPaise: dto.mrpPaise ?? null,
@@ -139,6 +156,9 @@ export class StoreService {
     dto: UpdateProductDto,
   ): Promise<ProductResponse> {
     const before = await this.ownedProduct(vendorId, id);
+    if (dto.category !== undefined || dto.subcategory !== undefined) {
+      this.assertSubcategory(dto.category ?? before.category, dto.subcategory ?? null);
+    }
     await assertCanPublish(this.vendors, vendorId, dto.isPublished);
     await this.assertMedia(actor, dto.mediaIds);
     const p = await this.prisma.product.update({
@@ -147,6 +167,13 @@ export class StoreService {
         name: dto.name,
         description: dto.description,
         category: dto.category,
+        // A new category without a sub-category clears the old one.
+        subcategory:
+          dto.subcategory !== undefined
+            ? dto.subcategory
+            : dto.category && dto.category !== before.category
+              ? null
+              : undefined,
         unit: dto.unit,
         pricePaise: dto.pricePaise,
         mrpPaise: dto.mrpPaise,
@@ -431,6 +458,12 @@ export class StoreService {
     if (kind === 'flat' && !flatPaise) throw AppException.badRequest('Set the amount off');
   }
 
+  private assertSubcategory(category: string, subcategory: string | null | undefined): void {
+    if (subcategory && !subcategoryFits(category, subcategory)) {
+      throw AppException.badRequest('This sub-category does not belong to the category');
+    }
+  }
+
   async toResponse(p: ProductWithVendor): Promise<ProductResponse> {
     const media = await this.files.urls(p.mediaIds, 'thumb');
     return {
@@ -440,6 +473,7 @@ export class StoreService {
       name: p.name,
       description: p.description,
       category: p.category,
+      subcategory: p.subcategory,
       unit: p.unit,
       pricePaise: p.pricePaise,
       displayPricePaise: displayPrice(

@@ -99,6 +99,32 @@ export class CatalogFacade {
     return this.catalog.nearestEmergencyPois(center, lang);
   }
 
+  /** Short "about" lines per temple (planner descriptions), in the given language. */
+  async templeBriefs(
+    ids: string[],
+    lang: Lang,
+  ): Promise<
+    Map<string, { description: string | null; famousFor: string | null; highlight: string | null }>
+  > {
+    if (ids.length === 0) return new Map();
+    const rows = await this.prisma.temple.findMany({
+      where: { id: { in: [...new Set(ids)] } },
+      select: { id: true, descriptionI18n: true, factsI18n: true },
+    });
+    return new Map(
+      rows.map((r) => {
+        const all = (r.factsI18n ?? {}) as Record<string, Record<string, unknown> | undefined>;
+        const f = all[lang] ?? all.en ?? {};
+        const famousFor = typeof f.famousFor === 'string' ? f.famousFor : null;
+        const highlight =
+          Array.isArray(f.highlights) && typeof f.highlights[0] === 'string'
+            ? f.highlights[0]
+            : null;
+        return [r.id, { description: tOrNull(r.descriptionI18n, lang), famousFor, highlight }];
+      }),
+    );
+  }
+
   /** Published temples' long-form text (English) for the AI knowledge base. */
   async templeTexts(): Promise<
     {

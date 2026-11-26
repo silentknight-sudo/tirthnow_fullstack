@@ -376,5 +376,7 @@
   "orderPlaced": "Placed",
   "orderAccepted": "Accepted",
   "orderStarted": "Started",
-  "orderDone": "Done"
+  "orderDone": "Done",
+  "subCategory": "Sub-category",
+  "examples": "Examples"
 }

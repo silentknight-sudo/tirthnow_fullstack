@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -993,8 +994,13 @@ class _HeroCarouselState extends State<_HeroCarousel> {
         cta: l.heroStoreCta,
         route: '/pooja',
         tiles: [
-          _HeroTile(Icons.cookie_rounded, l.heroPrasad, '/pooja', orange),
-          _HeroTile(Icons.local_florist_rounded, l.heroGarland, '/pooja', green),
+          _HeroTile(
+            Icons.cookie_rounded,
+            l.heroPrasad,
+            '/pooja',
+            orange,
+            art: 'assets/images/pooja/prasad.jpg',
+          ),
           _HeroTile(
             Icons.checkroom_rounded,
             l.heroPoshak,
@@ -1016,7 +1022,6 @@ class _HeroCarouselState extends State<_HeroCarousel> {
             green,
             art: 'assets/images/pooja/mala.jpg',
           ),
-          _HeroTile(Icons.volunteer_activism_rounded, l.poojaOffering, '/pooja', green),
         ],
       ),
     ];
@@ -1188,15 +1193,23 @@ class _HeroPanel extends StatelessWidget {
                         ),
                       ),
                       const Spacer(),
-                      GridView.count(
-                        crossAxisCount: 3,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        padding: EdgeInsets.zero,
-                        mainAxisSpacing: 7,
-                        crossAxisSpacing: 7,
-                        childAspectRatio: 1.18,
-                        children: [for (final t in tab.tiles.take(6)) _HeroTileView(tile: t)],
+                      Padding(
+                        padding: EdgeInsets.only(right: tab.tiles.length == 4 ? 46 : 0),
+                        child: GridView.count(
+                          // Four tiles sit in a compact 2×2 of wide chips so they never run
+                          // into the photos on the right.
+                          crossAxisCount: tab.tiles.length == 4 ? 2 : 3,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          padding: EdgeInsets.zero,
+                          mainAxisSpacing: 7,
+                          crossAxisSpacing: 7,
+                          childAspectRatio: tab.tiles.length == 4 ? 2.5 : 1.18,
+                          children: [
+                            for (final (i, t) in tab.tiles.take(6).indexed)
+                              _HeroTileView(tile: t, index: i, wide: tab.tiles.length == 4),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -1210,53 +1223,98 @@ class _HeroPanel extends StatelessWidget {
   }
 }
 
-class _HeroTileView extends StatelessWidget {
-  const _HeroTileView({required this.tile});
+/// Display-only banner tile that gently floats; tiles bob out of phase so the
+/// banner feels alive (client brief: "enko move me lekar aao").
+class _HeroTileView extends StatefulWidget {
+  const _HeroTileView({required this.tile, required this.index, this.wide = false});
   final _HeroTile tile;
+  final int index;
+  final bool wide;
+
+  @override
+  State<_HeroTileView> createState() => _HeroTileViewState();
+}
+
+class _HeroTileViewState extends State<_HeroTileView> with SingleTickerProviderStateMixin {
+  late final AnimationController _c = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 2600),
+  )..repeat();
+
+  @override
+  void dispose() {
+    _c.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final tile = widget.tile;
+    final icon = tile.art != null
+        ? Container(
+            width: widget.wide ? 28 : 24,
+            height: widget.wide ? 28 : 24,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: tile.color.withValues(alpha: 0.5), width: 1.5),
+              image: DecorationImage(image: AssetImage(tile.art!), fit: BoxFit.cover),
+            ),
+          )
+        : Icon(tile.icon, color: tile.color, size: 22);
+    final label = Text(
+      tile.label,
+      maxLines: 2,
+      textAlign: widget.wide ? TextAlign.start : TextAlign.center,
+      overflow: TextOverflow.ellipsis,
+      style: const TextStyle(
+        fontFamily: 'Cormorant',
+        fontSize: 12,
+        height: 1.0,
+        fontWeight: FontWeight.w700,
+        color: TnColors.navy,
+      ),
+    );
+    final box = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 5),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: TnColors.line),
+        boxShadow: const [BoxShadow(color: Color(0x141C3C6B), blurRadius: 6, offset: Offset(0, 2))],
+      ),
+      child: widget.wide
+          ? Row(
+              children: [
+                icon,
+                const SizedBox(width: 6),
+                Expanded(child: label),
+              ],
+            )
+          : Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [icon, const SizedBox(height: 3), label],
+            ),
+    );
     // Not a button: taps fall through to the banner.
     return IgnorePointer(
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 5),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: TnColors.line),
-          boxShadow: const [
-            BoxShadow(color: Color(0x141C3C6B), blurRadius: 6, offset: Offset(0, 2)),
-          ],
+      child: TweenAnimationBuilder<double>(
+        tween: Tween(begin: 0, end: 1),
+        duration: Duration(milliseconds: 450 + widget.index * 120),
+        curve: Curves.easeOutBack,
+        builder: (_, appear, child) => Opacity(
+          opacity: appear.clamp(0, 1),
+          child: Transform.scale(scale: 0.8 + 0.2 * appear, child: child),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (tile.art != null)
-              Container(
-                width: 24,
-                height: 24,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(image: AssetImage(tile.art!), fit: BoxFit.cover),
-                ),
-              )
-            else
-              Icon(tile.icon, color: tile.color, size: 22),
-            const SizedBox(height: 3),
-            Text(
-              tile.label,
-              maxLines: 2,
-              textAlign: TextAlign.center,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                fontFamily: 'Cormorant',
-                fontSize: 11.5,
-                height: 1.0,
-                fontWeight: FontWeight.w700,
-                color: TnColors.navy,
-              ),
-            ),
-          ],
+        child: AnimatedBuilder(
+          animation: _c,
+          builder: (_, child) {
+            final t = (_c.value + widget.index * 0.17) * 2 * math.pi;
+            return Transform.translate(
+              offset: Offset(0, math.sin(t) * 2.5),
+              child: Transform.rotate(angle: math.sin(t) * 0.012, child: child),
+            );
+          },
+          child: box,
         ),
       ),
     );

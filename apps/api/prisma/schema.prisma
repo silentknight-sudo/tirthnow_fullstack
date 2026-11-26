@@ -445,6 +445,7 @@ model User {
   itineraries       Itinerary[]
   notifications     Notification[]
   aartiReminders    AartiReminder[]
+  templeAartiAlerts TempleAartiAlert[]
   sosEvents         SosEvent[]          @relation("SosUser")
   sosHandled        SosEvent[]          @relation("SosHandler")
   auditLogs         AuditLog[]
@@ -606,6 +607,8 @@ model Temple {
   address         String?
   openingHours    Json      @default("{}") @map("opening_hours")
   dressCodeI18n   Json?     @map("dress_code_i18n")
+  /// About facts per language: { en: { built, famousFor, highlights[], visitorsPerYear, prohibited[] }, hi: {...} }
+  factsI18n       Json?     @map("facts_i18n")
   tags            String[]  @default([])
   coverMediaId    String?   @map("cover_media_id") @db.Uuid
   galleryMediaIds String[]  @default([]) @map("gallery_media_ids") @db.Uuid
@@ -623,6 +626,7 @@ model Temple {
   reels          Reel[]
   knowledgeDocs  KnowledgeDocument[]
   itineraryItems ItineraryItem[]
+  aartiAlerts    TempleAartiAlert[]
 
   @@index([cityId])
   @@index([lat, lng])
@@ -965,6 +969,8 @@ model Product {
   name          String
   description   String?
   category      String
+  /// Optional master-catalogue sub-category (see inventory/store-catalogue.ts).
+  subcategory   String?
   unit          String    @default("piece")
   pricePaise    Int       @map("price_paise")
   mrpPaise      Int?      @map("mrp_paise")
@@ -1919,4 +1925,18 @@ model FamilyMember {
   @@id([groupId, userId])
   @@index([userId])
   @@map("family_members")
+}
+
+/// "Tell me when aarti starts" for a whole temple: a push at the start of every aarti there.
+model TempleAartiAlert {
+  userId    String   @map("user_id") @db.Uuid
+  templeId  String   @map("temple_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  temple Temple @relation(fields: [templeId], references: [id], onDelete: Cascade)
+
+  @@id([userId, templeId])
+  @@index([templeId])
+  @@map("temple_aarti_alerts")
 }

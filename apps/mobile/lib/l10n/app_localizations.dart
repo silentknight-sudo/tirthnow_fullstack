@@ -4256,6 +4256,156 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Plan your Yatra with TirthNow'**
   String get plannerHeading;
+
+  /// No description provided for @stShopByCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Shop by category'**
+  String get stShopByCategory;
+
+  /// No description provided for @stComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Products for this category are being listed. Items you will find here:'**
+  String get stComingSoon;
+
+  /// No description provided for @prohibited.
+  ///
+  /// In en, this message translates to:
+  /// **'Prohibited'**
+  String get prohibited;
+
+  /// No description provided for @whyFamous.
+  ///
+  /// In en, this message translates to:
+  /// **'Why it is famous'**
+  String get whyFamous;
+
+  /// No description provided for @builtWhen.
+  ///
+  /// In en, this message translates to:
+  /// **'Built'**
+  String get builtWhen;
+
+  /// No description provided for @visitorsYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Pilgrims a year'**
+  String get visitorsYear;
+
+  /// No description provided for @specialities.
+  ///
+  /// In en, this message translates to:
+  /// **'What makes it special'**
+  String get specialities;
+
+  /// No description provided for @aartiAlertTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notify me when aarti starts'**
+  String get aartiAlertTitle;
+
+  /// No description provided for @aartiAlertSub.
+  ///
+  /// In en, this message translates to:
+  /// **'A notification as each aarti begins, even if the app is closed'**
+  String get aartiAlertSub;
+
+  /// No description provided for @aartiAlertOn.
+  ///
+  /// In en, this message translates to:
+  /// **'You will be notified when aarti starts'**
+  String get aartiAlertOn;
+
+  /// No description provided for @aartiAlertOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Aarti notifications turned off'**
+  String get aartiAlertOff;
+
+  /// No description provided for @arrival.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrival'**
+  String get arrival;
+
+  /// No description provided for @departure.
+  ///
+  /// In en, this message translates to:
+  /// **'Departure'**
+  String get departure;
+
+  /// No description provided for @localTravel.
+  ///
+  /// In en, this message translates to:
+  /// **'Local travel'**
+  String get localTravel;
+
+  /// No description provided for @localErickshaw.
+  ///
+  /// In en, this message translates to:
+  /// **'E-rickshaw'**
+  String get localErickshaw;
+
+  /// No description provided for @localCab.
+  ///
+  /// In en, this message translates to:
+  /// **'Cab'**
+  String get localCab;
+
+  /// No description provided for @localWalk.
+  ///
+  /// In en, this message translates to:
+  /// **'On foot'**
+  String get localWalk;
+
+  /// No description provided for @localOwn.
+  ///
+  /// In en, this message translates to:
+  /// **'Own vehicle'**
+  String get localOwn;
+
+  /// No description provided for @currentLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Current location'**
+  String get currentLocation;
+
+  /// No description provided for @locationApprox.
+  ///
+  /// In en, this message translates to:
+  /// **'Approximate — turn on GPS for exact pickup'**
+  String get locationApprox;
+
+  /// No description provided for @locating.
+  ///
+  /// In en, this message translates to:
+  /// **'Finding your location…'**
+  String get locating;
+
+  /// No description provided for @whereTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Where to?'**
+  String get whereTo;
+
+  /// No description provided for @searchPlaces.
+  ///
+  /// In en, this message translates to:
+  /// **'Search temples, stations, ghats…'**
+  String get searchPlaces;
+
+  /// No description provided for @popularPlaces.
+  ///
+  /// In en, this message translates to:
+  /// **'Popular places'**
+  String get popularPlaces;
+
+  /// No description provided for @temples.
+  ///
+  /// In en, this message translates to:
+  /// **'Temples'**
+  String get temples;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

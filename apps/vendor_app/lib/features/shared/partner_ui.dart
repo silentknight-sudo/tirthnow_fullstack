@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../core/api/api_models.dart';
 
 import '../../core/format/formatters.dart';
+import '../../core/providers.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/widgets/common.dart';
 import '../../l10n/app_localizations.dart';
@@ -82,29 +86,16 @@ IconData cabIcon(String cls) => switch (cls) {
 
 const cabClasses = ['bike', 'auto', 'e_rickshaw', 'hatchback', 'sedan', 'suv', 'tempo_traveller'];
 
-String categoryLabel(AppLocalizations l, String c) => switch (c) {
-  'pooja_thali' => l.catPoojaThali,
-  'diya_dhoop' => l.catDiyaDhoop,
-  'garland' => l.catGarland,
-  'prasad' => l.catPrasad,
-  'poshak' => l.catPoshak,
-  'tilak_mala' => l.catTilakMala,
-  'idols' => l.catIdols,
-  'books' => l.catBooks,
-  _ => l.catOther,
-};
+/// Temple Store master catalogue (categories, sub-categories and example items).
+final storeCatalogueProvider = FutureProvider<List<CategoryResponse>>(
+  (ref) async =>
+      (await ref.watch(apiClientProvider).getList('/store/categories'))
+          .map(CategoryResponse.fromJson)
+          .toList(),
+);
 
-const productCategories = [
-  'pooja_thali',
-  'diya_dhoop',
-  'garland',
-  'prasad',
-  'poshak',
-  'tilak_mala',
-  'idols',
-  'books',
-  'other',
-];
+String catalogueName(BuildContext context, String hiName, String enName) =>
+    Localizations.localeOf(context).languageCode == 'hi' ? hiName : enName;
 
 /// What the pilgrim pays for a base price: + 18 % GST + 5 % platform fee
 /// (ADR-0021). The API computes the real total at checkout.

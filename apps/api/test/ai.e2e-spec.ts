@@ -287,6 +287,13 @@ describe('AI guide', () => {
       true,
     );
     expect(day1.items.map((i: { kind: string }) => i.kind)).toContain('rest');
+    // Every stop is described, and the first night has a stay; the last day does not.
+    expect(day1.items.every((i: { note: string | null }) => !!i.note)).toBe(true);
+    expect(day1.items.at(-1)).toMatchObject({
+      kind: 'stay',
+      title: 'Night stay: hotel or dharamshala',
+    });
+    expect(it.dayList[1].items.some((i: { kind: string }) => i.kind === 'stay')).toBe(false);
     const starts = day1.items.map((i: { startsAt: string }) => i.startsAt);
     expect([...starts].sort()).toEqual(starts);
     const plannerCall = llm.calls.find((c) => c.system.startsWith('[task:plan]'));

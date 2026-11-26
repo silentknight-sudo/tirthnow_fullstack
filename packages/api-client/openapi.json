@@ -1,6 +1,21 @@
 {
   "components": {
     "schemas": {
+      "AartiAlertsResponse": {
+        "properties": {
+          "templeIds": {
+            "description": "Temples whose aarti start is pushed to the user",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "templeIds"
+        ],
+        "type": "object"
+      },
       "AartiInstanceResponse": {
         "properties": {
           "date": {
@@ -678,26 +693,54 @@
       "CategoryResponse": {
         "properties": {
           "count": {
+            "description": "Published products in this category",
             "type": "number"
           },
           "key": {
             "enum": [
-              "pooja_thali",
-              "diya_dhoop",
-              "garland",
-              "prasad",
-              "poshak",
-              "tilak_mala",
-              "idols",
-              "books",
+              "krishna_shringar",
+              "morpankh_braj",
+              "mala_beads",
+              "idols_murtis",
+              "puja_samagri",
+              "puja_utensils",
+              "havan_yagya",
+              "gomaya",
+              "panchagavya",
+              "prasad_bhog",
+              "flowers_garland",
+              "clothing_textiles",
+              "home_mandir",
+              "books_music",
+              "festival_kits",
+              "gifts_hampers",
+              "yatra_essentials",
+              "temple_supplies",
+              "regional",
+              "eco_handmade",
               "other"
             ],
             "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "nameHi": {
+            "type": "string"
+          },
+          "subcategories": {
+            "items": {
+              "$ref": "#/components/schemas/SubcategoryResponse"
+            },
+            "type": "array"
           }
         },
         "required": [
           "key",
-          "count"
+          "name",
+          "nameHi",
+          "count",
+          "subcategories"
         ],
         "type": "object"
       },
@@ -1670,14 +1713,26 @@
         "properties": {
           "category": {
             "enum": [
-              "pooja_thali",
-              "diya_dhoop",
-              "garland",
-              "prasad",
-              "poshak",
-              "tilak_mala",
-              "idols",
-              "books",
+              "krishna_shringar",
+              "morpankh_braj",
+              "mala_beads",
+              "idols_murtis",
+              "puja_samagri",
+              "puja_utensils",
+              "havan_yagya",
+              "gomaya",
+              "panchagavya",
+              "prasad_bhog",
+              "flowers_garland",
+              "clothing_textiles",
+              "home_mandir",
+              "books_music",
+              "festival_kits",
+              "gifts_hampers",
+              "yatra_essentials",
+              "temple_supplies",
+              "regional",
+              "eco_handmade",
               "other"
             ],
             "type": "string"
@@ -1716,6 +1771,68 @@
           "stock": {
             "example": 40,
             "type": "number"
+          },
+          "subcategory": {
+            "description": "Must belong to the category",
+            "enum": [
+              "poshak_vastra",
+              "headwear_ornaments",
+              "shringar_accessories",
+              "seating_bedding",
+              "care_utility",
+              "morpankh",
+              "braj_souvenirs",
+              "decor_display",
+              "mala_types",
+              "jap_accessories",
+              "beads_certified",
+              "deity_idols",
+              "idol_materials",
+              "photos_display",
+              "tilak_powders",
+              "incense_fragrance",
+              "diya_lighting",
+              "offerings_daily",
+              "ritual_vessels",
+              "puja_tools",
+              "thali_sets",
+              "havan_equipment",
+              "havan_ingredients",
+              "ceremony_kits",
+              "gomaya_puja",
+              "gomaya_garden",
+              "gomaya_decor",
+              "cow_products",
+              "cow_household",
+              "braj_sweets",
+              "bhog_dry",
+              "vrat_food",
+              "fresh_dried",
+              "garlands_decor",
+              "for_devotees",
+              "for_deity",
+              "textile_accessories",
+              "mandir_structures",
+              "mandir_lighting",
+              "mandir_care",
+              "books",
+              "audio_instruments",
+              "learning",
+              "krishna_festivals",
+              "hindu_festivals",
+              "life_ceremonies",
+              "small_gifts",
+              "gift_sets",
+              "custom_gifts",
+              "travel_products",
+              "visitor_services",
+              "bulk_consumables",
+              "temple_equipment",
+              "braj_collection",
+              "other_regional",
+              "eco_artisan"
+            ],
+            "type": "string"
           },
           "unit": {
             "example": "piece",
@@ -4262,14 +4379,26 @@
         "properties": {
           "category": {
             "enum": [
-              "pooja_thali",
-              "diya_dhoop",
-              "garland",
-              "prasad",
-              "poshak",
-              "tilak_mala",
-              "idols",
-              "books",
+              "krishna_shringar",
+              "morpankh_braj",
+              "mala_beads",
+              "idols_murtis",
+              "puja_samagri",
+              "puja_utensils",
+              "havan_yagya",
+              "gomaya",
+              "panchagavya",
+              "prasad_bhog",
+              "flowers_garland",
+              "clothing_textiles",
+              "home_mandir",
+              "books_music",
+              "festival_kits",
+              "gifts_hampers",
+              "yatra_essentials",
+              "temple_supplies",
+              "regional",
+              "eco_handmade",
               "other"
             ],
             "type": "string"
@@ -4318,6 +4447,10 @@
           "stock": {
             "type": "number"
           },
+          "subcategory": {
+            "nullable": true,
+            "type": "string"
+          },
           "unit": {
             "type": "string"
           },
@@ -4336,6 +4469,7 @@
           "name",
           "description",
           "category",
+          "subcategory",
           "unit",
           "pricePaise",
           "displayPricePaise",
@@ -5495,6 +5629,37 @@
         ],
         "type": "object"
       },
+      "SubcategoryResponse": {
+        "properties": {
+          "count": {
+            "type": "number"
+          },
+          "examples": {
+            "description": "Example items vendors can list",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "key": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "nameHi": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "key",
+          "name",
+          "nameHi",
+          "examples",
+          "count"
+        ],
+        "type": "object"
+      },
       "TempleDetailResponse": {
         "properties": {
           "aartiToday": {
@@ -5531,6 +5696,15 @@
           "dressCode": {
             "nullable": true,
             "type": "string"
+          },
+          "facts": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TempleFactsResponse"
+              }
+            ],
+            "nullable": true,
+            "type": "object"
           },
           "galleryUrls": {
             "items": {
@@ -5592,9 +5766,49 @@
           "address",
           "openingHours",
           "dressCode",
+          "facts",
           "galleryUrls",
           "aartiToday",
           "nextAarti"
+        ],
+        "type": "object"
+      },
+      "TempleFactsResponse": {
+        "properties": {
+          "built": {
+            "description": "When and by whom it was built",
+            "nullable": true,
+            "type": "string"
+          },
+          "famousFor": {
+            "nullable": true,
+            "type": "string"
+          },
+          "highlights": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "prohibited": {
+            "description": "Items and actions not allowed",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "visitorsPerYear": {
+            "description": "Approximate pilgrims per year",
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "built",
+          "famousFor",
+          "highlights",
+          "visitorsPerYear",
+          "prohibited"
         ],
         "type": "object"
       },
@@ -6606,14 +6820,26 @@
         "properties": {
           "category": {
             "enum": [
-              "pooja_thali",
-              "diya_dhoop",
-              "garland",
-              "prasad",
-              "poshak",
-              "tilak_mala",
-              "idols",
-              "books",
+              "krishna_shringar",
+              "morpankh_braj",
+              "mala_beads",
+              "idols_murtis",
+              "puja_samagri",
+              "puja_utensils",
+              "havan_yagya",
+              "gomaya",
+              "panchagavya",
+              "prasad_bhog",
+              "flowers_garland",
+              "clothing_textiles",
+              "home_mandir",
+              "books_music",
+              "festival_kits",
+              "gifts_hampers",
+              "yatra_essentials",
+              "temple_supplies",
+              "regional",
+              "eco_handmade",
               "other"
             ],
             "type": "string"
@@ -6652,6 +6878,68 @@
           "stock": {
             "example": 40,
             "type": "number"
+          },
+          "subcategory": {
+            "description": "Must belong to the category",
+            "enum": [
+              "poshak_vastra",
+              "headwear_ornaments",
+              "shringar_accessories",
+              "seating_bedding",
+              "care_utility",
+              "morpankh",
+              "braj_souvenirs",
+              "decor_display",
+              "mala_types",
+              "jap_accessories",
+              "beads_certified",
+              "deity_idols",
+              "idol_materials",
+              "photos_display",
+              "tilak_powders",
+              "incense_fragrance",
+              "diya_lighting",
+              "offerings_daily",
+              "ritual_vessels",
+              "puja_tools",
+              "thali_sets",
+              "havan_equipment",
+              "havan_ingredients",
+              "ceremony_kits",
+              "gomaya_puja",
+              "gomaya_garden",
+              "gomaya_decor",
+              "cow_products",
+              "cow_household",
+              "braj_sweets",
+              "bhog_dry",
+              "vrat_food",
+              "fresh_dried",
+              "garlands_decor",
+              "for_devotees",
+              "for_deity",
+              "textile_accessories",
+              "mandir_structures",
+              "mandir_lighting",
+              "mandir_care",
+              "books",
+              "audio_instruments",
+              "learning",
+              "krishna_festivals",
+              "hindu_festivals",
+              "life_ceremonies",
+              "small_gifts",
+              "gift_sets",
+              "custom_gifts",
+              "travel_products",
+              "visitor_services",
+              "bulk_consumables",
+              "temple_equipment",
+              "braj_collection",
+              "other_regional",
+              "eco_artisan"
+            ],
+            "type": "string"
           },
           "unit": {
             "example": "piece",
@@ -7067,6 +7355,7 @@
               "vendor_status",
               "payout_paid",
               "payout_failed",
+              "aarti_live",
               "aarti_reminder",
               "sos_alert",
               "sos_resolved",
@@ -7595,6 +7884,100 @@
         "summary": "Live SOS location for shared contacts (JSON, or HTML for browsers)",
         "tags": [
           "safety"
+        ]
+      }
+    },
+    "/v1/aarti-alerts": {
+      "get": {
+        "operationId": "NotificationsController_aartiAlerts",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AartiAlertsResponse"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "notifications"
+        ]
+      }
+    },
+    "/v1/aarti-alerts/{templeId}": {
+      "delete": {
+        "operationId": "NotificationsController_unfollowAarti",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "templeId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AartiAlertsResponse"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "notifications"
+        ]
+      },
+      "put": {
+        "operationId": "NotificationsController_followAarti",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "templeId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AartiAlertsResponse"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "notifications"
         ]
       }
     },
@@ -14180,15 +14563,93 @@
             "required": false,
             "schema": {
               "enum": [
-                "pooja_thali",
-                "diya_dhoop",
-                "garland",
-                "prasad",
-                "poshak",
-                "tilak_mala",
-                "idols",
-                "books",
+                "krishna_shringar",
+                "morpankh_braj",
+                "mala_beads",
+                "idols_murtis",
+                "puja_samagri",
+                "puja_utensils",
+                "havan_yagya",
+                "gomaya",
+                "panchagavya",
+                "prasad_bhog",
+                "flowers_garland",
+                "clothing_textiles",
+                "home_mandir",
+                "books_music",
+                "festival_kits",
+                "gifts_hampers",
+                "yatra_essentials",
+                "temple_supplies",
+                "regional",
+                "eco_handmade",
                 "other"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "subcategory",
+            "required": false,
+            "schema": {
+              "enum": [
+                "poshak_vastra",
+                "headwear_ornaments",
+                "shringar_accessories",
+                "seating_bedding",
+                "care_utility",
+                "morpankh",
+                "braj_souvenirs",
+                "decor_display",
+                "mala_types",
+                "jap_accessories",
+                "beads_certified",
+                "deity_idols",
+                "idol_materials",
+                "photos_display",
+                "tilak_powders",
+                "incense_fragrance",
+                "diya_lighting",
+                "offerings_daily",
+                "ritual_vessels",
+                "puja_tools",
+                "thali_sets",
+                "havan_equipment",
+                "havan_ingredients",
+                "ceremony_kits",
+                "gomaya_puja",
+                "gomaya_garden",
+                "gomaya_decor",
+                "cow_products",
+                "cow_household",
+                "braj_sweets",
+                "bhog_dry",
+                "vrat_food",
+                "fresh_dried",
+                "garlands_decor",
+                "for_devotees",
+                "for_deity",
+                "textile_accessories",
+                "mandir_structures",
+                "mandir_lighting",
+                "mandir_care",
+                "books",
+                "audio_instruments",
+                "learning",
+                "krishna_festivals",
+                "hindu_festivals",
+                "life_ceremonies",
+                "small_gifts",
+                "gift_sets",
+                "custom_gifts",
+                "travel_products",
+                "visitor_services",
+                "bulk_consumables",
+                "temple_equipment",
+                "braj_collection",
+                "other_regional",
+                "eco_artisan"
               ],
               "type": "string"
             }

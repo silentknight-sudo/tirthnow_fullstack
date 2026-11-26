@@ -175,6 +175,18 @@ export const TEMPLATES = {
     androidChannel: 'general',
     priority: 'high',
   },
+  aarti_live: {
+    channels: ['push', 'in_app'],
+    category: 'aarti',
+    title: { en: '🔔 {{aarti}} has started', hi: '🔔 {{aarti}} शुरू हो गई है' },
+    body: {
+      en: '{{aarti}} at {{temple}} has just begun. Tap to watch or plan your darshan.',
+      hi: '{{temple}} में {{aarti}} अभी शुरू हुई है। देखने या दर्शन की योजना के लिए टैप करें।',
+    },
+    variables: ['aarti', 'temple'],
+    androidChannel: 'aarti',
+    priority: 'high',
+  },
   aarti_reminder: {
     channels: ['push', 'in_app'],
     category: 'aarti',

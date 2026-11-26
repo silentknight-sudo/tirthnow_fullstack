@@ -64,3 +64,8 @@ export class AartiReminderResponse {
   @ApiProperty({ nullable: true, type: String }) nextAartiAt!: string | null;
   @ApiProperty({ nullable: true, type: String }) nextReminderAt!: string | null;
 }
+
+export class AartiAlertsResponse {
+  @ApiProperty({ type: [String], description: 'Temples whose aarti start is pushed to the user' })
+  templeIds!: string[];
+}

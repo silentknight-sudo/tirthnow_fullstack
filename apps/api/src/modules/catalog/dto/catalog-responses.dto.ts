@@ -35,12 +35,24 @@ export class TempleSummaryResponse {
   @ApiPropertyOptional({ description: 'Present when the request had lat/lng' }) distanceKm?: number;
 }
 
+export class TempleFactsResponse {
+  @ApiProperty({ type: String, nullable: true, description: 'When and by whom it was built' })
+  built!: string | null;
+  @ApiProperty({ type: String, nullable: true }) famousFor!: string | null;
+  @ApiProperty({ type: [String] }) highlights!: string[];
+  @ApiProperty({ type: String, nullable: true, description: 'Approximate pilgrims per year' })
+  visitorsPerYear!: string | null;
+  @ApiProperty({ type: [String], description: 'Items and actions not allowed' })
+  prohibited!: string[];
+}
+
 export class TempleDetailResponse extends TempleSummaryResponse {
   @ApiProperty({ type: String, nullable: true }) description!: string | null;
   @ApiProperty({ type: String, nullable: true }) history!: string | null;
   @ApiProperty({ type: String, nullable: true }) address!: string | null;
   @ApiProperty({ type: Object }) openingHours!: unknown;
   @ApiProperty({ type: String, nullable: true }) dressCode!: string | null;
+  @ApiProperty({ type: TempleFactsResponse, nullable: true }) facts!: TempleFactsResponse | null;
   @ApiProperty({ type: [String] }) galleryUrls!: string[];
   @ApiProperty({ type: [AartiInstanceResponse] }) aartiToday!: AartiInstanceResponse[];
   @ApiProperty({ type: AartiInstanceResponse, nullable: true })

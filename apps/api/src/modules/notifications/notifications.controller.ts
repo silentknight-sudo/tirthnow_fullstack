@@ -17,6 +17,7 @@ import { definedFields } from '../../core/http';
 import { ReqLang } from '../../core/i18n';
 import { IdentityFacade } from '../identity';
 import {
+  AartiAlertsResponse,
   AartiReminderResponse,
   CreateAartiReminderDto,
   NotificationPageResponse,
@@ -24,6 +25,7 @@ import {
   NotificationQueryDto,
   NotificationResponse,
 } from './dto/notifications.dto';
+import { AartiLiveService } from './services/aarti-live.service';
 import { AartiRemindersService } from './services/aarti-reminders.service';
 import { NotificationsService } from './services/notifications.service';
 
@@ -34,6 +36,7 @@ export class NotificationsController {
   constructor(
     private readonly notifications: NotificationsService,
     private readonly reminders: AartiRemindersService,
+    private readonly live: AartiLiveService,
     private readonly identity: IdentityFacade,
   ) {}
 
@@ -75,6 +78,30 @@ export class NotificationsController {
     @Body() dto: NotificationPreferencesDto,
   ): Promise<Record<string, unknown>> {
     return this.identity.updateNotificationPrefs(u.userId, definedFields(dto));
+  }
+
+  @Get('aarti-alerts')
+  @ApiOkResponse({ type: AartiAlertsResponse })
+  aartiAlerts(@CurrentUser() u: AuthPrincipal): Promise<AartiAlertsResponse> {
+    return this.live.list(u.userId);
+  }
+
+  @Put('aarti-alerts/:templeId')
+  @ApiOkResponse({ type: AartiAlertsResponse })
+  followAarti(
+    @CurrentUser() u: AuthPrincipal,
+    @Param('templeId', ParseUUIDPipe) templeId: string,
+  ): Promise<AartiAlertsResponse> {
+    return this.live.follow(u.userId, templeId);
+  }
+
+  @Delete('aarti-alerts/:templeId')
+  @ApiOkResponse({ type: AartiAlertsResponse })
+  unfollowAarti(
+    @CurrentUser() u: AuthPrincipal,
+    @Param('templeId', ParseUUIDPipe) templeId: string,
+  ): Promise<AartiAlertsResponse> {
+    return this.live.unfollow(u.userId, templeId);
   }
 
   @Get('aarti-reminders')

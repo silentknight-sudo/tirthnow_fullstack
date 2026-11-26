@@ -841,4 +841,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get orderDone => 'Done';
+
+  @override
+  String get subCategory => 'Sub-category';
+
+  @override
+  String get examples => 'Examples';
 }

@@ -8,3 +8,9 @@ photos before launch where possible. Temples without their own image yet fall ba
 
 Partner app service images (`apps/vendor_app/assets/images/services/`) were also generated
 in Canva.
+
+## Temple Store category photos (Nov 2026)
+
+`apps/mobile/assets/images/store/*.jpg` were generated in Canva for this project. Categories
+without their own photo yet reuse the bundled pooja/Canva images (mapping in
+`apps/mobile/lib/features/store/presentation/store_screen.dart`, `storeCategoryArt`).

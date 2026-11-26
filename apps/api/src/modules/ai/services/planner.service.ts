@@ -12,6 +12,7 @@ import { AppException } from '../../../core/http';
 import { LLM_PROVIDER, type LlmProvider } from '../../../core/providers';
 import { addDays, isIsoDate, istDate, istToUtc } from '../../../core/time';
 import { CatalogFacade } from '../../catalog';
+import { InventoryFacade } from '../../inventory';
 import { WeatherFacade } from '../../weather';
 import { type CreateItineraryDto } from '../dto/ai.dto';
 import { ItinerariesService, type ItineraryResponse } from './itineraries.service';
@@ -60,6 +61,7 @@ export class PlannerService {
     private readonly weather: WeatherFacade,
     private readonly itineraries: ItinerariesService,
     private readonly quota: QuotaService,
+    private readonly inventory: InventoryFacade,
     @Inject(LLM_PROVIDER) private readonly llm: LlmProvider,
   ) {}
 
@@ -96,7 +98,7 @@ export class PlannerService {
         dto,
         lang,
         { title, days: [] },
-        await this.withTripExtras(empty, dto, lang),
+        await this.describe(await this.withTripExtras(empty, dto, lang), lang),
         'custom',
         null,
       );
@@ -185,7 +187,10 @@ export class PlannerService {
       dto,
       lang,
       plan,
-      await this.withTripExtras(scheduleDays(plan, days, dto.pace ?? 'normal'), dto, lang),
+      await this.describe(
+        await this.withTripExtras(scheduleDays(plan, days, dto.pace ?? 'normal'), dto, lang),
+        lang,
+      ),
       model,
       raw,
     );
@@ -237,6 +242,14 @@ export class PlannerService {
     const mode: Record<string, string> = hi
       ? { train: 'ट्रेन', bus: 'बस', car: 'कार', flight: 'फ़्लाइट', other: 'यात्रा' }
       : { train: 'train', bus: 'bus', car: 'car', flight: 'flight', other: 'travel' };
+    const stayByCity = new Map<string, Awaited<ReturnType<InventoryFacade['stayOptions']>>>();
+    if (!dto.stay) {
+      for (const cityId of new Set(days.map((d) => d.cityId))) {
+        stayByCity.set(cityId, await this.inventory.stayOptions(cityId, lang));
+      }
+    }
+    const party = dto.partySize ?? 1;
+    const rooms = dto.stay?.rooms ?? Math.max(1, Math.ceil(party / 3));
     return days.map((d, i) => {
       const extra: ScheduledItem[] = [];
       const last = i === days.length - 1;
@@ -296,6 +309,57 @@ export class PlannerService {
           note: c.note ?? null,
         });
       }
+      // Every night except the last day: where the group sleeps.
+      if (!last) {
+        const options = stayByCity.get(d.cityId) ?? [];
+        const pick = options.find((o) => o.kind === 'hotel') ?? options[0];
+        const alt = options.find((o) => o !== pick);
+        const kindName = (k: 'hotel' | 'dharamshala') =>
+          hi ? (k === 'hotel' ? 'होटल' : 'धर्मशाला') : k === 'hotel' ? 'Hotel' : 'Dharamshala';
+        const rupees = (p: number) => `₹${String(Math.round(p / 100))}`;
+        extra.push({
+          ...blank,
+          ref: `night-${String(d.dayIndex)}`,
+          dayIndex: d.dayIndex,
+          kind: 'stay',
+          title: dto.stay
+            ? hi
+              ? `रात्रि विश्राम: ${dto.stay.name}`
+              : `Night stay: ${dto.stay.name}`
+            : pick
+              ? hi
+                ? `रात्रि विश्राम: ${pick.name} (${kindName(pick.kind)})`
+                : `Night stay: ${pick.name} (${kindName(pick.kind)})`
+              : hi
+                ? 'रात्रि विश्राम: होटल या धर्मशाला'
+                : 'Night stay: hotel or dharamshala',
+          ...at(d.date, '21:30', 30),
+          durationMin: 30,
+          costPaise: dto.stay || !pick ? 0 : pick.nightlyPaise * rooms,
+          note: dto.stay
+            ? hi
+              ? 'रात का आराम; सुबह जल्दी उठकर दर्शन के लिए तैयार रहें।'
+              : 'Overnight rest; be ready early for the next morning’s darshan.'
+            : pick
+              ? [
+                  hi
+                    ? `${String(rooms)} कमरे · लगभग ${rupees(pick.nightlyPaise)} प्रति कमरा/रात`
+                    : `${String(rooms)} room(s) · about ${rupees(pick.nightlyPaise)} per room a night`,
+                  pick.address,
+                  alt
+                    ? hi
+                      ? `सस्ता विकल्प: ${alt.name} (${kindName(alt.kind)}, ${rupees(alt.nightlyPaise)})`
+                      : `Budget option: ${alt.name} (${kindName(alt.kind)}, ${rupees(alt.nightlyPaise)})`
+                    : null,
+                  hi ? 'Stay टैब से बुक करें।' : 'Book from the Stay tab.',
+                ]
+                  .filter(Boolean)
+                  .join(' · ')
+              : hi
+                ? 'मंदिरों के पास होटल या धर्मशाला बुक करें (Stay टैब)।'
+                : 'Book a hotel or dharamshala near the temples (Stay tab).',
+        });
+      }
       if (tr?.departureTime && last) {
         extra.push({
           ...blank,
@@ -320,6 +384,49 @@ export class PlannerService {
       );
       return { ...d, items };
     });
+  }
+
+  /**
+   * Every stop gets a description: the model's note when it wrote one, else the temple's
+   * own "about" line from the database, else a practical default for meals and rest.
+   */
+  private async describe(days: ScheduledDay[], lang: Lang): Promise<ScheduledDay[]> {
+    const hi = lang === 'hi';
+    const briefs = await this.catalog.templeBriefs(
+      days.flatMap((d) => d.items.flatMap((it) => (it.templeId ? [it.templeId] : []))),
+      lang,
+    );
+    const fallback: Partial<Record<ItinItemKind, string>> = hi
+      ? {
+          meal: 'मंदिर के पास सात्विक भोजनालय में भोजन; बिना प्याज़-लहसुन का प्रसाद जैसा खाना।',
+          rest: 'होटल में आराम करें, पानी पिएँ; अधिकतर मंदिर दोपहर में बंद रहते हैं।',
+          travel: 'टिकट, पहचान पत्र और पानी साथ रखें।',
+        }
+      : {
+          meal: 'Pure sattvic meal near the temples — no onion or garlic, like temple prasad.',
+          rest: 'Rest and drink water; most temples close for the afternoon.',
+          travel: 'Keep tickets, ID and water handy.',
+        };
+    return days.map((d) => ({
+      ...d,
+      items: d.items.map((it) => {
+        if (it.note) return it;
+        const b = it.templeId ? briefs.get(it.templeId) : undefined;
+        const fromTemple = b
+          ? [b.famousFor ?? b.description, b.highlight ? `✦ ${b.highlight}` : null]
+              .filter(Boolean)
+              .join(' ')
+          : '';
+        const lead =
+          it.kind === 'aarti'
+            ? hi
+              ? 'आरती से 20–30 मिनट पहले पहुँचें। '
+              : 'Reach 20–30 minutes before the aarti. '
+            : '';
+        const note = fromTemple ? lead + fromTemple : (fallback[it.kind] ?? null);
+        return { ...it, note };
+      }),
+    }));
   }
 
   /** Database-driven options per day; the model may only choose among these. */

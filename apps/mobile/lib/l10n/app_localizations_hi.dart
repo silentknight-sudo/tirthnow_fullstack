@@ -2190,4 +2190,79 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get plannerHeading => 'तीर्थनाउ के साथ अपनी यात्रा प्लान करें';
+
+  @override
+  String get stShopByCategory => 'श्रेणी के अनुसार खरीदें';
+
+  @override
+  String get stComingSoon => 'इस श्रेणी के उत्पाद जल्द आ रहे हैं। यहाँ मिलेंगे:';
+
+  @override
+  String get prohibited => 'वर्जित';
+
+  @override
+  String get whyFamous => 'क्यों प्रसिद्ध है';
+
+  @override
+  String get builtWhen => 'निर्माण';
+
+  @override
+  String get visitorsYear => 'हर साल श्रद्धालु';
+
+  @override
+  String get specialities => 'इस मंदिर की ख़ासियत';
+
+  @override
+  String get aartiAlertTitle => 'आरती शुरू होने पर सूचना दें';
+
+  @override
+  String get aartiAlertSub => 'हर आरती शुरू होते ही सूचना, ऐप बंद हो तब भी';
+
+  @override
+  String get aartiAlertOn => 'आरती शुरू होने पर आपको सूचना मिलेगी';
+
+  @override
+  String get aartiAlertOff => 'आरती सूचनाएँ बंद';
+
+  @override
+  String get arrival => 'आगमन';
+
+  @override
+  String get departure => 'वापसी';
+
+  @override
+  String get localTravel => 'स्थानीय यात्रा';
+
+  @override
+  String get localErickshaw => 'ई-रिक्शा';
+
+  @override
+  String get localCab => 'कैब';
+
+  @override
+  String get localWalk => 'पैदल';
+
+  @override
+  String get localOwn => 'अपना वाहन';
+
+  @override
+  String get currentLocation => 'वर्तमान स्थान';
+
+  @override
+  String get locationApprox => 'अनुमानित — सही पिकअप के लिए GPS चालू करें';
+
+  @override
+  String get locating => 'आपका स्थान ढूँढ रहे हैं…';
+
+  @override
+  String get whereTo => 'कहाँ जाना है?';
+
+  @override
+  String get searchPlaces => 'मंदिर, स्टेशन, घाट खोजें…';
+
+  @override
+  String get popularPlaces => 'लोकप्रिय स्थान';
+
+  @override
+  String get temples => 'मंदिर';
 }

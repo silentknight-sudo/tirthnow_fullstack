@@ -84,3 +84,18 @@ payout provider; each would be added as a `core/providers/kyc` adapter (mock + r
 | Liveness / selfie match | HyperVerge, IDfy face match | Optional, same provider |
 
 Rough cost: ₹2–10 per check. Send the chosen provider's sandbox keys and we wire it in.
+
+## Temple content, store catalogue and cab addresses (Nov 2026)
+
+- **Temple facts** (`apps/api/prisma/seed/temple-facts.ts`): when built, why famous, specialities,
+  pilgrims per year and the Prohibited list for all 30 seeded temples. Visitor numbers are public
+  estimates — the content team should confirm them (and edit via admin later).
+- **Temple Store catalogue**: the 20 categories and sub-categories from the client's master
+  catalogue live in `apps/api/src/modules/inventory/store-catalogue.ts`. Vendors pick a category
+  and sub-category when listing; check FSSAI, wildlife (morpankh) and labelling rules before
+  approving products, as the catalogue's legal notes say.
+- **Aarti-start push**: works with the app closed once Firebase Cloud Messaging is set up
+  (`PUSH_PROVIDER=fcm`, see the Firebase section). Until then it is mocked.
+- **Cab destinations**: today pickup is the phone's GPS and drop is a temple or a popular place
+  (stations, bus stands, ghats). Typing any street address needs a maps key — Google Places
+  Autocomplete or Ola Maps / MapmyIndia — to be added as a `core/providers/maps` adapter.

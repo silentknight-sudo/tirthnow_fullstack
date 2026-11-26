@@ -10,11 +10,14 @@ class StoreRepository {
 
   final ApiClient _api;
 
-  Future<List<ProductResponse>> products({String? category, String? q}) async =>
-      (await _api.getList(
-        '/store/products',
-        query: {'category': category, 'q': q},
-      )).map(ProductResponse.fromJson).toList();
+  Future<List<ProductResponse>> products({
+    String? category,
+    String? subcategory,
+    String? q,
+  }) async => (await _api.getList(
+    '/store/products',
+    query: {'category': category, 'subcategory': subcategory, 'q': q},
+  )).map(ProductResponse.fromJson).toList();
 
   Future<List<CategoryResponse>> categories() async =>
       (await _api.getList('/store/categories')).map(CategoryResponse.fromJson).toList();
@@ -48,8 +51,23 @@ class StoreCategory extends Notifier<String?> {
   void set(String? v) => state = v;
 }
 
+/// Selected sub-category chip (null = whole category).
+final storeSubcategoryProvider = NotifierProvider<StoreSubcategory, String?>(StoreSubcategory.new);
+
+class StoreSubcategory extends Notifier<String?> {
+  @override
+  String? build() => null;
+
+  void set(String? v) => state = v;
+}
+
 final storeProductsProvider = FutureProvider.autoDispose<List<ProductResponse>>(
-  (ref) => ref.watch(storeRepositoryProvider).products(category: ref.watch(storeCategoryProvider)),
+  (ref) => ref
+      .watch(storeRepositoryProvider)
+      .products(
+        category: ref.watch(storeCategoryProvider),
+        subcategory: ref.watch(storeSubcategoryProvider),
+      ),
 );
 
 final storeCategoriesProvider = FutureProvider.autoDispose<List<CategoryResponse>>(

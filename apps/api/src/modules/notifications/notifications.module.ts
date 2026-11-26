@@ -8,6 +8,7 @@ import { NotificationsController } from './notifications.controller';
 import { NotificationsFacade } from './notifications.facade';
 import { TemplatesAdminController } from './templates-admin.controller';
 import { NotificationsProcessor } from './processors/notifications.processor';
+import { AartiLiveService } from './services/aarti-live.service';
 import { AartiRemindersService } from './services/aarti-reminders.service';
 import { BroadcastService } from './services/broadcast.service';
 import { NotificationSender } from './services/notification-sender.service';
@@ -23,6 +24,7 @@ import { TemplatesService } from './services/templates.service';
     NotificationsService,
     NotificationSender,
     AartiRemindersService,
+    AartiLiveService,
     DomainNotificationsListener,
     NotificationsProcessor,
     NotificationsFacade,

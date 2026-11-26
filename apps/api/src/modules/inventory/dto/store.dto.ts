@@ -17,18 +17,10 @@ import {
   MinLength,
 } from 'class-validator';
 
-export const PRODUCT_CATEGORIES = [
-  'pooja_thali',
-  'diya_dhoop',
-  'garland',
-  'prasad',
-  'poshak',
-  'tilak_mala',
-  'idols',
-  'books',
-  'other',
-] as const;
-export type ProductCategory = (typeof PRODUCT_CATEGORIES)[number];
+import { PRODUCT_CATEGORIES, PRODUCT_SUBCATEGORIES } from '../store-catalogue';
+
+export { PRODUCT_CATEGORIES };
+export type ProductCategory = string;
 
 export class CreateProductDto {
   @ApiProperty({ example: 'Pooja thali set' })
@@ -46,6 +38,11 @@ export class CreateProductDto {
   @ApiProperty({ enum: PRODUCT_CATEGORIES })
   @IsIn(PRODUCT_CATEGORIES)
   category!: ProductCategory;
+
+  @ApiPropertyOptional({ enum: PRODUCT_SUBCATEGORIES, description: 'Must belong to the category' })
+  @IsOptional()
+  @IsIn(PRODUCT_SUBCATEGORIES)
+  subcategory?: string;
 
   @ApiPropertyOptional({ example: 'piece' })
   @IsOptional()
@@ -102,6 +99,11 @@ export class ProductQueryDto {
   @IsIn(PRODUCT_CATEGORIES)
   category?: ProductCategory;
 
+  @ApiPropertyOptional({ enum: PRODUCT_SUBCATEGORIES })
+  @IsOptional()
+  @IsIn(PRODUCT_SUBCATEGORIES)
+  subcategory?: string;
+
   @ApiPropertyOptional({ description: 'Search in name' })
   @IsOptional()
   @IsString()
@@ -121,6 +123,7 @@ export class ProductResponse {
   @ApiProperty() name!: string;
   @ApiProperty({ type: String, nullable: true }) description!: string | null;
   @ApiProperty({ enum: PRODUCT_CATEGORIES }) category!: string;
+  @ApiProperty({ type: String, nullable: true }) subcategory!: string | null;
   @ApiProperty() unit!: string;
   @ApiProperty({ description: 'Vendor base price' }) pricePaise!: number;
   @ApiProperty({ description: 'Price the customer pays (base + GST + platform fee)' })
@@ -134,9 +137,21 @@ export class ProductResponse {
   @ApiProperty() soldCount!: number;
 }
 
+export class SubcategoryResponse {
+  @ApiProperty() key!: string;
+  @ApiProperty() name!: string;
+  @ApiProperty() nameHi!: string;
+  @ApiProperty({ type: [String], description: 'Example items vendors can list' })
+  examples!: string[];
+  @ApiProperty() count!: number;
+}
+
 export class CategoryResponse {
   @ApiProperty({ enum: PRODUCT_CATEGORIES }) key!: string;
-  @ApiProperty() count!: number;
+  @ApiProperty() name!: string;
+  @ApiProperty() nameHi!: string;
+  @ApiProperty({ description: 'Published products in this category' }) count!: number;
+  @ApiProperty({ type: [SubcategoryResponse] }) subcategories!: SubcategoryResponse[];
 }
 
 export class ProductLineDto {

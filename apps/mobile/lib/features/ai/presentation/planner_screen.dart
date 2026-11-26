@@ -1503,6 +1503,8 @@ class _ItineraryViewState extends ConsumerState<ItineraryView> {
             ],
           ),
         ),
+        const SizedBox(height: 10),
+        _TripSummary(days: days, travel: travel),
         const SizedBox(height: 12),
         Row(
           children: [
@@ -1627,6 +1629,74 @@ class _ItineraryViewState extends ConsumerState<ItineraryView> {
             icon: const Icon(Icons.edit_rounded),
             label: Text(l.planAnother),
           ),
+      ],
+    );
+  }
+}
+
+/// Arrival, departure and local travel at a glance (like the one-page yatra brief).
+class _TripSummary extends StatelessWidget {
+  const _TripSummary({required this.days, required this.travel});
+
+  final List<Json> days;
+  final Json? travel;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final items = days.expand((d) => (d['items'] as List<dynamic>? ?? const []).map(asJson));
+    String? first;
+    String? last;
+    for (final it in items) {
+      final st = it['startsAt'];
+      if (st is String) {
+        first ??= st;
+        last = (it['endsAt'] as String?) ?? st;
+      }
+    }
+    String t(String? iso) => iso == null ? '—' : formatIstTime(DateTime.parse(iso));
+    final mode = travel?['localTransport'] as String? ?? 'e_rickshaw';
+    final local = switch (mode) {
+      'cab' => l.localCab,
+      'walk' => l.localWalk,
+      'own_vehicle' => l.localOwn,
+      _ => l.localErickshaw,
+    };
+    Widget card(IconData icon, String label, String value) => Expanded(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        decoration: BoxDecoration(
+          color: const Color(0xFFFFF6E9),
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: const Color(0xFFF6D9B0)),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(icon, size: 18, color: TnColors.saffron),
+            const SizedBox(height: 4),
+            Text(label, style: const TextStyle(fontSize: 11, color: TnColors.muted)),
+            Text(
+              value,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontWeight: FontWeight.w800,
+                fontSize: 15,
+                color: TnColors.navy,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+    return Row(
+      children: [
+        card(Icons.login_rounded, l.arrival, travel?['arrivalTime'] as String? ?? t(first)),
+        const SizedBox(width: 8),
+        card(Icons.logout_rounded, l.departure, travel?['departureTime'] as String? ?? t(last)),
+        const SizedBox(width: 8),
+        card(Icons.electric_rickshaw_rounded, l.localTravel, local),
       ],
     );
   }
@@ -1813,8 +1883,9 @@ class _TimelineItem extends StatelessWidget {
     final sub = [
       if (travel != null) l.minTravel('${travel.round()}'),
       if (cost != null && cost > 0) formatRupees(cost, locale: context.lang),
-      if (item['note'] is String) item['note'] as String,
     ].join(' · ');
+    final note = item['note'] is String ? item['note'] as String : null;
+    final isStay = kind == 'stay';
     return IntrinsicHeight(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1854,7 +1925,7 @@ class _TimelineItem extends StatelessWidget {
               margin: const EdgeInsets.only(bottom: 8, top: 4),
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: isStay ? const Color(0xFFF1F4FB) : Colors.white,
                 borderRadius: BorderRadius.circular(14),
                 border: Border(left: BorderSide(color: color, width: 3)),
                 boxShadow: const [
@@ -1868,9 +1939,19 @@ class _TimelineItem extends StatelessWidget {
                     item['title'] as String? ?? '',
                     style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 14.5),
                   ),
+                  if (note != null) ...[
+                    const SizedBox(height: 4),
+                    Text(
+                      note,
+                      style: const TextStyle(color: TnColors.ink, fontSize: 13, height: 1.4),
+                    ),
+                  ],
                   if (sub.isNotEmpty) ...[
-                    const SizedBox(height: 3),
-                    Text(sub, style: const TextStyle(color: TnColors.muted, fontSize: 12.5)),
+                    const SizedBox(height: 4),
+                    Text(
+                      sub,
+                      style: TextStyle(color: color, fontSize: 12, fontWeight: FontWeight.w700),
+                    ),
                   ],
                 ],
               ),

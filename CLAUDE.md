@@ -135,6 +135,14 @@ Do not use plain `prisma migrate dev` to create migrations (it will offer to dro
 - `VENDOR_AUTO_APPROVE=true` (default until the admin panel) lists a vendor as soon as its KYC is submitted; `false` = admin approval, the vendor app shows "waiting".
 - Vendor dashboard data: `GET /v1/vendors/:vid/analytics?days=7|30|90`.
 
+## Client round: store catalogue, temple page, aarti push, planner (26 Nov 2026)
+
+- Store categories = the client's master catalogue (`inventory/store-catalogue.ts`): 20 categories + `other`, optional `subcategory` on products (must belong to the category). `GET /v1/store/categories` returns the whole catalogue (names en/hi, sub-categories, example items, live counts); apps read names from it, never hard-code them.
+- Temple `facts` (built, famousFor, highlights, visitorsPerYear, prohibited) from `temples.facts_i18n`; seed in `prisma/seed/temple-facts.ts`. The temple page shows only the next aarti (no multi-day list — the product is live) and a Prohibited list instead of dress code.
+- Aarti start push: `PUT/DELETE /v1/aarti-alerts/:templeId`; `AartiLiveService` (recurring 1 min) pushes `aarti_live` to temple followers and that aarti's reminder holders, once per occurrence (Redis claim).
+- Planner: every stop gets a description (model note → temple facts → defaults), and each night except the last gets a `stay` item (cheapest listed hotel, dharamshala as the budget option, via `InventoryFacade.stayOptions`). PDF has arrival/departure/local-travel cards.
+- Cabs: pickup defaults to GPS; drop is searched among temples and popular places (free-text address needs a maps key, CLIENT_SETUP_TODO).
+
 ## Partner app (apps/vendor_app, Nov 2026)
 
 - Flutter app for vendors (the web vendor portal stays for desktop). Same core as `apps/mobile` (ApiClient, session, theme); models come from the same generator (`gen_api_models.mjs` writes both apps).

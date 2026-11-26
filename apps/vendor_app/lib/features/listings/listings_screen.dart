@@ -72,6 +72,7 @@ class _StoreListingsState extends ConsumerState<_StoreListings> {
     final l = context.l10n;
     final vid = widget.vendor.id;
     final list = ref.watch(_productsProvider(vid));
+    ref.watch(storeCatalogueProvider); // preload for the product form
     final items = list.value ?? const <ProductResponse>[];
     final active = items.where((p) => p.isPublished).length;
     return Scaffold(
@@ -226,7 +227,9 @@ Future<void> _productForm(BuildContext context, WidgetRef ref, String vid, Produ
   final mrp = TextEditingController(text: p?.mrpPaise == null ? '' : rupeesText(p!.mrpPaise!));
   final stock = TextEditingController(text: p == null ? '' : '${p.stock}');
   final unit = TextEditingController(text: p?.unit ?? 'piece');
-  var category = p?.category ?? 'pooja_thali';
+  final catalogue = ref.read(storeCatalogueProvider).value ?? const <CategoryResponse>[];
+  var category = p?.category ?? (catalogue.isEmpty ? 'other' : catalogue.first.key);
+  String? subcategory = p?.subcategory;
   var published = p?.isPublished ?? true;
   String? mediaId;
   var uploading = false;
@@ -275,14 +278,54 @@ Future<void> _productForm(BuildContext context, WidgetRef ref, String vid, Produ
             ),
             const SizedBox(height: 10),
             DropdownButtonFormField<String>(
-              initialValue: category,
+              initialValue: catalogue.any((c) => c.key == category) ? category : null,
+              isExpanded: true,
               decoration: InputDecoration(labelText: l.category),
               items: [
-                for (final c in productCategories)
-                  DropdownMenuItem(value: c, child: Text(categoryLabel(l, c))),
+                for (final c in catalogue)
+                  DropdownMenuItem(
+                    value: c.key,
+                    child: Text(catalogueName(context, c.nameHi, c.name)),
+                  ),
               ],
-              onChanged: (v) => category = v ?? category,
+              validator: (v) => v == null ? l.required : null,
+              onChanged: (v) => setState(() {
+                category = v ?? category;
+                subcategory = null;
+              }),
             ),
+            ...() {
+              final subs =
+                  catalogue.where((c) => c.key == category).firstOrNull?.subcategories ??
+                  const <SubcategoryResponse>[];
+              if (subs.isEmpty) return const <Widget>[];
+              final chosen = subs.where((s) => s.key == subcategory).firstOrNull;
+              return [
+                const SizedBox(height: 10),
+                DropdownButtonFormField<String>(
+                  key: ValueKey('sub-$category'),
+                  initialValue: chosen?.key,
+                  isExpanded: true,
+                  decoration: InputDecoration(labelText: l.subCategory),
+                  items: [
+                    for (final s in subs)
+                      DropdownMenuItem(
+                        value: s.key,
+                        child: Text(catalogueName(context, s.nameHi, s.name)),
+                      ),
+                  ],
+                  onChanged: (v) => setState(() => subcategory = v),
+                ),
+                if (chosen != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 6),
+                    child: Text(
+                      '${l.examples}: ${chosen.examples.join(', ')}',
+                      style: const TextStyle(fontSize: 12, color: TnColors.muted),
+                    ),
+                  ),
+              ];
+            }(),
             const SizedBox(height: 10),
             TextFormField(
               controller: desc,
@@ -346,6 +389,7 @@ Future<void> _productForm(BuildContext context, WidgetRef ref, String vid, Produ
                   'name': name.text.trim(),
                   'description': desc.text.trim().isEmpty ? null : desc.text.trim(),
                   'category': category,
+                  'subcategory': subcategory,
                   'unit': unit.text.trim().toLowerCase(),
                   'pricePaise': toPaise(price.text),
                   'mrpPaise': toPaise(mrp.text),

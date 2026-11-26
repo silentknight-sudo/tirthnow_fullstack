@@ -1,7 +1,11 @@
 import { type Socket } from 'socket.io-client';
 import { MockPushAdapter } from '../src/core/providers';
 import { istToUtc, addDays, istDate } from '../src/core/time';
-import { AartiRemindersService, NotificationsProcessor } from '../src/modules/notifications';
+import {
+  AartiLiveService,
+  AartiRemindersService,
+  NotificationsProcessor,
+} from '../src/modules/notifications';
 import { type CatalogFixture, seedCatalog } from './fixtures';
 import {
   adminToken,
@@ -368,6 +372,31 @@ describe('notifications, realtime, weather and transit', () => {
       .delete(`/v1/aarti-reminders/${created.body.id as string}`)
       .set(...bearer(user.token))
       .expect(404);
+  });
+
+  it('pushes "aarti has started" to temple followers once per occurrence', async () => {
+    await t.http
+      .put(`/v1/aarti-alerts/${fx.iskcon}`)
+      .set(...bearer(user.token))
+      .expect(200, { templeIds: [fx.iskcon] });
+    await t.http
+      .put('/v1/aarti-alerts/00000000-0000-4000-8000-000000000000')
+      .set(...bearer(user.token))
+      .expect(404);
+    const live = t.app.get(AartiLiveService);
+    const start = istToUtc(d(1), 18, 30);
+    expect(await live.sendStarted(new Date(start.getTime() - 60_000))).toBe(0);
+    expect(await live.sendStarted(new Date(start.getTime() + 30_000))).toBe(1);
+    expect(await live.sendStarted(new Date(start.getTime() + 90_000))).toBe(0);
+    await drainQueue(t, 'notifications', NotificationsProcessor);
+    expect(push.to('fcm-yatri').map((m) => [m.title, m.channel])).toEqual([
+      ['🔔 Sandhya Arati has started', 'aarti'],
+    ]);
+    await t.http
+      .delete(`/v1/aarti-alerts/${fx.iskcon}`)
+      .set(...bearer(user.token))
+      .expect(200, { templeIds: [] });
+    expect(await live.sendStarted(istToUtc(d(2), 18, 31))).toBe(0);
   });
 
   it('lets anyone follow aarti countdowns', async () => {

@@ -6,10 +6,11 @@
  */
 import { createHash } from 'node:crypto';
 import path from 'node:path';
-import { type Prisma, PrismaClient, type RoleKey, type VehicleClass } from '@prisma/client';
+import { Prisma, PrismaClient, type RoleKey, type VehicleClass } from '@prisma/client';
 import argon2 from 'argon2';
 import { config as loadEnv } from 'dotenv';
 import { type AartiSeed, CITIES, POIS, TEMPLES } from './catalog-data';
+import { COMMON_PROHIBITED, TEMPLE_FACTS } from './temple-facts';
 
 loadEnv({ path: path.resolve(__dirname, '../../../../.env'), quiet: true });
 
@@ -27,6 +28,20 @@ const timeOf = (hhmm: string): Date => {
   const [h, m] = hhmm.split(':').map(Number) as [number, number];
   return new Date(Date.UTC(1970, 0, 1, h, m));
 };
+
+function templeFacts(slug: string): Prisma.InputJsonValue | typeof Prisma.DbNull {
+  const f = TEMPLE_FACTS[slug];
+  if (!f) return Prisma.DbNull;
+  const prohibited = f.prohibited ?? COMMON_PROHIBITED;
+  const lang = (i: 0 | 1) => ({
+    built: f.built[i],
+    famousFor: f.famous[i],
+    highlights: f.highlights.map((h) => h[i]),
+    visitorsPerYear: f.visitors[i],
+    prohibited: prohibited.map((p) => p[i]),
+  });
+  return { en: lang(0), hi: lang(1) };
+}
 
 const i18n = (en: string, hi?: string): Prisma.InputJsonValue => (hi ? { en, hi } : { en });
 
@@ -63,6 +78,7 @@ async function seedCatalog(): Promise<void> {
         'Modest clothing; leather items may not be allowed inside.',
         'शालीन वस्त्र; चमड़े की वस्तुएँ अंदर ले जाना वर्जित हो सकता है।',
       ),
+      factsI18n: templeFacts(t.slug),
     };
     await prisma.temple.upsert({ where: { id }, create: { id, ...data }, update: data });
     await seedAarti(id, t.slug, t.aarti);
@@ -404,7 +420,8 @@ async function seedDharamshalaAndStore(adminId: string, password: string): Promi
     {
       key: 'thali',
       name: 'Brass pooja thali set',
-      category: 'pooja_thali',
+      category: 'puja_utensils',
+      subcategory: 'ritual_vessels',
       price: 450_00,
       mrp: 599_00,
       stock: 40,
@@ -414,7 +431,8 @@ async function seedDharamshalaAndStore(adminId: string, password: string): Promi
     {
       key: 'diya',
       name: 'Pure ghee diya (pack of 12)',
-      category: 'diya_dhoop',
+      category: 'puja_samagri',
+      subcategory: 'diya_lighting',
       price: 120_00,
       mrp: 150_00,
       stock: 120,
@@ -424,7 +442,8 @@ async function seedDharamshalaAndStore(adminId: string, password: string): Promi
     {
       key: 'agarbatti',
       name: 'Vrindavan chandan agarbatti',
-      category: 'diya_dhoop',
+      category: 'puja_samagri',
+      subcategory: 'incense_fragrance',
       price: 80_00,
       mrp: 99_00,
       stock: 200,
@@ -434,7 +453,8 @@ async function seedDharamshalaAndStore(adminId: string, password: string): Promi
     {
       key: 'garland',
       name: 'Fresh marigold & rose garland',
-      category: 'garland',
+      category: 'flowers_garland',
+      subcategory: 'garlands_decor',
       price: 60_00,
       mrp: null,
       stock: 60,
@@ -444,7 +464,8 @@ async function seedDharamshalaAndStore(adminId: string, password: string): Promi
     {
       key: 'prasad',
       name: 'Banke Bihari peda prasad (500 g)',
-      category: 'prasad',
+      category: 'prasad_bhog',
+      subcategory: 'braj_sweets',
       price: 250_00,
       mrp: null,
       stock: 80,
@@ -454,7 +475,8 @@ async function seedDharamshalaAndStore(adminId: string, password: string): Promi
     {
       key: 'poshak',
       name: 'Laddu Gopal poshak (size 3)',
-      category: 'poshak',
+      category: 'krishna_shringar',
+      subcategory: 'poshak_vastra',
       price: 350_00,
       mrp: 450_00,
       stock: 25,
@@ -464,7 +486,8 @@ async function seedDharamshalaAndStore(adminId: string, password: string): Promi
     {
       key: 'mala',
       name: 'Tulsi kanthi mala (108 beads)',
-      category: 'tilak_mala',
+      category: 'mala_beads',
+      subcategory: 'mala_types',
       price: 150_00,
       mrp: 199_00,
       stock: 90,
@@ -474,7 +497,8 @@ async function seedDharamshalaAndStore(adminId: string, password: string): Promi
     {
       key: 'kumkum',
       name: 'Roli, chandan & haldi set',
-      category: 'tilak_mala',
+      category: 'puja_samagri',
+      subcategory: 'tilak_powders',
       price: 90_00,
       mrp: 120_00,
       stock: 150,
@@ -490,6 +514,7 @@ async function seedDharamshalaAndStore(adminId: string, password: string): Promi
       name: p.name,
       description: p.desc,
       category: p.category,
+      subcategory: p.subcategory,
       pricePaise: p.price,
       mrpPaise: p.mrp,
       stock: p.stock,

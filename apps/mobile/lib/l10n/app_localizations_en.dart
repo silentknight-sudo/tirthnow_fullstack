@@ -2195,4 +2195,80 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get plannerHeading => 'Plan your Yatra with TirthNow';
+
+  @override
+  String get stShopByCategory => 'Shop by category';
+
+  @override
+  String get stComingSoon =>
+      'Products for this category are being listed. Items you will find here:';
+
+  @override
+  String get prohibited => 'Prohibited';
+
+  @override
+  String get whyFamous => 'Why it is famous';
+
+  @override
+  String get builtWhen => 'Built';
+
+  @override
+  String get visitorsYear => 'Pilgrims a year';
+
+  @override
+  String get specialities => 'What makes it special';
+
+  @override
+  String get aartiAlertTitle => 'Notify me when aarti starts';
+
+  @override
+  String get aartiAlertSub => 'A notification as each aarti begins, even if the app is closed';
+
+  @override
+  String get aartiAlertOn => 'You will be notified when aarti starts';
+
+  @override
+  String get aartiAlertOff => 'Aarti notifications turned off';
+
+  @override
+  String get arrival => 'Arrival';
+
+  @override
+  String get departure => 'Departure';
+
+  @override
+  String get localTravel => 'Local travel';
+
+  @override
+  String get localErickshaw => 'E-rickshaw';
+
+  @override
+  String get localCab => 'Cab';
+
+  @override
+  String get localWalk => 'On foot';
+
+  @override
+  String get localOwn => 'Own vehicle';
+
+  @override
+  String get currentLocation => 'Current location';
+
+  @override
+  String get locationApprox => 'Approximate — turn on GPS for exact pickup';
+
+  @override
+  String get locating => 'Finding your location…';
+
+  @override
+  String get whereTo => 'Where to?';
+
+  @override
+  String get searchPlaces => 'Search temples, stations, ghats…';
+
+  @override
+  String get popularPlaces => 'Popular places';
+
+  @override
+  String get temples => 'Temples';
 }

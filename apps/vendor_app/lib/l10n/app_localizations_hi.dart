@@ -842,4 +842,10 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get orderDone => 'पूरा';
+
+  @override
+  String get subCategory => 'उप-श्रेणी';
+
+  @override
+  String get examples => 'उदाहरण';
 }

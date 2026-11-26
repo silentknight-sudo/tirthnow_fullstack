@@ -50,6 +50,39 @@ export class InventoryFacade {
     private readonly store: StoreService,
   ) {}
 
+  /** Cheapest listed hotel and dharamshala in a city (trip planner's night stay). */
+  async stayOptions(
+    cityId: string,
+    lang: 'en' | 'hi',
+  ): Promise<
+    {
+      id: string;
+      name: string;
+      kind: 'hotel' | 'dharamshala';
+      address: string;
+      nightlyPaise: number;
+    }[]
+  > {
+    const hotels = await this.prisma.hotel.findMany({
+      where: { cityId, isPublished: true, deletedAt: null, vendor: { status: 'active' } },
+      include: { roomTypes: { where: { deletedAt: null }, select: { basePricePaise: true } } },
+    });
+    const priced = hotels
+      .map((h) => ({
+        id: h.id,
+        name: t(h.nameI18n, lang),
+        kind: h.kind,
+        address: h.address,
+        nightlyPaise: Math.min(...h.roomTypes.map((r) => r.basePricePaise)),
+      }))
+      .filter((h) => Number.isFinite(h.nightlyPaise))
+      .sort((a, b) => a.nightlyPaise - b.nightlyPaise);
+    return (['dharamshala', 'hotel'] as const).flatMap((kind) => {
+      const best = priced.find((h) => h.kind === kind);
+      return best ? [{ ...best, kind }] : [];
+    });
+  }
+
   // ───────────── Temple Store + coupons (ADR-0021) ─────────────
 
   priceProducts(lines: { productId: string; quantity: number }[]) {

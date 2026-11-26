@@ -7,6 +7,20 @@ import 'package:flutter/foundation.dart';
 Map<String, dynamic> _map(Object? v) => (v as Map).cast<String, dynamic>();
 
 @immutable
+class AartiAlertsResponse {
+  const AartiAlertsResponse({required this.templeIds});
+
+  factory AartiAlertsResponse.fromJson(Map<String, dynamic> json) => AartiAlertsResponse(
+    templeIds: (json['templeIds'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+  );
+
+  /// Temples whose aarti start is pushed to the user
+  final List<String> templeIds;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{'templeIds': templeIds};
+}
+
+@immutable
 class AartiInstanceResponse {
   const AartiInstanceResponse({
     required this.date,
@@ -695,17 +709,40 @@ class CancellationPreviewResponse {
 
 @immutable
 class CategoryResponse {
-  const CategoryResponse({required this.count, required this.key});
+  const CategoryResponse({
+    required this.count,
+    required this.key,
+    required this.name,
+    required this.nameHi,
+    required this.subcategories,
+  });
 
-  factory CategoryResponse.fromJson(Map<String, dynamic> json) =>
-      CategoryResponse(count: json['count'] as num, key: json['key'] as String);
+  factory CategoryResponse.fromJson(Map<String, dynamic> json) => CategoryResponse(
+    count: json['count'] as num,
+    key: json['key'] as String,
+    name: json['name'] as String,
+    nameHi: json['nameHi'] as String,
+    subcategories: (json['subcategories'] as List<dynamic>)
+        .map((dynamic x) => SubcategoryResponse.fromJson(_map(x)))
+        .toList(),
+  );
 
+  /// Published products in this category
   final num count;
 
-  /// One of: pooja_thali, diya_dhoop, garland, prasad, poshak, tilak_mala, idols, books, other.
+  /// One of: krishna_shringar, morpankh_braj, mala_beads, idols_murtis, puja_samagri, puja_utensils, havan_yagya, gomaya, panchagavya, prasad_bhog, flowers_garland, clothing_textiles, home_mandir, books_music, festival_kits, gifts_hampers, yatra_essentials, temple_supplies, regional, eco_handmade, other.
   final String key;
+  final String name;
+  final String nameHi;
+  final List<SubcategoryResponse> subcategories;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{'count': count, 'key': key};
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'count': count,
+    'key': key,
+    'name': name,
+    'nameHi': nameHi,
+    'subcategories': subcategories.map((x) => x.toJson()).toList(),
+  };
 }
 
 @immutable
@@ -1748,6 +1785,7 @@ class CreateProductDto {
     required this.name,
     required this.pricePaise,
     required this.stock,
+    this.subcategory,
     this.unit,
   });
 
@@ -1763,10 +1801,11 @@ class CreateProductDto {
     name: json['name'] as String,
     pricePaise: json['pricePaise'] as num,
     stock: json['stock'] as num,
+    subcategory: json['subcategory'] == null ? null : json['subcategory'] as String,
     unit: json['unit'] == null ? null : json['unit'] as String,
   );
 
-  /// One of: pooja_thali, diya_dhoop, garland, prasad, poshak, tilak_mala, idols, books, other.
+  /// One of: krishna_shringar, morpankh_braj, mala_beads, idols_murtis, puja_samagri, puja_utensils, havan_yagya, gomaya, panchagavya, prasad_bhog, flowers_garland, clothing_textiles, home_mandir, books_music, festival_kits, gifts_hampers, yatra_essentials, temple_supplies, regional, eco_handmade, other.
   final String category;
   final String? cityId;
   final String? description;
@@ -1780,6 +1819,9 @@ class CreateProductDto {
   /// Vendor base price in paise (GST and platform fee are added at checkout)
   final num pricePaise;
   final num stock;
+
+  /// Must belong to the category One of: poshak_vastra, headwear_ornaments, shringar_accessories, seating_bedding, care_utility, morpankh, braj_souvenirs, decor_display, mala_types, jap_accessories, beads_certified, deity_idols, idol_materials, photos_display, tilak_powders, incense_fragrance, diya_lighting, offerings_daily, ritual_vessels, puja_tools, thali_sets, havan_equipment, havan_ingredients, ceremony_kits, gomaya_puja, gomaya_garden, gomaya_decor, cow_products, cow_household, braj_sweets, bhog_dry, vrat_food, fresh_dried, garlands_decor, for_devotees, for_deity, textile_accessories, mandir_structures, mandir_lighting, mandir_care, books, audio_instruments, learning, krishna_festivals, hindu_festivals, life_ceremonies, small_gifts, gift_sets, custom_gifts, travel_products, visitor_services, bulk_consumables, temple_equipment, braj_collection, other_regional, eco_artisan.
+  final String? subcategory;
   final String? unit;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -1792,6 +1834,7 @@ class CreateProductDto {
     'name': name,
     'pricePaise': pricePaise,
     'stock': stock,
+    'subcategory': ?subcategory,
     'unit': ?unit,
   };
 }
@@ -4381,6 +4424,7 @@ class ProductResponse {
     required this.ratingCount,
     required this.soldCount,
     required this.stock,
+    this.subcategory,
     required this.unit,
     required this.vendorId,
     required this.vendorName,
@@ -4400,12 +4444,13 @@ class ProductResponse {
     ratingCount: json['ratingCount'] as num,
     soldCount: json['soldCount'] as num,
     stock: json['stock'] as num,
+    subcategory: json['subcategory'] == null ? null : json['subcategory'] as String,
     unit: json['unit'] as String,
     vendorId: json['vendorId'] as String,
     vendorName: json['vendorName'] as String,
   );
 
-  /// One of: pooja_thali, diya_dhoop, garland, prasad, poshak, tilak_mala, idols, books, other.
+  /// One of: krishna_shringar, morpankh_braj, mala_beads, idols_murtis, puja_samagri, puja_utensils, havan_yagya, gomaya, panchagavya, prasad_bhog, flowers_garland, clothing_textiles, home_mandir, books_music, festival_kits, gifts_hampers, yatra_essentials, temple_supplies, regional, eco_handmade, other.
   final String category;
   final String? description;
 
@@ -4423,6 +4468,7 @@ class ProductResponse {
   final num ratingCount;
   final num soldCount;
   final num stock;
+  final String? subcategory;
   final String unit;
   final String vendorId;
   final String vendorName;
@@ -4441,6 +4487,7 @@ class ProductResponse {
     'ratingCount': ratingCount,
     'soldCount': soldCount,
     'stock': stock,
+    'subcategory': ?subcategory,
     'unit': unit,
     'vendorId': vendorId,
     'vendorName': vendorName,
@@ -5577,6 +5624,41 @@ class StatusHistoryResponse {
 }
 
 @immutable
+class SubcategoryResponse {
+  const SubcategoryResponse({
+    required this.count,
+    required this.examples,
+    required this.key,
+    required this.name,
+    required this.nameHi,
+  });
+
+  factory SubcategoryResponse.fromJson(Map<String, dynamic> json) => SubcategoryResponse(
+    count: json['count'] as num,
+    examples: (json['examples'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+    key: json['key'] as String,
+    name: json['name'] as String,
+    nameHi: json['nameHi'] as String,
+  );
+
+  final num count;
+
+  /// Example items vendors can list
+  final List<String> examples;
+  final String key;
+  final String name;
+  final String nameHi;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'count': count,
+    'examples': examples,
+    'key': key,
+    'name': name,
+    'nameHi': nameHi,
+  };
+}
+
+@immutable
 class TempleDetailResponse {
   const TempleDetailResponse({
     required this.aartiToday,
@@ -5587,6 +5669,7 @@ class TempleDetailResponse {
     this.description,
     this.distanceKm,
     this.dressCode,
+    this.facts,
     required this.galleryUrls,
     this.history,
     required this.id,
@@ -5610,6 +5693,7 @@ class TempleDetailResponse {
     description: json['description'] == null ? null : json['description'] as String,
     distanceKm: json['distanceKm'] == null ? null : json['distanceKm'] as num,
     dressCode: json['dressCode'] == null ? null : json['dressCode'] as String,
+    facts: json['facts'] == null ? null : TempleFactsResponse.fromJson(_map(json['facts'])),
     galleryUrls: (json['galleryUrls'] as List<dynamic>).map((dynamic x) => x as String).toList(),
     history: json['history'] == null ? null : json['history'] as String,
     id: json['id'] as String,
@@ -5634,6 +5718,7 @@ class TempleDetailResponse {
   /// Present when the request had lat/lng
   final num? distanceKm;
   final String? dressCode;
+  final TempleFactsResponse? facts;
   final List<String> galleryUrls;
   final String? history;
   final String id;
@@ -5654,6 +5739,7 @@ class TempleDetailResponse {
     'description': ?description,
     'distanceKm': ?distanceKm,
     'dressCode': ?dressCode,
+    'facts': ?facts?.toJson(),
     'galleryUrls': galleryUrls,
     'history': ?history,
     'id': id,
@@ -5664,6 +5750,44 @@ class TempleDetailResponse {
     'openingHours': openingHours,
     'slug': slug,
     'tags': tags,
+  };
+}
+
+@immutable
+class TempleFactsResponse {
+  const TempleFactsResponse({
+    this.built,
+    this.famousFor,
+    required this.highlights,
+    required this.prohibited,
+    this.visitorsPerYear,
+  });
+
+  factory TempleFactsResponse.fromJson(Map<String, dynamic> json) => TempleFactsResponse(
+    built: json['built'] == null ? null : json['built'] as String,
+    famousFor: json['famousFor'] == null ? null : json['famousFor'] as String,
+    highlights: (json['highlights'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+    prohibited: (json['prohibited'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+    visitorsPerYear: json['visitorsPerYear'] == null ? null : json['visitorsPerYear'] as String,
+  );
+
+  /// When and by whom it was built
+  final String? built;
+  final String? famousFor;
+  final List<String> highlights;
+
+  /// Items and actions not allowed
+  final List<String> prohibited;
+
+  /// Approximate pilgrims per year
+  final String? visitorsPerYear;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'built': ?built,
+    'famousFor': ?famousFor,
+    'highlights': highlights,
+    'prohibited': prohibited,
+    'visitorsPerYear': ?visitorsPerYear,
   };
 }
 
@@ -6798,6 +6922,7 @@ class UpdateProductDto {
     this.name,
     this.pricePaise,
     this.stock,
+    this.subcategory,
     this.unit,
   });
 
@@ -6813,10 +6938,11 @@ class UpdateProductDto {
     name: json['name'] == null ? null : json['name'] as String,
     pricePaise: json['pricePaise'] == null ? null : json['pricePaise'] as num,
     stock: json['stock'] == null ? null : json['stock'] as num,
+    subcategory: json['subcategory'] == null ? null : json['subcategory'] as String,
     unit: json['unit'] == null ? null : json['unit'] as String,
   );
 
-  /// One of: pooja_thali, diya_dhoop, garland, prasad, poshak, tilak_mala, idols, books, other.
+  /// One of: krishna_shringar, morpankh_braj, mala_beads, idols_murtis, puja_samagri, puja_utensils, havan_yagya, gomaya, panchagavya, prasad_bhog, flowers_garland, clothing_textiles, home_mandir, books_music, festival_kits, gifts_hampers, yatra_essentials, temple_supplies, regional, eco_handmade, other.
   final String? category;
   final String? cityId;
   final String? description;
@@ -6830,6 +6956,9 @@ class UpdateProductDto {
   /// Vendor base price in paise (GST and platform fee are added at checkout)
   final num? pricePaise;
   final num? stock;
+
+  /// Must belong to the category One of: poshak_vastra, headwear_ornaments, shringar_accessories, seating_bedding, care_utility, morpankh, braj_souvenirs, decor_display, mala_types, jap_accessories, beads_certified, deity_idols, idol_materials, photos_display, tilak_powders, incense_fragrance, diya_lighting, offerings_daily, ritual_vessels, puja_tools, thali_sets, havan_equipment, havan_ingredients, ceremony_kits, gomaya_puja, gomaya_garden, gomaya_decor, cow_products, cow_household, braj_sweets, bhog_dry, vrat_food, fresh_dried, garlands_decor, for_devotees, for_deity, textile_accessories, mandir_structures, mandir_lighting, mandir_care, books, audio_instruments, learning, krishna_festivals, hindu_festivals, life_ceremonies, small_gifts, gift_sets, custom_gifts, travel_products, visitor_services, bulk_consumables, temple_equipment, braj_collection, other_regional, eco_artisan.
+  final String? subcategory;
   final String? unit;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -6842,6 +6971,7 @@ class UpdateProductDto {
     'name': ?name,
     'pricePaise': ?pricePaise,
     'stock': ?stock,
+    'subcategory': ?subcategory,
     'unit': ?unit,
   };
 }
@@ -7348,7 +7478,7 @@ class UpsertTemplateDto {
   final String? dltTemplateId;
   final bool? isActive;
 
-  /// One of: order_confirmed, order_accepted, order_started, order_completed, order_cancelled, refund_processed, vendor_new_order, vendor_order_cancelled, review_reply, content_warning, vendor_status, payout_paid, payout_failed, aarti_reminder, sos_alert, sos_resolved, trip_started, trip_ended, family_trip_started, family_trip_ended, broadcast, emergency_broadcast.
+  /// One of: order_confirmed, order_accepted, order_started, order_completed, order_cancelled, refund_processed, vendor_new_order, vendor_order_cancelled, review_reply, content_warning, vendor_status, payout_paid, payout_failed, aarti_live, aarti_reminder, sos_alert, sos_resolved, trip_started, trip_ended, family_trip_started, family_trip_ended, broadcast, emergency_broadcast.
   final String key;
   final I18nTextDto? title;
 

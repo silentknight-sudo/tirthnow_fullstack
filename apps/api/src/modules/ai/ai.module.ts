@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { CatalogModule } from '../catalog';
+import { InventoryModule } from '../inventory';
 import { FilesModule } from '../files';
 import { WeatherModule } from '../weather';
 import { AiFacade } from './ai.facade';
@@ -16,7 +17,7 @@ import { PlannerService } from './services/planner.service';
 import { QuotaService } from './services/quota.service';
 
 @Module({
-  imports: [CatalogModule, FilesModule, WeatherModule],
+  imports: [CatalogModule, FilesModule, WeatherModule, InventoryModule],
   controllers: [ChatController, AiController, KnowledgeAdminController],
   providers: [
     QuotaService,

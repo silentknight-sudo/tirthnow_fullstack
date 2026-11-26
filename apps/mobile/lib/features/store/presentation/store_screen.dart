@@ -7,71 +7,85 @@ import '../../../core/api/api_models.dart';
 import '../../../core/format/formatters.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/widgets/common.dart';
-import '../../../l10n/app_localizations.dart';
 import '../data/store_repository.dart';
 
 const _cream = Color(0xFFFFFBF3);
 
-String storeCategoryLabel(AppLocalizations l, String key) => switch (key) {
-  'pooja_thali' => l.stCatThali,
-  'diya_dhoop' => l.stCatDiya,
-  'garland' => l.stCatGarland,
-  'prasad' => l.stCatPrasad,
-  'poshak' => l.stCatPoshak,
-  'tilak_mala' => l.stCatTilak,
-  'idols' => l.stCatIdols,
-  'books' => l.stCatBooks,
-  _ => l.stCatOther,
+/// Category name in the app language (names come from the API catalogue).
+String storeCategoryName(BuildContext context, CategoryResponse c) =>
+    Localizations.localeOf(context).languageCode == 'hi' ? c.nameHi : c.name;
+
+String storeSubName(BuildContext context, SubcategoryResponse s) =>
+    Localizations.localeOf(context).languageCode == 'hi' ? s.nameHi : s.name;
+
+/// Photo per catalogue category (bundled; see docs/IMAGE_CREDITS.md).
+String storeCategoryArt(String key) => switch (key) {
+  'krishna_shringar' => 'assets/images/pooja/poshak.jpg',
+  'morpankh_braj' => 'assets/images/store/morpankh.jpg',
+  'mala_beads' => 'assets/images/pooja/mala.jpg',
+  'idols_murtis' => 'assets/images/store/idols.jpg',
+  'puja_samagri' => 'assets/images/pooja/kumkum.jpg',
+  'puja_utensils' => 'assets/images/pooja/thali.jpg',
+  'havan_yagya' => 'assets/images/pooja/agarbatti.jpg',
+  'gomaya' => 'assets/images/pooja/diya.jpg',
+  'panchagavya' => 'assets/images/canva/food.jpg',
+  'prasad_bhog' => 'assets/images/pooja/prasad.jpg',
+  'flowers_garland' => 'assets/images/pooja/garland.jpg',
+  'clothing_textiles' => 'assets/images/canva/hero-pooja.jpg',
+  'home_mandir' => 'assets/images/canva/temple.jpg',
+  'books_music' => 'assets/images/canva/guide-bg.jpg',
+  'festival_kits' => 'assets/images/canva/janmabhoomi.jpg',
+  'gifts_hampers' => 'assets/images/canva/hero-store.jpg',
+  'yatra_essentials' => 'assets/images/canva/hero-travel.jpg',
+  'temple_supplies' => 'assets/images/pooja/diya.jpg',
+  'regional' => 'assets/images/canva/skyline.jpg',
+  'eco_handmade' => 'assets/images/canva/govardhan.jpg',
+  _ => 'assets/images/pooja/agarbatti.jpg',
 };
 
-/// Photo icons for categories that no Material icon depicts well.
-String? storeCategoryArt(String key) => switch (key) {
-  'diya_dhoop' => 'assets/images/pooja/diya.jpg',
-  'poshak' => 'assets/images/pooja/poshak.jpg',
-  'tilak_mala' => 'assets/images/pooja/mala.jpg',
-  _ => null,
+IconData storeCategoryIcon(String key) => switch (key) {
+  'krishna_shringar' => Icons.checkroom_rounded,
+  'morpankh_braj' => Icons.flutter_dash_rounded,
+  'mala_beads' => Icons.spa_rounded,
+  'idols_murtis' => Icons.temple_hindu_rounded,
+  'puja_samagri' => Icons.local_fire_department_rounded,
+  'puja_utensils' => Icons.brightness_7_rounded,
+  'havan_yagya' => Icons.whatshot_rounded,
+  'gomaya' => Icons.eco_rounded,
+  'panchagavya' => Icons.water_drop_rounded,
+  'prasad_bhog' => Icons.cookie_rounded,
+  'flowers_garland' => Icons.local_florist_rounded,
+  'clothing_textiles' => Icons.dry_cleaning_rounded,
+  'home_mandir' => Icons.home_rounded,
+  'books_music' => Icons.menu_book_rounded,
+  'festival_kits' => Icons.celebration_rounded,
+  'gifts_hampers' => Icons.card_giftcard_rounded,
+  'yatra_essentials' => Icons.backpack_rounded,
+  'temple_supplies' => Icons.inventory_2_rounded,
+  'regional' => Icons.public_rounded,
+  'eco_handmade' => Icons.recycling_rounded,
+  _ => Icons.category_rounded,
 };
 
-/// Category icon: a small round photo where we have one, else a Material icon.
+/// Round category photo, falling back to an icon if the asset is missing.
 class StoreCategoryIcon extends StatelessWidget {
-  const StoreCategoryIcon(
-    this.category, {
-    this.size = 17,
-    this.color = TnColors.saffron,
-    super.key,
-  });
+  const StoreCategoryIcon(this.category, {this.size = 17, super.key});
 
   final String category;
   final double size;
-  final Color color;
 
   @override
-  Widget build(BuildContext context) {
-    final art = storeCategoryArt(category);
-    if (art == null) return Icon(storeCategoryIcon(category), size: size, color: color);
-    return Container(
+  Widget build(BuildContext context) => ClipOval(
+    child: Image.asset(
+      storeCategoryArt(category),
       width: size + 3,
       height: size + 3,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(color: Colors.white, width: 1.2),
-        image: DecorationImage(image: AssetImage(art), fit: BoxFit.cover),
-      ),
-    );
-  }
+      fit: BoxFit.cover,
+      errorBuilder: (_, _, _) =>
+          Icon(storeCategoryIcon(category), size: size, color: TnColors.saffron),
+    ),
+  );
 }
-
-IconData storeCategoryIcon(String key) => switch (key) {
-  'pooja_thali' => Icons.brightness_7_rounded,
-  'diya_dhoop' => Icons.local_fire_department_rounded,
-  'garland' => Icons.local_florist_rounded,
-  'prasad' => Icons.cookie_rounded,
-  'poshak' => Icons.checkroom_rounded,
-  'tilak_mala' => Icons.spa_rounded,
-  'idols' => Icons.temple_hindu_rounded,
-  'books' => Icons.menu_book_rounded,
-  _ => Icons.category_rounded,
-};
 
 /// Temple Store: products listed by approved store vendors; one store per cart.
 class StoreScreen extends ConsumerStatefulWidget {
@@ -90,6 +104,8 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
     final products = ref.watch(storeProductsProvider);
     final categories = ref.watch(storeCategoriesProvider).value ?? const [];
     final selected = ref.watch(storeCategoryProvider);
+    final sub = ref.watch(storeSubcategoryProvider);
+    final selectedCat = categories.where((c) => c.key == selected).firstOrNull;
     final cart = ref.watch(cartProvider);
     return Scaffold(
       backgroundColor: _cream,
@@ -176,30 +192,82 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
               ),
             ),
             SliverToBoxAdapter(
-              child: SizedBox(
-                height: 46,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 6),
+                child: Row(
                   children: [
-                    _CatChip(
-                      label: l.poojaAll,
-                      icon: Icons.apps_rounded,
-                      selected: selected == null,
-                      onTap: () => ref.read(storeCategoryProvider.notifier).set(null),
+                    Expanded(
+                      child: Text(
+                        l.stShopByCategory,
+                        style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 16),
+                      ),
                     ),
-                    for (final c in categories)
-                      _CatChip(
-                        label: storeCategoryLabel(l, c.key),
-                        icon: storeCategoryIcon(c.key),
-                        category: c.key,
-                        selected: selected == c.key,
-                        onTap: () => ref.read(storeCategoryProvider.notifier).set(c.key),
+                    if (selected != null)
+                      TextButton(
+                        onPressed: () {
+                          ref.read(storeCategoryProvider.notifier).set(null);
+                          ref.read(storeSubcategoryProvider.notifier).set(null);
+                        },
+                        child: Text(l.poojaAll),
                       ),
                   ],
                 ),
               ),
             ),
+            SliverToBoxAdapter(
+              child: SizedBox(
+                height: 212,
+                child: GridView.builder(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    childAspectRatio: 1.05,
+                  ),
+                  itemCount: categories.length,
+                  itemBuilder: (_, i) {
+                    final c = categories[i];
+                    return _CategoryTile(
+                      category: c,
+                      selected: selected == c.key,
+                      onTap: () {
+                        ref.read(storeSubcategoryProvider.notifier).set(null);
+                        ref
+                            .read(storeCategoryProvider.notifier)
+                            .set(selected == c.key ? null : c.key);
+                      },
+                    );
+                  },
+                ),
+              ),
+            ),
+            if (selectedCat != null && selectedCat.subcategories.isNotEmpty)
+              SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 50,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.fromLTRB(14, 10, 14, 4),
+                    children: [
+                      _CatChip(
+                        label: l.poojaAll,
+                        icon: Icons.apps_rounded,
+                        selected: sub == null,
+                        onTap: () => ref.read(storeSubcategoryProvider.notifier).set(null),
+                      ),
+                      for (final s in selectedCat.subcategories)
+                        _CatChip(
+                          label: storeSubName(context, s),
+                          icon: storeCategoryIcon(selectedCat.key),
+                          selected: sub == s.key,
+                          onTap: () => ref.read(storeSubcategoryProvider.notifier).set(s.key),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(16, 6, 16, 2),
@@ -228,9 +296,42 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
                     ? list
                     : list.where((p) => p.name.toLowerCase().contains(_q)).toList();
                 if (shown.isEmpty) {
+                  final examples = selectedCat == null
+                      ? const <String>[]
+                      : (sub == null
+                                ? selectedCat.subcategories.expand((s) => s.examples)
+                                : selectedCat.subcategories
+                                      .where((s) => s.key == sub)
+                                      .expand((s) => s.examples))
+                            .take(8)
+                            .toList();
                   return SliverFillRemaining(
                     hasScrollBody: false,
-                    child: EmptyState(icon: Icons.storefront_rounded, message: l.stEmpty),
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        children: [
+                          EmptyState(
+                            icon: Icons.storefront_rounded,
+                            message: selectedCat == null ? l.stEmpty : l.stComingSoon,
+                          ),
+                          if (examples.isNotEmpty)
+                            Wrap(
+                              spacing: 6,
+                              runSpacing: 6,
+                              alignment: WrapAlignment.center,
+                              children: [
+                                for (final e in examples)
+                                  Chip(
+                                    label: Text(e, style: const TextStyle(fontSize: 12)),
+                                    backgroundColor: Colors.white,
+                                    side: const BorderSide(color: TnColors.line),
+                                  ),
+                              ],
+                            ),
+                        ],
+                      ),
+                    ),
                   );
                 }
                 return SliverPadding(
@@ -279,11 +380,9 @@ class _CatChip extends StatelessWidget {
     required this.icon,
     required this.selected,
     required this.onTap,
-    this.category,
   });
   final String label;
   final IconData icon;
-  final String? category;
   final bool selected;
   final VoidCallback onTap;
 
@@ -300,10 +399,7 @@ class _CatChip extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 14),
           child: Row(
             children: [
-              if (category != null)
-                StoreCategoryIcon(category!, color: selected ? Colors.white : TnColors.saffron)
-              else
-                Icon(icon, size: 17, color: selected ? Colors.white : TnColors.saffron),
+              Icon(icon, size: 17, color: selected ? Colors.white : TnColors.saffron),
               const SizedBox(width: 6),
               Text(
                 label,
@@ -315,6 +411,73 @@ class _CatChip extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    ),
+  );
+}
+
+class _CategoryTile extends StatelessWidget {
+  const _CategoryTile({required this.category, required this.selected, required this.onTap});
+  final CategoryResponse category;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) => GestureDetector(
+    onTap: onTap,
+    child: AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: selected ? TnColors.saffron : Colors.transparent, width: 2.5),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(14),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.asset(
+              storeCategoryArt(category.key),
+              fit: BoxFit.cover,
+              errorBuilder: (_, _, _) => ColoredBox(
+                color: const Color(0xFFFFF1E0),
+                child: Icon(storeCategoryIcon(category.key), size: 34, color: TnColors.saffron),
+              ),
+            ),
+            const DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Color(0x00000000), Color(0xCC0C1A30)],
+                  stops: [0.4, 1],
+                ),
+              ),
+            ),
+            Positioned(
+              left: 7,
+              right: 7,
+              bottom: 6,
+              child: Text(
+                storeCategoryName(context, category),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 11.5,
+                  height: 1.15,
+                ),
+              ),
+            ),
+            if (category.count > 0)
+              Positioned(
+                right: 5,
+                top: 5,
+                child: _Pill(text: '${category.count}', color: TnColors.saffron),
+              ),
+          ],
         ),
       ),
     ),
@@ -653,7 +816,13 @@ class _ProductSheet extends ConsumerWidget {
                     StoreCategoryIcon(p.category, size: 16),
                     const SizedBox(width: 6),
                     Text(
-                      storeCategoryLabel(l, p.category),
+                      ref
+                              .watch(storeCategoriesProvider)
+                              .value
+                              ?.where((c) => c.key == p.category)
+                              .map((c) => storeCategoryName(context, c))
+                              .firstOrNull ??
+                          p.category,
                       style: const TextStyle(
                         color: TnColors.saffron,
                         fontWeight: FontWeight.w700,

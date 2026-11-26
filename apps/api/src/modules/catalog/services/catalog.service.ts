@@ -17,6 +17,7 @@ import {
   type PoiResponse,
   type SafetyDirectoryResponse,
   type TempleDetailResponse,
+  type TempleFactsResponse,
   type TempleSummaryResponse,
 } from '../dto/catalog-responses.dto';
 import {
@@ -110,6 +111,7 @@ export class CatalogService {
       address: temple.address,
       openingHours: temple.openingHours,
       dressCode: tOrNull(temple.dressCodeI18n, lang),
+      facts: templeFacts(temple.factsI18n, lang),
       galleryUrls: await Promise.all(gallery.map((m) => this.files.url(m, 'medium'))),
       aartiToday,
       nextAarti: upcoming,
@@ -313,4 +315,22 @@ export class CatalogService {
       }),
     };
   }
+}
+
+/** Picks the request language (falling back to English) from the facts JSON. */
+function templeFacts(raw: unknown, lang: Lang): TempleFactsResponse | null {
+  if (!raw || typeof raw !== 'object') return null;
+  const all = raw as Record<string, unknown>;
+  const f = (all[lang] ?? all.en) as Record<string, unknown> | undefined;
+  if (!f || typeof f !== 'object') return null;
+  const str = (v: unknown) => (typeof v === 'string' && v.length > 0 ? v : null);
+  const list = (v: unknown) =>
+    Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string') : [];
+  return {
+    built: str(f.built),
+    famousFor: str(f.famousFor),
+    highlights: list(f.highlights),
+    visitorsPerYear: str(f.visitorsPerYear),
+    prohibited: list(f.prohibited),
+  };
 }

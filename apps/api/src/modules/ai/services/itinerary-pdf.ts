@@ -275,7 +275,42 @@ export function renderItineraryPdf(r: ItineraryResponse, lang: Lang): Promise<Bu
         .fillColor(C.muted)
         .text(sub, x + 12, cy + 46, { width: cw - 18, lineBreak: false, ellipsis: true });
   });
-  doc.y = cy + 62 + 20;
+  // Second row (like a one-page yatra brief): arrival, departure and local travel.
+  const items = r.dayList.flatMap((d) => d.items);
+  const ist = (iso: string | null | undefined) =>
+    iso
+      ? new Date(iso).toLocaleTimeString('en-IN', {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false,
+          timeZone: 'Asia/Kolkata',
+        })
+      : '—';
+  const firstStart = items.find((i) => i.startsAt)?.startsAt ?? null;
+  const lastEnd = [...items].reverse().find((i) => i.endsAt ?? i.startsAt);
+  const local = r.trip.travel?.localTransport ?? 'e_rickshaw';
+  const row2: [string, string][] = [
+    [tx.arrive, r.trip.travel?.arrivalTime ?? ist(firstStart)],
+    [tx.depart, r.trip.travel?.departureTime ?? ist(lastEnd?.endsAt ?? lastEnd?.startsAt)],
+    [tx.local, MODE[local]?.[lang] ?? local],
+  ];
+  const cw2 = (CW - gap * 2) / 3;
+  const cy2 = cy + 62 + 10;
+  row2.forEach(([k, v], i) => {
+    const x = M + i * (cw2 + gap);
+    doc.roundedRect(x, cy2, cw2, 44, 10).fillAndStroke('#FFF8EC', C.line);
+    doc
+      .font(f(k))
+      .fontSize(8)
+      .fillColor(C.muted)
+      .text(k.toUpperCase(), x + 12, cy2 + 8, { width: cw2 - 18 });
+    doc
+      .font(DEVANAGARI.test(v) ? 'deva-b' : 'brand')
+      .fontSize(14)
+      .fillColor(C.navy)
+      .text(v, x + 12, cy2 + 21, { width: cw2 - 18, lineBreak: false, ellipsis: true });
+  });
+  doc.y = cy2 + 44 + 20;
 
   const sectionTitle = (title: string) => {
     ensure(40);

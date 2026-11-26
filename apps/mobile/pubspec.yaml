@@ -49,6 +49,7 @@ flutter:
     - assets/images/temples/
     - assets/images/demo-people/
     - assets/images/pooja/
+    - assets/images/store/
     - assets/aarti/
     - assets/journey/
   fonts:
