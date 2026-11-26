@@ -1190,9 +1190,9 @@ class _HeroPanel extends StatelessWidget {
                     alignment: Alignment.centerRight,
                   ),
                 ),
-                photo(tab.photos[0], -0.14, box.maxWidth - art + 6, 8),
-                photo(tab.photos[1], 0, box.maxWidth - art + 50, 4),
-                photo(tab.photos[2], 0.14, box.maxWidth - art + 94, 10),
+                photo(tab.photos[0], -0.14, box.maxWidth - art + 38, 8),
+                photo(tab.photos[1], 0, box.maxWidth - art + 76, 4),
+                photo(tab.photos[2], 0.14, box.maxWidth - art + 112, 10),
                 Padding(
                   padding: EdgeInsets.fromLTRB(14, 12, art - 30, 12),
                   child: Column(
