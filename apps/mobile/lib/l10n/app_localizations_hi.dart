@@ -2265,4 +2265,10 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get temples => 'मंदिर';
+
+  @override
+  String get heroMorpankh => 'मोरपंख';
+
+  @override
+  String get heroMurti => 'मूर्ति';
 }

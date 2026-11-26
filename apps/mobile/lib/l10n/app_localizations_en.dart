@@ -2272,4 +2272,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get temples => 'Temples';
+
+  @override
+  String get heroMorpankh => 'Morpankh';
+
+  @override
+  String get heroMurti => 'Murti';
 }

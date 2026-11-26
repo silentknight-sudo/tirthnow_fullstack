@@ -4406,6 +4406,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Temples'**
   String get temples;
+
+  /// No description provided for @heroMorpankh.
+  ///
+  /// In en, this message translates to:
+  /// **'Morpankh'**
+  String get heroMorpankh;
+
+  /// No description provided for @heroMurti.
+  ///
+  /// In en, this message translates to:
+  /// **'Murti'**
+  String get heroMurti;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

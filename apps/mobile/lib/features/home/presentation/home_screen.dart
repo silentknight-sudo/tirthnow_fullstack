@@ -908,15 +908,40 @@ class _HeroCarousel extends StatefulWidget {
 class _HeroCarouselState extends State<_HeroCarousel> {
   final _pages = PageController();
   int _index = 0;
+  Timer? _auto;
+
+  @override
+  void initState() {
+    super.initState();
+    _startAuto();
+  }
+
+  /// Banners slide on their own every few seconds; a swipe or tab tap restarts the timer.
+  void _startAuto() {
+    _auto?.cancel();
+    _auto = Timer.periodic(const Duration(seconds: 4), (_) {
+      if (!mounted || !_pages.hasClients) return;
+      final next = (_index + 1) % 4;
+      unawaited(
+        _pages.animateToPage(
+          next,
+          duration: const Duration(milliseconds: 600),
+          curve: Curves.easeInOut,
+        ),
+      );
+    });
+  }
 
   @override
   void dispose() {
+    _auto?.cancel();
     _pages.dispose();
     super.dispose();
   }
 
   void _select(int i) {
     setState(() => _index = i);
+    _startAuto();
     unawaited(
       _pages.animateToPage(i, duration: const Duration(milliseconds: 350), curve: Curves.easeOut),
     );
@@ -1021,6 +1046,20 @@ class _HeroCarouselState extends State<_HeroCarousel> {
             '/pooja',
             green,
             art: 'assets/images/pooja/mala.jpg',
+          ),
+          _HeroTile(
+            Icons.flutter_dash_rounded,
+            l.heroMorpankh,
+            '/pooja',
+            purple,
+            art: 'assets/images/store/morpankh.jpg',
+          ),
+          _HeroTile(
+            Icons.temple_hindu_rounded,
+            l.heroMurti,
+            '/pooja',
+            orange,
+            art: 'assets/images/store/idols.jpg',
           ),
         ],
       ),
@@ -1194,20 +1233,20 @@ class _HeroPanel extends StatelessWidget {
                       ),
                       const Spacer(),
                       Padding(
-                        padding: EdgeInsets.only(right: tab.tiles.length == 4 ? 46 : 0),
+                        padding: EdgeInsets.zero,
                         child: GridView.count(
                           // Four tiles sit in a compact 2×2 of wide chips so they never run
                           // into the photos on the right.
-                          crossAxisCount: tab.tiles.length == 4 ? 2 : 3,
+                          crossAxisCount: 3,
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           padding: EdgeInsets.zero,
                           mainAxisSpacing: 7,
                           crossAxisSpacing: 7,
-                          childAspectRatio: tab.tiles.length == 4 ? 2.5 : 1.18,
+                          childAspectRatio: 1.18,
                           children: [
                             for (final (i, t) in tab.tiles.take(6).indexed)
-                              _HeroTileView(tile: t, index: i, wide: tab.tiles.length == 4),
+                              _HeroTileView(tile: t, index: i),
                           ],
                         ),
                       ),
@@ -1226,10 +1265,9 @@ class _HeroPanel extends StatelessWidget {
 /// Display-only banner tile that gently floats; tiles bob out of phase so the
 /// banner feels alive (client brief: "enko move me lekar aao").
 class _HeroTileView extends StatefulWidget {
-  const _HeroTileView({required this.tile, required this.index, this.wide = false});
+  const _HeroTileView({required this.tile, required this.index});
   final _HeroTile tile;
   final int index;
-  final bool wide;
 
   @override
   State<_HeroTileView> createState() => _HeroTileViewState();
@@ -1252,8 +1290,8 @@ class _HeroTileViewState extends State<_HeroTileView> with SingleTickerProviderS
     final tile = widget.tile;
     final icon = tile.art != null
         ? Container(
-            width: widget.wide ? 28 : 24,
-            height: widget.wide ? 28 : 24,
+            width: 24,
+            height: 24,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(color: tile.color.withValues(alpha: 0.5), width: 1.5),
@@ -1264,7 +1302,7 @@ class _HeroTileViewState extends State<_HeroTileView> with SingleTickerProviderS
     final label = Text(
       tile.label,
       maxLines: 2,
-      textAlign: widget.wide ? TextAlign.start : TextAlign.center,
+      textAlign: TextAlign.center,
       overflow: TextOverflow.ellipsis,
       style: const TextStyle(
         fontFamily: 'Cormorant',
@@ -1282,18 +1320,10 @@ class _HeroTileViewState extends State<_HeroTileView> with SingleTickerProviderS
         border: Border.all(color: TnColors.line),
         boxShadow: const [BoxShadow(color: Color(0x141C3C6B), blurRadius: 6, offset: Offset(0, 2))],
       ),
-      child: widget.wide
-          ? Row(
-              children: [
-                icon,
-                const SizedBox(width: 6),
-                Expanded(child: label),
-              ],
-            )
-          : Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [icon, const SizedBox(height: 3), label],
-            ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [icon, const SizedBox(height: 3), label],
+      ),
     );
     // Not a button: taps fall through to the banner.
     return IgnorePointer(

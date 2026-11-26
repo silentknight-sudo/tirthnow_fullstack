@@ -963,5 +963,7 @@
   "whereTo": "Where to?",
   "searchPlaces": "Search temples, stations, ghats…",
   "popularPlaces": "Popular places",
-  "temples": "Temples"
+  "temples": "Temples",
+  "heroMorpankh": "Morpankh",
+  "heroMurti": "Murti"
 }
