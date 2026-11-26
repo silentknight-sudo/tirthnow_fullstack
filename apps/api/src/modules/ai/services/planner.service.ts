@@ -413,7 +413,10 @@ export class PlannerService {
         if (it.note) return it;
         const b = it.templeId ? briefs.get(it.templeId) : undefined;
         const fromTemple = b
-          ? [b.famousFor ?? b.description, b.highlight ? `✦ ${b.highlight}` : null]
+          ? [
+              b.famousFor ?? b.description,
+              b.highlight ? `${hi ? 'ख़ासियत' : 'Special'}: ${b.highlight}.` : null,
+            ]
               .filter(Boolean)
               .join(' ')
           : '';

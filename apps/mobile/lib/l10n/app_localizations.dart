@@ -3168,7 +3168,7 @@ abstract class AppLocalizations {
   /// No description provided for @heroStoreSub.
   ///
   /// In en, this message translates to:
-  /// **'Prasad, garlands, poshak and pooja essentials from the temple town.'**
+  /// **'Prasad, poshak, tulsi mala and pooja essentials from the temple town.'**
   String get heroStoreSub;
 
   /// No description provided for @heroStoreCta.

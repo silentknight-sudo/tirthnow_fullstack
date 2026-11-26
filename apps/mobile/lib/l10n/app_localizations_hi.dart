@@ -1623,7 +1623,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get heroPlanTrip => 'यात्रा प्लान';
 
   @override
-  String get heroStoreSub => 'प्रसाद, माला, पोशाक और पूजा का सामान, मंदिर नगरी से।';
+  String get heroStoreSub => 'प्रसाद, पोशाक, तुलसी माला और पूजा का सामान, मंदिर नगरी से।';
 
   @override
   String get heroStoreCta => 'मंदिर स्टोर देखें';

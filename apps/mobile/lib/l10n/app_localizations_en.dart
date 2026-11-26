@@ -1626,7 +1626,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get heroPlanTrip => 'Plan trip';
 
   @override
-  String get heroStoreSub => 'Prasad, garlands, poshak and pooja essentials from the temple town.';
+  String get heroStoreSub =>
+      'Prasad, poshak, tulsi mala and pooja essentials from the temple town.';
 
   @override
   String get heroStoreCta => 'Visit Temple Store';
