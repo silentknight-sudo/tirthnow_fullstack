@@ -4300,6 +4300,7 @@ export interface components {
       legalName: string;
       /** @example ABCDE1234F */
       pan?: string;
+      panditProfile?: components['schemas']['PanditProfileDto'];
       /** @enum {string} */
       type:
         | 'hotel'
@@ -4457,6 +4458,8 @@ export interface components {
       /** Format: uuid */
       cityId: string;
       description: string | null;
+      /** @description What the pilgrim pays per person (price + GST + platform fee) */
+      displayPricePaise: number;
       durationMin: number;
       /** Format: uuid */
       id: string;
@@ -4475,6 +4478,8 @@ export interface components {
         | 'palmistry'
         | 'astrology';
       maxGroupSize: number;
+      /** @description Pandit Ji services only */
+      pandit?: components['schemas']['PanditProfileDto'];
       pricePaise: number;
       slots?: components['schemas']['SlotResponse'][];
       title: string;
@@ -4812,6 +4817,17 @@ export interface components {
       challengeId: string;
       /** @example 123456 */
       code: string;
+    };
+    PanditProfileDto: {
+      about?: string;
+      /** @example 15 */
+      experienceYears: number;
+      homeVisits: boolean;
+      languages: ('hi' | 'en' | 'sa' | 'braj' | 'bn' | 'gu' | 'mr' | 'pa' | 'ta' | 'te')[];
+      /** @example Gaudiya Vaishnav */
+      sampradaya?: string;
+      specialities: ('puja' | 'path' | 'jyotish' | 'palmistry' | 'astrology')[];
+      videoConsults: boolean;
     };
     ParikramaRouteResponse: {
       description: string | null;
@@ -5975,6 +5991,7 @@ export interface components {
       gstin?: string;
       legalName?: string;
       pan?: string;
+      panditProfile?: components['schemas']['PanditProfileDto'];
     };
     UpsertCabFareDto: {
       /** @example 10000 */
@@ -6084,6 +6101,7 @@ export interface components {
       /** @enum {string} */
       myRole: 'owner' | 'staff' | 'admin';
       pan: string | null;
+      panditProfile: components['schemas']['PanditProfileDto'] | null;
       /** @enum {string} */
       status: 'draft' | 'kyc_pending' | 'kyc_rejected' | 'active' | 'suspended';
       /** @enum {string} */

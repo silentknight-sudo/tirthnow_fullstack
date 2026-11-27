@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { type Experience, type ExperienceSlot, type Prisma } from '@prisma/client';
 import { ERROR_CODES, type Lang } from '@tirth-now/shared-types';
 import { AuditService } from '../../../core/audit';
@@ -8,7 +8,9 @@ import { i18nJson, t, tOrNull } from '../../../core/i18n';
 import { PrismaService } from '../../../core/prisma';
 import { istToUtc } from '../../../core/time';
 import { CatalogFacade } from '../../catalog';
-import { VendorsFacade } from '../../vendors';
+import { readPanditProfile, VendorsFacade } from '../../vendors';
+import { APP_CONFIG, type AppConfig } from '../../../core/config';
+import { displayPrice } from '../../../core/pricing';
 import {
   type CreateExperienceDto,
   type CreateSlotsDto,
@@ -32,6 +34,7 @@ export class ExperiencesService {
     private readonly vendors: VendorsFacade,
     private readonly catalog: CatalogFacade,
     private readonly audit: AuditService,
+    @Inject(APP_CONFIG) private readonly config: AppConfig,
   ) {}
 
   async listForVendor(vendorId: string): Promise<ExperienceResponse[]> {
@@ -189,11 +192,13 @@ export class ExperiencesService {
         ...(q.group === 'pandit' ? { kind: { in: PANDIT_KINDS } } : {}),
         ...(q.group === 'experiences' && !q.kind ? { kind: { notIn: PANDIT_KINDS } } : {}),
       },
-      include: { vendor: { select: { displayName: true } } },
+      include: { vendor: { select: { displayName: true, profile: true } } },
       orderBy: { pricePaise: 'asc' },
       take: 200,
     });
-    return rows.map((e) => this.toResponse(e, lang, null, e.vendor.displayName));
+    return rows.map((e) =>
+      this.toResponse(e, lang, null, e.vendor.displayName, readPanditProfile(e.vendor.profile)),
+    );
   }
 
   async detail(id: string, q: SlotQueryDto, lang: Lang): Promise<ExperienceResponse> {
@@ -207,7 +212,13 @@ export class ExperiencesService {
     });
     if (!e) throw AppException.notFound('Experience not found');
     const vendor = await this.vendors.get(e.vendorId);
-    return this.toResponse(e, lang, await this.slots(id, q), vendor?.displayName);
+    return this.toResponse(
+      e,
+      lang,
+      await this.slots(id, q),
+      vendor?.displayName,
+      readPanditProfile(vendor?.profile),
+    );
   }
 
   async slots(experienceId: string, q: { from?: string; days?: number }): Promise<SlotResponse[]> {
@@ -257,6 +268,7 @@ export class ExperiencesService {
     lang: Lang,
     slots: SlotResponse[] | null,
     vendorName?: string,
+    pandit?: ReturnType<typeof readPanditProfile>,
   ): ExperienceResponse {
     return {
       id: e.id,
@@ -270,7 +282,16 @@ export class ExperiencesService {
       maxGroupSize: e.maxGroupSize,
       cancellationPolicy: parsePolicy(e.cancellationPolicy),
       isPublished: e.isPublished,
+      displayPricePaise:
+        this.config.payments.pricingModel === 'commission'
+          ? e.pricePaise
+          : displayPrice(
+              e.pricePaise,
+              this.config.payments.saleGstBps,
+              this.config.payments.platformFeeBps,
+            ),
       ...(vendorName ? { vendorName } : {}),
+      ...(pandit && PANDIT_KINDS.includes(e.kind) ? { pandit } : {}),
       ...(slots ? { slots } : {}),
     };
   }

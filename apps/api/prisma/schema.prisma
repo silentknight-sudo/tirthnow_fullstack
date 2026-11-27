@@ -808,6 +808,8 @@ model Vendor {
   displayName             String       @map("display_name")
   gstin                   String?
   pan                     String?
+  /// Public profile shown to pilgrims; for pandits: experienceYears, languages, specialities, about, homeVisits, videoConsults.
+  profile                 Json?
   cityId                  String?      @map("city_id") @db.Uuid
   status                  VendorStatus @default(draft)
   razorpayLinkedAccountId String?      @unique @map("razorpay_linked_account_id")

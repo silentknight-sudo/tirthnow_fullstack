@@ -1,3 +1,4 @@
+import { PanditProfileDto } from '../../vendors';
 import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
@@ -122,5 +123,9 @@ export class ExperienceResponse {
   @ApiProperty() isPublished!: boolean;
   @ApiPropertyOptional({ description: 'Business name of the provider (e.g. the pandit)' })
   vendorName?: string;
+  @ApiProperty({ description: 'What the pilgrim pays per person (price + GST + platform fee)' })
+  displayPricePaise!: number;
+  @ApiPropertyOptional({ type: PanditProfileDto, description: 'Pandit Ji services only' })
+  pandit?: PanditProfileDto;
   @ApiPropertyOptional({ type: [SlotResponse] }) slots?: SlotResponse[];
 }

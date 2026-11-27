@@ -4634,6 +4634,168 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Havan'**
   String get heroHavan;
+
+  /// No description provided for @panditHeroTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Book Pandit Ji'**
+  String get panditHeroTitle;
+
+  /// No description provided for @panditSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search puja, path, kundli…'**
+  String get panditSearch;
+
+  /// No description provided for @panditStep1.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a puja or consultation'**
+  String get panditStep1;
+
+  /// No description provided for @panditStep2.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick date, time and place'**
+  String get panditStep2;
+
+  /// No description provided for @panditStep3.
+  ///
+  /// In en, this message translates to:
+  /// **'Pandit Ji calls you to confirm'**
+  String get panditStep3;
+
+  /// No description provided for @panditOurPandits.
+  ///
+  /// In en, this message translates to:
+  /// **'Our pandits'**
+  String get panditOurPandits;
+
+  /// No description provided for @panditAllServices.
+  ///
+  /// In en, this message translates to:
+  /// **'All services'**
+  String get panditAllServices;
+
+  /// No description provided for @panditVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified'**
+  String get panditVerified;
+
+  /// No description provided for @panditYears.
+  ///
+  /// In en, this message translates to:
+  /// **'{y}+ yrs experience'**
+  String panditYears(String y);
+
+  /// No description provided for @panditServicesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{n} services'**
+  String panditServicesCount(String n);
+
+  /// No description provided for @panditInclTax.
+  ///
+  /// In en, this message translates to:
+  /// **'incl. GST & fee'**
+  String get panditInclTax;
+
+  /// No description provided for @panditStepWhen.
+  ///
+  /// In en, this message translates to:
+  /// **'When'**
+  String get panditStepWhen;
+
+  /// No description provided for @panditStepWhere.
+  ///
+  /// In en, this message translates to:
+  /// **'Where'**
+  String get panditStepWhere;
+
+  /// No description provided for @panditStepDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get panditStepDetails;
+
+  /// No description provided for @panditChooseTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a time'**
+  String get panditChooseTime;
+
+  /// No description provided for @panditAtHomeSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Pandit Ji comes to your home or hotel'**
+  String get panditAtHomeSub;
+
+  /// No description provided for @panditOnlineSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Video call on your phone'**
+  String get panditOnlineSub;
+
+  /// No description provided for @panditAtTempleSub.
+  ///
+  /// In en, this message translates to:
+  /// **'At a temple or the pandit\'s place in Braj'**
+  String get panditAtTempleSub;
+
+  /// No description provided for @panditSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking summary'**
+  String get panditSummary;
+
+  /// No description provided for @panditDakshina.
+  ///
+  /// In en, this message translates to:
+  /// **'Dakshina'**
+  String get panditDakshina;
+
+  /// No description provided for @panditTaxes.
+  ///
+  /// In en, this message translates to:
+  /// **'GST & platform fee'**
+  String get panditTaxes;
+
+  /// No description provided for @panditTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get panditTotal;
+
+  /// No description provided for @panditPromise.
+  ///
+  /// In en, this message translates to:
+  /// **'Free cancellation up to {h} hours before. Pandit Ji will call you with the samagri list.'**
+  String panditPromise(String h);
+
+  /// No description provided for @panditBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get panditBack;
+
+  /// No description provided for @panditContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get panditContinue;
+
+  /// No description provided for @panditPayBook.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay & book'**
+  String get panditPayBook;
+
+  /// No description provided for @panditPromiseNoFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Pandit Ji will call you after booking with the samagri list.'**
+  String get panditPromiseNoFree;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

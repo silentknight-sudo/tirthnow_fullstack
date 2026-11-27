@@ -46,7 +46,7 @@ export default function RegisterPage() {
   return (
     <AuthShell
       title="Become a partner"
-      subtitle="List your dharamshala, cabs, restaurant or experiences."
+      subtitle="List your dharamshala, cabs, restaurant or experiences — or join as a Pandit Ji."
     >
       <form onSubmit={onSubmit} className="space-y-4" noValidate>
         <Field label="Your name" error={errors.displayName?.message}>

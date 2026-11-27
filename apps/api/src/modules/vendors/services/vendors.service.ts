@@ -14,6 +14,7 @@ import {
   type AddKycDocumentDto,
   type CreateVendorDto,
   type KycDocumentResponse,
+  type PanditProfileDto,
   type UpdateVendorDto,
   type VendorResponse,
 } from '../dto/vendors.dto';
@@ -51,6 +52,7 @@ export class VendorsService {
         cityId: dto.cityId ?? null,
         gstin: dto.gstin ?? null,
         pan: dto.pan ?? null,
+        ...(dto.panditProfile ? { profile: toJson(dto.panditProfile) } : {}),
         status: 'draft',
       },
     });
@@ -106,7 +108,11 @@ export class VendorsService {
         'Legal details can only change before approval; contact support',
       );
     }
-    await this.prisma.vendor.update({ where: { id: vendorId }, data: dto });
+    const { panditProfile, ...rest } = dto;
+    await this.prisma.vendor.update({
+      where: { id: vendorId },
+      data: { ...rest, ...(panditProfile ? { profile: toJson(panditProfile) } : {}) },
+    });
     await this.audit.record({
       actor: user,
       action: 'vendor.update',
@@ -269,6 +275,34 @@ export class VendorsService {
         vendor.kycDocuments.map((d) => this.docResponse(d, withUrls && access.role !== 'staff')),
       ),
       missingDocuments: missingDocuments(vendor.type, vendor.gstin !== null, vendor.kycDocuments),
+      panditProfile: readPanditProfile(vendor.profile),
     };
   }
+}
+
+const toJson = (p: PanditProfileDto): Prisma.InputJsonValue => ({
+  experienceYears: p.experienceYears,
+  languages: p.languages,
+  specialities: p.specialities,
+  ...(p.sampradaya ? { sampradaya: p.sampradaya } : {}),
+  ...(p.about ? { about: p.about } : {}),
+  homeVisits: p.homeVisits,
+  videoConsults: p.videoConsults,
+});
+
+/** Narrow the stored JSON back to a pandit profile (null when absent or malformed). */
+export function readPanditProfile(raw: unknown): PanditProfileDto | null {
+  if (!raw || typeof raw !== 'object') return null;
+  const r = raw as Record<string, unknown>;
+  const strings = (v: unknown) =>
+    Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string') : [];
+  return {
+    experienceYears: typeof r.experienceYears === 'number' ? r.experienceYears : 0,
+    languages: strings(r.languages),
+    specialities: strings(r.specialities),
+    ...(typeof r.sampradaya === 'string' ? { sampradaya: r.sampradaya } : {}),
+    ...(typeof r.about === 'string' ? { about: r.about } : {}),
+    homeVisits: r.homeVisits === true,
+    videoConsults: r.videoConsults === true,
+  };
 }

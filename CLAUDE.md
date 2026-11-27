@@ -147,7 +147,9 @@ Do not use plain `prisma migrate dev` to create migrations (it will offer to dro
 
 - Pandit services are experiences: vendor type `pandit`, kinds `puja`, `path`, `jyotish` (Indian/Vedic astrology, kundli), `palmistry`, `astrology` (`PANDIT_KINDS`). `GET /v1/experiences?group=pandit|experiences` splits them from darshan/boat rides; responses carry `vendorName`.
 - Booking = experience order with optional `mode` (at_home | at_temple | online), `address` (required for at_home) and `notes` (sankalp / birth details), kept in `orders.details.experience`. Seed: two demo pandits, 11 services, one family per slot.
-- App: `/pandit` (category circles + service cards) and `/pandit/:id` (date, time, where, details → `placeOrder`); 5th home banner "Pandit Ji" and a Quick access button. Images in `assets/images/pandit/` (Canva).
+- App: `/pandit` (search, how-it-works, category circles, "Our pandits", service cards) and `/pandit/:id` (3 steps: when → where → details + price summary → `placeOrder`); 5th home banner "Pandit Ji" and a Quick access button. Images in `assets/images/pandit/` (Canva).
+- Pandit profile: `vendors.profile` JSON via `panditProfile` on vendor create/update (`PanditProfileDto`: experienceYears, languages, specialities, sampradaya, about, homeVisits, videoConsults). Experience responses carry `pandit` (that profile) and `displayPricePaise` (what the pilgrim pays). Where-options in the app follow homeVisits/videoConsults.
+- Vendor portal: onboarding has a "Pandit Ji" type with a second "Pandit profile" step; Listings shows "Pandit Ji services" with templates (dakshina wording, one family per slot, 24 h free cancellation); Business & KYC has a Pandit Ji profile card.
 
 ## Partner app (apps/vendor_app, Nov 2026)
 

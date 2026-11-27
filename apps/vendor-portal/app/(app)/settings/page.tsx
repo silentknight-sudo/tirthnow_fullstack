@@ -16,6 +16,13 @@ import {
   PageHeader,
   Select,
 } from '../../../components/ui';
+import {
+  emptyPanditProfile,
+  panditBody,
+  panditErrors,
+  type PanditProfile,
+  PanditProfileFields,
+} from '../../../components/pandit-profile';
 import { api, errorMessage, uploadFile } from '../../../lib/api';
 import { useBankAccounts } from '../../../lib/finance';
 import { titleCase } from '../../../lib/format';
@@ -391,6 +398,52 @@ function SubmitCard({ vendor }: { vendor: Vendor }) {
   );
 }
 
+/** Public Pandit Ji profile; can be changed at any time (not a legal detail). */
+function PanditCard({ vendor }: { vendor: Vendor }) {
+  const refresh = useRefreshVendor();
+  const [value, setValue] = useState<PanditProfile>(vendor.panditProfile ?? emptyPanditProfile);
+  const [errors, setErrors] = useState<ReturnType<typeof panditErrors>>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [saved, setSaved] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const save = async () => {
+    const errs = panditErrors(value);
+    setErrors(errs);
+    setSaved(false);
+    if (errs) return;
+    setBusy(true);
+    setError(null);
+    try {
+      await api.PATCH('/v1/vendors/{vid}', {
+        params: { path: { vid: vendor.id } },
+        body: { panditProfile: panditBody(value) },
+      });
+      await refresh();
+      setSaved(true);
+    } catch (e) {
+      setError(errorMessage(e));
+    } finally {
+      setBusy(false);
+    }
+  };
+  return (
+    <Card>
+      <h2 className="mb-1 text-lg font-bold">Pandit Ji profile</h2>
+      <p className="mb-4 text-sm text-muted">
+        Pilgrims see this on every service you list: experience, languages and how you work.
+      </p>
+      <PanditProfileFields value={value} onChange={setValue} {...(errors ? { errors } : {})} />
+      <ErrorBox message={error} />
+      <div className="mt-3 flex items-center gap-3">
+        <Button onClick={() => void save()} loading={busy}>
+          Save profile
+        </Button>
+        {saved && <span className="text-sm text-[#2F9E44]">Saved</span>}
+      </div>
+    </Card>
+  );
+}
+
 export default function SettingsPage() {
   const { vendor, vid } = useVendor();
   const isOwner = vendor.myRole === 'owner';
@@ -411,6 +464,7 @@ export default function SettingsPage() {
       ) : (
         <div className="space-y-5">
           <DetailsCard vendor={vendor} editable={editable} />
+          {vendor.type === 'pandit' && <PanditCard vendor={vendor} />}
           <KycCard vendor={vendor} editable={editable} />
           <BankCard vid={vid} />
           {editable && <SubmitCard vendor={vendor} />}

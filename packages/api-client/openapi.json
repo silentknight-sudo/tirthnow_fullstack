@@ -2255,6 +2255,9 @@
             "example": "ABCDE1234F",
             "type": "string"
           },
+          "panditProfile": {
+            "$ref": "#/components/schemas/PanditProfileDto"
+          },
           "type": {
             "enum": [
               "hotel",
@@ -2703,6 +2706,10 @@
             "nullable": true,
             "type": "string"
           },
+          "displayPricePaise": {
+            "description": "What the pilgrim pays per person (price + GST + platform fee)",
+            "type": "number"
+          },
           "durationMin": {
             "type": "number"
           },
@@ -2731,6 +2738,14 @@
           },
           "maxGroupSize": {
             "type": "number"
+          },
+          "pandit": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PanditProfileDto"
+              }
+            ],
+            "description": "Pandit Ji services only"
           },
           "pricePaise": {
             "type": "number"
@@ -2764,7 +2779,8 @@
           "durationMin",
           "maxGroupSize",
           "cancellationPolicy",
-          "isPublished"
+          "isPublished",
+          "displayPricePaise"
         ],
         "type": "object"
       },
@@ -3895,6 +3911,67 @@
         "required": [
           "challengeId",
           "code"
+        ],
+        "type": "object"
+      },
+      "PanditProfileDto": {
+        "properties": {
+          "about": {
+            "maxLength": 600,
+            "type": "string"
+          },
+          "experienceYears": {
+            "example": 15,
+            "type": "number"
+          },
+          "homeVisits": {
+            "type": "boolean"
+          },
+          "languages": {
+            "items": {
+              "enum": [
+                "hi",
+                "en",
+                "sa",
+                "braj",
+                "bn",
+                "gu",
+                "mr",
+                "pa",
+                "ta",
+                "te"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "sampradaya": {
+            "example": "Gaudiya Vaishnav",
+            "type": "string"
+          },
+          "specialities": {
+            "items": {
+              "enum": [
+                "puja",
+                "path",
+                "jyotish",
+                "palmistry",
+                "astrology"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "videoConsults": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "experienceYears",
+          "languages",
+          "specialities",
+          "homeVisits",
+          "videoConsults"
         ],
         "type": "object"
       },
@@ -7280,6 +7357,9 @@
           },
           "pan": {
             "type": "string"
+          },
+          "panditProfile": {
+            "$ref": "#/components/schemas/PanditProfileDto"
           }
         },
         "type": "object"
@@ -7616,6 +7696,15 @@
             "nullable": true,
             "type": "string"
           },
+          "panditProfile": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PanditProfileDto"
+              }
+            ],
+            "nullable": true,
+            "type": "object"
+          },
           "status": {
             "enum": [
               "draft",
@@ -7653,7 +7742,8 @@
           "myRole",
           "myPermissions",
           "kycDocuments",
-          "missingDocuments"
+          "missingDocuments",
+          "panditProfile"
         ],
         "type": "object"
       },

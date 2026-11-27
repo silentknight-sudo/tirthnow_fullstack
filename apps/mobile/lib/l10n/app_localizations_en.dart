@@ -2393,4 +2393,91 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get heroHavan => 'Havan';
+
+  @override
+  String get panditHeroTitle => 'Book Pandit Ji';
+
+  @override
+  String get panditSearch => 'Search puja, path, kundli…';
+
+  @override
+  String get panditStep1 => 'Choose a puja or consultation';
+
+  @override
+  String get panditStep2 => 'Pick date, time and place';
+
+  @override
+  String get panditStep3 => 'Pandit Ji calls you to confirm';
+
+  @override
+  String get panditOurPandits => 'Our pandits';
+
+  @override
+  String get panditAllServices => 'All services';
+
+  @override
+  String get panditVerified => 'Verified';
+
+  @override
+  String panditYears(String y) {
+    return '$y+ yrs experience';
+  }
+
+  @override
+  String panditServicesCount(String n) {
+    return '$n services';
+  }
+
+  @override
+  String get panditInclTax => 'incl. GST & fee';
+
+  @override
+  String get panditStepWhen => 'When';
+
+  @override
+  String get panditStepWhere => 'Where';
+
+  @override
+  String get panditStepDetails => 'Details';
+
+  @override
+  String get panditChooseTime => 'Choose a time';
+
+  @override
+  String get panditAtHomeSub => 'Pandit Ji comes to your home or hotel';
+
+  @override
+  String get panditOnlineSub => 'Video call on your phone';
+
+  @override
+  String get panditAtTempleSub => 'At a temple or the pandit\'s place in Braj';
+
+  @override
+  String get panditSummary => 'Booking summary';
+
+  @override
+  String get panditDakshina => 'Dakshina';
+
+  @override
+  String get panditTaxes => 'GST & platform fee';
+
+  @override
+  String get panditTotal => 'Total';
+
+  @override
+  String panditPromise(String h) {
+    return 'Free cancellation up to $h hours before. Pandit Ji will call you with the samagri list.';
+  }
+
+  @override
+  String get panditBack => 'Back';
+
+  @override
+  String get panditContinue => 'Continue';
+
+  @override
+  String get panditPayBook => 'Pay & book';
+
+  @override
+  String get panditPromiseNoFree => 'Pandit Ji will call you after booking with the samagri list.';
 }

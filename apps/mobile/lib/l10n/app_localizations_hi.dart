@@ -2385,4 +2385,91 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get heroHavan => 'हवन';
+
+  @override
+  String get panditHeroTitle => 'पंडित जी बुक करें';
+
+  @override
+  String get panditSearch => 'पूजा, पाठ, कुंडली खोजें…';
+
+  @override
+  String get panditStep1 => 'पूजा या परामर्श चुनें';
+
+  @override
+  String get panditStep2 => 'तारीख, समय और स्थान चुनें';
+
+  @override
+  String get panditStep3 => 'पंडित जी फ़ोन करके पुष्टि करेंगे';
+
+  @override
+  String get panditOurPandits => 'हमारे पंडित जी';
+
+  @override
+  String get panditAllServices => 'सभी सेवाएँ';
+
+  @override
+  String get panditVerified => 'सत्यापित';
+
+  @override
+  String panditYears(String y) {
+    return '$y+ वर्ष अनुभव';
+  }
+
+  @override
+  String panditServicesCount(String n) {
+    return '$n सेवाएँ';
+  }
+
+  @override
+  String get panditInclTax => 'GST व शुल्क सहित';
+
+  @override
+  String get panditStepWhen => 'कब';
+
+  @override
+  String get panditStepWhere => 'कहाँ';
+
+  @override
+  String get panditStepDetails => 'विवरण';
+
+  @override
+  String get panditChooseTime => 'समय चुनें';
+
+  @override
+  String get panditAtHomeSub => 'पंडित जी आपके घर या होटल आएँगे';
+
+  @override
+  String get panditOnlineSub => 'आपके फ़ोन पर वीडियो कॉल';
+
+  @override
+  String get panditAtTempleSub => 'ब्रज में मंदिर या पंडित जी के स्थान पर';
+
+  @override
+  String get panditSummary => 'बुकिंग सारांश';
+
+  @override
+  String get panditDakshina => 'दक्षिणा';
+
+  @override
+  String get panditTaxes => 'GST और प्लेटफ़ॉर्म शुल्क';
+
+  @override
+  String get panditTotal => 'कुल';
+
+  @override
+  String panditPromise(String h) {
+    return '$h घंटे पहले तक मुफ़्त रद्द करें। पंडित जी सामग्री सूची के साथ फ़ोन करेंगे।';
+  }
+
+  @override
+  String get panditBack => 'पीछे';
+
+  @override
+  String get panditContinue => 'आगे';
+
+  @override
+  String get panditPayBook => 'भुगतान करें और बुक करें';
+
+  @override
+  String get panditPromiseNoFree => 'बुकिंग के बाद पंडित जी सामग्री सूची के साथ फ़ोन करेंगे।';
 }

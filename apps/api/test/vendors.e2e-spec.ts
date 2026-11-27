@@ -176,6 +176,47 @@ describe('vendors', () => {
     );
   });
 
+  it('registers a pandit with a public profile and validates it', async () => {
+    await createPortalUser(t, { email: 'pandit@owner.test', password: 'Password-123' });
+    const owner = await signInPortal(t, 'pandit@owner.test', 'Password-123');
+    const profile = {
+      experienceYears: 12,
+      languages: ['hi', 'sa'],
+      specialities: ['puja', 'jyotish'],
+      about: 'Vrindavan gurukul trained.',
+      homeVisits: true,
+      videoConsults: false,
+    };
+    await t.http
+      .post('/v1/vendors')
+      .set(...bearer(owner.token))
+      .send({
+        type: 'pandit',
+        legalName: 'Pt. Test',
+        displayName: 'Pt. Test',
+        panditProfile: { ...profile, languages: ['klingon'] },
+      })
+      .expect(400);
+    const created = await t.http
+      .post('/v1/vendors')
+      .set(...bearer(owner.token))
+      .send({
+        type: 'pandit',
+        legalName: 'Pt. Test',
+        displayName: 'Pt. Test',
+        panditProfile: profile,
+      })
+      .expect(201);
+    expect(created.body.panditProfile).toEqual(profile);
+    Object.assign(owner, await signInPortal(t, 'pandit@owner.test', 'Password-123'));
+    const updated = await t.http
+      .patch(`/v1/vendors/${created.body.id as string}`)
+      .set(...bearer(owner.token))
+      .send({ panditProfile: { ...profile, experienceYears: 13 } })
+      .expect(200);
+    expect(updated.body.panditProfile.experienceYears).toBe(13);
+  });
+
   it('lets admins send an application back for corrections', async () => {
     await createPortalUser(t, { email: 'cab@owner.test', password: 'Password-123' });
     const owner = await signInPortal(t, 'cab@owner.test', 'Password-123');

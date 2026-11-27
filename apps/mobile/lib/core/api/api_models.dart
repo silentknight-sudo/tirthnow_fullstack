@@ -2231,6 +2231,7 @@ class CreateVendorDto {
     this.gstin,
     required this.legalName,
     this.pan,
+    this.panditProfile,
     required this.type,
   });
 
@@ -2240,6 +2241,9 @@ class CreateVendorDto {
     gstin: json['gstin'] == null ? null : json['gstin'] as String,
     legalName: json['legalName'] as String,
     pan: json['pan'] == null ? null : json['pan'] as String,
+    panditProfile: json['panditProfile'] == null
+        ? null
+        : PanditProfileDto.fromJson(_map(json['panditProfile'])),
     type: json['type'] as String,
   );
 
@@ -2248,6 +2252,7 @@ class CreateVendorDto {
   final String? gstin;
   final String legalName;
   final String? pan;
+  final PanditProfileDto? panditProfile;
 
   /// One of: hotel, cab, restaurant, experience, multi, dharamshala, store, pandit.
   final String type;
@@ -2258,6 +2263,7 @@ class CreateVendorDto {
     'gstin': ?gstin,
     'legalName': legalName,
     'pan': ?pan,
+    'panditProfile': ?panditProfile?.toJson(),
     'type': type,
   };
 }
@@ -2713,11 +2719,13 @@ class ExperienceResponse {
     required this.cancellationPolicy,
     required this.cityId,
     this.description,
+    required this.displayPricePaise,
     required this.durationMin,
     required this.id,
     required this.isPublished,
     required this.kind,
     required this.maxGroupSize,
+    this.pandit,
     required this.pricePaise,
     this.slots,
     required this.title,
@@ -2729,11 +2737,13 @@ class ExperienceResponse {
     cancellationPolicy: CancellationPolicyDto.fromJson(_map(json['cancellationPolicy'])),
     cityId: json['cityId'] as String,
     description: json['description'] == null ? null : json['description'] as String,
+    displayPricePaise: json['displayPricePaise'] as num,
     durationMin: json['durationMin'] as num,
     id: json['id'] as String,
     isPublished: json['isPublished'] as bool,
     kind: json['kind'] as String,
     maxGroupSize: json['maxGroupSize'] as num,
+    pandit: json['pandit'] == null ? null : PanditProfileDto.fromJson(_map(json['pandit'])),
     pricePaise: json['pricePaise'] as num,
     slots: json['slots'] == null
         ? null
@@ -2748,6 +2758,9 @@ class ExperienceResponse {
   final CancellationPolicyDto cancellationPolicy;
   final String cityId;
   final String? description;
+
+  /// What the pilgrim pays per person (price + GST + platform fee)
+  final num displayPricePaise;
   final num durationMin;
   final String id;
   final bool isPublished;
@@ -2755,6 +2768,9 @@ class ExperienceResponse {
   /// One of: guided_tour, boat_ride, parikrama_guide, cooking, workshop, other, puja, path, jyotish, palmistry, astrology.
   final String kind;
   final num maxGroupSize;
+
+  /// Pandit Ji services only
+  final PanditProfileDto? pandit;
   final num pricePaise;
   final List<SlotResponse>? slots;
   final String title;
@@ -2767,11 +2783,13 @@ class ExperienceResponse {
     'cancellationPolicy': cancellationPolicy.toJson(),
     'cityId': cityId,
     'description': ?description,
+    'displayPricePaise': displayPricePaise,
     'durationMin': durationMin,
     'id': id,
     'isPublished': isPublished,
     'kind': kind,
     'maxGroupSize': maxGroupSize,
+    'pandit': ?pandit?.toJson(),
     'pricePaise': pricePaise,
     'slots': ?slots?.map((x) => x.toJson()).toList(),
     'title': title,
@@ -3932,6 +3950,51 @@ class OtpVerifyDto {
   final String code;
 
   Map<String, dynamic> toJson() => <String, dynamic>{'challengeId': challengeId, 'code': code};
+}
+
+@immutable
+class PanditProfileDto {
+  const PanditProfileDto({
+    this.about,
+    required this.experienceYears,
+    required this.homeVisits,
+    required this.languages,
+    this.sampradaya,
+    required this.specialities,
+    required this.videoConsults,
+  });
+
+  factory PanditProfileDto.fromJson(Map<String, dynamic> json) => PanditProfileDto(
+    about: json['about'] == null ? null : json['about'] as String,
+    experienceYears: json['experienceYears'] as num,
+    homeVisits: json['homeVisits'] as bool,
+    languages: (json['languages'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+    sampradaya: json['sampradaya'] == null ? null : json['sampradaya'] as String,
+    specialities: (json['specialities'] as List<dynamic>).map((dynamic x) => x as String).toList(),
+    videoConsults: json['videoConsults'] as bool,
+  );
+
+  final String? about;
+  final num experienceYears;
+  final bool homeVisits;
+
+  /// One of: hi, en, sa, braj, bn, gu, mr, pa, ta, te.
+  final List<String> languages;
+  final String? sampradaya;
+
+  /// One of: puja, path, jyotish, palmistry, astrology.
+  final List<String> specialities;
+  final bool videoConsults;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'about': ?about,
+    'experienceYears': experienceYears,
+    'homeVisits': homeVisits,
+    'languages': languages,
+    'sampradaya': ?sampradaya,
+    'specialities': specialities,
+    'videoConsults': videoConsults,
+  };
 }
 
 @immutable
@@ -7365,7 +7428,14 @@ class UpdateVehicleDto {
 
 @immutable
 class UpdateVendorDto {
-  const UpdateVendorDto({this.cityId, this.displayName, this.gstin, this.legalName, this.pan});
+  const UpdateVendorDto({
+    this.cityId,
+    this.displayName,
+    this.gstin,
+    this.legalName,
+    this.pan,
+    this.panditProfile,
+  });
 
   factory UpdateVendorDto.fromJson(Map<String, dynamic> json) => UpdateVendorDto(
     cityId: json['cityId'] == null ? null : json['cityId'] as String,
@@ -7373,6 +7443,9 @@ class UpdateVendorDto {
     gstin: json['gstin'] == null ? null : json['gstin'] as String,
     legalName: json['legalName'] == null ? null : json['legalName'] as String,
     pan: json['pan'] == null ? null : json['pan'] as String,
+    panditProfile: json['panditProfile'] == null
+        ? null
+        : PanditProfileDto.fromJson(_map(json['panditProfile'])),
   );
 
   final String? cityId;
@@ -7380,6 +7453,7 @@ class UpdateVendorDto {
   final String? gstin;
   final String? legalName;
   final String? pan;
+  final PanditProfileDto? panditProfile;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
     'cityId': ?cityId,
@@ -7387,6 +7461,7 @@ class UpdateVendorDto {
     'gstin': ?gstin,
     'legalName': ?legalName,
     'pan': ?pan,
+    'panditProfile': ?panditProfile?.toJson(),
   };
 }
 
@@ -7675,6 +7750,7 @@ class VendorResponse {
     required this.myPermissions,
     required this.myRole,
     this.pan,
+    this.panditProfile,
     required this.status,
     required this.type,
   });
@@ -7697,6 +7773,9 @@ class VendorResponse {
         .toList(),
     myRole: json['myRole'] as String,
     pan: json['pan'] == null ? null : json['pan'] as String,
+    panditProfile: json['panditProfile'] == null
+        ? null
+        : PanditProfileDto.fromJson(_map(json['panditProfile'])),
     status: json['status'] as String,
     type: json['type'] as String,
   );
@@ -7716,6 +7795,7 @@ class VendorResponse {
   /// One of: owner, staff, admin.
   final String myRole;
   final String? pan;
+  final PanditProfileDto? panditProfile;
 
   /// One of: draft, kyc_pending, kyc_rejected, active, suspended.
   final String status;
@@ -7735,6 +7815,7 @@ class VendorResponse {
     'myPermissions': myPermissions,
     'myRole': myRole,
     'pan': ?pan,
+    'panditProfile': ?panditProfile?.toJson(),
     'status': status,
     'type': type,
   };

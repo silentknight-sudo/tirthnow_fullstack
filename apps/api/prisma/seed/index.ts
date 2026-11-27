@@ -704,6 +704,16 @@ async function seedPandits(adminId: string, password: string): Promise<void> {
       owner: 'Pt. Radheshyam Shastri',
       name: 'Pt. Radheshyam Shastri (Vrindavan)',
       city: 'vrindavan',
+      profile: {
+        experienceYears: 22,
+        languages: ['hi', 'braj', 'sa'],
+        specialities: ['puja', 'path', 'palmistry'],
+        sampradaya: 'Gaudiya Vaishnav',
+        about:
+          'Trained at a Vrindavan gurukul; performs katha, sanskar and Sundarkand across Braj with a team of two assistant pandits.',
+        homeVisits: true,
+        videoConsults: true,
+      },
     },
     {
       key: 'pandit-keshav',
@@ -712,6 +722,16 @@ async function seedPandits(adminId: string, password: string): Promise<void> {
       owner: 'Acharya Keshav Dev Mishra',
       name: 'Acharya Keshav Dev Mishra (Mathura)',
       city: 'mathura',
+      profile: {
+        experienceYears: 30,
+        languages: ['hi', 'en', 'sa'],
+        specialities: ['puja', 'path', 'jyotish', 'astrology'],
+        sampradaya: 'Vedic (Shukla Yajurveda)',
+        about:
+          'Jyotish acharya and karmakandi pandit from Mathura; known for griha pravesh, Rudrabhishek and kundli milan.',
+        homeVisits: true,
+        videoConsults: true,
+      },
     },
   ];
   const ids: Record<string, { vendorId: string; cityId: string }> = {};
@@ -727,6 +747,7 @@ async function seedPandits(adminId: string, password: string): Promise<void> {
     const vendorId = await upsertVendor(p.key, {
       ownerUserId: owner,
       type: 'pandit',
+      profile: p.profile,
       legalName: p.owner,
       displayName: p.name,
       cityId: sid(`city:${p.city}`),

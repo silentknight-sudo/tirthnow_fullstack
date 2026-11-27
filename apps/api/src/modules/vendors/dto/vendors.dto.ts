@@ -1,8 +1,14 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import {
   ArrayUnique,
+  ArrayMaxSize,
   IsArray,
   IsBoolean,
+  IsInt,
+  Max,
+  Min,
+  ValidateNested,
   IsEmail,
   IsEnum,
   IsIn,
@@ -21,6 +27,54 @@ import { VENDOR_PERMISSIONS, type VendorPermission } from '../permissions';
 export const GSTIN = /^\d{2}[A-Z]{5}\d{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/;
 export const PAN = /^[A-Z]{5}\d{4}[A-Z]$/;
 export const IFSC = /^[A-Z]{4}0[A-Z0-9]{6}$/;
+
+export const PANDIT_LANGUAGES = [
+  'hi',
+  'en',
+  'sa',
+  'braj',
+  'bn',
+  'gu',
+  'mr',
+  'pa',
+  'ta',
+  'te',
+] as const;
+export const PANDIT_SPECIALITIES = ['puja', 'path', 'jyotish', 'palmistry', 'astrology'] as const;
+
+/** Pandit Ji public profile (vendor type pandit). */
+export class PanditProfileDto {
+  @ApiProperty({ example: 15 }) @IsInt() @Min(0) @Max(80) experienceYears!: number;
+
+  @ApiProperty({ enum: PANDIT_LANGUAGES, isArray: true })
+  @IsArray()
+  @ArrayUnique()
+  @ArrayMaxSize(10)
+  @IsIn(PANDIT_LANGUAGES, { each: true })
+  languages!: string[];
+
+  @ApiProperty({ enum: PANDIT_SPECIALITIES, isArray: true })
+  @IsArray()
+  @ArrayUnique()
+  @ArrayMaxSize(5)
+  @IsIn(PANDIT_SPECIALITIES, { each: true })
+  specialities!: string[];
+
+  @ApiPropertyOptional({ example: 'Gaudiya Vaishnav' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(60)
+  sampradaya?: string;
+
+  @ApiPropertyOptional({ maxLength: 600 })
+  @IsOptional()
+  @IsString()
+  @MaxLength(600)
+  about?: string;
+
+  @ApiProperty() @IsBoolean() homeVisits!: boolean;
+  @ApiProperty() @IsBoolean() videoConsults!: boolean;
+}
 
 export class CreateVendorDto {
   @ApiProperty({ enum: VendorType }) @IsEnum(VendorType) type!: VendorType;
@@ -43,6 +97,11 @@ export class CreateVendorDto {
   @IsOptional()
   @Matches(PAN, { message: 'pan is not a valid PAN' })
   pan?: string;
+  @ApiPropertyOptional({ type: PanditProfileDto })
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => PanditProfileDto)
+  panditProfile?: PanditProfileDto;
 }
 
 export class UpdateVendorDto {
@@ -56,6 +115,11 @@ export class UpdateVendorDto {
   @ApiPropertyOptional({ format: 'uuid' }) @IsOptional() @IsUUID() cityId?: string;
   @ApiPropertyOptional() @IsOptional() @Matches(GSTIN) gstin?: string;
   @ApiPropertyOptional() @IsOptional() @Matches(PAN) pan?: string;
+  @ApiPropertyOptional({ type: PanditProfileDto })
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => PanditProfileDto)
+  panditProfile?: PanditProfileDto;
 }
 
 export class AddKycDocumentDto {
@@ -154,6 +218,7 @@ export class VendorResponse {
   @ApiProperty({ type: [KycDocumentResponse] }) kycDocuments!: KycDocumentResponse[];
   @ApiProperty({ type: [String], description: 'Document types still needed before submission' })
   missingDocuments!: string[];
+  @ApiProperty({ type: PanditProfileDto, nullable: true }) panditProfile!: PanditProfileDto | null;
 }
 
 export class StaffResponse {

@@ -25,6 +25,14 @@ export default function ListingsPage() {
         {(all || t === 'experience') && (
           <ExperiencesSection vid={vid} canEdit={edit} canInventory={can('inventory.edit')} />
         )}
+        {t === 'pandit' && (
+          <ExperiencesSection
+            vid={vid}
+            canEdit={edit}
+            canInventory={can('inventory.edit')}
+            pandit
+          />
+        )}
       </div>
     </>
   );

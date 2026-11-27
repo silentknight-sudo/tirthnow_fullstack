@@ -34,10 +34,111 @@ const KINDS: Experience['kind'][] = [
   'workshop',
   'other',
 ];
+const PANDIT_KINDS: Experience['kind'][] = ['puja', 'path', 'jyotish', 'palmistry', 'astrology'];
+const KIND_LABEL: Partial<Record<Experience['kind'], string>> = {
+  puja: 'Puja',
+  path: 'Path',
+  jyotish: 'Jyotish (kundli, Vedic astrology)',
+  palmistry: 'Palmistry (hast rekha)',
+  astrology: 'Astrology & numerology',
+};
+const kindLabel = (k: Experience['kind']) => KIND_LABEL[k] ?? titleCase(k);
+
+/** One-tap starting points for common Pandit Ji services; everything stays editable. */
+const PANDIT_TEMPLATES: {
+  title: string;
+  kind: Experience['kind'];
+  durationMin: number;
+  price: number;
+  description: string;
+}[] = [
+  {
+    title: 'Satyanarayan Katha & Puja',
+    kind: 'puja',
+    durationMin: 150,
+    price: 2100,
+    description: 'Full katha with havan and prasad vidhi. Samagri list shared after booking.',
+  },
+  {
+    title: 'Griha Pravesh Puja',
+    kind: 'puja',
+    durationMin: 180,
+    price: 5100,
+    description: 'Vastu shanti, Ganesh puja and havan for a new home.',
+  },
+  {
+    title: 'Rudrabhishek',
+    kind: 'puja',
+    durationMin: 120,
+    price: 3100,
+    description: 'Abhishek of the Shivling with Rudri path.',
+  },
+  {
+    title: 'Navgrah Shanti Puja',
+    kind: 'puja',
+    durationMin: 150,
+    price: 3500,
+    description: 'Puja and havan for the nine planets with sankalp in the family name.',
+  },
+  {
+    title: 'Sundarkand Path',
+    kind: 'path',
+    durationMin: 180,
+    price: 2500,
+    description: 'Sung path with harmonium and dholak, then Hanuman aarti.',
+  },
+  {
+    title: 'Shrimad Bhagwat Path (1 day)',
+    kind: 'path',
+    durationMin: 360,
+    price: 7100,
+    description: 'One-day moolpath of the Bhagwat.',
+  },
+  {
+    title: 'Kundli Reading',
+    kind: 'jyotish',
+    durationMin: 45,
+    price: 1100,
+    description: 'Birth chart reading with remedies. Needs birth date, time and place.',
+  },
+  {
+    title: 'Kundli Milan (marriage matching)',
+    kind: 'jyotish',
+    durationMin: 60,
+    price: 1500,
+    description: 'Guna milan, manglik check and muhurat.',
+  },
+  {
+    title: 'Palmistry (Hast Rekha) Reading',
+    kind: 'palmistry',
+    durationMin: 30,
+    price: 700,
+    description: 'Life, heart and fate lines with guidance. In person or by video.',
+  },
+  {
+    title: 'Astrology & Numerology Consultation',
+    kind: 'astrology',
+    durationMin: 30,
+    price: 900,
+    description: 'Rashi, gochar and numerology with gemstone and mantra remedies.',
+  },
+];
 
 const expSchema = z.object({
   titleEn: z.string().trim().min(3).max(120),
-  kind: z.enum(['guided_tour', 'boat_ride', 'parikrama_guide', 'cooking', 'workshop', 'other']),
+  kind: z.enum([
+    'guided_tour',
+    'boat_ride',
+    'parikrama_guide',
+    'cooking',
+    'workshop',
+    'other',
+    'puja',
+    'path',
+    'jyotish',
+    'palmistry',
+    'astrology',
+  ]),
   cityId: z.string().uuid('Choose a city'),
   durationMin: z.coerce.number().int().min(15).max(1440),
   maxGroupSize: z.coerce.number().int().min(1).max(500),
@@ -46,7 +147,17 @@ const expSchema = z.object({
   isPublished: z.boolean(),
 });
 
-function ExperienceForm({ vid, x, onDone }: { vid: string; x?: Experience; onDone: () => void }) {
+function ExperienceForm({
+  vid,
+  x,
+  onDone,
+  pandit = false,
+}: {
+  vid: string;
+  x?: Experience;
+  onDone: () => void;
+  pandit?: boolean;
+}) {
   const cities = useCities();
   const invalidate = useInvalidate();
   const [error, setError] = useState<string | null>(null);
@@ -54,10 +165,10 @@ function ExperienceForm({ vid, x, onDone }: { vid: string; x?: Experience; onDon
     resolver: zodResolver(expSchema),
     defaultValues: {
       titleEn: x?.title ?? '',
-      kind: x?.kind ?? 'boat_ride',
+      kind: x?.kind ?? (pandit ? 'puja' : 'boat_ride'),
       cityId: x?.cityId ?? '',
       durationMin: x?.durationMin ?? 60,
-      maxGroupSize: x?.maxGroupSize ?? 10,
+      maxGroupSize: x?.maxGroupSize ?? (pandit ? 50 : 10),
       price: x ? x.pricePaise / 100 : 500,
       description: x?.description ?? '',
       isPublished: x?.isPublished ?? false,
@@ -75,6 +186,10 @@ function ExperienceForm({ vid, x, onDone }: { vid: string; x?: Experience; onDon
       pricePaise: toPaise(v.price),
       isPublished: v.isPublished,
       ...(v.description ? { description: { en: v.description } } : {}),
+      // New Pandit Ji services: free cancellation up to a day before.
+      ...(pandit && !x
+        ? { cancellationPolicy: { freeUntilHoursBefore: 24, penaltyPctAfter: 50 } }
+        : {}),
     };
     try {
       if (x)
@@ -89,18 +204,47 @@ function ExperienceForm({ vid, x, onDone }: { vid: string; x?: Experience; onDon
       setError(errorMessage(e));
     }
   });
+  const applyTemplate = (t: (typeof PANDIT_TEMPLATES)[number]) => {
+    form.setValue('titleEn', t.title);
+    form.setValue('kind', t.kind);
+    form.setValue('durationMin', t.durationMin);
+    form.setValue('price', t.price);
+    form.setValue('description', t.description);
+  };
   return (
     <form onSubmit={onSubmit} className="grid gap-3 sm:grid-cols-2" noValidate>
+      {pandit && !x && (
+        <div className="sm:col-span-2">
+          <p className="mb-2 text-sm font-medium">Start from a template</p>
+          <div className="flex flex-wrap gap-2">
+            {PANDIT_TEMPLATES.map((t) => (
+              <button
+                key={t.title}
+                type="button"
+                onClick={() => {
+                  applyTemplate(t);
+                }}
+                className="rounded-full border border-line bg-white px-3 py-1 text-xs hover:border-saffron hover:bg-[#FFF4E6]"
+              >
+                {t.title}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
       <div className="sm:col-span-2">
-        <Field label="Title" error={errors.titleEn?.message}>
-          <Input placeholder="Sunrise Yamuna boat ride" {...form.register('titleEn')} />
+        <Field label={pandit ? 'Service name' : 'Title'} error={errors.titleEn?.message}>
+          <Input
+            placeholder={pandit ? 'Satyanarayan Katha & Puja' : 'Sunrise Yamuna boat ride'}
+            {...form.register('titleEn')}
+          />
         </Field>
       </div>
-      <Field label="Kind">
+      <Field label={pandit ? 'Category' : 'Kind'}>
         <Select {...form.register('kind')}>
-          {KINDS.map((k) => (
+          {(pandit ? PANDIT_KINDS : KINDS).map((k) => (
             <option key={k} value={k}>
-              {titleCase(k)}
+              {kindLabel(k)}
             </option>
           ))}
         </Select>
@@ -118,14 +262,25 @@ function ExperienceForm({ vid, x, onDone }: { vid: string; x?: Experience; onDon
       <Field label="Duration (minutes)" error={errors.durationMin?.message}>
         <Input type="number" {...form.register('durationMin')} />
       </Field>
-      <Field label="Max group size" error={errors.maxGroupSize?.message}>
-        <Input type="number" {...form.register('maxGroupSize')} />
-      </Field>
-      <Field label="Price per person (₹)" error={errors.price?.message}>
+      {!pandit && (
+        <Field label="Max group size" error={errors.maxGroupSize?.message}>
+          <Input type="number" {...form.register('maxGroupSize')} />
+        </Field>
+      )}
+      <Field
+        label={pandit ? 'Dakshina for the family (₹)' : 'Price per person (₹)'}
+        error={errors.price?.message}
+        hint="Pilgrims pay this + 18% GST + 5% platform fee; you receive this amount"
+      >
         <Input type="number" {...form.register('price')} />
       </Field>
       <div className="sm:col-span-2">
-        <Field label="Description">
+        <Field
+          label={pandit ? 'What is included' : 'Description'}
+          {...(pandit
+            ? { hint: 'Vidhi, samagri (who brings it), number of pandits, language' }
+            : {})}
+        >
           <Textarea rows={3} {...form.register('description')} />
         </Field>
       </div>
@@ -135,7 +290,7 @@ function ExperienceForm({ vid, x, onDone }: { vid: string; x?: Experience; onDon
       <div className="sm:col-span-2">
         <ErrorBox message={error} />
         <Button type="submit" className="mt-2" loading={isSubmitting}>
-          {x ? 'Save changes' : 'Add experience'}
+          {x ? 'Save changes' : pandit ? 'Add service' : 'Add experience'}
         </Button>
       </div>
     </form>
@@ -155,12 +310,24 @@ const slotSchema = z.object({
   capacity: z.coerce.number().int().min(1).max(500),
 });
 
-function SlotsForm({ vid, x, onDone }: { vid: string; x: Experience; onDone: () => void }) {
+function SlotsForm({
+  vid,
+  x,
+  onDone,
+  pandit = false,
+}: {
+  vid: string;
+  x: Experience;
+  onDone: () => void;
+  pandit?: boolean;
+}) {
   const invalidate = useInvalidate();
   const [error, setError] = useState<string | null>(null);
   const form = useForm<z.infer<typeof slotSchema>>({
     resolver: zodResolver(slotSchema),
-    defaultValues: { from: istToday(1), days: 7, times: '06:30, 17:30', capacity: x.maxGroupSize },
+    defaultValues: pandit
+      ? { from: istToday(1), days: 14, times: '08:00, 11:00, 16:00', capacity: 1 }
+      : { from: istToday(1), days: 7, times: '06:30, 17:30', capacity: x.maxGroupSize },
   });
   const { errors, isSubmitting } = form.formState;
   const onSubmit = form.handleSubmit(async (v) => {
@@ -195,7 +362,11 @@ function SlotsForm({ vid, x, onDone }: { vid: string; x: Experience; onDone: () 
       >
         <Input {...form.register('times')} />
       </Field>
-      <Field label="Seats per slot" error={errors.capacity?.message}>
+      <Field
+        label={pandit ? 'Families per time' : 'Seats per slot'}
+        error={errors.capacity?.message}
+        {...(pandit ? { hint: '1 = you serve one family at a time' } : {})}
+      >
         <Input type="number" {...form.register('capacity')} />
       </Field>
       <div className="sm:col-span-2">
@@ -214,10 +385,13 @@ export function ExperiencesSection({
   vid,
   canEdit,
   canInventory,
+  pandit = false,
 }: {
   vid: string;
   canEdit: boolean;
   canInventory: boolean;
+  /** Pandit Ji services: puja/path/jyotish kinds, dakshina wording, templates. */
+  pandit?: boolean;
 }) {
   const list = useQuery({
     queryKey: ['experiences', vid],
@@ -238,7 +412,7 @@ export function ExperiencesSection({
 
   return (
     <Section
-      title="Experiences"
+      title={pandit ? 'Pandit Ji services' : 'Experiences'}
       action={
         canEdit && (
           <Button
@@ -247,7 +421,7 @@ export function ExperiencesSection({
               setDialog({ kind: 'exp' });
             }}
           >
-            <Plus className="h-4 w-4" /> Add experience
+            <Plus className="h-4 w-4" /> {pandit ? 'Add service' : 'Add experience'}
           </Button>
         )
       }
@@ -255,8 +429,10 @@ export function ExperiencesSection({
       {list.isLoading ? (
         <Spinner />
       ) : (list.data ?? []).length === 0 ? (
-        <Empty title="No experiences yet">
-          Boat rides, guided parikrama, cooking classes — add one and open time slots.
+        <Empty title={pandit ? 'No services yet' : 'No experiences yet'}>
+          {pandit
+            ? 'Add your first puja, path or consultation from a template, then open dates and times.'
+            : 'Boat rides, guided parikrama, cooking classes, add one and open time slots.'}
         </Empty>
       ) : (
         (list.data ?? []).map((x) => (
@@ -265,8 +441,9 @@ export function ExperiencesSection({
               <div>
                 <p className="text-lg font-bold">{x.title}</p>
                 <p className="text-sm text-muted">
-                  {titleCase(x.kind)} · {x.durationMin} min · up to {x.maxGroupSize} ·{' '}
-                  {rupees(x.pricePaise)} per person
+                  {pandit
+                    ? `${kindLabel(x.kind)} · ${String(x.durationMin)} min · dakshina ${rupees(x.pricePaise)} · pilgrim pays ${rupees(x.displayPricePaise)}`
+                    : `${titleCase(x.kind)} · ${String(x.durationMin)} min · up to ${String(x.maxGroupSize)} · ${rupees(x.pricePaise)} per person`}
                 </p>
               </div>
               <div className="flex items-center gap-2">
@@ -321,15 +498,34 @@ export function ExperiencesSection({
       )}
       <Modal
         open={dialog?.kind === 'exp'}
-        title={dialog?.kind === 'exp' && dialog.x ? 'Edit experience' : 'Add experience'}
+        title={
+          dialog?.kind === 'exp' && dialog.x
+            ? pandit
+              ? 'Edit service'
+              : 'Edit experience'
+            : pandit
+              ? 'Add Pandit Ji service'
+              : 'Add experience'
+        }
         onClose={close}
       >
         {dialog?.kind === 'exp' && (
-          <ExperienceForm vid={vid} {...(dialog.x ? { x: dialog.x } : {})} onDone={close} />
+          <ExperienceForm
+            vid={vid}
+            pandit={pandit}
+            {...(dialog.x ? { x: dialog.x } : {})}
+            onDone={close}
+          />
         )}
       </Modal>
-      <Modal open={dialog?.kind === 'slots'} title="Open slots" onClose={close}>
-        {dialog?.kind === 'slots' && <SlotsForm vid={vid} x={dialog.x} onDone={close} />}
+      <Modal
+        open={dialog?.kind === 'slots'}
+        title={pandit ? 'Open dates and times' : 'Open slots'}
+        onClose={close}
+      >
+        {dialog?.kind === 'slots' && (
+          <SlotsForm vid={vid} x={dialog.x} pandit={pandit} onDone={close} />
+        )}
       </Modal>
     </Section>
   );

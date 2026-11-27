@@ -4,3 +4,5 @@ export type { VendorAccess } from './services/vendor-access.service';
 export { VendorAccessGuard, VendorPermissionRequired } from './vendor-access.guard';
 export { VendorsFacade } from './vendors.facade';
 export { VendorsModule } from './vendors.module';
+export { PanditProfileDto } from './dto/vendors.dto';
+export { readPanditProfile } from './services/vendors.service';

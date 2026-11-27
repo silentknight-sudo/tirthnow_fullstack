@@ -1022,5 +1022,53 @@
         "type": "String"
       }
     }
+  },
+  "panditHeroTitle": "Book Pandit Ji",
+  "panditSearch": "Search puja, path, kundli…",
+  "panditStep1": "Choose a puja or consultation",
+  "panditStep2": "Pick date, time and place",
+  "panditStep3": "Pandit Ji calls you to confirm",
+  "panditOurPandits": "Our pandits",
+  "panditAllServices": "All services",
+  "panditVerified": "Verified",
+  "panditYears": "{y}+ yrs experience",
+  "panditServicesCount": "{n} services",
+  "panditInclTax": "incl. GST & fee",
+  "panditStepWhen": "When",
+  "panditStepWhere": "Where",
+  "panditStepDetails": "Details",
+  "panditChooseTime": "Choose a time",
+  "panditAtHomeSub": "Pandit Ji comes to your home or hotel",
+  "panditOnlineSub": "Video call on your phone",
+  "panditAtTempleSub": "At a temple or the pandit's place in Braj",
+  "panditSummary": "Booking summary",
+  "panditDakshina": "Dakshina",
+  "panditTaxes": "GST & platform fee",
+  "panditTotal": "Total",
+  "panditPromise": "Free cancellation up to {h} hours before. Pandit Ji will call you with the samagri list.",
+  "panditBack": "Back",
+  "panditContinue": "Continue",
+  "panditPayBook": "Pay & book",
+  "@panditYears": {
+    "placeholders": {
+      "y": {
+        "type": "String"
+      }
+    }
+  },
+  "@panditServicesCount": {
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "panditPromiseNoFree": "Pandit Ji will call you after booking with the samagri list.",
+  "@panditPromise": {
+    "placeholders": {
+      "h": {
+        "type": "String"
+      }
+    }
   }
 }
