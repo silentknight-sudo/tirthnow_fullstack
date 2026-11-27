@@ -6,6 +6,7 @@ import '../../core/api/api_models.dart';
 import '../../core/format/formatters.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/widgets/common.dart';
+import '../pandit/pandit_listings.dart';
 import '../shared/partner_ui.dart';
 import '../shared/signature.dart';
 import '../vendor/data/vendor_repository.dart';
@@ -37,6 +38,7 @@ class ListingsScreen extends StatelessWidget {
     'cab' => _CabListings(vendor: vendor),
     'hotel' || 'dharamshala' => _StayListings(vendor: vendor),
     'restaurant' => _FoodListings(vendor: vendor),
+    'pandit' => PanditListings(vendor: vendor),
     _ => _StoreListings(vendor: vendor),
   };
 }

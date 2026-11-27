@@ -847,4 +847,177 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get examples => 'Examples';
+
+  @override
+  String get svcPandit => 'Pandit Ji';
+
+  @override
+  String get svcPanditSub => 'Puja, path, jyotish, palmistry, astrology';
+
+  @override
+  String get pkPuja => 'Puja';
+
+  @override
+  String get pkPath => 'Path';
+
+  @override
+  String get pkJyotish => 'Jyotish';
+
+  @override
+  String get pkPalmistry => 'Palmistry';
+
+  @override
+  String get pkAstrology => 'Astrology';
+
+  @override
+  String get pkPujaSub => 'Katha, havan, sanskar';
+
+  @override
+  String get pkPathSub => 'Sundarkand, Bhagwat';
+
+  @override
+  String get pkJyotishSub => 'Kundli, milan';
+
+  @override
+  String get pkPalmistrySub => 'Hast rekha';
+
+  @override
+  String get pkAstrologySub => 'Rashi, numerology';
+
+  @override
+  String get pandChooseService => 'Choose at least one service';
+
+  @override
+  String get pandChooseLanguage => 'Choose at least one language';
+
+  @override
+  String get pandServicesQ => 'Which services do you offer?';
+
+  @override
+  String get pandYears => 'Years of experience';
+
+  @override
+  String get pandSampradaya => 'Sampradaya (optional)';
+
+  @override
+  String get pandLanguages => 'Languages you perform in';
+
+  @override
+  String get pandHomeVisits => 'Home visits';
+
+  @override
+  String get pandHomeVisitsSub => 'Go to the family\'s home or hotel';
+
+  @override
+  String get pandVideo => 'Video consultations';
+
+  @override
+  String get pandVideoSub => 'Jyotish or path on a video call';
+
+  @override
+  String get pandAbout => 'About you (pilgrims see this)';
+
+  @override
+  String get pandAboutHint => 'Gurukul, years in Braj, special pujas';
+
+  @override
+  String get pandProfile => 'Pandit Ji profile';
+
+  @override
+  String get pandProfileSub => 'Shown to pilgrims on every service';
+
+  @override
+  String pandYearsShort(String n) {
+    return '$n yrs';
+  }
+
+  @override
+  String get pandServicesTitle => 'Pandit Ji services';
+
+  @override
+  String pandServicesSub(String n) {
+    return '$n services · dakshina and open times';
+  }
+
+  @override
+  String get pandEmpty =>
+      'No services yet. Start with a template — Satyanarayan Katha, Sundarkand, Kundli…';
+
+  @override
+  String get pandAddFirst => 'Add my first service';
+
+  @override
+  String get pandAddService => 'Add service';
+
+  @override
+  String pandMinutes(String n) {
+    return '$n min';
+  }
+
+  @override
+  String get pandDakshina => 'Dakshina';
+
+  @override
+  String get pandPilgrimPays => 'Pilgrim pays';
+
+  @override
+  String get pandOpenTimes => 'Open times';
+
+  @override
+  String get pandBooked => 'Booked';
+
+  @override
+  String get pandOpenDates => 'Open dates & times';
+
+  @override
+  String get pandTemplates => 'Start from a template';
+
+  @override
+  String get pandServiceName => 'Service name';
+
+  @override
+  String get pandDuration => 'Duration (minutes)';
+
+  @override
+  String get pandDakshinaRs => 'Dakshina (₹)';
+
+  @override
+  String get pandIncluded => 'What is included';
+
+  @override
+  String get pandIncludedHint => 'Vidhi, samagri (who brings it), number of pandits';
+
+  @override
+  String get pandFrom => 'Starting from';
+
+  @override
+  String get pandForDays => 'For';
+
+  @override
+  String pandDays(String n) {
+    return '$n days';
+  }
+
+  @override
+  String get pandTimes => 'Times (IST)';
+
+  @override
+  String get pandFamilies => 'Families per time';
+
+  @override
+  String pandOpenN(String n) {
+    return 'Open $n times';
+  }
+
+  @override
+  String get pandUpcoming => 'Open times (tap × to remove an unbooked one)';
+
+  @override
+  String get pandModeHome => 'At the family\'s home';
+
+  @override
+  String get pandModeTemple => 'At temple';
+
+  @override
+  String get pandModeOnline => 'Video call';
 }

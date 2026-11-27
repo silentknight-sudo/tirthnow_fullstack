@@ -10,7 +10,7 @@ import '../../core/widgets/common.dart';
 import '../../l10n/app_localizations.dart';
 import 'signature.dart';
 
-/// The five partner services. `type` is the API's vendor type.
+/// The partner services. `type` is the API's vendor type.
 class Service {
   const Service(this.type, this.image, this.icon);
 
@@ -23,6 +23,7 @@ class Service {
     'hotel' => l.svcHotel,
     'dharamshala' => l.svcDharamshala,
     'restaurant' => l.svcRestaurant,
+    'pandit' => l.svcPandit,
     _ => l.svcStore,
   };
 
@@ -31,6 +32,7 @@ class Service {
     'hotel' => l.svcHotelSub,
     'dharamshala' => l.svcDharamshalaSub,
     'restaurant' => l.svcRestaurantSub,
+    'pandit' => l.svcPanditSub,
     _ => l.svcStoreSub,
   };
 }
@@ -41,10 +43,11 @@ const services = [
   Service('dharamshala', 'assets/images/services/dharamshala.jpg', Icons.temple_hindu_rounded),
   Service('restaurant', 'assets/images/services/restaurant.jpg', Icons.restaurant_rounded),
   Service('store', 'assets/images/services/store.jpg', Icons.storefront_rounded),
+  Service('pandit', 'assets/images/services/pandit.jpg', Icons.self_improvement_rounded),
 ];
 
 Service serviceFor(String type) =>
-    services.firstWhere((s) => s.type == type, orElse: () => services.last);
+    services.firstWhere((s) => s.type == type, orElse: () => services[4]);
 
 String docLabel(AppLocalizations l, String t) => switch (t) {
   'pan' => l.docPan,

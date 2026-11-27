@@ -154,7 +154,8 @@ Do not use plain `prisma migrate dev` to create migrations (it will offer to dro
 ## Partner app (apps/vendor_app, Nov 2026)
 
 - Flutter app for vendors (the web vendor portal stays for desktop). Same core as `apps/mobile` (ApiClient, session, theme); models come from the same generator (`gen_api_models.mjs` writes both apps).
-- Flow: OTP login → choose service (cab, hotel, dharamshala, restaurant, store) → business details → KYC + bank → waiting / dashboard. Router stage logic in `core/router.dart` (`partnerStage`).
+- Flow: OTP login → choose service (cab, hotel, dharamshala, restaurant, store, pandit) → business details (+ Pandit Ji profile for pandits) → KYC + bank → waiting / dashboard. Router stage logic in `core/router.dart` (`partnerStage`).
+- Pandit Ji: `features/pandit` (profile editor reused in onboarding and Account, services list with templates, open dates & times sheet); order cards show when / where / sankalp notes from `details.experience`.
 - Listings per service type in `features/listings`; every price field shows the pilgrim price (`customerPrice`: +18% GST +5% fee). Coupons, reviews with replies, analytics dashboard.
 - Online KYC options and the accounts they need: `docs/CLIENT_SETUP_TODO.md`. Image sources: `docs/IMAGE_CREDITS.md`.
 

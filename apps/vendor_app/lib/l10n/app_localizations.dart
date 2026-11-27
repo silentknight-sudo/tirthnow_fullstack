@@ -1694,6 +1694,330 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Examples'**
   String get examples;
+
+  /// No description provided for @svcPandit.
+  ///
+  /// In en, this message translates to:
+  /// **'Pandit Ji'**
+  String get svcPandit;
+
+  /// No description provided for @svcPanditSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Puja, path, jyotish, palmistry, astrology'**
+  String get svcPanditSub;
+
+  /// No description provided for @pkPuja.
+  ///
+  /// In en, this message translates to:
+  /// **'Puja'**
+  String get pkPuja;
+
+  /// No description provided for @pkPath.
+  ///
+  /// In en, this message translates to:
+  /// **'Path'**
+  String get pkPath;
+
+  /// No description provided for @pkJyotish.
+  ///
+  /// In en, this message translates to:
+  /// **'Jyotish'**
+  String get pkJyotish;
+
+  /// No description provided for @pkPalmistry.
+  ///
+  /// In en, this message translates to:
+  /// **'Palmistry'**
+  String get pkPalmistry;
+
+  /// No description provided for @pkAstrology.
+  ///
+  /// In en, this message translates to:
+  /// **'Astrology'**
+  String get pkAstrology;
+
+  /// No description provided for @pkPujaSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Katha, havan, sanskar'**
+  String get pkPujaSub;
+
+  /// No description provided for @pkPathSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Sundarkand, Bhagwat'**
+  String get pkPathSub;
+
+  /// No description provided for @pkJyotishSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Kundli, milan'**
+  String get pkJyotishSub;
+
+  /// No description provided for @pkPalmistrySub.
+  ///
+  /// In en, this message translates to:
+  /// **'Hast rekha'**
+  String get pkPalmistrySub;
+
+  /// No description provided for @pkAstrologySub.
+  ///
+  /// In en, this message translates to:
+  /// **'Rashi, numerology'**
+  String get pkAstrologySub;
+
+  /// No description provided for @pandChooseService.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose at least one service'**
+  String get pandChooseService;
+
+  /// No description provided for @pandChooseLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose at least one language'**
+  String get pandChooseLanguage;
+
+  /// No description provided for @pandServicesQ.
+  ///
+  /// In en, this message translates to:
+  /// **'Which services do you offer?'**
+  String get pandServicesQ;
+
+  /// No description provided for @pandYears.
+  ///
+  /// In en, this message translates to:
+  /// **'Years of experience'**
+  String get pandYears;
+
+  /// No description provided for @pandSampradaya.
+  ///
+  /// In en, this message translates to:
+  /// **'Sampradaya (optional)'**
+  String get pandSampradaya;
+
+  /// No description provided for @pandLanguages.
+  ///
+  /// In en, this message translates to:
+  /// **'Languages you perform in'**
+  String get pandLanguages;
+
+  /// No description provided for @pandHomeVisits.
+  ///
+  /// In en, this message translates to:
+  /// **'Home visits'**
+  String get pandHomeVisits;
+
+  /// No description provided for @pandHomeVisitsSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to the family\'s home or hotel'**
+  String get pandHomeVisitsSub;
+
+  /// No description provided for @pandVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Video consultations'**
+  String get pandVideo;
+
+  /// No description provided for @pandVideoSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Jyotish or path on a video call'**
+  String get pandVideoSub;
+
+  /// No description provided for @pandAbout.
+  ///
+  /// In en, this message translates to:
+  /// **'About you (pilgrims see this)'**
+  String get pandAbout;
+
+  /// No description provided for @pandAboutHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Gurukul, years in Braj, special pujas'**
+  String get pandAboutHint;
+
+  /// No description provided for @pandProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Pandit Ji profile'**
+  String get pandProfile;
+
+  /// No description provided for @pandProfileSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Shown to pilgrims on every service'**
+  String get pandProfileSub;
+
+  /// No description provided for @pandYearsShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{n} yrs'**
+  String pandYearsShort(String n);
+
+  /// No description provided for @pandServicesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pandit Ji services'**
+  String get pandServicesTitle;
+
+  /// No description provided for @pandServicesSub.
+  ///
+  /// In en, this message translates to:
+  /// **'{n} services · dakshina and open times'**
+  String pandServicesSub(String n);
+
+  /// No description provided for @pandEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No services yet. Start with a template — Satyanarayan Katha, Sundarkand, Kundli…'**
+  String get pandEmpty;
+
+  /// No description provided for @pandAddFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Add my first service'**
+  String get pandAddFirst;
+
+  /// No description provided for @pandAddService.
+  ///
+  /// In en, this message translates to:
+  /// **'Add service'**
+  String get pandAddService;
+
+  /// No description provided for @pandMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{n} min'**
+  String pandMinutes(String n);
+
+  /// No description provided for @pandDakshina.
+  ///
+  /// In en, this message translates to:
+  /// **'Dakshina'**
+  String get pandDakshina;
+
+  /// No description provided for @pandPilgrimPays.
+  ///
+  /// In en, this message translates to:
+  /// **'Pilgrim pays'**
+  String get pandPilgrimPays;
+
+  /// No description provided for @pandOpenTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'Open times'**
+  String get pandOpenTimes;
+
+  /// No description provided for @pandBooked.
+  ///
+  /// In en, this message translates to:
+  /// **'Booked'**
+  String get pandBooked;
+
+  /// No description provided for @pandOpenDates.
+  ///
+  /// In en, this message translates to:
+  /// **'Open dates & times'**
+  String get pandOpenDates;
+
+  /// No description provided for @pandTemplates.
+  ///
+  /// In en, this message translates to:
+  /// **'Start from a template'**
+  String get pandTemplates;
+
+  /// No description provided for @pandServiceName.
+  ///
+  /// In en, this message translates to:
+  /// **'Service name'**
+  String get pandServiceName;
+
+  /// No description provided for @pandDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration (minutes)'**
+  String get pandDuration;
+
+  /// No description provided for @pandDakshinaRs.
+  ///
+  /// In en, this message translates to:
+  /// **'Dakshina (₹)'**
+  String get pandDakshinaRs;
+
+  /// No description provided for @pandIncluded.
+  ///
+  /// In en, this message translates to:
+  /// **'What is included'**
+  String get pandIncluded;
+
+  /// No description provided for @pandIncludedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Vidhi, samagri (who brings it), number of pandits'**
+  String get pandIncludedHint;
+
+  /// No description provided for @pandFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'Starting from'**
+  String get pandFrom;
+
+  /// No description provided for @pandForDays.
+  ///
+  /// In en, this message translates to:
+  /// **'For'**
+  String get pandForDays;
+
+  /// No description provided for @pandDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{n} days'**
+  String pandDays(String n);
+
+  /// No description provided for @pandTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'Times (IST)'**
+  String get pandTimes;
+
+  /// No description provided for @pandFamilies.
+  ///
+  /// In en, this message translates to:
+  /// **'Families per time'**
+  String get pandFamilies;
+
+  /// No description provided for @pandOpenN.
+  ///
+  /// In en, this message translates to:
+  /// **'Open {n} times'**
+  String pandOpenN(String n);
+
+  /// No description provided for @pandUpcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Open times (tap × to remove an unbooked one)'**
+  String get pandUpcoming;
+
+  /// No description provided for @pandModeHome.
+  ///
+  /// In en, this message translates to:
+  /// **'At the family\'s home'**
+  String get pandModeHome;
+
+  /// No description provided for @pandModeTemple.
+  ///
+  /// In en, this message translates to:
+  /// **'At temple'**
+  String get pandModeTemple;
+
+  /// No description provided for @pandModeOnline.
+  ///
+  /// In en, this message translates to:
+  /// **'Video call'**
+  String get pandModeOnline;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

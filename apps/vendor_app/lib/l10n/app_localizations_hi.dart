@@ -848,4 +848,177 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get examples => 'उदाहरण';
+
+  @override
+  String get svcPandit => 'पंडित जी';
+
+  @override
+  String get svcPanditSub => 'पूजा, पाठ, ज्योतिष, हस्तरेखा, राशिफल';
+
+  @override
+  String get pkPuja => 'पूजा';
+
+  @override
+  String get pkPath => 'पाठ';
+
+  @override
+  String get pkJyotish => 'ज्योतिष';
+
+  @override
+  String get pkPalmistry => 'हस्तरेखा';
+
+  @override
+  String get pkAstrology => 'राशिफल';
+
+  @override
+  String get pkPujaSub => 'कथा, हवन, संस्कार';
+
+  @override
+  String get pkPathSub => 'सुंदरकांड, भागवत';
+
+  @override
+  String get pkJyotishSub => 'कुंडली, मिलान';
+
+  @override
+  String get pkPalmistrySub => 'हस्तरेखा विचार';
+
+  @override
+  String get pkAstrologySub => 'राशि, अंक ज्योतिष';
+
+  @override
+  String get pandChooseService => 'कम से कम एक सेवा चुनें';
+
+  @override
+  String get pandChooseLanguage => 'कम से कम एक भाषा चुनें';
+
+  @override
+  String get pandServicesQ => 'आप कौन सी सेवाएँ देते हैं?';
+
+  @override
+  String get pandYears => 'अनुभव (वर्ष)';
+
+  @override
+  String get pandSampradaya => 'संप्रदाय (वैकल्पिक)';
+
+  @override
+  String get pandLanguages => 'किन भाषाओं में करते हैं';
+
+  @override
+  String get pandHomeVisits => 'घर पर जाना';
+
+  @override
+  String get pandHomeVisitsSub => 'परिवार के घर या होटल जाएँ';
+
+  @override
+  String get pandVideo => 'वीडियो परामर्श';
+
+  @override
+  String get pandVideoSub => 'ज्योतिष या पाठ वीडियो कॉल पर';
+
+  @override
+  String get pandAbout => 'आपका परिचय (यात्री देखेंगे)';
+
+  @override
+  String get pandAboutHint => 'गुरुकुल, ब्रज में कितने वर्ष, विशेष पूजाएँ';
+
+  @override
+  String get pandProfile => 'पंडित जी प्रोफ़ाइल';
+
+  @override
+  String get pandProfileSub => 'हर सेवा पर यात्रियों को दिखेगी';
+
+  @override
+  String pandYearsShort(String n) {
+    return '$n वर्ष';
+  }
+
+  @override
+  String get pandServicesTitle => 'पंडित जी सेवाएँ';
+
+  @override
+  String pandServicesSub(String n) {
+    return '$n सेवाएँ · दक्षिणा और समय';
+  }
+
+  @override
+  String get pandEmpty =>
+      'अभी कोई सेवा नहीं। टेम्पलेट से शुरू करें — सत्यनारायण कथा, सुंदरकांड, कुंडली…';
+
+  @override
+  String get pandAddFirst => 'मेरी पहली सेवा जोड़ें';
+
+  @override
+  String get pandAddService => 'सेवा जोड़ें';
+
+  @override
+  String pandMinutes(String n) {
+    return '$n मिनट';
+  }
+
+  @override
+  String get pandDakshina => 'दक्षिणा';
+
+  @override
+  String get pandPilgrimPays => 'यात्री देगा';
+
+  @override
+  String get pandOpenTimes => 'खुले समय';
+
+  @override
+  String get pandBooked => 'बुक';
+
+  @override
+  String get pandOpenDates => 'तारीख और समय खोलें';
+
+  @override
+  String get pandTemplates => 'टेम्पलेट से शुरू करें';
+
+  @override
+  String get pandServiceName => 'सेवा का नाम';
+
+  @override
+  String get pandDuration => 'समय (मिनट)';
+
+  @override
+  String get pandDakshinaRs => 'दक्षिणा (₹)';
+
+  @override
+  String get pandIncluded => 'क्या शामिल है';
+
+  @override
+  String get pandIncludedHint => 'विधि, सामग्री (कौन लाएगा), पंडितों की संख्या';
+
+  @override
+  String get pandFrom => 'कब से';
+
+  @override
+  String get pandForDays => 'कितने दिन';
+
+  @override
+  String pandDays(String n) {
+    return '$n दिन';
+  }
+
+  @override
+  String get pandTimes => 'समय (IST)';
+
+  @override
+  String get pandFamilies => 'एक समय में परिवार';
+
+  @override
+  String pandOpenN(String n) {
+    return '$n समय खोलें';
+  }
+
+  @override
+  String get pandUpcoming => 'खुले समय (बिना बुकिंग वाले को × से हटाएँ)';
+
+  @override
+  String get pandModeHome => 'परिवार के घर पर';
+
+  @override
+  String get pandModeTemple => 'मंदिर में';
+
+  @override
+  String get pandModeOnline => 'वीडियो कॉल';
 }

@@ -10,6 +10,7 @@ import '../coupons/coupons_screen.dart';
 import '../growth/analytics_screen.dart';
 import '../growth/marketing_screen.dart';
 import '../growth/support_screen.dart';
+import '../pandit/pandit_profile.dart';
 import '../shared/partner_ui.dart';
 import '../shared/signature.dart';
 import 'reviews_screen.dart';
@@ -86,6 +87,15 @@ class MoreScreen extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 16),
+                if (vendor.type == 'pandit')
+                  _Tile(
+                    icon: Icons.self_improvement_rounded,
+                    title: l.pandProfile,
+                    subtitle: vendor.panditProfile == null
+                        ? l.pandProfileSub
+                        : '${l.pandYearsShort('${vendor.panditProfile!.experienceYears}')} · ${vendor.panditProfile!.languages.map(panditLanguageName).join(', ')}',
+                    onTap: () => open(PanditProfileScreen(vendor: vendor)),
+                  ),
                 _Tile(
                   icon: Icons.insights_rounded,
                   title: l.analytics,

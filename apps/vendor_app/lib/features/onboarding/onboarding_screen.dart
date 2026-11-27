@@ -5,6 +5,7 @@ import '../../core/api/api_models.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/widgets/common.dart';
 import '../auth/data/session_controller.dart';
+import '../pandit/pandit_profile.dart';
 import '../shared/partner_ui.dart';
 import '../vendor/data/vendor_repository.dart';
 
@@ -26,6 +27,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   final _gstin = TextEditingController();
   String? _cityId;
   bool _busy = false;
+  final _pandit = PanditDraft();
 
   @override
   void dispose() {
@@ -38,6 +40,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   Future<void> _create() async {
     final s = _service;
     if (s == null || !_form.currentState!.validate()) return;
+    final problem = s.type == 'pandit' ? _pandit.problem(context.l10n) : null;
+    if (problem != null) return showSnack(context, problem);
     setState(() => _busy = true);
     try {
       await ref
@@ -50,6 +54,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               cityId: _cityId,
               pan: _pan.text.trim().toUpperCase(),
               gstin: _gstin.text.trim().isEmpty ? null : _gstin.text.trim().toUpperCase(),
+              panditProfile: s.type == 'pandit' ? _pandit.toDto() : null,
             ),
           );
       ref.invalidate(myVendorProvider);
@@ -180,7 +185,10 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
           const SizedBox(height: 12),
           TextFormField(
             controller: _display,
-            decoration: InputDecoration(labelText: l.displayName),
+            decoration: InputDecoration(
+              labelText: l.displayName,
+              hintText: svc.type == 'pandit' ? 'Pt. Radheshyam Shastri' : null,
+            ),
             validator: (v) => (v == null || v.trim().length < 2) ? l.required : null,
           ),
           const SizedBox(height: 12),
@@ -224,6 +232,20 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   : l.invalidValue;
             },
           ),
+          if (svc.type == 'pandit') ...[
+            const SizedBox(height: 22),
+            Text(
+              l.pandProfile,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w800,
+                color: PColors.night,
+              ),
+            ),
+            Text(l.pandProfileSub, style: const TextStyle(color: TnColors.muted, fontSize: 12.5)),
+            const SizedBox(height: 12),
+            PanditProfileEditor(draft: _pandit),
+          ],
           const SizedBox(height: 20),
           GoldButton(label: l.createAccount, busy: _busy, onPressed: _create),
         ],

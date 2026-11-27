@@ -265,6 +265,8 @@ class _OrderCardState extends ConsumerState<_OrderCard> {
                       ],
                     ),
                     const SizedBox(height: 10),
+                    if (o.details['experience'] is Map)
+                      _ServiceDetails(o.details['experience'] as Map),
                     for (final it in o.items.take(3))
                       Padding(
                         padding: const EdgeInsets.only(bottom: 4),
@@ -440,6 +442,69 @@ class _Progress extends StatelessWidget {
             ),
         ],
       ],
+    );
+  }
+}
+
+/// Pandit Ji (and other experience) bookings: when, where and the family's notes.
+class _ServiceDetails extends StatelessWidget {
+  const _ServiceDetails(this.e);
+  final Map<dynamic, dynamic> e;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final starts = e['startsAt'] is String ? DateTime.tryParse(e['startsAt'] as String) : null;
+    final mode = e['mode'] as String?;
+    final address = e['address'] as String?;
+    final notes = e['notes'] as String?;
+    if (starts == null && mode == null && notes == null) return const SizedBox.shrink();
+    Widget row(IconData icon, String text) => Padding(
+      padding: const EdgeInsets.only(bottom: 4),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, size: 16, color: PColors.gold),
+          const SizedBox(width: 8),
+          Expanded(child: Text(text, style: const TextStyle(fontSize: 13, height: 1.3))),
+        ],
+      ),
+    );
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFFF8EC),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (starts != null)
+            row(
+              Icons.event_rounded,
+              '${formatIstDate(starts, locale: context.lang)} · ${formatIstTime(starts)}',
+            ),
+          if (mode != null)
+            row(
+              switch (mode) {
+                'at_home' => Icons.home_rounded,
+                'online' => Icons.videocam_rounded,
+                _ => Icons.temple_hindu_rounded,
+              },
+              [
+                switch (mode) {
+                  'at_home' => l.pandModeHome,
+                  'online' => l.pandModeOnline,
+                  _ => l.pandModeTemple,
+                },
+                ?address,
+              ].join(' · '),
+            ),
+          if (notes != null) row(Icons.edit_note_rounded, notes),
+        ],
+      ),
     );
   }
 }

@@ -378,5 +378,94 @@
   "orderStarted": "Started",
   "orderDone": "Done",
   "subCategory": "Sub-category",
-  "examples": "Examples"
+  "examples": "Examples",
+  "svcPandit": "Pandit Ji",
+  "svcPanditSub": "Puja, path, jyotish, palmistry, astrology",
+  "pkPuja": "Puja",
+  "pkPath": "Path",
+  "pkJyotish": "Jyotish",
+  "pkPalmistry": "Palmistry",
+  "pkAstrology": "Astrology",
+  "pkPujaSub": "Katha, havan, sanskar",
+  "pkPathSub": "Sundarkand, Bhagwat",
+  "pkJyotishSub": "Kundli, milan",
+  "pkPalmistrySub": "Hast rekha",
+  "pkAstrologySub": "Rashi, numerology",
+  "pandChooseService": "Choose at least one service",
+  "pandChooseLanguage": "Choose at least one language",
+  "pandServicesQ": "Which services do you offer?",
+  "pandYears": "Years of experience",
+  "pandSampradaya": "Sampradaya (optional)",
+  "pandLanguages": "Languages you perform in",
+  "pandHomeVisits": "Home visits",
+  "pandHomeVisitsSub": "Go to the family's home or hotel",
+  "pandVideo": "Video consultations",
+  "pandVideoSub": "Jyotish or path on a video call",
+  "pandAbout": "About you (pilgrims see this)",
+  "pandAboutHint": "Gurukul, years in Braj, special pujas",
+  "pandProfile": "Pandit Ji profile",
+  "pandProfileSub": "Shown to pilgrims on every service",
+  "pandYearsShort": "{n} yrs",
+  "pandServicesTitle": "Pandit Ji services",
+  "pandServicesSub": "{n} services · dakshina and open times",
+  "pandEmpty": "No services yet. Start with a template — Satyanarayan Katha, Sundarkand, Kundli…",
+  "pandAddFirst": "Add my first service",
+  "pandAddService": "Add service",
+  "pandMinutes": "{n} min",
+  "pandDakshina": "Dakshina",
+  "pandPilgrimPays": "Pilgrim pays",
+  "pandOpenTimes": "Open times",
+  "pandBooked": "Booked",
+  "pandOpenDates": "Open dates & times",
+  "pandTemplates": "Start from a template",
+  "pandServiceName": "Service name",
+  "pandDuration": "Duration (minutes)",
+  "pandDakshinaRs": "Dakshina (₹)",
+  "pandIncluded": "What is included",
+  "pandIncludedHint": "Vidhi, samagri (who brings it), number of pandits",
+  "pandFrom": "Starting from",
+  "pandForDays": "For",
+  "pandDays": "{n} days",
+  "pandTimes": "Times (IST)",
+  "pandFamilies": "Families per time",
+  "pandOpenN": "Open {n} times",
+  "pandUpcoming": "Open times (tap × to remove an unbooked one)",
+  "@pandYearsShort": {
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "@pandServicesSub": {
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "@pandMinutes": {
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "@pandDays": {
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "@pandOpenN": {
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "pandModeHome": "At the family's home",
+  "pandModeTemple": "At temple",
+  "pandModeOnline": "Video call"
 }

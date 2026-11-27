@@ -108,6 +108,22 @@ class VendorRepository {
 
   // ───────────── coupons ─────────────
 
+  // ───────────── Pandit Ji services (experiences) ─────────────
+
+  Future<List<ExperienceResponse>> experiences(String id) async =>
+      (await _api.getList('/vendors/$id/experiences')).map(ExperienceResponse.fromJson).toList();
+
+  Future<void> saveExperience(String id, Map<String, dynamic> body, {String? experienceId}) async =>
+      experienceId == null
+      ? _api.post('/vendors/$id/experiences', body: body)
+      : _api.patch('/vendors/$id/experiences/$experienceId', body: body);
+
+  Future<void> addSlots(String id, String experienceId, CreateSlotsDto dto) async =>
+      _api.post('/vendors/$id/experiences/$experienceId/slots', body: dto.toJson());
+
+  Future<void> deleteSlot(String id, String slotId) async =>
+      _api.delete('/vendors/$id/experience-slots/$slotId');
+
   Future<List<CouponResponse>> coupons(String id) async =>
       (await _api.getList('/vendors/$id/coupons')).map(CouponResponse.fromJson).toList();
 
