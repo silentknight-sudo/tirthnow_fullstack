@@ -545,6 +545,7 @@ async function seedTransportAndFoodVendor(adminId: string, password: string): Pr
     email: 'cabs.owner@tirthnow.local',
     password,
     displayName: 'Mohan Lal Yadav',
+    phone: '+919876500011',
     roles: [{ key: 'user' }],
   });
   const vendorId = await upsertVendor('braj-yatra', {
@@ -625,6 +626,7 @@ async function seedTransportAndFoodVendor(adminId: string, password: string): Pr
     email: 'food.owner@tirthnow.local',
     password,
     displayName: 'Shyam Sundar Goswami',
+    phone: '+919876500022',
     roles: [{ key: 'user' }],
   });
   const foodVendorId = await upsertVendor('braj-bhojanalaya', {
@@ -643,6 +645,7 @@ async function seedTransportAndFoodVendor(adminId: string, password: string): Pr
     email: 'boat.owner@tirthnow.local',
     password,
     displayName: 'Kanhaiya Nishad',
+    phone: '+919876500033',
     roles: [{ key: 'user' }],
   });
   const boatVendorId = await upsertVendor('keshi-ghat-nauka', {
