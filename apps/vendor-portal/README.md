@@ -13,7 +13,7 @@ pnpm dev                                     # http://localhost:3001
 ```
 
 Seeded accounts (password `TirthNow@Vendor123`, or `SEED_VENDOR_PASSWORD`):
-`hotel.owner@tirthnow.local` (stays) and `cabs.owner@tirthnow.local` (cabs + food).
+`hotel.owner@tirthnow.local` (stays) and `cabs.owner@tirthnow.local` (cabs), `food.owner@tirthnow.local` (food) and `boat.owner@tirthnow.local` (boat ride).
 New partners use **Become a partner**.
 
 `NEXT_PUBLIC_API_BASE_URL` (default `http://localhost:4000`) is baked in at build

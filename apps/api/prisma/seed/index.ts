@@ -549,9 +549,9 @@ async function seedTransportAndFoodVendor(adminId: string, password: string): Pr
   });
   const vendorId = await upsertVendor('braj-yatra', {
     ownerUserId: ownerId,
-    type: 'multi',
+    type: 'cab',
     legalName: 'Braj Yatra Services LLP',
-    displayName: 'Braj Yatra Cabs & Kitchen',
+    displayName: 'Braj Yatra Cabs',
     cityId: sid('city:mathura'),
     status: 'active',
     approvedAt: new Date(),
@@ -619,9 +619,47 @@ async function seedTransportAndFoodVendor(adminId: string, password: string): Pr
     });
   }
 
+  // Food and the boat ride are separate demo partners, so each shows its own name.
+  const foodOwnerId = await upsertPortalUser({
+    key: 'food-owner',
+    email: 'food.owner@tirthnow.local',
+    password,
+    displayName: 'Shyam Sundar Goswami',
+    roles: [{ key: 'user' }],
+  });
+  const foodVendorId = await upsertVendor('braj-bhojanalaya', {
+    ownerUserId: foodOwnerId,
+    type: 'restaurant',
+    legalName: 'Braj Bhojanalaya',
+    displayName: 'Braj Bhojanalaya',
+    cityId: sid('city:vrindavan'),
+    status: 'active',
+    approvedAt: new Date(),
+    approvedById: adminId,
+  });
+  await grantRoles(foodOwnerId, [{ key: 'vendor_owner', vendorId: foodVendorId }]);
+  const boatOwnerId = await upsertPortalUser({
+    key: 'boat-owner',
+    email: 'boat.owner@tirthnow.local',
+    password,
+    displayName: 'Kanhaiya Nishad',
+    roles: [{ key: 'user' }],
+  });
+  const boatVendorId = await upsertVendor('keshi-ghat-nauka', {
+    ownerUserId: boatOwnerId,
+    type: 'experience',
+    legalName: 'Keshi Ghat Nauka Vihar',
+    displayName: 'Keshi Ghat Nauka Vihar',
+    cityId: sid('city:vrindavan'),
+    status: 'active',
+    approvedAt: new Date(),
+    approvedById: adminId,
+  });
+  await grantRoles(boatOwnerId, [{ key: 'vendor_owner', vendorId: boatVendorId }]);
+
   const restaurantId = sid('restaurant:braj-bhojanalaya');
   const restaurant = {
-    vendorId,
+    vendorId: foodVendorId,
     cityId: sid('city:vrindavan'),
     nameI18n: i18n('Braj Bhojanalaya', 'ब्रज भोजनालय'),
     lat: 27.5801,
@@ -663,7 +701,7 @@ async function seedTransportAndFoodVendor(adminId: string, password: string): Pr
 
   const experienceId = sid('experience:yamuna-boat-ride');
   const experience = {
-    vendorId,
+    vendorId: boatVendorId,
     cityId: sid('city:vrindavan'),
     kind: 'boat_ride' as const,
     titleI18n: i18n('Yamuna Boat Ride at Keshi Ghat', 'केशी घाट पर यमुना नौका विहार'),

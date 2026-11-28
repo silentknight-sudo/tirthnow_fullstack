@@ -168,7 +168,7 @@ Idempotent (deterministic IDs) and refuses to run against production.
 | POIs | Hospitals, police stations, parking, pharmacy, ghats; emergency flags |
 | Parikrama | Goverdhan Parikrama (21 km) with 4 stops |
 | Hotel vendor | *Shri Radha Residency* — 2 hotels, 3 room types each, 60 nights of inventory (weekend +20%) |
-| Cab + food vendor | *Braj Yatra Cabs & Kitchen* — 3 vehicles, 3 fare classes with fixed Mathura→Vrindavan fares, a satvik restaurant with 8 dishes, a Yamuna boat ride with 28 slots |
+| Cab, food and boat vendors | *Braj Yatra Cabs* (3 vehicles, fixed Mathura→Vrindavan fares), *Braj Bhojanalaya* (satvik restaurant, 8 dishes), *Keshi Ghat Nauka Vihar* (Yamuna boat ride, 28 slots) |
 | Platform | Commission rules (10% default, 15% food, 8% cab), notification templates, feature flags, national helplines (112, 108, 1091, 1363) |
 
 ## 4. Testing
@@ -201,7 +201,9 @@ pnpm dev        # API on http://localhost:4000 — Swagger at /docs
 |---|---|
 | Admin (super_admin) | `admin@tirthnow.local` / `TirthNow@Admin123` |
 | Hotel vendor | `hotel.owner@tirthnow.local` / `TirthNow@Vendor123` |
-| Cab + food vendor | `cabs.owner@tirthnow.local` / `TirthNow@Vendor123` |
+| Cab vendor | `cabs.owner@tirthnow.local` / `TirthNow@Vendor123` |
+| Food vendor | `food.owner@tirthnow.local` / `TirthNow@Vendor123` |
+| Boat ride vendor | `boat.owner@tirthnow.local` / `TirthNow@Vendor123` |
 | Mobile demo user | Firebase token `mock:demo-user:+919999900001` |
 
 Local services: MinIO console http://localhost:9001, Mailpit http://localhost:8025.
